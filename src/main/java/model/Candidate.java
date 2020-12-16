@@ -65,11 +65,11 @@ public class Candidate {
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return getAge() == candidate.getAge()
-            && isAllowedToVote() == candidate.isAllowedToVote()
-            && Objects.equals(getNationality(), candidate.getNationality())
-            && Objects.equals(getPeriodsInUkr(), candidate.getPeriodsInUkr())
-            && Objects.equals(getName(), candidate.getName());
+        return age == candidate.age
+            && allowedToVote == candidate.allowedToVote
+            && Objects.equals(nationality, candidate.nationality)
+            && Objects.equals(periodsInUkr, candidate.periodsInUkr)
+            && Objects.equals(name, candidate.name);
     }
 
     @Override

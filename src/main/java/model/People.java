@@ -8,20 +8,20 @@ public class People {
     private String name;
     private int age;
     private Sex sex;
-    private List<Cat> catList;
+    private List<Cat> cats;
 
     public People(String name, int age, Sex sex) {
         this.name = name;
         this.age = age;
         this.sex = sex;
-        catList = new ArrayList<>();
+        cats = new ArrayList<>();
     }
 
-    public People(String name, int age, Sex sex, List<Cat> catList) {
+    public People(String name, int age, Sex sex, List<Cat> cats) {
         this.name = name;
         this.age = age;
         this.sex = sex;
-        this.catList = catList;
+        this.cats = cats;
     }
 
     public String getName() {
@@ -36,8 +36,8 @@ public class People {
         return sex;
     }
 
-    public List<Cat> getCatList() {
-        return catList;
+    public List<Cat> getCats() {
+        return cats;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class People {
         return age == people.age
             && Objects.equals(name, people.name)
             && sex == people.sex
-            && Objects.equals(catList, people.catList);
+            && Objects.equals(cats, people.cats);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, age, sex, catList);
+        return Objects.hash(name, age, sex, cats);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class People {
             + "name='" + name + '\''
             + ", age=" + age
             + ", sex=" + sex
-            + ", catList=" + catList
+            + ", catList=" + cats
             + '}';
     }
 
