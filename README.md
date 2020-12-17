@@ -32,3 +32,5 @@
     and live in urk for 10 years. For the last requirement use field periodsInUkr, which has following view:
     "2002-2015" For now we don't care if that was last 10 or not. We want to reuse our validation in future, so
     let's write our own impl of Predicate<Candidate> in CandidateValidator.
+
+[Try to avoid these common mistakes while solving task](https://mate-academy.github.io/jv-program-common-mistakes/java-core/java-eight-part-two/stream-api)
