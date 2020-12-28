@@ -50,7 +50,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
                         && p.getSex() == People.Sex.MAN)
@@ -69,7 +70,8 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= ((p.getSex() == People.Sex.MAN) ? maleToAge : femaleToAge))
                 .collect(Collectors.toList());
@@ -81,7 +83,8 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(p -> p.getSex() == People.Sex.WOMEN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
@@ -102,7 +105,8 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates.stream()
+        return candidates
+                .stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
