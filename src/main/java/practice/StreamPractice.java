@@ -1,7 +1,9 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.People;
 
@@ -14,7 +16,12 @@ public class StreamPractice {
      * "Can't get min value from list: method_input_list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .min()
+                .orElse(0);
     }
 
     /**
