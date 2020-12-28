@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,9 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split("[^\\-\\d]"))
-                .map(List::of)
-                .flatMap(Collection::stream)
+                .flatMap(i -> Arrays.stream(i.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
