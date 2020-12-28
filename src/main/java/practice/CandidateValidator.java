@@ -18,19 +18,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && end - start >= MIN_YEARS_IN_COUNTRY;
     }
-
-    @Override
-    public Predicate<Candidate> and(Predicate<? super Candidate> other) {
-        return null;
-    }
-
-    @Override
-    public Predicate<Candidate> negate() {
-        return null;
-    }
-
-    @Override
-    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
-        return null;
-    }
 }
