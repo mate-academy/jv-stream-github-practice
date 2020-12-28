@@ -35,21 +35,13 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         AtomicInteger index = new AtomicInteger();
-        numbers = numbers.stream()
+        return numbers.stream()
                 .map((i) -> (index.getAndIncrement() % 2 == 1) ? i - 1 : i)
-                .collect(Collectors.toList());
-        int count = numbers.stream()
                 .filter(i -> i % 2 == 1)
-                .mapToInt(i -> 1)
-                .sum();
-        double sum = numbers.stream()
-                .filter(i -> i % 2 == 1)
-                .mapToDouble(Double::valueOf)
-                .sum();
-        if (count == 0) {
-            throw new NoSuchElementException();
-        }
-        return sum / count;
+                .mapToInt(Integer::intValue)
+                .average()
+                .getAsDouble();
+
     }
 
     /**
