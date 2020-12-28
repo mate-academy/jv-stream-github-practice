@@ -2,9 +2,8 @@ package practice;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -34,11 +33,9 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger index = new AtomicInteger();
-        return numbers.stream()
-                .map((i) -> (index.getAndIncrement() % 2 == 1) ? i - 1 : i)
+        return IntStream.range(0, numbers.size())
+                .map((i) -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
-                .mapToInt(Integer::intValue)
                 .average()
                 .getAsDouble();
 
