@@ -9,20 +9,6 @@ import model.Cat;
 import model.People;
 
 public class StreamPractice {
-    
-    private static Predicate<Candidate> candidatePredicate = candidate -> {
-        String[] yearsInUkraine = candidate.getPeriodsInUkr().split("-");
-        int periodInUkraine = Integer.parseInt(yearsInUkraine[1]) - Integer.parseInt(yearsInUkraine[0]);
-        return candidate.getAge() >= 35
-                && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && periodInUkraine >= 10;
-    };
-    
-    public static Predicate<Candidate> getCandidatePredicate() {
-        return candidatePredicate;
-    }
-    
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -38,8 +24,9 @@ public class StreamPractice {
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidatePredicate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
+                .sorted()
                 .collect(Collectors.toList());
     }
     
@@ -65,8 +52,8 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size()).map(i -> i % 2 != 0 ? numbers.set(i, numbers.get(i) - 1) : i);
-        return numbers.stream()
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .mapToDouble(i -> i)
                 .average()
