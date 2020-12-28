@@ -11,6 +11,23 @@ import model.People;
 
 public class StreamPractice {
     /**
+     * Your help with a election is needed. Given list of candidates, where each element
+     * has Candidate.class type.
+     * Check which candidates are eligible to apply for president position and return their
+     * names sorted alphabetically.
+     * The requirements are: person should be older than 35 y, should be allowed to vote,
+     * have nationality - 'Ukrainian'
+     * and live in urk for 10 years. For the last requirement use field periodsInUkr,
+     * which has following view:
+     * "2002-2015" For now we don't care if that was last 10 or not. We want to reuse our
+     * validation in future, so
+     * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
+     */
+    public static List<String> validateCandidates(List<Candidate> candidates) {
+        return Collections.emptyList();
+    }
+    
+    /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0, 22, 7", ...}
      * return min integer value. One more thing - we're interested in even numbers.
@@ -25,7 +42,7 @@ public class StreamPractice {
                 .min()
                 .orElse(0);
     }
-
+    
     /**
      * Given a List of Integer numbers,
      * subtract 1 from each element on an odd position (having the odd index).
@@ -39,7 +56,7 @@ public class StreamPractice {
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
-
+    
     /**
      * Given a List of `People` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new People(«Victor», 16, Sex.MAN),
@@ -50,10 +67,12 @@ public class StreamPractice {
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(people -> people.getAge() >= fromAge && people.getAge() <= toAge)
+                .filter(people -> people.getAge() >= fromAge
+                        && people.getAge() <= toAge
+                        && people.getSex().equals(People.Sex.MAN))
                 .collect(Collectors.toList());
     }
-
+    
     /**
      * Given a List of `People` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new People(«Victor», 16, Sex.MAN),
@@ -66,32 +85,20 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getSex().equals(People.Sex.WOMEN)
+                            ? p.getAge() <= femaleToAge
+                            : p.getAge() <= maleToAge)
+                .collect(Collectors.toList());
     }
-
+    
     /**
      * Given a List of `People` instances (having `name`, `age`, `sex` and `List of cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 y, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in urk for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view:
-     * "2002-2015" For now we don't care if that was last 10 or not. We want to reuse our
-     * validation in future, so
-     * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
-     */
-    public static List<String> validateCandidates(List<Candidate> candidates) {
         return Collections.emptyList();
     }
 }
