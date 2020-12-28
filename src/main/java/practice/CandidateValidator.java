@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
@@ -16,13 +15,13 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote() && checkPeriod(candidate.getPeriodsInUkr());
     }
 
-    private boolean checkPeriod(String period){
+    private boolean checkPeriod(String period) {
         if (period == null || period.length() != 9
-                    || period.replaceAll("[0-9]", "").length() != 1) {
-                return false;
-            }
-            int start = Integer.parseInt(period.substring(0, 4));
-            int over = Integer.parseInt(period.substring(5));
-            return over - start >= YEARS_IN_COUNTRY;
+                || period.replaceAll("[0-9]", "").length() != 1) {
+            return false;
         }
+        int start = Integer.parseInt(period.substring(0, 4));
+        int over = Integer.parseInt(period.substring(5));
+        return over - start >= YEARS_IN_COUNTRY;
+    }
 }

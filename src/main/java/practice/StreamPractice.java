@@ -21,10 +21,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(x -> Arrays.stream(x.split(",")))
-                .distinct()
                 .mapToInt(Integer::parseInt)
-                .sorted()
                 .filter(x -> x % 2 == 0)
+                .sorted()
                 .findFirst()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: method_input_list"));
