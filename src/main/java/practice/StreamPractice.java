@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -8,6 +9,20 @@ import model.Cat;
 import model.People;
 
 public class StreamPractice {
+    
+    private static Predicate<Candidate> candidatePredicate = candidate -> {
+        String[] yearsInUkraine = candidate.getPeriodsInUkr().split("-");
+        int periodInUkraine = Integer.parseInt(yearsInUkraine[1]) - Integer.parseInt(yearsInUkraine[0]);
+        return candidate.getAge() >= 35
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals("Ukrainian")
+                && periodInUkraine >= 10;
+    };
+    
+    public static Predicate<Candidate> getCandidatePredicate() {
+        return candidatePredicate;
+    }
+    
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -22,7 +37,10 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(candidatePredicate)
+                .map(Candidate::getName)
+                .collect(Collectors.toList());
     }
     
     /**
@@ -38,7 +56,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
-                .orElse(0);
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
     
     /**
