@@ -3,7 +3,9 @@ package practice;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.People;
 
@@ -30,7 +32,12 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        IntStream.range(0, numbers.size()).map(i -> i % 2 != 0 ? numbers.set(i, numbers.get(i) - 1) : i);
+        return numbers.stream()
+                .filter(i -> i % 2 != 0)
+                .mapToDouble(i -> i)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -42,7 +49,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(people -> people.getAge() >= fromAge && people.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
