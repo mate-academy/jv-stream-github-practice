@@ -1,6 +1,9 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -89,10 +92,10 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getSex().equals(People.Sex.WOMEN)
-                            ? p.getAge() <= femaleToAge
-                            : p.getAge() <= maleToAge)
+                .filter(people -> people.getAge() >= fromAge
+                        && (people.getSex().equals(People.Sex.WOMEN)
+                        ? people.getAge() <= femaleToAge
+                        : people.getAge() <= maleToAge))
                 .collect(Collectors.toList());
     }
     
@@ -104,7 +107,8 @@ public class StreamPractice {
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(People.Sex.WOMEN)
-                        && p.getAge() >= femaleAge)
+                        && p.getAge() >= femaleAge
+                        && !p.getCats().isEmpty())
                 .map(People::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
