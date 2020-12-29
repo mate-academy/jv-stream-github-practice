@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -16,13 +17,13 @@ public class StreamPractice {
      * "Can't get min value from list: method_input_list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream().map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+        return numbers.stream()
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(s -> s % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + "method_input_list"));
+                        + numbers));
     }
 
     /**
@@ -64,11 +65,12 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-
-        return peopleList.stream().filter(x -> x.getAge() >= fromAge
+        return peopleList.stream()
+                .filter(x -> x.getAge() >= fromAge
                 && ((x.getSex().equals(People.Sex.WOMEN) && x.getAge() <= femaleToAge)
                 || (x.getSex().equals(People.Sex.MAN)
-                && x.getAge() <= maleToAge))).collect(Collectors.toList());
+                && x.getAge() <= maleToAge)))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -79,9 +81,8 @@ public class StreamPractice {
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(x -> x.getSex().equals(People.Sex.WOMEN) && x.getAge() >= femaleAge)
-                .map(x -> x.getCats())
-                .flatMap(l -> l.stream())
-                .map(x -> x.getName())
+                .flatMap(p -> p.getCats().stream())
+                .map(c -> c.getName())
                 .collect(Collectors.toList());
     }
 
@@ -99,9 +100,9 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
+        Predicate<Candidate> validator = new CandidateValidator();
         return candidates.stream()
-                .filter(x -> validator.test(x))
+                .filter(validator)
                 .map(x -> x.getName())
                 .sorted()
                 .collect(Collectors.toList());
