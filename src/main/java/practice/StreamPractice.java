@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,7 +36,6 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 1)
                 .average()
                 .getAsDouble();
-
     }
 
     /**
@@ -85,8 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == People.Sex.WOMEN && p.getAge() >= femaleAge)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -106,7 +103,7 @@ public class StreamPractice {
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
