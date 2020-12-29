@@ -13,6 +13,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= 35
                 && candidate.getNationality().equals("Ukrainian")
                 && candidate.isAllowedToVote()
-                && fromPeriod - toPeriod <= -10;
+                && toPeriod - fromPeriod >= 10;
     }
 }
