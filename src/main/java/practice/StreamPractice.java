@@ -11,7 +11,7 @@ public class StreamPractice {
      * input = {"5,30,100", "0, 22, 7", ...}
      * return min integer value. One more thing - we're interested in even numbers.
      * If there is no needed data throw RuntimeException with message
-     * "Can't get min value from list: method_input_list"
+     * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
         return 0;
