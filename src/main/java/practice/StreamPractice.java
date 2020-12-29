@@ -106,6 +106,11 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates
+                .stream()
+                .filter(new CandidateValidator())
+                .map(candidate -> candidate.getName())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
