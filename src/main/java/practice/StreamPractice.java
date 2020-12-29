@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.Candidate;
@@ -47,7 +48,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(person -> person.getSex().equals(People.Sex.MAN)
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
