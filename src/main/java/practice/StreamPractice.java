@@ -22,10 +22,9 @@ public class StreamPractice {
                 .flatMap(n -> Stream.of(n.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .sorted()
-                .findFirst()
+                .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: method_input_list"));
+                        new RuntimeException("Can't get min value from list: numbers"));
     }
 
     /**
@@ -38,7 +37,8 @@ public class StreamPractice {
                 .range(0, numbers.size())
                 .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
-                .average().orElseThrow();
+                .average()
+                .getAsDouble();
     }
 
     /**
