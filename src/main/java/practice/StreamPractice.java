@@ -86,7 +86,6 @@ public class StreamPractice {
                         && person.getSex() == People.Sex.WOMEN)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .distinct()
                 .collect(Collectors.toList());
     }
 
