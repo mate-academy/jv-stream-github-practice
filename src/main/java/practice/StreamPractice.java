@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import model.Candidate;
 import model.People;
@@ -30,7 +31,11 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
+                .filter(number -> number % 2 == 1)
+                .average()
+                .getAsDouble();
     }
 
     /**
