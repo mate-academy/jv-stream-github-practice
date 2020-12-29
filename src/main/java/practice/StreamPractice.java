@@ -25,12 +25,6 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
-//        return Arrays.stream(numbers.toString().split(","))
-//                .map(s -> s.replaceAll("[^0-9.]", ""))
-//                .mapToInt(Integer::parseInt)
-//                .filter(i -> i % 2 == 0)
-//                .min()
-//                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
