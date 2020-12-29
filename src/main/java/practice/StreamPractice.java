@@ -1,7 +1,7 @@
 package practice;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
 import model.Candidate;
 import model.People;
 
@@ -12,9 +12,16 @@ public class StreamPractice {
      * return min integer value. One more thing - we're interested in even numbers.
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: method_input_list"
+     * @return
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers
+                .stream()
+                .flatMap(string -> Arrays.stream(string.split(",")))
+                .mapToInt(Integer::valueOf)
+                .filter(number -> number % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
     /**
