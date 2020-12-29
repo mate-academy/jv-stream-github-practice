@@ -58,8 +58,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
-                .mapToInt(Integer::intValue)
+                .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
