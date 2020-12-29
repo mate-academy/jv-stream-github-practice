@@ -1,14 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -29,7 +25,8 @@ public class StreamPractice {
                 .mapToInt(i -> i)
                 .filter(i -> i % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
     /**
@@ -92,7 +89,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.WOMEN && people.getAge() >= femaleAge)
+                .filter(people -> people.getSex() == People.Sex.WOMEN
+                        && people.getAge() >= femaleAge)
                 .flatMap(i -> i.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
