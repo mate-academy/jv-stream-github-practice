@@ -23,7 +23,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list:"
+                        -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
 
