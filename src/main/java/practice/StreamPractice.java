@@ -23,7 +23,8 @@ public class StreamPractice {
                 .mapToInt(Integer::valueOf)
                 .filter(number -> number % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + "method_input_list"));
     }
 
     /**
@@ -81,7 +82,14 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(person -> person.getSex().equals(People.Sex.WOMEN)
+                        && person.getAge() >= femaleAge)
+                .map(person -> person.getCats())
+                .flatMap(list -> list.stream())
+                .map(cat -> cat.getName())
+                .collect(Collectors.toList());
     }
 
     /**
