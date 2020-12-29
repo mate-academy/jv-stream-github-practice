@@ -56,7 +56,6 @@ public class StreamPractice {
     }
 
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidatePredicate = new CandidateValidator();
         return candidates
                 .stream()
                 .filter(new CandidateValidator())
