@@ -66,7 +66,16 @@ public class StreamPracticeTest {
                 "3,2,2,5", "27,44,89", "12,11,5", "64,22,757");
         int expected = 2;
         Assert.assertEquals(String.format("Incorrect min value for the input - %s\n",
-                basicInput), expected, solution.findMinEvenNumber(basicInput));
+                basicInput), expected, solution.
+
+
+
+
+
+
+
+
+                findMinEvenNumber(basicInput));
     }
 
     @Test
