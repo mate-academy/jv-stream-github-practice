@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -17,14 +16,14 @@ public class StreamPractice {
      * "Can't get min value from list: method_input_list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
+        return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(a -> Arrays.stream(a))
                 .mapToInt(s -> Integer.parseInt(s))
                 .filter(i -> i % 2 == 0)
-                .min();
-        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                + " method_input_list"));
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                        + " method_input_list"));
     }
 
     /**
@@ -72,7 +71,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex().equals(People.Sex.MAN)
                         && p.getAge() >= fromAge
                         && p.getAge() <= maleToAge
-                || p.getSex().equals(People.Sex.WOMEN)
+                        || p.getSex().equals(People.Sex.WOMEN)
                         && p.getAge() >= fromAge
                         && p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
