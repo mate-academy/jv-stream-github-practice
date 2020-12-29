@@ -1,8 +1,8 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -23,7 +23,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt))
                 .filter(number -> number % 2 == 0)
                 .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + "method_input_list"));
+                        + numbers));
     }
 
     /**
@@ -83,8 +83,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(People.Sex.WOMEN)
                         && person.getAge() >= femaleAge)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -103,7 +102,7 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
