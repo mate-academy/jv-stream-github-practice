@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int AGE = 35;
+    private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_YEARS = 10;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= AGE
+        return candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
                 && periodsInUkrMoreThen10(candidate);
