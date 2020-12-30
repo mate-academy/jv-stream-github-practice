@@ -2,6 +2,8 @@ package practice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.People;
 
@@ -14,7 +16,12 @@ public class StreamPractice {
      * "Can't get min value from list: method_input_list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n%2 == 0)
+                .min()
+                .getAsInt();
+
     }
 
     /**
@@ -23,7 +30,12 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0,numbers.size())
+                .map(i -> (i % 2 != 0) ? numbers.get(i) - 1: numbers.get(i))
+                .filter(num->num%2!=0)
+                .average()
+                .getAsDouble();
+
     }
 
     /**
