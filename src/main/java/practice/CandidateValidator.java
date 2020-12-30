@@ -13,10 +13,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidate.isAllowedToVote()
                 && candidate.getAge() >= AGE_LOWER_BOUND
-                && getPeriodOfLiving(candidate) >= NEEDED_PERIOD_OF_LIVING;
+                && getPeriodOfLivingInUA(candidate) >= NEEDED_PERIOD_OF_LIVING;
     }
 
-    private int getPeriodOfLiving(Candidate candidate) {
+    private int getPeriodOfLivingInUA(Candidate candidate) {
         return Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
                 - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
     }
