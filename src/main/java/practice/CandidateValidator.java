@@ -4,15 +4,17 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_AGE = 35;
+    private static final int MIN_YEARS_LIVE = 10;
+    private static final String NEEDED_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getClass() == Candidate.class
-                && candidate.getAge() >= 35
+        return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(NEEDED_NATIONALITY)
                 && Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
-                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]) >= 10;
+                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]) >= MIN_YEARS_LIVE;
     }
 
 }
