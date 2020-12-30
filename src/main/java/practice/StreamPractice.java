@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -69,8 +68,8 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.MAN ?
-                        people.getAge() >= fromAge && people.getAge() <= maleToAge :
+                .filter(people -> people.getSex() == People.Sex.MAN
+                        ? people.getAge() >= fromAge && people.getAge() <= maleToAge :
                         people.getAge() >= fromAge && people.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
