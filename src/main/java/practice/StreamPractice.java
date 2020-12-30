@@ -24,7 +24,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + "method_input_list"));
+                        + "numbers"));
     }
 
     /**
@@ -86,8 +86,7 @@ public class StreamPractice {
                 .stream()
                 .filter(person -> person.getSex().equals(People.Sex.WOMEN)
                         && person.getAge() >= femaleAge)
-                .map(person -> person.getCats())
-                .flatMap(list -> list.stream())
+                .flatMap(person -> person.getCats().stream())
                 .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
