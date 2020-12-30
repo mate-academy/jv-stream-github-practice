@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.People;
 
 public class StreamPractice {
@@ -23,7 +24,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get"
-                        + " min value from list: method_input_list"));
+                        + " min value from list: method_input_list" + numbers));
     }
 
     /**
@@ -36,7 +37,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .mapToDouble(Double::valueOf)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average().getAsDouble();
     }
 
     /**
@@ -83,7 +84,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= femaleAge && p.getSex() == People.Sex.WOMEN)
                 .flatMap(c -> c.getCats().stream())
-                .map(x -> x.getName())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
