@@ -20,9 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean periodsInUkrMoreThen10(Candidate candidate) {
-        List<Integer> yearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        return yearsInUkraine.get(1) - yearsInUkraine.get(0) >= MIN_YEARS;
+        String[] years = candidate.getPeriodsInUkr().split("-");
+        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]) >= MIN_YEARS;
     }
 }
