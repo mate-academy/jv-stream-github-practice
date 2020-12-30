@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,8 +18,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(x -> x.split(","))
-                .flatMap(x -> Arrays.stream(x.clone()))
+                .flatMap(x -> Arrays.stream(x.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
                 .min()
@@ -84,8 +82,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(people -> people.getSex() == People.Sex.WOMEN
                         && people.getAge() >= femaleAge)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(people -> people.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -105,7 +102,7 @@ public class StreamPractice {
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

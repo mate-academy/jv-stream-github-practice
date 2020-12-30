@@ -4,11 +4,11 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final int ALLOWED_AGE = 35;
-    public static final String UKRAINIAN = "Ukrainian";
-    public static final int LAST_YEAR = 1;
-    public static final int FIRST_YEAR = 0;
-    public static final int ALLOWED_PERIOD = 10;
+    private static final int ALLOWED_AGE = 35;
+    private static final String UKRAINIAN = "Ukrainian";
+    private static final int LAST_YEAR = 1;
+    private static final int FIRST_YEAR = 0;
+    private static final int ALLOWED_PERIOD = 10;
 
     @Override
     public boolean test(Candidate candidate) {
