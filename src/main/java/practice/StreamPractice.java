@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.Candidate;
@@ -47,7 +48,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter( p -> p.getAge() >= fromAge && p.getAge() <= toAge && p.getSex() == People.Sex.MAN)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -62,7 +65,12 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                   .filter(p -> p.getAge() >= fromAge
+                            && (p.getSex()==People.Sex.WOMEN && p.getAge() <= femaleToAge)
+                            | (p.getSex()==People.Sex.MAN && p.getAge() <= maleToAge))
+                    .collect(Collectors.toList());
+
     }
 
     /**
@@ -71,7 +79,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return  peopleList.stream()
+                            .filter(p -> p.getSex() == People.Sex.WOMEN && p.getAge() >= femaleAge)
+                            .map(p -> p.getCats())
+                            .flatMap(l -> l.stream())
+                            .map(c -> c.getName())
+                            .collect(Collectors.toList());
+
     }
 
     /**
@@ -88,6 +102,7 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
+
         return Collections.emptyList();
     }
 }
