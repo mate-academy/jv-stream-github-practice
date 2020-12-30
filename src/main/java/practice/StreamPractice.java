@@ -2,7 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -24,7 +24,7 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
@@ -41,13 +41,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(e -> e.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(e -> Arrays.stream(e.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min "
-                        + "value from list: method_input_list"));
+                        + "value from list:" + numbers));
     }
 
     /**
@@ -61,7 +60,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
