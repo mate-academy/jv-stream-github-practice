@@ -16,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && yearLiveInCountry(candidate.getPeriodsInUkr()) >= MIN_YEARS_LIVE;
     }
 
-    private int yearLiveInCountry (String periodsInCountry) {
+    private int yearLiveInCountry(String periodsInCountry) {
         String[] years = periodsInCountry.split("-");
         return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
     }
