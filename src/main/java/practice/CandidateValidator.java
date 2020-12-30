@@ -13,6 +13,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
         return candidate.getAge() >= minAge && candidate.getNationality().equals("Ukrainian")
                 && periodsInUkr >= minPeriod
-                && candidate.isAllowedToVote();
+                && candidate.isAllowedToVote() ;
     }
 }
