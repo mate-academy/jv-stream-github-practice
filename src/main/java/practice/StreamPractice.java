@@ -21,8 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .distinct()
-                .map(Integer::parseInt)
-                .mapToInt(i -> i)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() ->
