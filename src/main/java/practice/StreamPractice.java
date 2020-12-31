@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -22,7 +23,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
     /**
@@ -31,8 +32,7 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.iterate(0, i -> i + 1)
-                .limit(numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 == 1)
                 .average()
@@ -100,9 +100,9 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> candidateValidator.test(candidate))
+                .filter(candidateValidator)
                 .map(candidate -> candidate.getName())
                 .sorted()
                 .collect(Collectors.toList());

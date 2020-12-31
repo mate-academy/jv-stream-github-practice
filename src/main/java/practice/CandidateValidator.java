@@ -3,14 +3,13 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator implements Predicate {
+public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY_UKR = "Ukrainian";
     private static final int MINIMUM_AGE = 35;
     private static final int PERIOD_YEARS = 10;
 
     @Override
-    public boolean test(Object objectCandidate) {
-        Candidate candidate = (Candidate) objectCandidate;
+    public boolean test(Candidate candidate) {
         String[] periodYears = candidate.getPeriodsInUkr().split("-");
         return candidate.getAge() >= MINIMUM_AGE
                 && candidate.getNationality().equals(NATIONALITY_UKR)
