@@ -2,7 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -34,7 +34,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow();
     }
 
     /**
@@ -65,10 +66,9 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(People.Sex.WOMEN) && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge
-                        || p.getSex().equals(People.Sex.MAN) && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge)
+                .filter(p -> p.getAge() >= fromAge
+                        && (p.getSex().equals(People.Sex.WOMEN) && p.getAge() <= femaleToAge
+                        || p.getSex().equals(People.Sex.MAN) && p.getAge() <= maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -99,7 +99,7 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
+        Predicate<Candidate> validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
