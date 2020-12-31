@@ -50,9 +50,9 @@ public class People {
         }
         People people = (People) o;
         return age == people.age
-            && Objects.equals(name, people.name)
-            && sex == people.sex
-            && Objects.equals(cats, people.cats);
+                && Objects.equals(name, people.name)
+                && sex == people.sex
+                && Objects.equals(cats, people.cats);
     }
 
     @Override
@@ -63,11 +63,11 @@ public class People {
     @Override
     public String toString() {
         return "People{"
-            + "name='" + name + '\''
-            + ", age=" + age
-            + ", sex=" + sex
-            + ", catList=" + cats
-            + '}';
+                + "name='" + name + '\''
+                + ", age=" + age
+                + ", sex=" + sex
+                + ", catList=" + cats
+                + '}';
     }
 
     public enum Sex {
