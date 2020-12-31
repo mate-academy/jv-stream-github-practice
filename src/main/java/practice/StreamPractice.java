@@ -11,13 +11,13 @@ import model.People;
 public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> list = new LinkedList<>();
-        numbers.stream()
+        return numbers.stream()
                 .map(s -> s.split(","))
-                .forEach(strings -> Arrays.stream(strings)
-                        .forEach(string -> list.add(Integer.parseInt(string)))
-                );
-        return list.stream().filter(integer -> integer % 2 == 0).sorted().findFirst()
+                .flatMap(strings -> Arrays.stream(strings))
+                .map(Integer::parseInt)
+                .filter(integer -> integer % 2 == 0)
+                .sorted()
+                .findFirst()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: method_input_list"));
     }
