@@ -27,19 +27,20 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return peopleList.stream().filter(e -> e.getSex() == People.Sex.MAN)
-                .filter(e -> e.getAge() >= fromAge && e.getAge() <= toAge)
+        return peopleList.stream()
+                .filter(person -> person.getSex() == People.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> (person.getAge() <= femaleToAge
-                        && person.getSex() == People.Sex.WOMEN)
-                        || (person.getAge() <= maleToAge
-                        && person.getSex() == People.Sex.MAN))
+                .filter(person -> (person.getAge() >= fromAge
+                                && (person.getSex() == People.Sex.MAN
+                                && person.getAge() <= maleToAge
+                                || person.getSex() == People.Sex.WOMEN
+                                && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
