@@ -18,7 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int periodInUkraine(String period) {
-        return Integer.parseInt(period.split(SPLIT_REGEX)[1])
-                - Integer.parseInt(period.split(SPLIT_REGEX)[0]);
+        String[] yearsInUkraine = period.split(SPLIT_REGEX);
+        return Integer.parseInt(yearsInUkraine[1])
+                - Integer.parseInt(yearsInUkraine[0]);
     }
 }
