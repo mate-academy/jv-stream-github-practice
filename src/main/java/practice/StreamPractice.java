@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -39,7 +41,7 @@ public class StreamPractice {
                 .map(x -> x % 2 == 0 ? numbers.get(x) : numbers.get(x) - 1)
                 .filter(x -> x % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -85,8 +87,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(x -> x.getSex().equals(People.Sex.WOMEN)
                         && x.getAge() >= femaleAge)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(x -> x.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -105,7 +106,7 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
+        Predicate<Candidate> validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
