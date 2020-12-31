@@ -22,12 +22,10 @@ public class StreamPractice {
                 .stream()
                 .flatMapToInt(e -> IntStream.of(Arrays.stream(e.split(","))
                         .mapToInt(Integer::parseInt)
-                        .min()
-                        .orElseThrow()))
+                        .toArray()))
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> (new RuntimeException("Can't get min value from list")));
-
     }
 
     /**
