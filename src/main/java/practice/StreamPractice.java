@@ -36,17 +36,16 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == People.Sex.MAN && person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge)
-                        || (person.getSex() == People.Sex.WOMEN && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge))
+                .filter(person -> person.getAge() >= fromAge
+                        && (person.getSex() == People.Sex.MAN && person.getAge() <= maleToAge
+                        || person.getSex() == People.Sex.WOMEN && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(women -> women.getSex() == People.Sex.WOMEN
-                        && women.getAge() > femaleAge && women.getCats().size() > 0)
+                        && women.getAge() > femaleAge)
                 .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
