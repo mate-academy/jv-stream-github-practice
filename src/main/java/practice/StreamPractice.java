@@ -74,7 +74,7 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
-    public static List<String> validateCandidates(List<Candidate> candidates) {
+    public List<String> validateCandidates(List<Candidate> candidates) {
         return Collections.emptyList();
     }
 }
