@@ -8,7 +8,7 @@ import model.People;
 public class StreamPractice {
     /**
      * Given list of strings where each element contains 1+ numbers:
-     * input = {"5,30,100", "0, 22, 7", ...}
+     * input = {"5,30,100", "0,22,7", ...}
      * return min integer value. One more thing - we're interested in even numbers.
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
