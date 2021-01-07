@@ -1,12 +1,15 @@
 package practice;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
-
 import model.Candidate;
 import model.People;
 
@@ -19,6 +22,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: method_input_list"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt result =
                 numbers.stream()
@@ -31,7 +35,7 @@ public class StreamPractice {
         throw new RuntimeException("Can't get min value from list");
     }
 
-    ToIntFunction<String> findMinEvenNumberFun =
+    private ToIntFunction<String> findMinEvenNumberFun =
             s -> Arrays.stream(s.split(","))
             .mapToInt(Integer::parseInt)
             .min()
@@ -54,7 +58,7 @@ public class StreamPractice {
         throw new NoSuchElementException();
     }
 
-    ToDoubleFunction<Integer> getOddNumsAverageFun = integer -> {
+    private ToDoubleFunction<Integer> getOddNumsAverageFun = integer -> {
         double result = integer - (indexOfGetOddNumsAverage % 2);
         indexOfGetOddNumsAverage++;
         return result;
@@ -104,8 +108,6 @@ public class StreamPractice {
                 .filter(getWorkablePeoplePredicator)
                 .collect(Collectors.toList());
     }
-
-
 
     /**
      * Given a List of `People` instances (having `name`, `age`, `sex` and `List of cats` fields,
