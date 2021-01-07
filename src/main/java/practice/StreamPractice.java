@@ -1,11 +1,17 @@
 package practice;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+
 import model.Candidate;
 import model.People;
 
 public class StreamPractice {
+    int indexOfGetOddNumsAverage = 0;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0, 22, 7", ...}
@@ -14,8 +20,22 @@ public class StreamPractice {
      * "Can't get min value from list: method_input_list"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        OptionalInt result =
+                numbers.stream()
+                .mapToInt(findMinEvenNumberFun)
+                .filter(i -> i % 2 == 0)
+                .min();
+        if (result.isPresent()) {
+            return result.getAsInt();
+        }
+        throw new RuntimeException("Can't get min value from list");
     }
+
+    ToIntFunction<String> findMinEvenNumberFun =
+            s -> Arrays.stream(s.split(","))
+            .mapToInt(Integer::parseInt)
+            .min()
+            .getAsInt();
 
     /**
      * Given a List of Integer numbers,
@@ -23,8 +43,22 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        indexOfGetOddNumsAverage = 0;
+        OptionalDouble result = numbers.stream()
+                .mapToDouble(getOddNumsAverageFun)
+                .filter(i -> i % 2 == 1)
+                .average();
+        if (result.isPresent()) {
+            return result.getAsDouble();
+        }
+        throw new NoSuchElementException();
     }
+
+    ToDoubleFunction<Integer> getOddNumsAverageFun = integer -> {
+        double result = integer - (indexOfGetOddNumsAverage % 2);
+        indexOfGetOddNumsAverage++;
+        return result;
+    };
 
     /**
      * Given a List of `People` instances (having `name`, `age` and `sex` fields),
@@ -35,7 +69,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() > fromAge && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,8 +86,26 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return Collections.emptyList();
+
+        Predicate<People> getWorkablePeoplePredicator = people -> {
+            if (people.getAge() < fromAge) {
+                return false;
+            }
+            if (people.getSex() == People.Sex.MAN && people.getAge() <= maleToAge) {
+                return true;
+            }
+            if (people.getSex() == People.Sex.WOMEN && people.getAge() <= femaleToAge) {
+                return true;
+            }
+            return false;
+        };
+
+        return peopleList.stream()
+                .filter(getWorkablePeoplePredicator)
+                .collect(Collectors.toList());
     }
+
+
 
     /**
      * Given a List of `People` instances (having `name`, `age`, `sex` and `List of cats` fields,
@@ -59,7 +113,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return null;
     }
 
     /**
