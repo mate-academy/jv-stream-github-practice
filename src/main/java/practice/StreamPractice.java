@@ -1,14 +1,11 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
-import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.People;
@@ -26,7 +23,11 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt result =
                 numbers.stream()
-                .mapToInt(findMinEvenNumberFun)
+                .mapToInt(
+                        s -> Arrays.stream(s.split(","))
+                        .mapToInt(Integer::parseInt)
+                        .min()
+                        .getAsInt())
                 .filter(i -> i % 2 == 0)
                 .min();
         if (result.isPresent()) {
@@ -34,12 +35,6 @@ public class StreamPractice {
         }
         throw new RuntimeException("Can't get min value from list");
     }
-
-    private ToIntFunction<String> findMinEvenNumberFun =
-            s -> Arrays.stream(s.split(","))
-            .mapToInt(Integer::parseInt)
-            .min()
-            .getAsInt();
 
     /**
      * Given a List of Integer numbers,
@@ -49,7 +44,11 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         indexOfGetOddNumsAverage = 0;
         OptionalDouble result = numbers.stream()
-                .mapToDouble(getOddNumsAverageFun)
+                .mapToDouble(i -> {
+                    double num = i - (indexOfGetOddNumsAverage % 2);
+                    indexOfGetOddNumsAverage++;
+                    return num;
+                })
                 .filter(i -> i % 2 == 1)
                 .average();
         if (result.isPresent()) {
@@ -57,12 +56,6 @@ public class StreamPractice {
         }
         throw new NoSuchElementException();
     }
-
-    private ToDoubleFunction<Integer> getOddNumsAverageFun = integer -> {
-        double result = integer - (indexOfGetOddNumsAverage % 2);
-        indexOfGetOddNumsAverage++;
-        return result;
-    };
 
     /**
      * Given a List of `People` instances (having `name`, `age` and `sex` fields),
@@ -74,6 +67,7 @@ public class StreamPractice {
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
+                .filter(p -> p.getSex().equals(People.Sex.MAN))
                 .filter(p -> p.getAge() > fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -115,7 +109,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return null;
+        return peopleList.stream()
+                .filter(people -> people.getSex().equals(People.Sex.WOMEN))
+                .filter(people -> people.getAge() >= femaleAge)
+                .flatMap(e -> e.getCats().stream())
+                .map(cat -> cat.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -132,6 +131,10 @@ public class StreamPractice {
      * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(candidate -> candidate.getName())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
