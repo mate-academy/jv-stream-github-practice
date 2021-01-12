@@ -8,10 +8,10 @@ import model.People;
 public class StreamPractice {
     /**
      * Given list of strings where each element contains 1+ numbers:
-     * input = {"5,30,100", "0, 22, 7", ...}
+     * input = {"5,30,100", "0,22,7", ...}
      * return min integer value. One more thing - we're interested in even numbers.
      * If there is no needed data throw RuntimeException with message
-     * "Can't get min value from list: method_input_list"
+     * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
         return 0;
@@ -19,8 +19,8 @@ public class StreamPractice {
 
     /**
      * Given a List of Integer numbers,
-     * subtract 1 from each element on an odd position (having the odd index).
-     * Then return the average of all odd numbers or throw NoSuchElementException.
+     * return the average of all odd numbers from the list or throw NoSuchElementException.
+     * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return 0D;
@@ -70,12 +70,11 @@ public class StreamPractice {
      * The requirements are: person should be older than 35 y, should be allowed to vote,
      * have nationality - 'Ukrainian'
      * and live in urk for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view:
-     * "2002-2015" For now we don't care if that was last 10 or not. We want to reuse our
-     * validation in future, so
-     * let's write our own impl of Predicate parametrized with Candidate in CandidateValidator.
+     * which has following view: "2002-2015"
+     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * parametrized with Candidate in CandidateValidator.
      */
-    public static List<String> validateCandidates(List<Candidate> candidates) {
+    public List<String> validateCandidates(List<Candidate> candidates) {
         return Collections.emptyList();
     }
 }
