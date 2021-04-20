@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -77,8 +76,10 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         Predicate<People> predictor = person -> {
-            if (person.getSex().equals(People.Sex.MAN)) {
-                return person.getAge() >= fromAge && person.getAge() <= maleToAge;
+            if (person.getSex().equals(People.Sex.MAN)
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= maleToAge) {
+                return true;
             } else {
                 return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
             }
@@ -99,8 +100,7 @@ public class StreamPractice {
                 person.getSex() == People.Sex.WOMEN && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(predictor)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -119,7 +119,7 @@ public class StreamPractice {
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
