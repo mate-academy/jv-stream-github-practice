@@ -75,6 +75,7 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
+        //done
         Predicate<People> predictor = person -> person.getAge() >= fromAge
                 && (person.getSex() == People.Sex.MAN
                 ? person.getAge() <= maleToAge
