@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -15,7 +16,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(w -> w.split(","))
-                .flatMap(l -> Arrays.stream(l.clone()))
+                .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(value -> value % 2 == 0)
                 .min()
@@ -40,18 +41,30 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> checkForManAge = new Predicate<People>() {
+            @Override
+            public boolean test(People human) {
+                return human.getAge() >= fromAge
+                        && human.getAge() <= toAge && human.getSex() == People.Sex.MAN;
+            }
+        };
         return peopleList.stream()
-                .filter(human -> human.getAge() >= fromAge
-                        && human.getAge() <= toAge && human.getSex() == People.Sex.MAN)
+                .filter(checkForManAge)
                 .collect(Collectors.toList());
     }
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
+        Predicate<People> checkForWorkablePeople = new Predicate<People>() {
+            @Override
+            public boolean test(People human) {
+                return human.getAge() >= fromAge
+                        && human.getAge() <= (human.getSex() == People.Sex.MAN
+                        ? maleToAge : femaleToAge);
+            }
+        };
         return peopleList.stream()
-                .filter(human -> human.getAge() >= fromAge
-                        && ((human.getSex() == People.Sex.MAN && human.getAge() <= maleToAge)
-                        || (human.getSex() == People.Sex.WOMEN && human.getAge() <= femaleToAge)))
+                .filter(checkForWorkablePeople)
                 .collect(Collectors.toList());
     }
 
@@ -65,18 +78,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 y, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in urk for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
