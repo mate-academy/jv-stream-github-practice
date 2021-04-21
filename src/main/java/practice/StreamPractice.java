@@ -41,13 +41,8 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        Predicate<People> checkForManAge = new Predicate<People>() {
-            @Override
-            public boolean test(People human) {
-                return human.getAge() >= fromAge
-                        && human.getAge() <= toAge && human.getSex() == People.Sex.MAN;
-            }
-        };
+        Predicate<People> checkForManAge = human -> human.getAge() >= fromAge
+                && human.getAge() <= toAge && human.getSex() == People.Sex.MAN;
         return peopleList.stream()
                 .filter(checkForManAge)
                 .collect(Collectors.toList());
@@ -55,14 +50,9 @@ public class StreamPractice {
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> checkForWorkablePeople = new Predicate<People>() {
-            @Override
-            public boolean test(People human) {
-                return human.getAge() >= fromAge
-                        && human.getAge() <= (human.getSex() == People.Sex.MAN
-                        ? maleToAge : femaleToAge);
-            }
-        };
+        Predicate<People> checkForWorkablePeople = human -> human.getAge() >= fromAge
+                && human.getAge() <= (human.getSex() == People.Sex.MAN
+                ? maleToAge : femaleToAge);
         return peopleList.stream()
                 .filter(checkForWorkablePeople)
                 .collect(Collectors.toList());
