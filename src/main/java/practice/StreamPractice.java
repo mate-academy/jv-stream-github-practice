@@ -20,24 +20,17 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(value -> value % 2 == 0)
                 .min()
-                .orElseThrow(
-                        () -> new RuntimeException("Can't get min value from list:"
-                                + numbers.toString()));
+                .orElseThrow(() -> new
+                                RuntimeException("Can't get min value from list:" + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> {
-                    if (index % 2 != 0) {
-                        return numbers.get(index) - 1;
-                    }
-                    return numbers.get(index);
-                })
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
                 .average()
-                .orElseThrow(
-                        () -> new NoSuchElementException("No such element")
-                );
+                .orElseThrow(() ->
+                        new NoSuchElementException("No such element"));
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
@@ -62,8 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(human -> human.getSex() == People.Sex.WOMEN
                         && human.getAge() >= femaleAge)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -75,5 +67,4 @@ public class StreamPractice {
                 .sorted()
                 .collect(Collectors.toList());
     }
-
 }
