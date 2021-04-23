@@ -50,10 +50,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> isSuitableMenByAge = person -> person.getSex() == People.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
         return peopleList.stream()
-                .filter(person -> person.getSex() == People.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(isSuitableMenByAge)
                 .collect(Collectors.toList());
     }
 
