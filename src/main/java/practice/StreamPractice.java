@@ -1,11 +1,36 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
+import model.Cat;
 import model.People;
 
 public class StreamPractice {
+    /**
+     * Your help with a election is needed. Given list of candidates, where each element
+     * has Candidate.class type.
+     * Check which candidates are eligible to apply for president position and return their
+     * names sorted alphabetically.
+     * The requirements are: person should be older than 35 y, should be allowed to vote,
+     * have nationality - 'Ukrainian'
+     * and live in urk for 10 years. For the last requirement use field periodsInUkr,
+     * which has following view: "2002-2015"
+     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * parametrized with Candidate in CandidateValidator.
+     */
+    public static List<String> validateCandidates(List<Candidate> candidates) {
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +39,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(s -> Stream.of(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -23,7 +54,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .mapToDouble(d -> d)
+                .filter(d -> d % 2 != 0)
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -35,7 +71,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<People> menSuitForArmyPredicate = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge && person.getSex() == People.Sex.MAN;
+        return peopleList.stream()
+                .filter(menSuitForArmyPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +90,13 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return Collections.emptyList();
+        Predicate<People> workablePeoplePredicate = person -> person.getSex() == People.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge
+                || person.getSex() == People.Sex.WOMEN
+                && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+        return peopleList.stream()
+                .filter(workablePeoplePredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,22 +105,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 y, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in urk for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
-    public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        Predicate<People> womenWithCatsPredicate = person -> person.getSex() == People.Sex.WOMEN
+                && person.getAge() >= femaleAge;
+        return peopleList.stream()
+                .filter(womenWithCatsPredicate)
+                .map(People::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 }
