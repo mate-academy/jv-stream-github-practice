@@ -41,11 +41,8 @@ public class StreamPractice {
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == People.Sex.MAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge
-                || p.getSex() == People.Sex.WOMEN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                        ? p.getAge() >= fromAge && p.getAge() <= maleToAge
+                        : p.getAge() >= fromAge && p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -55,13 +52,13 @@ public class StreamPractice {
                         && p.getAge() >= femaleAge)
                 .map(People::getCats)
                 .flatMap(Collection::stream)
-                 .map(Cat::getName)
-                 .collect(Collectors.toList());
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(n -> new CandidateValidator().test(n))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
