@@ -25,7 +25,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No such element"));
+                .getAsDouble();
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
