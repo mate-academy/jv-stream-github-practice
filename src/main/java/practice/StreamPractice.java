@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Stream.of(s.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -32,9 +31,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .mapToDouble(d -> d)
-                .filter(d -> d % 2 != 0)
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .mapToDouble(element -> element)
+                .filter(number -> number % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -62,8 +61,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(womenWithCatsPredicate)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
