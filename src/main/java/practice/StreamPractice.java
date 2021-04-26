@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -22,18 +23,18 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        double average = numbers.stream()
-                .mapToDouble(n -> numbers.indexOf(n) % 2 != 0 ? n - 1 : n)
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
-        return (double) Math.round(average);
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .filter(p -> p.getSex().equals(People.Sex.MAN))
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex().equals(People.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -58,7 +59,7 @@ public class StreamPractice {
 
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CandidateValidator::checkCandidate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
