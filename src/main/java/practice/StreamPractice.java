@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -55,9 +54,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        Predicate<People> onlyMenPredicate = p -> p.getSex() == People.Sex.MAN;
+        Predicate<People> onlyMenPredicate = p -> p.getAge() >= fromAge && p.getAge() <= toAge
+                && p.getSex() == People.Sex.MAN;
+
         return peopleList.stream()
-                .filter(m -> m.getAge() >= fromAge && m.getAge() <= toAge)
                 .filter(onlyMenPredicate)
                 .collect(Collectors.toList());
     }
@@ -74,12 +74,11 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> forMenAndWomenPredicate = p -> ((p.getAge() <= maleToAge
-                && p.getSex() == People.Sex.MAN)
-                || (p.getAge() <= femaleToAge && p.getSex() == People.Sex.WOMEN));
+        Predicate<People> forMenAndWomenPredicate = p -> (p.getAge() >= fromAge
+                && ((p.getAge() <= maleToAge && p.getSex() == People.Sex.MAN)
+                || (p.getAge() <= femaleToAge && p.getSex() == People.Sex.WOMEN)));
 
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge)
                 .filter(forMenAndWomenPredicate)
                 .collect(Collectors.toList());
     }
@@ -92,8 +91,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(w -> w.getAge() >= femaleAge && w.getSex() == People.Sex.WOMEN)
-                .map(People::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(people -> people.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
