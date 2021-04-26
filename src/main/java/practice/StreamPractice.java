@@ -34,7 +34,7 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
+        return IntStream.rangeClosed(0, numbers.size() - 1)
                 .map(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(e -> e % 2 != 0)
                 .average()
