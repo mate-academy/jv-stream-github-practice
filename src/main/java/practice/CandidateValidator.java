@@ -18,5 +18,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 - Integer.parseInt(period[0]) >= PERIOD_IN_UKRAINE)
                 && candidate.isAllowedToVote();
     }
-    
 }
