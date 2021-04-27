@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-
     public static final int NEEDED_YEARS_IN_UKRAINE = 10;
     public static final int NEEDED_AGE = 35;
     public static final String NEEDED_NATIONALITY = "Ukrainian";
