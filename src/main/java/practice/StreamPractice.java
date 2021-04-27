@@ -21,9 +21,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
+                .flatMap(number -> Arrays.stream(number.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(numberEven -> numberEven % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -37,8 +37,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
-                .filter(n -> n % 2 != 0)
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(numberOld -> numberOld % 2 != 0)
                 .average()
                 .orElseThrow();
     }
@@ -53,8 +53,9 @@ public class StreamPractice {
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(m -> m.getSex().equals(People.Sex.MAN) && m.getAge() >= fromAge
-                        && m.getAge() <= toAge)
+                .filter(people -> people.getSex().equals(People.Sex.MAN)
+                        && people.getAge() >= fromAge
+                        && people.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -106,9 +107,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator<Candidate> candidatePredicate = new CandidateValidator<>();
         return candidates.stream()
-                .filter(candidatePredicate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
