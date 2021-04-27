@@ -10,6 +10,7 @@ import model.Cat;
 import model.People;
 
 public class StreamPractice {
+    private static final double DELTA = 0.0000001;
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -22,6 +23,7 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new practice.CandidateValidator())
@@ -53,9 +55,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> index % 2 != 0 ? numbers.get(index) - 1
+                .mapToDouble(index -> Math.abs(index % 2) > DELTA ? numbers.get(index) - 1
                         : numbers.get(index))
-                .filter(index -> index % 2 != 0)
+                .filter(index -> Math.abs(index % 2) > DELTA)
                 .average()
                 .getAsDouble();
     }
