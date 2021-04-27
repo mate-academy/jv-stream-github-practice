@@ -10,6 +10,8 @@ import model.Cat;
 import model.People;
 
 public class StreamPractice {
+
+    private static final double DELTA = 0.0000001;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,6 +19,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
@@ -35,8 +38,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 != 0)
+                .mapToDouble(index -> Math.abs(index % 2) > DELTA
+                        ? numbers.get(index) - 1
+                        : numbers.get(index))
+                .filter(number -> Math.abs(number % 2) > DELTA)
                 .average()
                 .getAsDouble();
     }
