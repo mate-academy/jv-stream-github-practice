@@ -16,8 +16,6 @@ public class StreamPractice {
      * return min integer value. One more thing - we're interested in even numbers.
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
-     * [1,23,4] [1,2,3] -- min && min % 2 == 0
-     * [1,23,4,1,2,3] -- flatmap
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -38,7 +36,7 @@ public class StreamPractice {
         return IntStream
                 .range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(numberOld -> numberOld % 2 != 0)
+                .filter(currentInt -> currentInt % 2 != 0)
                 .average()
                 .orElseThrow();
     }
