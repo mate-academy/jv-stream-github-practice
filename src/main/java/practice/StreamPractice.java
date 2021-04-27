@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -20,7 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(number -> Arrays.stream(number.split(",")))
                 .map(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .reduce(Integer::min)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -35,7 +36,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
-                .filter(i -> i % 2 == 1)
+                .filter(number -> number % 2 == 1)
                 .average()
                 .getAsDouble();
     }
@@ -49,9 +50,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> filterMenByAge = p -> p.getSex() == People.Sex.MAN
+                && p.getAge() > fromAge && p.getAge() <= toAge;
         return peopleList.stream()
-                .filter(p -> p.getSex() == People.Sex.MAN
-                        && p.getAge() > fromAge && p.getAge() <= toAge)
+                .filter(filterMenByAge)
                 .collect(Collectors.toList());
     }
 
@@ -67,10 +69,11 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
+        Predicate<People> filterWorkablePeople = p -> p.getAge() >= fromAge
+                && ((p.getSex() == People.Sex.WOMEN && p.getAge() <= femaleToAge)
+                || (p.getSex() == People.Sex.MAN && p.getAge() <= maleToAge));
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && ((p.getSex() == People.Sex.WOMEN && p.getAge() <= femaleToAge)
-                        || (p.getSex() == People.Sex.MAN && p.getAge() <= maleToAge)))
+                .filter(filterWorkablePeople)
                 .collect(Collectors.toList());
     }
 

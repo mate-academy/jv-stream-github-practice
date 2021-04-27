@@ -8,6 +8,10 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROM_YEAR = 0;
     private static final int TO_YEAR = 1;
+    private static final int MIN_AGE = 35;
+    private static final int LIVE_IN_UKR = 10;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final String SPLIT = "-";
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
@@ -19,9 +23,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] year = candidate.getPeriodsInUkr().split("-");
-        return candidate.getAge() >= 35 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && (Integer.parseInt(year[TO_YEAR]) - Integer.parseInt(year[FROM_YEAR])) >= 10;
+        String[] years = candidate.getPeriodsInUkr().split(SPLIT);
+
+        return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(NATIONALITY)
+                && (Integer.parseInt(years[TO_YEAR]) - Integer.parseInt(years[FROM_YEAR]))
+                >= LIVE_IN_UKR;
     }
 }
