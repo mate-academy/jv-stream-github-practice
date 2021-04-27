@@ -26,7 +26,7 @@ public class StreamPractice {
 
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new practice.CandidateValidator())
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
