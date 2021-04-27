@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -30,29 +31,47 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
-                .filter(human -> human.getSex().equals(People.Sex.MAN)
+        Predicate<People> selectMen = new Predicate<People>() {
+            @Override
+            public boolean test(People human) {
+                return human.getSex().equals(People.Sex.MAN)
                         && human.getAge() >= fromAge
-                        && human.getAge() <= toAge)
+                        && human.getAge() <= toAge;
+            }
+        };
+        return peopleList.stream()
+                .filter(selectMen)
                 .collect(Collectors.toList());
     }
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        return peopleList.stream()
-                .filter(human -> (human.getSex().equals(People.Sex.MAN)
+        Predicate<People> selectPeople = new Predicate<People>() {
+            @Override
+            public boolean test(People human) {
+                return (human.getSex().equals(People.Sex.MAN)
                         && human.getAge() >= fromAge
                         && human.getAge() <= maleToAge)
                         || (human.getSex().equals(People.Sex.WOMEN)
                         && human.getAge() >= fromAge
-                        && human.getAge() <= femaleToAge))
+                        && human.getAge() <= femaleToAge);
+            }
+        };
+        return peopleList.stream()
+                .filter(selectPeople)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
+        Predicate<People> selectPeople = new Predicate<People>() {
+            @Override
+            public boolean test(People human) {
+                return human.getSex().equals(People.Sex.WOMEN)
+                        && human.getAge() >= femaleAge;
+            }
+        };
         List<People> validPeople = peopleList.stream()
-                .filter(human -> human.getSex().equals(People.Sex.WOMEN)
-                        && human.getAge() >= femaleAge)
+                .filter(selectPeople)
                 .collect(Collectors.toList());
         return validPeople.stream()
                 .map(People::getCats)
