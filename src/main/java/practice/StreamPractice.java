@@ -52,8 +52,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        Predicate<People> manPredicate =
-                (people) -> people.getAge() >= fromAge
+        Predicate<People> manPredicate = (people) -> people.getAge() >= fromAge
                         && people.getAge() <= toAge
                         && people.getSex() == People.Sex.MAN;
         return peopleList
@@ -74,8 +73,7 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> peoplePredicate
-                = (men) -> men.getAge() >= fromAge
+        Predicate<People> peoplePredicate = (men) -> men.getAge() >= fromAge
                 && (men.getSex() == People.Sex.MAN
                 ? men.getAge() <= maleToAge
                 : men.getAge() <= femaleToAge);
@@ -91,8 +89,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        Predicate<People> predicate =
-                people -> people.getSex() == People.Sex.WOMEN
+        Predicate<People> predicate = people -> people.getSex() == People.Sex.WOMEN
                         && people.getAge() >= femaleAge;
         return peopleList
                 .stream()
@@ -115,8 +112,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates
-                .stream()
+        return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
