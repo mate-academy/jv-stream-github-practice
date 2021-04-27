@@ -52,11 +52,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> peoplePredicate = people -> people.getSex().equals(People.Sex.MAN)
+                && people.getAge() >= fromAge
+                && people.getAge() <= toAge;
         return peopleList
                 .stream()
-                .filter(people -> people.getSex().equals(People.Sex.MAN)
-                        && people.getAge() >= fromAge
-                        && people.getAge() <= toAge)
+                .filter(peoplePredicate)
                 .collect(Collectors.toList());
     }
 
@@ -72,9 +73,10 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> peoplePredicate = people -> people.getSex().equals(People.Sex.WOMEN)
-                ? people.getAge() >= fromAge && people.getAge() <= femaleToAge
-                : people.getAge() >= fromAge && people.getAge() <= maleToAge;
+        Predicate<People> peoplePredicate = person -> person.getAge() >= fromAge
+                && (person.getSex() == People.Sex.MAN
+                ? person.getAge() <= maleToAge
+                : person.getAge() <= femaleToAge);
         return peopleList
                 .stream()
                 .filter(peoplePredicate)
@@ -91,7 +93,7 @@ public class StreamPractice {
                 .stream()
                 .filter(currentPerson -> currentPerson.getSex().equals(People.Sex.WOMEN)
                         && currentPerson.getAge() >= femaleAge)
-                .flatMap(e -> e.getCats()
+                .flatMap(currentList -> currentList.getCats()
                         .stream()
                         .map(Cat::getName))
                 .collect(Collectors.toList());

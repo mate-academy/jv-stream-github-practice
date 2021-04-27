@@ -19,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && yearsInTheCountry(candidate) >= REQUIRED_YEARS_IN_THE_COUNTRY;
     }
 
-    public int yearsInTheCountry(Candidate candidate) {
+    private int yearsInTheCountry(Candidate candidate) {
         String[] periodsInUkr = candidate.getPeriodsInUkr().split(SPLITTER);
         return Integer.parseInt(periodsInUkr[TO_YEAR]) - Integer.parseInt(periodsInUkr[FROM_YEAR]);
     }
