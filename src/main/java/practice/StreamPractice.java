@@ -38,7 +38,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(currentInt -> currentInt % 2 != 0)
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     /**
