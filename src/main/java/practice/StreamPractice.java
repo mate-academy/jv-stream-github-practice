@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -28,25 +29,28 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> menByAgePredicate = people -> people.getSex().equals(People.Sex.MAN)
+                && people.getAge() >= fromAge && people.getAge() <= toAge;
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.MAN
-                        && people.getAge() >= fromAge && people.getAge() <= toAge)
+                .filter(menByAgePredicate)
                 .collect(Collectors.toList());
     }
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
+        Predicate<People> workablePeoplePredicate = people -> (people.getAge() >= fromAge)
+                && (people.getSex().equals(People.Sex.MAN)
+                ? (people.getAge() <= maleToAge) : (people.getAge() <= femaleToAge));
         return peopleList.stream()
-                .filter(people -> people.getAge() >= fromAge
-                        && (people.getSex() == People.Sex.MAN && people.getAge() <= maleToAge
-                        || people.getSex() == People.Sex.WOMEN && people.getAge() <= femaleToAge))
+                .filter(workablePeoplePredicate)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
+        Predicate<People> womenWhoHaveCatsPredicate = people ->
+                people.getSex().equals(People.Sex.WOMEN) && people.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.WOMEN
-                        && people.getAge() >= femaleAge)
+                .filter(womenWhoHaveCatsPredicate)
                 .flatMap(people -> people.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
