@@ -31,32 +31,32 @@ public class StreamPractice {
     }
 
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        Predicate<People> peoplePredicate = people ->
+        Predicate<People> peoplePredicateMaleAge = people ->
                 people.getSex() == People.Sex.MAN
                 && people.getAge() >= fromAge && people.getAge() <= toAge;
         return peopleList.stream()
-                .filter(peoplePredicate)
+                .filter(peoplePredicateMaleAge)
                 .collect(Collectors.toList());
     }
 
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> peoplePredicate = people ->
+        Predicate<People> peoplePredicateAgeGender = people ->
                 people.getSex() == People.Sex.MAN
                 && people.getAge() >= fromAge && people.getAge() <= maleToAge
                 || people.getSex() == People.Sex.WOMEN
                 && people.getAge() >= fromAge && people.getAge() <= femaleToAge;
         return peopleList.stream()
-                .filter(peoplePredicate)
+                .filter(peoplePredicateAgeGender)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
-        Predicate<People> peoplePredicate = people ->
+        Predicate<People> peoplePredicateFemaleAge = people ->
                 people.getSex() == People.Sex.WOMEN
                 && people.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(peoplePredicate)
+                .filter(peoplePredicateFemaleAge)
                 .map(People::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
