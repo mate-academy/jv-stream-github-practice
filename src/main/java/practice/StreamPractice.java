@@ -50,8 +50,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        Predicate<People> filterMenByAge = p -> p.getSex() == People.Sex.MAN
-                && p.getAge() > fromAge && p.getAge() <= toAge;
+        Predicate<People> filterMenByAge = people -> people.getSex() == People.Sex.MAN
+                && people.getAge() > fromAge && people.getAge() <= toAge;
         return peopleList.stream()
                 .filter(filterMenByAge)
                 .collect(Collectors.toList());
@@ -69,9 +69,9 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> filterWorkablePeople = p -> p.getAge() >= fromAge
-                && ((p.getSex() == People.Sex.WOMEN && p.getAge() <= femaleToAge)
-                || (p.getSex() == People.Sex.MAN && p.getAge() <= maleToAge));
+        Predicate<People> filterWorkablePeople = people -> people.getAge() >= fromAge
+                && ((people.getSex() == People.Sex.WOMEN && people.getAge() <= femaleToAge)
+                || (people.getSex() == People.Sex.MAN && people.getAge() <= maleToAge));
         return peopleList.stream()
                 .filter(filterWorkablePeople)
                 .collect(Collectors.toList());
@@ -84,8 +84,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == People.Sex.WOMEN)
-                .flatMap(p -> p.getCats().stream())
+                .filter(people -> people.getAge() >= femaleAge && people.getSex() == People.Sex.WOMEN)
+                .flatMap(people -> people.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -104,7 +104,7 @@ public class StreamPractice {
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
