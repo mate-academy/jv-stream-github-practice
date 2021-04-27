@@ -3,7 +3,7 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator<T> implements Predicate<Candidate> {
+public class CandidateValidator implements Predicate<Candidate> {
     private static final int REQUIRED_AGE = 35;
     private static final int REQUIRED_YEARS_IN_THE_COUNTRY = 10;
     private static final int FROM_YEAR = 0;

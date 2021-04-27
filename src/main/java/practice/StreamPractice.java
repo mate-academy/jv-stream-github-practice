@@ -20,8 +20,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(currentString -> currentString.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(currentString -> Arrays.stream(currentString.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(currentInt -> currentInt % 2 == 0)
                 .min()
@@ -111,10 +110,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator<Candidate> candidatePredicate = new CandidateValidator<>();
         return candidates
                 .stream()
-                .filter(candidatePredicate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
