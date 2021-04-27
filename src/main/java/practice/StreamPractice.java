@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.People;
@@ -91,8 +90,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         Predicate<People> predicate = people -> people.getSex() == People.Sex.WOMEN
                         && people.getAge() >= femaleAge;
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(predicate)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
