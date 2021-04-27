@@ -36,7 +36,6 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 != 0)
-                .mapToDouble(Double::valueOf)
                 .average()
                 .getAsDouble();
     }
@@ -50,9 +49,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> peoplePredicate = people -> people.getSex() == People.Sex.MAN
+                && people.getAge() >= fromAge && people.getAge() <= toAge;
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.MAN
-                        && people.getAge() >= fromAge && people.getAge() <= toAge)
+                .filter(peoplePredicate)
                 .collect(Collectors.toList());
     }
 
