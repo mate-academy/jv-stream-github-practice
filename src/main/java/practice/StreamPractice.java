@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,13 +22,13 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                                 .flatMap(stringNumber ->
-                                         Arrays.stream(stringNumber.split(DELIMITER)))
-                                 .mapToInt(Integer::parseInt)
-                                 .filter(number -> number % 2 == 0)
-                                 .min().orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list: "
-                        + numbers));
+                      .flatMap(stringNumber ->
+                              Arrays.stream(stringNumber.split(DELIMITER)))
+                      .mapToInt(Integer::parseInt)
+                      .filter(number -> number % 2 == 0)
+                      .min()
+                      .orElseThrow(() -> new RuntimeException(
+                              "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -39,11 +38,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                                   .map(index -> index % 2 != 0
-                                           ? numbers.get(index) - 1 : numbers.get(index))
-                                   .filter(number -> number % 2 != 0)
-                                   .average()
-                                   .getAsDouble();
+                        .map(index -> index % 2 != 0
+                                ? numbers.get(index) - 1 : numbers.get(index))
+                        .filter(number -> number % 2 != 0)
+                        .average()
+                        .getAsDouble();
     }
 
     /**
@@ -58,7 +57,7 @@ public class StreamPractice {
         Predicate<People> mansForArmy = new Predicate<People>() {
             @Override
             public boolean test(People people) {
-                return  people.getSex() == People.Sex.MAN
+                return people.getSex() == People.Sex.MAN
                         && people.getAge() >= fromAge && people.getAge() <= toAge;
             }
         };
@@ -103,7 +102,8 @@ public class StreamPractice {
         return peopleList.stream()
                          .filter(people -> people.getSex() == People.Sex.WOMEN
                                  && people.getAge() >= femaleAge)
-                         .flatMap(people -> people.getCats().stream())
+                         .flatMap(people -> people.getCats()
+                                                  .stream())
                          .map(Cat::getName)
                          .collect(Collectors.toList());
     }
