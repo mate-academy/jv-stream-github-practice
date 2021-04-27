@@ -42,7 +42,8 @@ public class StreamPractice {
                 })
                 .filter(index -> numbers.get(index) % 2 != 0)
                 .mapToDouble(numbers::get)
-                .average().getAsDouble();
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -55,8 +56,8 @@ public class StreamPractice {
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(People.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(people -> people.getSex().equals(People.Sex.MAN)
+                        && people.getAge() >= fromAge && people.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -73,8 +74,9 @@ public class StreamPractice {
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() >= fromAge) && ((p.getSex().equals(People.Sex.MAN))
-                        ? (p.getAge() <= maleToAge) : (p.getAge() <= femaleToAge)))
+                .filter(people -> (people.getAge() >= fromAge)
+                        && ((people.getSex().equals(People.Sex.MAN))
+                        ? (people.getAge() <= maleToAge) : (people.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -85,8 +87,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<People> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(People.Sex.WOMEN) && p.getAge() >= femaleAge)
-                .flatMap(p -> p.getCats().stream())
+                .filter(people -> people.getSex().equals(People.Sex.WOMEN)
+                        && people.getAge() >= femaleAge)
+                .flatMap(people -> people.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
