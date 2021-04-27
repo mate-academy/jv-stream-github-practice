@@ -20,7 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(str -> Arrays.stream(str.split(",")))
+                .flatMap(string -> Arrays.stream(string.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
@@ -70,13 +70,10 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> checkPeople = people ->
-                (people.getSex() == People.Sex.MAN
-                        && people.getAge() >= fromAge
-                        && people.getAge() <= maleToAge)
-                        || (people.getSex() == People.Sex.WOMEN
-                        && people.getAge() >= fromAge
-                        && people.getAge() <= femaleToAge);
+        Predicate<People> checkPeople = people -> people.getAge() >= fromAge
+                        && (people.getSex() == People.Sex.MAN
+                        ? people.getAge() <= maleToAge
+                        : people.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(checkPeople)
                 .collect(Collectors.toList());
