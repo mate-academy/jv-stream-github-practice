@@ -77,7 +77,6 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(peoplePredicate)
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -112,6 +111,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-
     }
 }
