@@ -37,7 +37,7 @@ public class StreamPractice {
                 .map(index -> (index % 2 == 0) ? numbers.get(index) : numbers.get(index) - 1)
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -70,13 +70,13 @@ public class StreamPractice {
      */
     public List<People> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<People> peopleList) {
-        Predicate<People> malePredicate = person -> person.getAge() >= fromAge
+        Predicate<People> personPredicate = person -> person.getAge() >= fromAge
                 && (person.getSex() == People.Sex.MAN
                 ? person.getAge() <= maleToAge
                 : person.getAge() <= femaleToAge);
 
         return peopleList.stream()
-                .filter(malePredicate)
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
