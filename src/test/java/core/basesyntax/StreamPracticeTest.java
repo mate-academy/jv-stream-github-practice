@@ -192,7 +192,7 @@ public class StreamPracticeTest {
                 + "implement functional interface Predicate, so it can be easily reused in the code");
     }
 
-    @Test
+   @Test
     public void validateCandidates_basicData() {
         List<String> expected = List.of("Casey", "Morty", "Philip");
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
