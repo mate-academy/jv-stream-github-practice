@@ -44,7 +44,7 @@ public class StreamPractice {
                 .mapToDouble(Integer::intValue)
                 .filter(number -> number % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -56,9 +56,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> menOfAge = person -> person.getSex() == People.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
         return peopleList.stream()
-                .filter(person -> person.getSex() == People.Sex.MAN)
-                .filter(man -> man.getAge() >= fromAge && man.getAge() <= toAge)
+                .filter(menOfAge)
                 .collect(Collectors.toList());
     }
 
@@ -77,8 +79,7 @@ public class StreamPractice {
         Predicate<People> workablePeople = people -> (
                 people.getSex() == People.Sex.MAN
                 && people.getAge() >= fromAge && people.getAge() <= maleToAge)
-                ||
-                (people.getSex() == People.Sex.WOMEN
+                || (people.getSex() == People.Sex.WOMEN
                 && people.getAge() >= fromAge && people.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(workablePeople)
