@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -49,10 +50,16 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
+        Predicate<People> peopleFilter = new Predicate<People>() {
+            @Override
+            public boolean test(People person) {
+                return person.getAge() >= fromAge
                         && person.getAge() <= toAge
-                        && person.getSex() == People.Sex.MAN)
+                        && person.getSex() == People.Sex.MAN;
+            }
+        };
+        return peopleList.stream()
+                .filter(peopleFilter)
                 .collect(Collectors.toList());
     }
 
