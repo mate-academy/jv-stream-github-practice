@@ -37,7 +37,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     /**
@@ -52,7 +52,9 @@ public class StreamPractice {
         Predicate<People> peoplePredicate = people -> people.getAge() >= fromAge
                         && people.getAge() <= toAge
                         && people.getSex() == People.Sex.MAN;
-        return peopleList.stream().filter(peoplePredicate).collect(Collectors.toList());
+        return peopleList.stream()
+                .filter(peoplePredicate)
+                .collect(Collectors.toList());
     }
 
     /**
