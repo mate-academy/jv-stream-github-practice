@@ -93,7 +93,7 @@ public class StreamPractice {
                 .stream()
                 .filter(currentPerson -> currentPerson.getSex().equals(People.Sex.WOMEN)
                         && currentPerson.getAge() >= femaleAge)
-                .flatMap(currentList -> currentList.getCats()
+                .flatMap(person -> person.getCats()
                         .stream()
                         .map(Cat::getName))
                 .collect(Collectors.toList());
