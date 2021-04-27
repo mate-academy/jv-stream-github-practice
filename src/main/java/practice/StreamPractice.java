@@ -70,10 +70,8 @@ public class StreamPractice {
                         && human.getAge() >= femaleAge;
             }
         };
-        List<People> validPeople = peopleList.stream()
+        return peopleList.stream()
                 .filter(selectPeople)
-                .collect(Collectors.toList());
-        return validPeople.stream()
                 .map(People::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
