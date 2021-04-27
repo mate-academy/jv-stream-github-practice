@@ -23,9 +23,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(DELIMITER)))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(integer -> integer % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException(MESSAGE));
     }
 
@@ -51,10 +51,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> peoplePredicate = human -> human.getSex() == People.Sex.MAN
+                && human.getAge() >= fromAge && human.getAge() <= toAge;
         return peopleList.stream()
-                .filter(human -> human.getSex() == People.Sex.MAN
-                        && human.getAge() >= fromAge
-                        && human.getAge() <= toAge)
+                .filter(peoplePredicate)
                 .collect(Collectors.toList());
     }
 
