@@ -22,7 +22,7 @@ public class StreamPractice {
                 .map(stringWithNumbers -> stringWithNumbers.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -35,12 +35,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .peek(i -> {
-                    if (i % 2 != 0) {
-                        numbers.set(i, (numbers.get(i) - 1));
+                .peek(index -> {
+                    if (index % 2 != 0) {
+                        numbers.set(index, (numbers.get(index) - 1));
                     }
                 })
-                .filter(i -> numbers.get(i) % 2 != 0)
+                .filter(index -> numbers.get(index) % 2 != 0)
                 .mapToDouble(numbers::get)
                 .average().getAsDouble();
     }
