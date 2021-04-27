@@ -19,7 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
+                .flatMap(number -> Arrays.stream(number.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -35,8 +35,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
-                .mapToDouble(i -> i)
-                .filter(n -> n % 2 != 0)
+                .filter(number -> number % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -50,10 +49,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<People> selectMenByAge(List<People> peopleList, int fromAge, int toAge) {
+        Predicate<People> peoplePredicate = people -> people.getSex() == People.Sex.MAN
+                && people.getAge() >= fromAge
+                && people.getAge() <= toAge;
         return peopleList.stream()
-                .filter(people -> people.getSex() == People.Sex.MAN
-                        && people.getAge() >= fromAge
-                        && people.getAge() <= toAge)
+                .filter(peoplePredicate)
                 .collect(Collectors.toList());
     }
 
@@ -87,7 +87,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(people -> people.getSex() == People.Sex.WOMEN
                         && people.getAge() >= femaleAge)
-                .flatMap(p -> p.getCats().stream())
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
