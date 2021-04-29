@@ -196,14 +196,14 @@ public class StreamPracticeTest {
     public void validateCandidates_basicData() {
         List<String> expected = List.of("Casey", "Morty", "Philip");
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
-                candidates), expected, StreamPractice.validateCandidates(candidates));
+                candidates), expected, solution.validateCandidates(candidates));
     }
 
     @Test
     public void validateCandidates_invalidData() {
         List<String> expected = Collections.EMPTY_LIST;
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
-                invalidCandidates), expected, StreamPractice.validateCandidates(invalidCandidates));
+                invalidCandidates), expected, solution.validateCandidates(invalidCandidates));
     }
 
     @Test
@@ -211,7 +211,7 @@ public class StreamPracticeTest {
         List<Candidate> emptyList = Collections.EMPTY_LIST;
         List<String> expected = Collections.EMPTY_LIST;
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
-                emptyList), expected, StreamPractice.validateCandidates(emptyList));
+                emptyList), expected, solution.validateCandidates(emptyList));
     }
 
     private static List<Candidate> initInvalidCandidateList() {
