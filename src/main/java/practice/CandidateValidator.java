@@ -1,13 +1,22 @@
 package practice;
 
-import java.util.List;
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return true;
+        String[] split = candidate.getPeriodsInUkr().split("-");
+        candidate.setPeriodsInUkr(String.valueOf(Integer.parseInt(split[1])
+                - Integer.parseInt(split[0])));
+
+        if (candidate.getNationality().equals("Ukrainian")
+                && candidate.getAge() >= 35
+                && candidate.isAllowedToVote()
+                && Integer.parseInt(candidate.getPeriodsInUkr()) > 10) {
+            return true;
+        }
+        return false;
     }
 }
