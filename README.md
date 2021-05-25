@@ -16,9 +16,9 @@
     
 4.  Given a List of `People` instances (having `name`, `age` and `sex` fields),
     for example, `Arrays.asList( new People(«Victor», 16, Sex.MAN), new People(«Helen», 42, Sex.WOMEN))`,
-    select from the List only person whose age is from `fromAge` and to `maleToAge` (for men)
+    select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
     or to `femaleToAge` (for women) inclusively.
-    Example: select person of working age
+    Example: select people of working age
     (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
 
 5.  Given a List of `People` instances (having `name`, `age`, `sex` and `List<Cat> cats` fields,
