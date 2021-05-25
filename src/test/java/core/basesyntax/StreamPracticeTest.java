@@ -1,7 +1,5 @@
 package core.basesyntax;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,7 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import model.Candidate;
 import model.Cat;
-import model.People;
+import model.Person;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -23,39 +21,39 @@ public class StreamPracticeTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
     private static StreamPractice solution;
-    private static List<People> peopleListWithoutCat;
+    private static List<Person> peopleListWithoutCat;
     private static List<Candidate> candidates;
     private static List<Candidate> invalidCandidates;
-    private static List<People> peopleList;
+    private static List<Person> peopleList;
 
     @BeforeClass
     public static void setUp() {
         solution = new StreamPractice();
         peopleList = new ArrayList<>();
-        peopleList.add(new People("Victor", 16, People.Sex.MAN));
-        peopleList.add(new People("Peter", 23, People.Sex.MAN));
-        peopleList.add(new People("Helen", 42, People.Sex.WOMEN, new ArrayList<>()));
+        peopleList.add(new Person("Victor", 16, Person.Sex.MAN));
+        peopleList.add(new Person("Peter", 23, Person.Sex.MAN));
+        peopleList.add(new Person("Helen", 42, Person.Sex.WOMAN, new ArrayList<>()));
         peopleList.get(2).getCats().add(new Cat("Tom", 2));
         peopleList.get(2).getCats().add(new Cat("Leo", 3));
-        peopleList.add(new People("Jack Johnson", 69, People.Sex.MAN));
-        peopleList.add(new People("Rick", 37, People.Sex.MAN, new ArrayList<>()));
+        peopleList.add(new Person("Jack Johnson", 69, Person.Sex.MAN));
+        peopleList.add(new Person("Rick", 37, Person.Sex.MAN, new ArrayList<>()));
         peopleList.get(4).getCats().add(new Cat("Chloe", 1));
-        peopleList.add(new People("Mary", 25, People.Sex.WOMEN, new ArrayList<>()));
+        peopleList.add(new Person("Mary", 25, Person.Sex.WOMAN, new ArrayList<>()));
         peopleList.get(5).getCats().add(new Cat("Sunny", 1));
-        peopleList.add(new People("Emma Stuart", 55, People.Sex.WOMEN, new ArrayList<>()));
-        peopleList.add(new People("Alice Stone", 57, People.Sex.WOMEN, new ArrayList<>()));
+        peopleList.add(new Person("Emma Stuart", 55, Person.Sex.WOMAN, new ArrayList<>()));
+        peopleList.add(new Person("Alice Stone", 57, Person.Sex.WOMAN, new ArrayList<>()));
         peopleList.get(6).getCats().add(new Cat("Kitty", 3));
         peopleList.get(6).getCats().add(new Cat("Fluffy", 4));
-        peopleList.add(new People("Janice Dean", 18, People.Sex.WOMEN, new ArrayList<>()));
+        peopleList.add(new Person("Janice Dean", 18, Person.Sex.WOMAN, new ArrayList<>()));
         peopleList.get(7).getCats().add(new Cat("Jackie", 2));
-        peopleList.add(new People("Roman", 25, People.Sex.MAN));
-        peopleList.add(new People("Carlos", 60, People.Sex.MAN));
-        peopleList.add(new People("Kate", 10, People.Sex.WOMEN));
+        peopleList.add(new Person("Roman", 25, Person.Sex.MAN));
+        peopleList.add(new Person("Carlos", 60, Person.Sex.MAN));
+        peopleList.add(new Person("Kate", 10, Person.Sex.WOMAN));
         peopleListWithoutCat = new ArrayList<>();
-        peopleListWithoutCat.add(new People("Helen", 16, People.Sex.WOMEN));
-        peopleListWithoutCat.add(new People("Mary", 25, People.Sex.WOMEN));
-        peopleListWithoutCat.add(new People("Emma Stuart", 20, People.Sex.WOMEN));
-        peopleListWithoutCat.add(new People("Victor", 23, People.Sex.MAN));
+        peopleListWithoutCat.add(new Person("Helen", 16, Person.Sex.WOMAN));
+        peopleListWithoutCat.add(new Person("Mary", 25, Person.Sex.WOMAN));
+        peopleListWithoutCat.add(new Person("Emma Stuart", 20, Person.Sex.WOMAN));
+        peopleListWithoutCat.add(new Person("Victor", 23, Person.Sex.MAN));
         candidates = initCandidateList();
         invalidCandidates = initInvalidCandidateList();
     }
@@ -120,47 +118,47 @@ public class StreamPracticeTest {
 
     @Test
     public void selectMenByAge_basicData() {
-        List<People> expected = new ArrayList<>();
-        expected.add(new People("Peter", 23, People.Sex.MAN));
-        expected.add(new People("Rick", 37, People.Sex.MAN));
+        List<Person> expected = new ArrayList<>();
+        expected.add(new Person("Peter", 23, Person.Sex.MAN));
+        expected.add(new Person("Rick", 37, Person.Sex.MAN));
         expected.get(1).getCats().add(new Cat("Chloe", 1));
-        expected.add(new People("Roman", 25, People.Sex.MAN));
-        List<People> result = solution.selectMenByAge(peopleList, 18, 37);
+        expected.add(new Person("Roman", 25, Person.Sex.MAN));
+        List<Person> result = solution.selectMenByAge(peopleList, 18, 37);
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void selectMenByAge_absent() {
-        List<People> expected = new ArrayList<>();
-        List<People> result = solution.selectMenByAge(peopleList, 14, 15);
+        List<Person> expected = new ArrayList<>();
+        List<Person> result = solution.selectMenByAge(peopleList, 14, 15);
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void getWorkablePeople_basicData() {
-        List<People> expected = new ArrayList<>();
-        expected.add(new People("Peter", 23, People.Sex.MAN));
-        expected.add(new People("Helen", 42, People.Sex.WOMEN, new ArrayList<>()));
+        List<Person> expected = new ArrayList<>();
+        expected.add(new Person("Peter", 23, Person.Sex.MAN));
+        expected.add(new Person("Helen", 42, Person.Sex.WOMAN, new ArrayList<>()));
         expected.get(1).getCats().add(new Cat("Tom", 2));
         expected.get(1).getCats().add(new Cat("Leo", 3));
-        expected.add(new People("Rick", 37, People.Sex.MAN, new ArrayList<>()));
+        expected.add(new Person("Rick", 37, Person.Sex.MAN, new ArrayList<>()));
         expected.get(2).getCats().add(new Cat("Chloe", 1));
-        expected.add(new People("Mary", 25, People.Sex.WOMEN, new ArrayList<>()));
+        expected.add(new Person("Mary", 25, Person.Sex.WOMAN, new ArrayList<>()));
         expected.get(3).getCats().add(new Cat("Sunny", 1));
-        expected.add(new People("Emma Stuart", 55, People.Sex.WOMEN, new ArrayList<>()));
+        expected.add(new Person("Emma Stuart", 55, Person.Sex.WOMAN, new ArrayList<>()));
         expected.get(4).getCats().add(new Cat("Kitty", 3));
         expected.get(4).getCats().add(new Cat("Fluffy", 4));
-        expected.add(new People("Janice Dean", 18, People.Sex.WOMEN, new ArrayList<>()));
-        expected.add(new People("Roman", 25, People.Sex.MAN));
-        expected.add(new People("Carlos", 60, People.Sex.MAN));
-        List<People> result = solution.getWorkablePeople(18, 55, 60, peopleList);
+        expected.add(new Person("Janice Dean", 18, Person.Sex.WOMAN, new ArrayList<>()));
+        expected.add(new Person("Roman", 25, Person.Sex.MAN));
+        expected.add(new Person("Carlos", 60, Person.Sex.MAN));
+        List<Person> result = solution.getWorkablePeople(18, 55, 60, peopleList);
         Assert.assertEquals(expected, result);
     }
 
     @Test
     public void getWorkablePeople_absent() {
-        List<People> expected = new ArrayList<>();
-        List<People> result = solution.getWorkablePeople(12, 14, 15, peopleList);
+        List<Person> expected = new ArrayList<>();
+        List<Person> result = solution.getWorkablePeople(12, 14, 15, peopleList);
         Assert.assertEquals(expected, result);
     }
 
@@ -188,8 +186,10 @@ public class StreamPracticeTest {
     @Test
     public void validateCandidates_validatePredicate() {
         CandidateValidator validator = new CandidateValidator();
-        assertEquals(true, validator instanceof Predicate, "Your CandidateValidator should "
-                + "implement functional interface Predicate, so it can be easily reused in the code");
+        Assert.assertTrue("Your CandidateValidator should "
+                        + "implement functional interface Predicate, "
+                        + "so it can be easily reused in the code",
+                validator instanceof Predicate);
     }
 
     @Test
