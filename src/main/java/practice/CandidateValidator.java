@@ -11,12 +11,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         candidate.setPeriodsInUkr(String.valueOf(Integer.parseInt(split[1])
                 - Integer.parseInt(split[0])));
 
-        if (candidate.getNationality().equals("Ukrainian")
+        return candidate.getNationality().equals("Ukrainian")
                 && candidate.getAge() >= 35
                 && candidate.isAllowedToVote()
-                && Integer.parseInt(candidate.getPeriodsInUkr()) > 10) {
-            return true;
-        }
-        return false;
+                && Integer.parseInt(candidate.getPeriodsInUkr()) > 10;
     }
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
+import model.Cat;
 import model.People;
 
 public class StreamPractice {
@@ -81,8 +82,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(people -> people.getSex().equals(People.Sex.WOMEN))
                 .filter(people -> people.getAge() > femaleAge)
-                .map(People::getCats).flatMap(l -> l.stream())
-                .map(cat -> cat.getName()).collect(Collectors.toList());
+                .map(People::getCats).flatMap(Collection::stream)
+                .map(Cat::getName).collect(Collectors.toList());
     }
 
     /**
@@ -101,7 +102,7 @@ public class StreamPractice {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
-                .map(candidate -> candidate.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
