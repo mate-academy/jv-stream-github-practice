@@ -25,7 +25,7 @@ public class StreamPractice {
                     .filter(num -> Integer.parseInt(num) % 2 == 0)
                     .mapToInt(Integer::parseInt).sorted().findFirst()
                     .orElseThrow(() -> new RuntimeException("Can't get "
-                            + "min value from list: method_input_list"));
+                            + "min value from list"));
     }
 
     /**
@@ -70,7 +70,8 @@ public class StreamPractice {
         return peopleList.stream().filter(people -> people.getAge() >= fromAge)
                 .filter(people -> people.getSex().equals(Person.Sex.MAN)
                         && people.getAge() <= maleToAge || (people.getSex().equals(Person.Sex.WOMAN)
-                        && people.getAge() <= femaleToAge)).collect(Collectors.toList());
+                        && people.getAge() <= femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -82,8 +83,10 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(people -> people.getSex().equals(Person.Sex.WOMAN))
                 .filter(people -> people.getAge() > femaleAge)
-                .map(Person::getCats).flatMap(Collection::stream)
-                .map(Cat::getName).collect(Collectors.toList());
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
