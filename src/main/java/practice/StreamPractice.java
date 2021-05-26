@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
-import model.Cat;
 import model.People;
 
 public class StreamPractice {
@@ -83,7 +82,7 @@ public class StreamPractice {
                 .filter(people -> people.getSex().equals(People.Sex.WOMEN))
                 .filter(people -> people.getAge() > femaleAge)
                 .map(People::getCats).flatMap(Collection::stream)
-                .map(Cat::getName).collect(Collectors.toList());
+                .map(cat -> cat.getName()).collect(Collectors.toList());
     }
 
     /**
