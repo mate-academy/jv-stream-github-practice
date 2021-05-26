@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class People {
+public class Person {
     private String name;
     private int age;
     private Sex sex;
     private List<Cat> cats;
 
-    public People(String name, int age, Sex sex) {
+    public Person(String name, int age, Sex sex) {
         this.name = name;
         this.age = age;
         this.sex = sex;
         cats = new ArrayList<>();
     }
 
-    public People(String name, int age, Sex sex, List<Cat> cats) {
+    public Person(String name, int age, Sex sex, List<Cat> cats) {
         this.name = name;
         this.age = age;
         this.sex = sex;
@@ -48,11 +48,11 @@ public class People {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        People people = (People) o;
-        return age == people.age
-            && Objects.equals(name, people.name)
-            && sex == people.sex
-            && Objects.equals(cats, people.cats);
+        Person person = (Person) o;
+        return age == person.age
+            && Objects.equals(name, person.name)
+            && sex == person.sex
+            && Objects.equals(cats, person.cats);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class People {
 
     @Override
     public String toString() {
-        return "People{"
+        return "Person{"
             + "name='" + name + '\''
             + ", age=" + age
             + ", sex=" + sex
@@ -71,6 +71,6 @@ public class People {
     }
 
     public enum Sex {
-        MAN, WOMEN
+        MAN, WOMAN
     }
 }
