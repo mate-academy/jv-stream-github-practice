@@ -36,7 +36,9 @@ public class StreamPractice {
         IntStream.range(0, numbers.size())
                 .filter(i -> i % 2 != 0)
                 .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-        return numbers.stream()
+        return IntStream.range(0, numbers.size())
+                           .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
+                           ....
                 .filter(i -> i % 2 != 0)
                 .mapToInt(i -> i)
                 .average()
