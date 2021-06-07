@@ -25,7 +25,7 @@ public class StreamPractice {
                 .mapToInt(i -> i)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: method_input_list"));
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
