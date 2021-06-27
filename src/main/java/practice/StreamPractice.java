@@ -12,9 +12,10 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
+        String numbersSeparator = ",";
         return numbers.stream()
                 .map(string ->
-                        Arrays.stream(string.split(","))
+                        Arrays.stream(string.split(numbersSeparator))
                                 .mapToInt(Integer::valueOf))
                 .flatMapToInt(IntStream::distinct)
                 .filter(number -> number % 2 == 0)
