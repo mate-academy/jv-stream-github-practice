@@ -1,20 +1,23 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-    /**
-     * Given list of strings where each element contains 1+ numbers:
-     * input = {"5,30,100", "0,22,7", ...}
-     * return min integer value. One more thing - we're interested in even numbers.
-     * If there is no needed data throw RuntimeException with message
-     * "Can't get min value from list: < Here is our input 'numbers' >"
-     */
+    private static final String NUMBER_SEPARATOR = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(string -> Arrays.stream(string.split(NUMBER_SEPARATOR)))
+                .mapToInt(Integer::parseInt)
+                .filter(integer -> integer % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
     /**
