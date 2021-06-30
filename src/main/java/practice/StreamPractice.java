@@ -29,7 +29,8 @@ public class StreamPractice {
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("Can't get average value from list: "+ numbers));
+                        new NoSuchElementException("Can't get average value from list: "
+                                + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -43,10 +44,9 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workablePersonPredicate = p -> p.getSex().equals(Person.Sex.MAN)
-                ? p.getAge() >= fromAge
-                && p.getAge() <= maleToAge : p.getAge() >= fromAge
-                && p.getAge() <= femaleToAge;
+        Predicate<Person> workablePersonPredicate = p -> p.getAge() >= fromAge
+                && (p.getSex().equals(Person.Sex.MAN)
+                ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge);
         return peopleList
                 .stream()
                 .filter(workablePersonPredicate)
