@@ -57,8 +57,7 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(femaleSelector)
-                .map(human -> human.getCats().stream())
-                .flatMap(Stream::distinct)
+                .flatMap(human -> human.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
