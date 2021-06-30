@@ -29,36 +29,36 @@ public class StreamPractice {
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("Can't get average value from list: "));
+                        new NoSuchElementException("Can't get average value from list: "+ numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> testPersonCanBeRecruited = p -> p.getSex().equals(Person.Sex.MAN)
+        Predicate<Person> personCanBeRecruited = p -> p.getSex().equals(Person.Sex.MAN)
                 && p.getAge() >= fromAge && p.getAge() <= toAge;
         return peopleList
                 .stream()
-                .filter(testPersonCanBeRecruited)
+                .filter(personCanBeRecruited)
         .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> testWorkablePerson = p -> p.getSex().equals(Person.Sex.MAN)
+        Predicate<Person> workablePersonPredicate = p -> p.getSex().equals(Person.Sex.MAN)
                 ? p.getAge() >= fromAge
                 && p.getAge() <= maleToAge : p.getAge() >= fromAge
                 && p.getAge() <= femaleToAge;
         return peopleList
                 .stream()
-                .filter(testWorkablePerson)
+                .filter(workablePersonPredicate)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> testOwnersWomen = p -> p.getSex().equals(Person.Sex.WOMAN)
+        Predicate<Person> ownersWomenPredicate = p -> p.getSex().equals(Person.Sex.WOMAN)
                 && p.getAge() >= femaleAge;
         return peopleList
                 .stream()
-                .filter(testOwnersWomen)
+                .filter(ownersWomenPredicate)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
