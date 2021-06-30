@@ -13,10 +13,8 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string ->
-                        Arrays.stream(string.split(","))
-                                .mapToInt(Integer::valueOf))
-                .flatMapToInt(IntStream::distinct)
+                .flatMap(string -> Arrays.stream(string.split(",")))
+                .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .sorted()
                 .findFirst()
@@ -35,7 +33,7 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> maleSelector = person -> person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge && person.getAge() <= toAge;
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
         return peopleList
                 .stream()
                 .filter(maleSelector)
@@ -55,7 +53,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> femaleSelector = human -> human.getSex() == Person.Sex.WOMAN
-                                                && human.getAge() >= femaleAge;
+                && human.getAge() >= femaleAge;
         return peopleList
                 .stream()
                 .filter(femaleSelector)
