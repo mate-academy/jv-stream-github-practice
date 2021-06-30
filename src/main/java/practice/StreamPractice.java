@@ -37,7 +37,7 @@ public class StreamPractice {
                 .filter(e -> e % 2 != 0)
                 .mapToInt(e -> e)
                 .average()
-                .orElseThrow());
+                .getAsDouble());
     }
 
     /**
@@ -82,8 +82,10 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> catsPredicate = person -> person.getAge() >= femaleAge
+                && person.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+                .filter(catsPredicate)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
