@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -27,7 +26,7 @@ public class StreamPractice {
             .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
             .filter(integer -> integer % 2 != 0)
             .average()
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -41,15 +40,11 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
             int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> {
-            if (person.getAge() >= fromAge) {
-                if (person.getSex().equals(Sex.MAN) && person.getAge() <= maleToAge) {
-                    return true;
-                }
-                return person.getAge() <= femaleToAge;
-            }
-            return false;
-        };
+        Predicate<Person> personPredicate = person ->
+                person.getAge() >= fromAge && (person.getSex().equals(Sex.MAN)
+                ? person.getAge() <= maleToAge
+                : person.getAge() <= femaleToAge);
+
         return peopleList
             .stream()
             .filter(personPredicate)
