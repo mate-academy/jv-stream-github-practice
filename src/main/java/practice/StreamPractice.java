@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
