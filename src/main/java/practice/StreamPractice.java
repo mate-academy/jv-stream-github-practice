@@ -62,8 +62,8 @@ public class StreamPractice {
                 && person.getSex().equals(Sex.WOMAN);
         return peopleList.stream()
             .filter(predicate)
-            .map(Person::getCats)
-            .flatMap(Collection::stream).map(Cat::getName)
+            .flatMap(human -> human.getCats().stream())
+            .map(Cat::getName)
             .collect(Collectors.toList());
     }
 
