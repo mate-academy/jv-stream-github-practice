@@ -11,7 +11,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String NUMBER_SEPARATOR = ",";
-    private static final Predicate<Candidate> CANDIDATE_VALIDATOR = new CandidateValidator();
+    private Predicate<Candidate> candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -64,7 +64,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CANDIDATE_VALIDATOR)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
