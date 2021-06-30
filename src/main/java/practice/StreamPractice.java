@@ -43,7 +43,6 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .average()
                 .getAsDouble();
-
     }
 
     /**
@@ -92,7 +91,6 @@ public class StreamPractice {
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
-
     }
 
     /**
