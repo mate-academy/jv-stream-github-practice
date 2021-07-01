@@ -13,6 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] periodYears = candidate.getPeriodsInUkr().split("-");
         return candidate.getAge() >= VALID_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(VALID_NATIONALITY)
-                && Integer.parseInt(periodYears[1]) - Integer.parseInt(periodYears[0]) >= IN_UKR;
+                && Integer.parseInt(periodYears[1])
+                - Integer.parseInt(periodYears[0]) >= IN_UKRAINE;
     }
 }

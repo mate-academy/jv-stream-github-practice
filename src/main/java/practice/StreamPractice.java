@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,14 +14,13 @@ public class StreamPractice {
                 .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::parseInt)
                 .filter((p) -> p % 2 == 0)
+                .mapToInt((integer) -> integer)
                 .min()
-                .orElseThrow(() -> throw new RuntimeException("Can't get min value from list: <" numbers " >");
-      
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
-    public Double getOddNumsAverage(List<Integer
-
-            > numbers) {
+    public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .mapToDouble((i) -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter((n) -> n % 2 == 1)
