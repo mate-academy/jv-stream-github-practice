@@ -5,15 +5,14 @@ import java.util.List;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
 
-    private CandidateValidator candidateValidator;
     private static final String NUMBER_SPLIT_REGEX = ",";
+    private CandidateValidator candidateValidator;
 
     public StreamPractice() {
         this.candidateValidator = new CandidateValidator();
@@ -32,7 +31,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min();
-        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                + numbers));
     }
 
     /**
@@ -59,7 +59,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge && p.getSex() == Person.Sex.MAN)
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 

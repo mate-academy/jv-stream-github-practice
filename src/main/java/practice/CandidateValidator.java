@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
@@ -12,7 +11,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int AGE_CRITERIA = 35;
     private static final int PERIOD_IN_UKR_CRITERIA = 10;
     private static final String NATIONALITY_CRITERIA = "Ukrainian";
-
 
     @Override
     public boolean test(Candidate candidate) {
