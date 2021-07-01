@@ -38,13 +38,13 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream().filter((p) -> {
             return fromAge <= p.getAge() && p.getAge() 
-                <= (p.getSex() == Sex.MAN) ? maleToAge : femaleToAge;
+                <= ((p.getSex() == Person.Sex.MAN) ? maleToAge : femaleToAge);
         }).collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream().filter((p) -> p.getSex() == Person.Sex.WOMAN
-                            && p.getAge() >= femaleAge;)
+                            && p.getAge() >= femaleAge)
                     .map((p) -> p.getCats())
                 .flatMap((p) -> p.stream().map((Cat::getName)))
                 .collect(Collectors.toList());
