@@ -1,10 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,7 +23,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(("Can't get min value from list")));
+                .orElseThrow(() ->
+                        new RuntimeException(("Can't get min value from list" + numbers)));
     }
 
     /**
@@ -32,12 +33,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return Math.ceil(numbers.stream()
-                .map(e -> numbers.indexOf(e) % 2 != 0 ? e - 1 : e)
-                .filter(e -> e % 2 != 0)
-                .mapToInt(e -> e)
+        return IntStream.range(0, numbers.size())
+                .map(e -> e % 2 != 0 ? numbers.get(e) - 1 : numbers.get(e))
+                .filter(n -> n % 2 != 0)
                 .average()
-                .getAsDouble());
+                .getAsDouble();
     }
 
     /**
@@ -68,9 +68,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> customPredicate = person ->
-                person.getSex() == Person.Sex.WOMAN ? person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge : person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge;
+                person.getAge() >= fromAge && ((person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge));
         return peopleList.stream()
                 .filter(customPredicate)
                 .collect(Collectors.toList());
@@ -86,8 +87,7 @@ public class StreamPractice {
                 && person.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
                 .filter(catsPredicate)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
