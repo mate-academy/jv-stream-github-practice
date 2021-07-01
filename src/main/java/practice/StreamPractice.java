@@ -10,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String NUMBERS_SEPARATOR = ",";
+    private static final String NUMBERS_SEPARATOR = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -37,7 +37,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(s -> s % 2 != 0)
-                .average().orElseThrow();
+                .average()
+                .orElseThrow();
     }
 
     /**
@@ -67,10 +68,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = person -> ((person.getSex().equals(Person.Sex.MAN)
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                || (person.getSex().equals(Person.Sex.WOMAN)
-                && person.getAge() >= fromAge && person.getAge() <= femaleToAge));
+        Predicate<Person> predicate = person -> ((person.getAge() >= fromAge)
+                && ((person.getSex() == Person.Sex.MAN && (person.getAge() <= maleToAge))
+                || (person.getSex() == Person.Sex.WOMAN && (person.getAge() <= femaleToAge))));
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
