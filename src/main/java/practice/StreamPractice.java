@@ -13,8 +13,10 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .mapToInt(Integer::parseInt).filter(n -> n % 2 == 0)
-                .min().orElseThrow(() ->
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: < " + numbers + " >"));
     }
 
@@ -38,10 +40,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> filterForAbleBodiedPerson
-                = person -> (person.getSex().equals(Person.Sex.MAN)
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                = person -> ((person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() <= maleToAge)
                 || (person.getSex().equals(Person.Sex.WOMAN)
-                && (person.getAge() >= fromAge && person.getAge() <= femaleToAge));
+                && person.getAge() <= femaleToAge))
+                && (person.getAge() >= fromAge);
         return peopleList.stream()
                 .filter(filterForAbleBodiedPerson)
                 .collect(Collectors.toList());
@@ -59,7 +62,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(v -> new CandidateValidator().test(v))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
