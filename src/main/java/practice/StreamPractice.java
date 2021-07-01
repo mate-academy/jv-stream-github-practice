@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -12,6 +11,7 @@ import model.Person;
 
 public class StreamPractice {
     public static final String NUMBERS_SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,11 +21,11 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(string -> Arrays.stream(string.split(NUMBERS_SEPARATOR)))
-                .mapToInt(Integer::parseInt)
-                .filter(s -> s % 2 == 0)
-                .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+              .flatMap(string -> Arrays.stream(string.split(NUMBERS_SEPARATOR)))
+              .mapToInt(Integer::parseInt)
+              .filter(s -> s % 2 == 0)
+              .min()
+              .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -86,8 +86,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(predicate)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }

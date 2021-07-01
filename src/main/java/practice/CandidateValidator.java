@@ -4,16 +4,18 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final String DATE_SEPARATOR = "-";
+    private static final String DATE_SEPARATOR = "-";
+    private static final int MIN_AGE = 35;
+    private static final int MIN_PERIOD_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         String [] periodInUkr = candidate.getPeriodsInUkr().split(DATE_SEPARATOR);
         return (candidate != null
-                && candidate.getAge() >= 35
-                && (Integer.parseInt(periodInUkr[1]) - Integer.parseInt(periodInUkr[0]) >= 10)
+                && candidate.getAge() >= MIN_AGE
+                && (Integer.parseInt(periodInUkr[1]) - Integer.parseInt(periodInUkr[0])
+                >= MIN_PERIOD_IN_UKRAINE)
                 && (candidate.getNationality().equals("Ukrainian"))
                 && (candidate.isAllowedToVote()));
     }
-    //write your code here
 }
