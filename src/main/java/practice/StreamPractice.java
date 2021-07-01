@@ -10,18 +10,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> list = numbers.stream().map((p) -> {
-            String[] strings = p.split(",");
-            Integer[] integers = new Integer[strings.length];
-            int counter = 0;
-            for (String string : strings) {
-                integers[counter] = Integer.parseInt(string);
-                counter++;
-            }
-            return integers;
-        }).flatMap(Arrays::stream).filter((p) -> p % 2 == 0).collect(Collectors.toList());
+        List<Integer> list = numbers.stream().flatMap(string -> Arrays.stream(string.split(",")))
+                .map(Integer::parseInt)
+                .filter((p) -> p % 2 == 0)
+                .collect(Collectors.toList());
         if (list.equals(Collections.EMPTY_LIST)) {
             throw new RuntimeException("Can't get min value from list: <>");
         }
