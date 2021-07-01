@@ -26,7 +26,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -58,7 +58,8 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> candidateValidator = new CandidateValidator();
-        return candidates.stream().filter(candidateValidator)
+        return candidates.stream()
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
