@@ -13,12 +13,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < ACCEPTED_AGE
-                || !candidate.isAllowedToVote()
-                || yearsLivedInUkraineOf(candidate) < ACCEPTED_NUMBER_OF_YEARS_IN_UKRAINE) {
-            return false;
-        }
-        return candidate.getNationality().equals(ACCEPTED_NATIONALITY);
+        return candidate.getAge() >= ACCEPTED_AGE
+                && candidate.isAllowedToVote()
+                && yearsLivedInUkraineOf(candidate) >= ACCEPTED_NUMBER_OF_YEARS_IN_UKRAINE
+                && candidate.getNationality().equals(ACCEPTED_NATIONALITY);
     }
 
     private int yearsLivedInUkraineOf(Candidate candidate) {

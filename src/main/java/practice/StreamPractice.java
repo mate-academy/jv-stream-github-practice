@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,7 +22,8 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(s -> s % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -33,10 +33,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntPredicate isOddNumber = number -> number % 2 == 1;
         return IntStream.range(0, numbers.size())
-                .map(i -> isOddNumber.test(i) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(isOddNumber)
+                .map(number -> number % 2 == 1 ? numbers.get(number) - 1 : numbers.get(number))
+                .filter(number -> number % 2 == 1)
                 .average()
                 .getAsDouble();
     }
@@ -106,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
