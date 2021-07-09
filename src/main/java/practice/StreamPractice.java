@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -15,8 +14,8 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(i -> Arrays.stream(i.split(SEPARATOR)).mapToInt(Integer::parseInt))
-                .flatMapToInt(i -> i)
+                .flatMap(i -> Arrays.stream(i.split(SEPARATOR)))
+                .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -34,14 +33,16 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(new FilterManByAge(fromAge, toAge))
+                .filter((p) -> p.getAge() >= fromAge && p.getAge() <= toAge
+                        && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(new FilterWorkablePeople(fromAge, femaleToAge, maleToAge))
+                .filter((p) -> p.getAge() >= fromAge && (p.getSex() == Person.Sex.MAN
+                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -59,41 +60,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private static class FilterManByAge implements Predicate<Person> {
-        private final int fromAge;
-        private final int toAge;
-
-        public FilterManByAge(int fromAge, int toAge) {
-            this.fromAge = fromAge;
-            this.toAge = toAge;
-        }
-
-        @Override
-        public boolean test(Person person) {
-            return person.getAge() >= fromAge
-                    && person.getAge() <= toAge
-                    && person.getSex() == Person.Sex.MAN;
-        }
-    }
-
-    private static class FilterWorkablePeople implements Predicate<Person> {
-        private final int fromAge;
-        private final int femaleToAge;
-        private final int maleToAge;
-
-        public FilterWorkablePeople(int fromAge, int femaleToAge, int maleToAge) {
-            this.fromAge = fromAge;
-            this.femaleToAge = femaleToAge;
-            this.maleToAge = maleToAge;
-        }
-
-        @Override
-        public boolean test(Person person) {
-            return person.getAge() >= fromAge
-                    && (person.getSex() == Person.Sex.MAN
-                    ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
-        }
     }
 }
