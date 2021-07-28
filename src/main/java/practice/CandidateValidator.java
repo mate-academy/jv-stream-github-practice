@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
@@ -19,7 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
             return 0;
         }
         try {
-            return Integer.parseInt(periodsInUkr.substring(5, 9)) - Integer.parseInt(periodsInUkr.substring(0, 4));
+            return Integer.parseInt(periodsInUkr.substring(5, 9))
+                    - Integer.parseInt(periodsInUkr.substring(0, 4));
         } catch (NumberFormatException e) {
             return 0;
         }
