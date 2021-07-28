@@ -14,14 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int yearsInUkraine(String periodsInUkr) {
-        if (periodsInUkr == null || periodsInUkr.length() != 9) {
-            return 0;
-        }
-        try {
-            return Integer.parseInt(periodsInUkr.substring(5, 9))
+        return Integer.parseInt(periodsInUkr.substring(5, 9))
                     - Integer.parseInt(periodsInUkr.substring(0, 4));
-        } catch (NumberFormatException e) {
-            return 0;
-        }
     }
 }
