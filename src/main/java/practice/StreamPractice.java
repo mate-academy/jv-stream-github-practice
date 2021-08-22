@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,21 +19,17 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        int minValue;
 
-        try {
-            minValue = numbers
-                    .stream()
-                    .map(p -> p.split(","))
-                    .map(Arrays::stream)
-                    .flatMap(Stream::distinct)
-                    .mapToInt(Integer::parseInt)
-                    .filter(p -> p % 2 == 0)
-                    .min().getAsInt();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Can't get min value from list:" + numbers);
-        }
-        return minValue;
+        return numbers
+                .stream()
+                .map(p -> p.split(","))
+                .map(Arrays::stream)
+                .flatMap(Stream::distinct)
+                .mapToInt(Integer::parseInt)
+                .filter(p -> p % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                        + numbers));
     }
 
     /**
@@ -47,7 +42,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(p -> p % 2 != 0)
-                .average().getAsDouble();
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -80,11 +76,10 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> (p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge
-                        && p.getSex().equals(Person.Sex.MAN))
-                        || (p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge
-                        && p.getSex().equals(Person.Sex.WOMAN)))
+                        && (p.getAge() <= maleToAge
+                        && p.getSex().equals(Person.Sex.MAN)
+                        || p.getAge() <= femaleToAge
+                        && p.getSex().equals(Person.Sex.WOMAN))))
                 .collect(Collectors.toList());
     }
 
