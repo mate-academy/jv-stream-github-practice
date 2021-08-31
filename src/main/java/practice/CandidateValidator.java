@@ -25,7 +25,3 @@ public class CandidateValidator implements Predicate<Candidate> {
         return periodInUkr > MIN_PERIOD_IN_UKR;
     }
 }
-
-
-
-
