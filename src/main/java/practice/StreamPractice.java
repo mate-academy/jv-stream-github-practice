@@ -14,11 +14,10 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(number -> number.split(","))
-                .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .filter(number -> number % 2 == 0)
-                .min(Integer::compare)
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(integer -> integer % 2 == 0)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
