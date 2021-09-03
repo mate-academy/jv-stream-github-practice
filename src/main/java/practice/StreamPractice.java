@@ -2,12 +2,11 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.Comparator;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,6 +20,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(s -> s.split(","))
@@ -28,7 +28,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(n -> (n % MIN_EVEN_NUMBER == 0))
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -36,9 +37,10 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
+
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return  IntStream.range(0, numbers.size())
-                .map(i -> (i % MIN_EVEN_NUMBER == 1)? numbers.get(i) - 1 : numbers.get(i))
+        return IntStream.range(0, numbers.size())
+                .map(i -> (i % MIN_EVEN_NUMBER == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(value -> value % MIN_EVEN_NUMBER != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("There is no odd elements"));
@@ -73,7 +75,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                .filter(person -> (person.getSex()
+                        == Person.Sex.MAN && person.getAge() <= maleToAge)
                 || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
