@@ -3,6 +3,7 @@ package practice;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -21,8 +22,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(word -> Stream.of(word.split(",")).collect(Collectors.toList()))
-                .flatMap(Collection::stream)
+                .flatMap(word -> Stream.of(word.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -52,8 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(isManInChosenAgeDiapason(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -70,12 +69,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person ->
-                        ((person.getSex().equals(Person.Sex.MAN)
-                                && person.getAge() <= maleToAge)
-                        || (person.getSex().equals(Person.Sex.WOMAN)
-                                && person.getAge() <= femaleToAge))
-                        && person.getAge() >= fromAge)
+                .filter(isManInChosenAgeDiapason(fromAge, maleToAge)
+                        .or(isWomanInChosenAgeDiapason(fromAge, femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -112,5 +107,15 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Person> isManInChosenAgeDiapason(int fromAge, int toAge) {
+        return person -> person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
+    }
+
+    private Predicate<Person> isWomanInChosenAgeDiapason(int fromAge, int toAge) {
+        return person -> person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 }
