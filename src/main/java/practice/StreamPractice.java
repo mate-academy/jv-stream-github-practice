@@ -1,14 +1,11 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -40,7 +37,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         Function<Integer, Integer> decreaseOddIndex = new Function<>() {
-            int index = 0;
+            private int index = 0;
             @Override
             public Integer apply(Integer integer) {
                 if (index % 2 != 0) {
@@ -69,8 +66,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         class ManByAge implements Predicate<Person> {
-            final int fromAge;
-            final int toAge;
+            private final int fromAge;
+            private final int toAge;
 
             public ManByAge(int fromAge, int toAge) {
                 this.fromAge = fromAge;
@@ -104,9 +101,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         class PeopleByAge implements Predicate<Person> {
-            final int fromAge;
-            final int femaleToAge;
-            final int maleToAge;
+            private final int fromAge;
+            private final int femaleToAge;
+            private final int maleToAge;
 
             public PeopleByAge(int fromAge, int femaleToAge, int maleToAge) {
                 this.fromAge = fromAge;
@@ -157,6 +154,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates
+                .stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
