@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -51,9 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && toAge >= person.getAge())
+                .filter(manByAgeFilter(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -70,12 +69,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() <= maleToAge
-                        && person.getAge() >= fromAge)
-                        || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge)
-                        && person.getAge() >= fromAge)
+                .filter(isPersonWorkable(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -111,5 +105,21 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public static Predicate<Person> isPersonWorkable(int fromAge, int femaleToAge,
+                                                     int maleToAge) {
+        return person -> (person.getSex() == Person.Sex.MAN
+                && person.getAge() <= maleToAge
+                && person.getAge() >= fromAge)
+                || (person.getSex() == Person.Sex.WOMAN
+                && person.getAge() <= femaleToAge)
+                && person.getAge() >= fromAge;
+    }
+
+    public static Predicate<Person> manByAgeFilter(int fromAge, int toAge) {
+        return person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && toAge >= person.getAge();
     }
 }
