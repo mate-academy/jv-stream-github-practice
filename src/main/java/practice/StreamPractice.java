@@ -2,8 +2,8 @@ package practice;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -17,8 +17,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> List.of(s.split(",")))
-                .flatMap(l -> l.stream())
+                .flatMap(s -> List.of(s.split(",")).stream())
                 .mapToInt(e -> Integer.parseInt(e))
                 .filter(e -> e % 2 == 0)
                 .min()
@@ -32,21 +31,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Function<Integer, Integer> oddNumbers = new Function<Integer, Integer>() {
-            private int index = -1;
-
-            @Override
-            public Integer apply(Integer number) {
-                index++;
-                if (index % 2 == 1) {
-                    return --number;
-                }
-                return number;
-            }
-        };
-        return numbers.stream()
-                .map(oddNumbers)
-                .mapToInt(e -> e)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 == 1)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
@@ -96,8 +82,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(e -> e.getAge() > femaleAge && e.getSex() == Person.Sex.WOMAN)
-                .map(l -> l.getCats())
-                .flatMap(l -> l.stream())
+                .flatMap(l -> l.getCats().stream())
                 .map(l -> l.getName())
                 .collect(Collectors.toList());
     }
