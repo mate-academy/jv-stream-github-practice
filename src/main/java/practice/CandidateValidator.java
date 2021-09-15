@@ -1,17 +1,22 @@
 package practice;
 
+import java.util.function.Predicate;
 import model.Candidate;
 
-import java.util.function.Predicate;
-
-public class CandidateValidator implements Predicate<Candidate>{
+public class CandidateValidator implements Predicate<Candidate> {
+    private static final int CANDIDATE_VALID_AGE = 35;
+    private static final String CANDIDATE_NATIONALITY = "Ukrainian";
+    private static final int PERIOD_FROM_INDEX = 0;
+    private static final int PERIOD_TO_INDEX = 1;
+    private static final int PERIOD_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         String[] period = candidate.getPeriodsInUkr().split("-");
-        return candidate.getAge() >= 35
+        return candidate.getAge() >= CANDIDATE_VALID_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && Integer.parseInt(period[1]) - Integer.parseInt(period[0]) >= 10;
-    };
+                && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
+                && Integer.parseInt(period[PERIOD_TO_INDEX])
+                    - Integer.parseInt(period[PERIOD_FROM_INDEX]) >= PERIOD_IN_UKRAINE;
+    }
 }
