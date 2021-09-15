@@ -25,8 +25,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(SPLIT_REGEX))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(SPLIT_REGEX)))
                 .mapToInt(Integer::parseInt)
                 .filter(value -> value % 2 == 0)
                 .min()
@@ -93,8 +92,7 @@ public class StreamPractice {
                 && p.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(predicate)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(n -> n.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
