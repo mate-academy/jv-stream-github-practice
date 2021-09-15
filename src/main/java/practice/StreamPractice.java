@@ -13,8 +13,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                    .map(s -> s.split(","))
-                    .flatMap(Arrays::stream)
+                    .flatMap(s -> Arrays.stream(s.split(",")))
                     .map(Integer::parseInt)
                     .filter(i -> i % 2 == 0)
                     .min(Integer::compareTo)
@@ -32,19 +31,20 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                    .filter(person -> person.getSex().equals(Person.Sex.MAN))
-                    .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                    .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                                && person.getAge() >= fromAge
+                                && person.getAge() <= toAge)
                     .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                    .filter(person -> person.getAge() >= fromAge)
                     .filter(person -> ((person.getSex().equals(Person.Sex.MAN)
                                 && person.getAge() <= maleToAge)
                                 || (person.getSex().equals(Person.Sex.WOMAN)
-                                && person.getAge() <= femaleToAge)))
+                                && person.getAge() <= femaleToAge))
+                                && person.getAge() >= fromAge)
                     .collect(Collectors.toList());
     }
 
@@ -59,7 +59,8 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                    .filter(candidate -> new CandidateValidator().test(candidate))
+                    .filter(candidate -> new CandidateValidator()
+                                .test(candidate))
                     .map(Candidate::getName)
                     .sorted()
                     .collect(Collectors.toList());
