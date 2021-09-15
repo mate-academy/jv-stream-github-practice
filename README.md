@@ -1,4 +1,4 @@
-# Stream practice
+    # Stream practice
 
 1.  Given list of strings where each element contains 1+ numbers:
     input = {"5,30,100", "0, 22, 7", ...}
