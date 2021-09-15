@@ -13,6 +13,8 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SPLIT_REGEX = ",";
+    private static final String ERROR_MIN_MESSAGE = "Can't get min value from list: ";
+    private static final String ERROR_AVERAGE_MESSAGE = "Can't get average value from list: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -28,8 +30,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(value -> value % 2 == 0)
                 .min()
-                .orElseThrow(() -> new NoSuchElementException("Can't"
-                        + " get min value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException(ERROR_MIN_MESSAGE + numbers));
     }
 
     /**
@@ -42,8 +43,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't"
-                        + " get average value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException(ERROR_AVERAGE_MESSAGE + numbers));
     }
 
     /**
