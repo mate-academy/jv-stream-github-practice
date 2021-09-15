@@ -69,8 +69,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator().candidatePredicate)
-                .map(candidate -> candidate.getName())
+                .filter(candidate -> new CandidateValidator().test(candidate))
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
