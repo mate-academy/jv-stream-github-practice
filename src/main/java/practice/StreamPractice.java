@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -25,7 +26,8 @@ public class StreamPractice {
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No element"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list: "+ numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,12 +41,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter((p) -> ((p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge
+                .filter((p) -> p.getAge() >= fromAge
+                        && (p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() <= femaleToAge)
-                        || (p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge)))
+                        | p.getSex().equals(Person.Sex.MAN)
+                        && p.getAge() <= maleToAge)
                 .collect(Collectors.toList());
     }
 
