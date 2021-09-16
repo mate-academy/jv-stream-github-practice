@@ -13,6 +13,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int ZERO = 0;
+    private static final int TWO = 2;
+    private static final String EXCEPTION_NOTIFICATION
+            = "Can't get min value from list with input: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -26,10 +30,10 @@ public class StreamPractice {
                 .map(s -> s.split(","))
                 .flatMap(number -> Arrays.stream(number.clone()))
                 .map(number -> Integer.parseInt(number))
-                .filter(integer -> integer.intValue() % 2 == 0)
+                .filter(integer -> integer.intValue() % TWO == ZERO)
                 .min(Comparator.naturalOrder());
         return (minEven.isPresent()) ? minEven.get() : minEven.orElseThrow(()
-                -> new RuntimeException("Can't get min value from list with input " + numbers));
+                -> new RuntimeException(EXCEPTION_NOTIFICATION + numbers));
     }
 
     /**
@@ -39,14 +43,13 @@ public class StreamPractice {
      *
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 != 0)
+        OptionalDouble average = IntStream.range(ZERO, numbers.size())
+                .map(index -> index % TWO != ZERO ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> number % TWO != ZERO)
                 .mapToDouble(d -> d)
                 .average();
-
         return (average.isPresent()) ? average.getAsDouble()
-                : average.orElseThrow(() -> new NoSuchElementException("Not valid data"));
+                : average.orElseThrow(() -> new NoSuchElementException("Not valid data input"));
     }
 
     /**
