@@ -43,7 +43,6 @@ public class StreamPractice {
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
      * new Person(«Helen», 42, Sex.WOMAN))`,
      * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
      * <p>
