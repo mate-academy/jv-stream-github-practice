@@ -86,7 +86,7 @@ public class StreamPractice {
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
-     * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
+     * return the names of all cats whose owners are women from femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList
