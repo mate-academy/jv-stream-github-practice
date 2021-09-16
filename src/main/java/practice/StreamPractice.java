@@ -54,7 +54,7 @@ public class StreamPractice {
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
-                .sorted(String::compareTo)
+                .sorted()
                 .collect(Collectors.toList());
     }
 
