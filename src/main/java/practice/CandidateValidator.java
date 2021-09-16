@@ -10,7 +10,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START = 1;
     private static final int END = 0;
 
-
     @Override
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split("-");
