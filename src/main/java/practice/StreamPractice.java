@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -36,9 +37,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> (number % 2) != 0)
-                .mapToDouble(number -> number)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("The list is empty!"));
+                .getAsDouble();
     }
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -50,9 +50,9 @@ public class StreamPractice {
      */
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> filteredPerson = (p -> p.getAge() >= fromAge
+        Predicate<Person> filteredPerson = p -> p.getAge() >= fromAge
                 && p.getAge() <= toAge
-                && p.getSex() == Person.Sex.MAN);
+                && p.getSex() == Person.Sex.MAN;
         return peopleList.stream()
                 .filter(filteredPerson)
                 .collect(Collectors.toList());
@@ -72,10 +72,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
 
         Predicate<Person> filteredPerson =
-                person -> (person.getAge() >= fromAge && person.getSex() == Person.Sex.MAN
-                && person.getAge() <= maleToAge)
-                || (person.getAge() >= fromAge && person.getSex() == Person.Sex.WOMAN
-                && person.getAge() <= femaleToAge);
+                person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge));
 
         return peopleList.stream()
                 .filter(filteredPerson)
@@ -91,8 +90,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .flatMap(person1 -> person1.getCats().stream())
-                .map(cat -> cat.getName())
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
     /**
