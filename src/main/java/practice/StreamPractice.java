@@ -40,7 +40,7 @@ public class StreamPractice {
                 .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
