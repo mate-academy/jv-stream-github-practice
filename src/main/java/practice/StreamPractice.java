@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -27,7 +26,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("Can't get min value from list: "+ numbers));
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
