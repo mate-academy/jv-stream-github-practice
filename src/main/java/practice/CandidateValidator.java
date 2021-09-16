@@ -18,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && requiredAmountOfYears(candidate.getPeriodsInUkr());
     }
 
-    public boolean requiredAmountOfYears(String periodInUkr) {
+    private boolean requiredAmountOfYears(String periodInUkr) {
         String[] yearToCompare = periodInUkr.split("-");
         return Integer.parseInt(yearToCompare[LAST_YEAR])
                 - Integer.parseInt(yearToCompare[FIRST_YEAR]) >= TIME_IN_UKRAINE;
