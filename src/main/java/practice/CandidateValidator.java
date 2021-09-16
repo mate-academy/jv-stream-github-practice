@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_AGE = 35;
     private static final int MIN_YEARS = 10;
+    private static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,12 +19,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int livedInUkraineSince(Candidate candidate) {
         return Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(candidate.getPeriodsInUkr().indexOf("-") + 1));
+                .substring(candidate.getPeriodsInUkr().indexOf(SEPARATOR) + 1));
     }
 
     private int leftUkraineIn(Candidate candidate) {
         return Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(0, candidate.getPeriodsInUkr().indexOf("-")));
+                .substring(0, candidate.getPeriodsInUkr().indexOf(SEPARATOR)));
     }
 
 }

@@ -10,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final int MAX_AGE = 100;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -80,7 +80,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> isSuitableWoman(p, femaleAge, MAX_AGE))
+                .filter(p -> isSuitableWoman(p, femaleAge, Integer.MAX_VALUE))
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
