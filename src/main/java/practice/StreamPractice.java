@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -39,7 +38,7 @@ public class StreamPractice {
                         : numbers.get(i) - 1)
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -72,10 +71,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge
+                .filter(person -> (person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge
                         || person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                        && person.getAge() <= femaleToAge)
+                        && person.getAge() >= fromAge)
                 .collect(Collectors.toList());
     }
 
