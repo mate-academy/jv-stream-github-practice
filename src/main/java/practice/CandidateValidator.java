@@ -13,12 +13,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         String periodsData = candidate.getPeriodsInUkr();
         int totalYears = Integer.parseInt(periodsData.substring(periodsData.indexOf(DELIMITER) + 1))
                 - Integer.parseInt(periodsData.substring(0, periodsData.indexOf(DELIMITER)));
-        if (candidate.getAge() >= MIN_AGE
+        return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-                && totalYears >= 10) {
-            return true;
-        }
-        return false;
+                && totalYears >= 10;
     }
 }
