@@ -15,9 +15,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= OLDER_THAN
                 && Integer.parseInt(candidate.getPeriodsInUkr()
-                        .substring(candidate.getPeriodsInUkr().indexOf(SEPARATOR) + START_INDEX_OF_SECOND_YEAR))
+                        .substring(candidate.getPeriodsInUkr().indexOf(SEPARATOR)
+                                + START_INDEX_OF_SECOND_YEAR))
                 - Integer.parseInt(candidate.getPeriodsInUkr()
-                        .substring(START_INDEX_OF_FIRST_YEAR,candidate.getPeriodsInUkr().indexOf(SEPARATOR)))
+                        .substring(START_INDEX_OF_FIRST_YEAR,
+                                candidate.getPeriodsInUkr().indexOf(SEPARATOR)))
                 > LIVE_IN_UKRAINE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(UKRAINE_CITIZEN);
