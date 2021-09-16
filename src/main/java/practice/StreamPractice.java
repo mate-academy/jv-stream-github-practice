@@ -11,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String MIN_EXCEPTION = "Can't get min value from list: ";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -26,7 +27,7 @@ public class StreamPractice {
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException(
-                                "Can't get min value from list: " + numbers));
+                                MIN_EXCEPTION + numbers));
     }
 
     /**
