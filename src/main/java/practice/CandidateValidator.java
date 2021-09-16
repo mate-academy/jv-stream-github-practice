@@ -9,10 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int TO_YEAR_IN_UKR = 1;
     private static final int MIN_YEARS_IN_UKR = 10;
     private static final String UKR_NATIONALITY = "Ukrainian";
+    private static final String SPLIT_SYMBOL = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] yearsInUkr = candidate.getPeriodsInUkr().split("-");
+        String[] yearsInUkr = candidate.getPeriodsInUkr().split(SPLIT_SYMBOL);
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= VALID_AGE
                 && candidate.getNationality().equals(UKR_NATIONALITY)
