@@ -10,8 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String EXCEPTION_MESSAGE = "Can't get min value "
-            + "from list: method_input_list";
+    private static final String EXCEPTION_MESSAGE = "Can't get min value from list";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -20,7 +19,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException(EXCEPTION_MESSAGE));
+                        new RuntimeException(EXCEPTION_MESSAGE + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
