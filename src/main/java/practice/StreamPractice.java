@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -13,8 +14,7 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
@@ -39,33 +39,37 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = new Predicate<>() {
+            @Override
+            public boolean test(Person person) {
+                if (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge) {
+                    return true;
+                }
+                return person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= maleToAge;
+            }
+        };
         return peopleList.stream()
-                .filter(person -> getWorkablePerson(person, fromAge, femaleToAge, maleToAge))
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
-    private boolean getWorkablePerson(Person person, int fromAge, int femaleToAge, int maleToAge) {
-        if (person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= fromAge && person.getAge() <= femaleToAge) {
-            return true;
-        }
-        return person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge;
-    }
-
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> personPredicate = new Predicate<>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge
+                        && !person.getCats().isEmpty();
+            }
+        };
         return peopleList.stream()
-                .filter(person -> getCatOwner(person, femaleAge))
+                .filter(personPredicate)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
-    }
-
-    private boolean getCatOwner(Person person, int femaleAge) {
-        return person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= femaleAge
-                && !person.getCats().isEmpty();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
