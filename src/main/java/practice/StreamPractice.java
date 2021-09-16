@@ -25,7 +25,9 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(s -> s % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get average of odd numbers from list: "
+                                + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,12 +41,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.WOMAN
-                        && i.getAge() >= fromAge
-                        && i.getAge() <= femaleToAge
-                        || i.getSex() == Person.Sex.MAN
-                        && i.getAge() >= fromAge
-                        && i.getAge() <= maleToAge)
+                .filter(i -> i.getAge() >= fromAge
+                        && ((i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge)
+                        || i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge))
                 .collect(Collectors.toList());
     }
 
