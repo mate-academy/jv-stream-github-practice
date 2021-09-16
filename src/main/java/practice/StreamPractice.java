@@ -27,7 +27,9 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get average of odd numbers from list: "
+                                + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,31 +41,18 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = new Predicate<>() {
-            @Override
-            public boolean test(Person person) {
-                if (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge) {
-                    return true;
-                }
-                return person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge;
-            }
-        };
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && ((person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
+                || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge);
         return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> personPredicate = new Predicate<>() {
-            @Override
-            public boolean test(Person person) {
-                return person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge
-                        && !person.getCats().isEmpty();
-            }
-        };
+        Predicate<Person> personPredicate = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge
+                && !person.getCats().isEmpty();
         return peopleList.stream()
                 .filter(personPredicate)
                 .map(Person::getCats)
