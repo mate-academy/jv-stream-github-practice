@@ -1,15 +1,13 @@
 package practice;
 
-import java.util.Collections;
-import java.util.List;
-import model.Candidate;
-import model.Person;
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import model.Candidate;
+import model.Person;
 
 public class StreamPractice {
     /**
@@ -25,7 +23,8 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: < " + numbers +  " >"));
+                .min().orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: < " + numbers + " >"));
     }
 
     /**
@@ -35,10 +34,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map( i -> {
+                .map(i -> {
                     if (i % 2 != 0) {
                         return numbers.get(i) - 1;
-                    } else return numbers.get(i);
+                    } else {
+                        return numbers.get(i);
+                    }
                 })
                 .filter(n -> n % 2 != 0)
                 .average().orElseThrow(NoSuchElementException::new);
