@@ -14,5 +14,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         boolean allowedAge = candidate.getAge() >= 35;
         return hasTenYearsInUkr && candidate.isAllowedToVote() && isUkrainian && allowedAge;
     }
-    //write your code here
 }
