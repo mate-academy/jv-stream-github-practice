@@ -25,17 +25,17 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public Predicate<Candidate> and(Predicate<? super Candidate> other) {
-        return Predicate.super.and(other);
+        return (t) -> test(t) && other.test(t);
     }
 
     @Override
     public Predicate<Candidate> negate() {
-        return Predicate.super.negate();
+        return (t) -> !test(t);
     }
 
     @Override
     public Predicate<Candidate> or(Predicate<? super Candidate> other) {
-        return Predicate.super.or(other);
+        return (t) -> test(t) || other.test(t);
     }
 
     private int parseDiffYears(String value) {
