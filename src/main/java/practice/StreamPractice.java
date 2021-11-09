@@ -33,12 +33,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 != 0)
-                        ? Integer.valueOf(numbers.get(i) - 1)
-                        : Integer.valueOf(numbers.get(i)))
-                .filter(i -> (int) i % 2 != 0)
-                .mapToInt(i -> (int) i)
-                .average().getAsDouble();
+                .map(i -> (i % 2 != 0) ? (numbers.get(i) - 1) : numbers.get(i))
+                .filter(i -> i % 2 != 0)
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -50,8 +48,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge)
@@ -70,8 +67,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
                             || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)))
@@ -84,8 +80,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(c -> c.getName())
@@ -106,9 +101,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates
-                .stream()
-                .filter(c -> new CandidateValidator().test(c))
+        return candidates.stream()
+                .filter(new CandidateValidator())
                 .map(c -> c.getName())
                 .sorted()
                 .collect(Collectors.toList());
