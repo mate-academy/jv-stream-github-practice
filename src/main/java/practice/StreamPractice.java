@@ -38,11 +38,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> numbers.get(i) - i % 2)
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(n -> n)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average from list: " + numbers));
     }
 
     /**
