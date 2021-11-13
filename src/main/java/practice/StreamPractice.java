@@ -23,8 +23,7 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .mapToInt(s -> s)
+                .mapToInt(Integer::parseInt)
                 .filter(s -> s % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
@@ -38,9 +37,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> numbers.get(i) - i % 2)
+                .mapToDouble(i -> numbers.get(i) - i % 2)
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(n -> n)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "Can't get average from list: " + numbers));
