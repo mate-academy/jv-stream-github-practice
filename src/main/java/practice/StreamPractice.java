@@ -23,8 +23,7 @@ public class StreamPractice {
                 .flatMap(Collection::stream)
                 .mapToInt(s -> Integer.parseInt(s))
                 .filter(n -> n % 2 == 0)
-                .sorted()
-                .findFirst()
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
@@ -112,7 +111,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates
                 .stream()
-                .filter(c -> new CandidateValidator().validate(c))
+                .filter(new CandidateValidator())
                 .map(c -> c.getName())
                 .sorted()
                 .collect(Collectors.toList());
