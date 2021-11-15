@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -12,7 +11,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,13 +21,12 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(()
-                        -> new RuntimeException(EXCEPTION_MESSAGE + numbers));
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -38,13 +35,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-
         return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(()
-                        -> new NoSuchElementException(EXCEPTION_MESSAGE + numbers));
+                .getAsDouble();
     }
 
     /**
@@ -113,7 +108,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
