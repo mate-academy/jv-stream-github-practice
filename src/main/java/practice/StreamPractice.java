@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -56,9 +57,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> isValidData = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge
+                && person.getSex() == Person.Sex.MAN;
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge
-                        && p.getSex() == Person.Sex.MAN)
+                .filter(isValidData)
                 .collect(Collectors.toList());
     }
 
@@ -74,10 +77,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isValidData = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
+                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge
-                        || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
+                .filter(isValidData)
                 .collect(Collectors.toList());
     }
 
@@ -87,9 +91,10 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> isValidData = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= femaleAge)
+                .filter(isValidData)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
