@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -11,11 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int ZERO = 0;
-    private static final int ONE = 1;
-    private static final int TWO = 2;
     private final Predicate<Candidate> candidateValidator = new CandidateValidator();
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -28,7 +23,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
-                .filter(el -> el % TWO == ZERO)
+                .filter(el -> el % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: " + numbers));
@@ -40,12 +35,11 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(ZERO, numbers.size())
-                .map(n -> n % TWO == ONE ? numbers.get(n) - ONE : numbers.get(n))
-                .filter(el -> el % TWO == ONE)
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(i -> numbers.get(i) - i % 2)
+                .filter(el -> el % 2 == 1)
                 .average()
-                .orElseThrow(()
-                        -> new NoSuchElementException("No such elementsd for " + numbers));
+                .getAsDouble();
     }
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -92,9 +86,10 @@ public class StreamPractice {
      */
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> predicate = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(el -> el.getSex() == Person.Sex.WOMAN
-                        && el.getAge() >= femaleAge)
+                .filter(predicate)
                 .flatMap(el -> el.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
