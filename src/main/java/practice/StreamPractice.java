@@ -77,7 +77,6 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
-
     }
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
