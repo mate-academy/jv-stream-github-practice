@@ -7,8 +7,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_CANDIDATE_AGE = 35;
     private static final int MIN_CANDIDATE_LIVE_PERIOD_IN_COUNTRY = 10;
     private static final String REQUIRED_CANDIDATE_NATIONALITY = "Ukrainian";
-    private static final int ZERO_DATE_VALUE_INDEX = 0;
-    private static final int FIRST_DATE_VALUE_INDEX = 1;
+    private static final int PERIOD_START_DATE_INDEX = 0;
+    private static final int PERIOD_END_DATE_INDEX = 1;
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -25,8 +25,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split("-");
-        int periodStart = Integer.parseInt(years[FIRST_DATE_VALUE_INDEX]);
-        int periodEnd = Integer.parseInt(years[ZERO_DATE_VALUE_INDEX]);
+        int periodStart = Integer.parseInt(years[PERIOD_END_DATE_INDEX]);
+        int periodEnd = Integer.parseInt(years[PERIOD_START_DATE_INDEX]);
         return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(REQUIRED_CANDIDATE_NATIONALITY)
