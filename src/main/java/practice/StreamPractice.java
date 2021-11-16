@@ -10,7 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final Predicate<Candidate> candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,7 +22,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
-                .filter(el -> el % 2 == 0)
+                .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: " + numbers));
@@ -37,7 +36,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .mapToDouble(i -> numbers.get(i) - i % 2)
-                .filter(el -> el % 2 == 1)
+                .filter(num -> num % 2 == 1)
                 .average()
                 .getAsDouble();
     }
@@ -89,7 +88,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(predicate)
-                .flatMap(el -> el.getCats().stream())
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -107,6 +106,7 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        final Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)

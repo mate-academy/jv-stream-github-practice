@@ -4,9 +4,9 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int CANDIDATE_AGE = 35;
-    private static final int CANDIDATE_LIVE_PERIOD_IN_COUNTRY = 10;
-    private static final String CANDIDATE_NATIONALITY = "Ukrainian";
+    private static final int MIN_CANDIDATE_AGE = 35;
+    private static final int MIN_CANDIDATE_LIVE_PERIOD_IN_COUNTRY = 10;
+    private static final String REQUIRED_CANDIDATE_NATIONALITY = "Ukrainian";
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -23,11 +23,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split("-");
-        int periodStart = Integer.parseInt(years[1]);
-        int periodEnd = Integer.parseInt(years[0]);
-        return candidate.getAge() >= CANDIDATE_AGE
+        final int periodStart = Integer.parseInt(years[1]);
+        final int periodEnd = Integer.parseInt(years[0]);
+        return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
-                && periodStart - periodEnd >= CANDIDATE_LIVE_PERIOD_IN_COUNTRY;
+                && candidate.getNationality().equals(REQUIRED_CANDIDATE_NATIONALITY)
+                && periodStart - periodEnd >= MIN_CANDIDATE_LIVE_PERIOD_IN_COUNTRY;
     }
 }
