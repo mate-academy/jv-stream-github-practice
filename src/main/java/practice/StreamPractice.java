@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -20,11 +19,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(e -> e.split(","))
-                .flatMap(l -> Arrays.stream(l))
-                .map(e -> Integer.parseInt(e))
+                .flatMap(l -> Arrays.stream(l.split(",")))
+                .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
-                .mapToInt(e -> e)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -37,7 +34,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> numbers.get(i) - i % 2)
                 .filter(e -> e % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -53,7 +50,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(e -> e.getSex().equals(Person.Sex.MAN)
+                .filter(e -> e.getSex() == Person.Sex.MAN
                         && e.getAge() >= fromAge && e.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -71,14 +68,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(e -> {
-                    if (e.getAge() >= fromAge && e.getSex().equals(Person.Sex.MAN)
-                            && e.getAge() <= maleToAge) {
-                        return true;
-                    }
-                    return e.getAge() >= fromAge && e.getSex().equals(Person.Sex.WOMAN)
-                            && e.getAge() <= femaleToAge;
-                })
+                .filter(e -> e.getAge() >= fromAge && e.getSex() == Person.Sex.WOMAN
+                        && e.getAge() <= femaleToAge
+                        || e.getAge() >= fromAge && e.getSex() == Person.Sex.MAN
+                        && e.getAge() <= maleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -89,9 +82,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(e -> e.getAge() >= femaleAge && e.getSex().equals(Person.Sex.WOMAN))
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .filter(e -> e.getAge() >= femaleAge && e.getSex() == Person.Sex.WOMAN)
+                .flatMap(e -> e.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -110,7 +102,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(e -> new CandidateValidator().test(e))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
