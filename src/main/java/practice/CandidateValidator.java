@@ -1,5 +1,11 @@
 package practice;
 
-public class CandidateValidator {
-    //write your code here
+import java.util.function.Predicate;
+
+public class CandidateValidator implements Predicate<String> {
+    @Override
+    public boolean test(String s) {
+        String[] strings = s.split("-");
+        return Integer.parseInt(strings[1]) - Integer.parseInt(strings[0 ]) > 10;
+    }
 }
