@@ -1,8 +1,13 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +19,15 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(e -> e.split(","))
+                .flatMap(l -> Arrays.stream(l))
+                .map(e -> Integer.parseInt(e))
+                .filter(e -> e % 2 == 0)
+                .mapToInt(e -> e)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -23,7 +36,19 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.toArray().length)
+                .mapToObj(i -> {
+                    if (i % 2 == 1) {
+                        return numbers.get(i) - 1;
+                    }
+                    return numbers.get(i);
+                })
+                .collect(Collectors.toList())
+                .stream()
+                .filter(e -> e % 2 == 1)
+                .mapToInt(e -> e)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,7 +60,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(e -> e.getSex().equals(Person.Sex.MAN)
+                        && e.getAge() >= fromAge && e.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +78,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(e -> {
+                    if (e.getAge() >= fromAge && e.getSex().equals(Person.Sex.MAN)
+                            && e.getAge() <= maleToAge) {
+                        return true;
+                    }
+                    return e.getAge() >= fromAge && e.getSex().equals(Person.Sex.WOMAN)
+                            && e.getAge() <= femaleToAge;
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +96,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(e -> e.getAge() >= femaleAge && e.getSex().equals(Person.Sex.WOMAN))
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +117,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(e -> new CandidateValidator().test(e))
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
