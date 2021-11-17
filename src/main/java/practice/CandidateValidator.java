@@ -11,7 +11,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int candidateYearsLivedInTheState = calculateYearsLivedInTheState(candidate.getPeriodsInUkr());
+        int candidateYearsLivedInTheState = calculateYearsLivedInTheState(
+                candidate.getPeriodsInUkr());
         return candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidateYearsLivedInTheState >= MIN_YEARS_LIVED_IN_THE_STATE
                 && candidate.getAge() >= MIN_ELIGIBLE_FOR_ELECTION_AGE
