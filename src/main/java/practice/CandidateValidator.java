@@ -19,9 +19,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int periodInUkraine(String period) {
-        String[] periodAsArray = period.split("-");
-        int periodFrom = Integer.parseInt(periodAsArray[PERIOD_FROM_INDEX]);
-        int periodTo = Integer.parseInt(periodAsArray[PERIOD_TO_INDEX]);
+        String[] years = period.split("-");
+        int periodFrom = Integer.parseInt(years[PERIOD_FROM_INDEX]);
+        int periodTo = Integer.parseInt(years[PERIOD_TO_INDEX]);
         return periodTo - periodFrom;
     }
 }
