@@ -11,17 +11,17 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int candidateYearsLivedInTheState = yearsLivedInTheState(candidate.getPeriodsInUkr());
+        int candidateYearsLivedInTheState = calculateYearsLivedInTheState(candidate.getPeriodsInUkr());
         return candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidateYearsLivedInTheState >= MIN_YEARS_LIVED_IN_THE_STATE
                 && candidate.getAge() >= MIN_ELIGIBLE_FOR_ELECTION_AGE
                 && candidate.isAllowedToVote();
     }
 
-    private int yearsLivedInTheState(String sting) {
-        return Arrays.stream(sting.split("\\D"))
+    private int calculateYearsLivedInTheState(String periodsInUkr) {
+        return Arrays.stream(periodsInUkr.split("\\D"))
                 .map(Integer::parseInt)
-                .reduce((i1, i2) -> i2 - i1)
+                .reduce((yearFrom, yearTo) -> yearTo - yearFrom)
                 .orElse(0);
     }
 }
