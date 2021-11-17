@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
@@ -15,6 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= REQUIRED_AGE
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidate.isAllowedToVote()
-                && Integer.parseInt(split[1]) - Integer.parseInt(split[0]) >= REQUIRED_PERIOD_IN_UKRAINE;
+                && Integer.parseInt(split[1]) - Integer.parseInt(split[0])
+                >= REQUIRED_PERIOD_IN_UKRAINE;
     }
 }
