@@ -3,9 +3,9 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,13 +21,11 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger atomicInteger = new AtomicInteger(0);
-
-        return numbers.stream()
-                .map(n -> (atomicInteger.getAndIncrement() % 2 == 0 ? n : n - 1))
-                .filter(n -> n % 2 == 1)
-                .mapToDouble(n -> n)
-                .average().orElseThrow(NoSuchElementException::new);
+        return IntStream.range(0, numbers.size())
+          .map(i -> numbers.get(i) - i % 2)
+          .filter(number -> number % 2 != 0)
+          .average()
+          .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -49,7 +47,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
