@@ -18,8 +18,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean checkPeriod(String period) {
         String[] split = period.split("-");
-        return Integer.parseInt(split[1])
-                - Integer.parseInt(split[0])
+        int yearFrom = Integer.parseInt(split[0]);
+        int yearTo = Integer.parseInt(split[1]);
+        return yearTo
+                - yearFrom
                 >= MIN_LIVE_IN_UA;
     }
 }
