@@ -2,9 +2,8 @@ package practice;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -12,7 +11,6 @@ import model.Person;
 public class StreamPractice {
     private static final int ODD = 2;
     private static final int ZERO = 0;
-    private int index;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -39,17 +37,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        index = ZERO;
-        Function<Integer, Integer> func = num -> {
-            if (index % ODD != ZERO) {
-                num--;
-            }
-            index++;
-            return num;
-        };
-        return numbers.stream()
-                .map(func).filter(num -> num % ODD != ZERO)
-                .mapToInt(Integer::intValue).average().getAsDouble();
+        return IntStream.range(0, numbers.size())
+                .map(num -> num % 2 == 0 ? numbers.get(num) : numbers.get(num) - 1)
+                .filter(num -> num % ODD != ZERO)
+                .average().getAsDouble();
     }
 
     /**
@@ -79,19 +70,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> customPredicate = (person) -> {
-            if (person.getSex() == Person.Sex.WOMAN) {
-                if (person.getAge() >= fromAge && person.getAge() <= femaleToAge) {
-                    return true;
-                }
-                return false;
-            }
-            if (person.getAge() >= fromAge && person.getAge() <= maleToAge) {
-                return true;
-            }
-            return false;
-        };
-        return peopleList.stream().filter(customPredicate).collect(Collectors.toList());
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.WOMAN
+                ? person.getAge() <= femaleToAge : person.getAge() <= maleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
