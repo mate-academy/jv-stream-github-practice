@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -54,8 +53,7 @@ public class StreamPractice {
                 && p.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(validWomen)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(x -> x.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
