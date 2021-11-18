@@ -11,8 +11,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int years = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[FirstElement])
-                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[SecondElement]);
+        int years = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[SecondElement])
+                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[FirstElement ]);
         if (candidate.getAge() >= AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian") && years >= LIVE_UKRAIN) {
             return true;
