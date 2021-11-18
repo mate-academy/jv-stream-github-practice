@@ -12,7 +12,8 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(e -> Arrays.stream(e.split(",")))
-                .mapToInt(Integer::parseInt).filter(s -> s % 2 == 0)
+                .mapToInt(Integer::parseInt)
+                .filter(s -> s % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -20,9 +21,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(e -> e % 2 != 0 ? numbers.get(e) - 1 : numbers.get(e))
+                .mapToDouble(e -> numbers.get(e) - e % 2)
                 .filter(e -> e % 2 != 0)
-                .average().orElseThrow();
+                .average().getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
