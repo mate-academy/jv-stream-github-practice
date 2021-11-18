@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> predicate = person -> person.getSex().equals(Person.Sex.MAN)
+        Predicate<Person> predicate = person -> person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
         return peopleList.stream()
@@ -70,9 +69,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = person -> (person.getSex().equals(Person.Sex.WOMAN)
+        Predicate<Person> predicate = person -> (person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
-                || (person.getSex().equals(Person.Sex.MAN)
+                || (person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge && person.getAge() <= maleToAge);
         return peopleList.stream()
                 .filter(predicate)
@@ -89,8 +88,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(predicate)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
