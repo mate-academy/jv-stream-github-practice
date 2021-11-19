@@ -69,14 +69,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> isWorkable = new Predicate<Person>() {
-            @Override
-            public boolean test(Person person) {
-                return person.getAge() >= fromAge
-                        && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
-                        || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
-            }
-        };
+        Predicate<Person> isWorkable = person ->
+                person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
+                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(isWorkable)
                 .collect(Collectors.toList());
