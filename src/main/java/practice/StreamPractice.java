@@ -69,13 +69,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = person -> (person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
-                || (person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge);
+        Predicate<Person> predicate = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
+                || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge);
         return peopleList.stream()
                 .filter(predicate)
-                .collect(Collectors.toList()); // даже не спрашивайте как сделать это красиво
+                .collect(Collectors.toList());
     }
 
     /**
@@ -106,10 +105,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return (candidates.stream()
+        return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
 }
