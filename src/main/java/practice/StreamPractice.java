@@ -20,7 +20,7 @@ public class StreamPractice {
                 .min()
                 .orElseThrow(()
                         -> new NoSuchElementException("Can't get min value from list:"
-                        + numbers.toString()));
+                        + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
