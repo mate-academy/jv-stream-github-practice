@@ -1,11 +1,9 @@
 package practice;
 
+import java.util.function.Predicate;
 import model.Candidate;
 
-import java.util.function.Predicate;
-
 public class CandidateValidator implements Predicate<Candidate> {
-    //write your code here
     private static final String NEEDED_NATIONALITY = "Ukrainian";
     private static final int NEEDED_AGE = 35;
     private static final int NEEDED_PERIOD_IN_UKRAINE = 10;
