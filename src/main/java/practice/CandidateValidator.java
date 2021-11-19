@@ -7,6 +7,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEARS_TO_LIVE_IN_UA = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final int REQUIRED_MIN_AGE = 35;
+    private static final int INDEX_FROM = 0;
+    private static final int INDEX_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,10 +20,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean isValidPeriod(String period) {
         String[] split = period.split("-");
-        final int indexFrom = 0;
-        final int indexTo = 1;
-        int yearFrom = Integer.parseInt(split[indexFrom]);
-        int yearTo = Integer.parseInt(split[indexTo]);
+
+        int yearFrom = Integer.parseInt(split[INDEX_FROM]);
+        int yearTo = Integer.parseInt(split[INDEX_TO]);
         return yearTo - yearFrom >= MIN_YEARS_TO_LIVE_IN_UA;
     }
 }
