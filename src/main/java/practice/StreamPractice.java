@@ -11,7 +11,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
@@ -19,7 +18,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                        + "< Here is our input 'numbers"));
+                        + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -28,7 +27,6 @@ public class StreamPractice {
                 .filter(i -> i % 2 != 0)
                 .average()
                 .getAsDouble();
-
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
