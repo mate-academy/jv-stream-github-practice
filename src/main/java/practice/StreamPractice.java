@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -38,7 +37,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't find elements"));
+                .getAsDouble();
 
     }
 
@@ -70,10 +69,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(a -> a.getSex() == Person.Sex.MAN
-                    && a.getAge() >= fromAge && a.getAge() <= maleToAge
-                    || a.getSex() == Person.Sex.WOMAN
-                    && a.getAge() >= fromAge && a.getAge() <= femaleToAge)
+                .filter(a -> a.getAge() >= fromAge
+                        && (a.getSex() == Person.Sex.MAN
+                        && a.getAge() <= maleToAge
+                        || a.getSex() == Person.Sex.WOMAN
+                        && a.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
