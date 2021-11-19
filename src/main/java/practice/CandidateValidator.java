@@ -19,7 +19,5 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
                 && timeInUkraine >= MIN_TIME_IN_UKRAINE
                 && candidate.isAllowedToVote();
-
     }
-
 }
