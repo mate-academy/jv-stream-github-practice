@@ -43,7 +43,6 @@ public class StreamPractice {
                 || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(workablePerson)
-                .filter(workablePerson)
                 .collect(Collectors.toList());
     }
 
