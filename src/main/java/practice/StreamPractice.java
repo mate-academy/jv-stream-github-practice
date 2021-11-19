@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,9 +20,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -68,11 +69,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
-                .filter(person ->
-                        person.getAge() >= fromAge
+        Predicate<Person> isWorkable = new Predicate<Person>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getAge() >= fromAge
                         && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
-                        || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge))
+                        || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
+            }
+        };
+        return peopleList.stream()
+                .filter(isWorkable)
                 .collect(Collectors.toList());
     }
 
