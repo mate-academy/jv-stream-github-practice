@@ -25,9 +25,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) - 1)
+                .map(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(i -> i % 2 != 0)
-                .mapToInt(Integer::valueOf)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers"));
     }
