@@ -1,9 +1,9 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,11 +22,11 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-        .map(number -> List.of(number.split(",")))
-        .flatMap(Collection::stream)
-        .mapToInt(Integer::parseInt)
-        .filter(number -> number % 2 == 0).min()
-        .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .flatMap(number -> Stream.of(number.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(number -> number % 2 == 0).min()
+                .orElseThrow(() ->
+                new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -36,8 +36,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(num -> num % 2 == 0 ? numbers.get(num) : numbers.get(num) - 1)
-                .filter(num -> num % 2 != 0)
+                .map(number -> numbers.get(number) - number % 2)
+                .filter(number -> number % 2 != 0)
                 .average().getAsDouble();
     }
 
@@ -70,8 +70,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
-                && (person.getSex() == Person.Sex.WOMAN
-                ? person.getAge() <= femaleToAge : person.getAge() <= maleToAge))
+                        && (person.getSex() == Person.Sex.WOMAN
+                        ? person.getAge() <= femaleToAge : person.getAge() <= maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -82,11 +82,11 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-        .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() > femaleAge)
-        .map(Person::getCats)
-        .flatMap(Collection::stream)
-        .map(Cat::getName)
-        .collect(Collectors.toList());
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() > femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -103,7 +103,10 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
-        return candidates.stream().filter(validator)
-                .map(Candidate::getName).sorted().collect(Collectors.toList());
+        return candidates.stream()
+                .filter(validator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
