@@ -3,12 +3,13 @@ package practice;
 import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
+
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final String REQUIRED_NATIONALITY = "Ukrainian";
-    public static final int MIN_ELIGIBLE_AGE = 35;
-    public static final int MIN_PERIOD_IN_COUNTRY = 10;
-    public static final int PERIOD_START_YEAR_INDEX = 0;
-    public static final int PERIOD_END_YEAR_INDEX = 1;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int MIN_ELIGIBLE_AGE = 35;
+    private static final int MIN_PERIOD_IN_COUNTRY = 10;
+    private static final int PERIOD_START_YEAR_INDEX = 0;
+    private static final int PERIOD_END_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
