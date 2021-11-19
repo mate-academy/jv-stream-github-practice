@@ -13,7 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && (getResidencyPeriod(candidate) > 9);
+                && (getResidencyPeriod(candidate) >= RESIDENCY_PERIOD);
     }
     
     private int getResidencyPeriod(Candidate candidate) {
