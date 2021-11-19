@@ -23,8 +23,7 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .sorted()
-                .findFirst()
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -85,8 +84,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
