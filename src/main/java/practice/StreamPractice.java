@@ -52,7 +52,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
@@ -70,7 +71,8 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(person -> person.getAge() >= fromAge
                         && (person.getSex() == Person.Sex.WOMAN
                         ? person.getAge() <= femaleToAge : person.getAge() <= maleToAge))
@@ -83,7 +85,8 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() > femaleAge)
                 .flatMap(person -> person.getCats().stream())
@@ -105,7 +108,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
-        return candidates.stream()
+        return candidates
+                .stream()
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
