@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -94,9 +95,8 @@ public class StreamPractice {
                 && (p.getCats() != null);
         return peopleList.stream()
                 .filter(predicate)
-                .map(p -> p.getCats())
-                .flatMap(x -> x.stream())
-                .map(x -> x.getName())
+                .flatMap(p -> p.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
