@@ -72,12 +72,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> predicate = p -> 
-                ((p.getSex() == Person.Sex.MAN) 
-                && (p.getAge() >= fromAge)
-                && (p.getAge() <= maleToAge)) 
-                || (p.getSex() == Person.Sex.WOMAN)
-                && (p.getAge() >= fromAge) 
-                && (p.getAge() <= femaleToAge);
+                p.getAge() >= fromAge
+                && ((p.getSex() == Person.Sex.MAN
+                && p.getAge() <= maleToAge) 
+                || (p.getSex() == Person.Sex.WOMAN
+                && p.getAge() <= femaleToAge));
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
@@ -113,9 +112,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(predicate)
                 .map(p -> p.getName())
                 .sorted()
                 .collect(Collectors.toList());

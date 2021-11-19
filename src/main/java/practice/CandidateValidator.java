@@ -15,11 +15,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && (getResidencyPeriod(candidate) >= REQUIRED_RESIDENCY_PERIOD);
+                && getResidencyPeriod(candidate) >= REQUIRED_RESIDENCY_PERIOD;
     }
     
     private int getResidencyPeriod(Candidate candidate) {
-        
         String[] years = candidate.getPeriodsInUkr().split("-");
         int realResidencyPeriod = Integer.parseInt(years[PERIOD_END_DATE_INDEX])
                 - Integer.parseInt(years[PERIOD_START_DATE_INDEX]);
