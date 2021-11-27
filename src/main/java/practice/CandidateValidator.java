@@ -19,4 +19,3 @@ public class CandidateValidator implements Predicate<Candidate> {
         return trueCandidate;
     }
 }
-
