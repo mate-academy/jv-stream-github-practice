@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -12,14 +11,14 @@ import model.Person;
 
 public class StreamPractice {
 
-    public int findMinEvenNumber(List<String> numbers) { //???
-        Optional<Integer> minInt = numbers.stream()
+    public int findMinEvenNumber(List<String> numbers) {
+        return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Integer::compareTo);
-        return minInt.orElseThrow(()
-                -> new RuntimeException("Can't get min value from list: " + numbers));
+                .min(Integer::compareTo)
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -42,20 +41,18 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= fromAge
+                .filter(person -> person.getAge() >= fromAge
+                        && (person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() <= maleToAge
                         || person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)
+                        && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= femaleAge
-                        && !person.getCats().isEmpty())
+                        && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
