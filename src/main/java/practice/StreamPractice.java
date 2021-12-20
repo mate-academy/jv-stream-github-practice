@@ -1,12 +1,11 @@
 package practice;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
-import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -18,7 +17,7 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-         return numbers
+        return numbers
                 .stream()
                 .map(e -> e.split(","))
                 .flatMap(e -> Arrays.stream(e))
@@ -35,9 +34,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         IntStream.range(0, numbers.size())
-            .forEach(index -> {
-                if ( index % 2 != 0 ) numbers.set(index, numbers.get(index) - 1);
-            });
+                .forEach(index -> {
+                    if (index % 2 != 0) {
+                        numbers.set(index, numbers.get(index) - 1);
+                    }
+                });
         return numbers.stream()
                 .filter(e -> e % 2 != 0)
                 .mapToDouble(e -> e)
