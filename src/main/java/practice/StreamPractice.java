@@ -74,11 +74,14 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> {
                     if (person.getSex() == Person.Sex.MAN) {
-
+                        return person.getAge() >= fromAge
+                                && person.getAge() <= maleToAge;
                     } else {
-
+                        return person.getAge() >= fromAge
+                                && person.getAge() <= femaleToAge;
                     }
-                });
+                })
+                .collect(Collectors.toList());
     }
 
     /**
