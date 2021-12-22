@@ -40,7 +40,7 @@ public class StreamPractice {
                .filter(e -> e % 2 != 0)
                .mapToDouble(e -> e)
                .average()
-               .orElseThrow(() -> new NoSuchElementException());
+               .orElseThrow();
     }
 
     /**
