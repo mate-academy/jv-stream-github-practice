@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -84,8 +85,8 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(l -> l.stream().map(c -> c.getName()))
+                .flatMap(p -> p.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
