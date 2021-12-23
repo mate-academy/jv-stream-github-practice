@@ -4,15 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-
-    private Consumer<Integer> integerConsumer;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
