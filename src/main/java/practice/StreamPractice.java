@@ -1,18 +1,13 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Person;
 
@@ -29,7 +24,6 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt optionalInt = numbers.stream()
-                //.flatMapToInt(s -> Arrays.asList(s.split(",")).stream().mapToInt(Integer::parseInt))
                 .map(s -> Arrays.asList(s.split(",")))
                 .flatMapToInt(l -> l.stream().mapToInt(s -> Integer.parseInt(s)))
                 .filter(i -> i % 2 == 0)
