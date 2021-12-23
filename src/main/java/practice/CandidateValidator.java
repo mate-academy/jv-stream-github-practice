@@ -11,8 +11,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && Objects.equals(candidate.getNationality(), "Ukrainian")
                 && checkPeriod(candidate.getPeriodsInUkr());
-        /*&& ((Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]))
-        - (Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0])) >= 10);*/
     }
 
     private boolean checkPeriod(String period) {
