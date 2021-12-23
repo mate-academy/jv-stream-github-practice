@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,16 +22,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt optionalInt = numbers.stream()
+        return numbers.stream()
                 .map(s -> Arrays.asList(s.split(",")))
                 .flatMapToInt(l -> l.stream().mapToInt(s -> Integer.parseInt(s)))
                 .filter(i -> i % 2 == 0)
-                .min();
-        if (optionalInt.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
-        } else {
-            return optionalInt.getAsInt();
-        }
+                .min()
+                .orElseThrow((() -> new NoSuchElementException(
+                "Can't get min value from list " + numbers)));
     }
 
     /**
