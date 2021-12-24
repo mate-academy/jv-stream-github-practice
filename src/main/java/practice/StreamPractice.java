@@ -19,14 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        int i = numbers.stream()
+        return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
-        return i;
     }
 
     /**
@@ -35,12 +34,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        double asDouble = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToDouble(i -> numbers.get(i) - i % 2)
                 .filter(i -> i % 2 != 0)
                 .average()
                 .getAsDouble();
-        return asDouble;
     }
 
     /**
@@ -55,10 +53,9 @@ public class StreamPractice {
         Predicate<Person> personPredicate = p -> p.getAge() >= fromAge
                 && p.getAge() <= toAge && p.getSex() == Person.Sex.MAN;
 
-        List<Person> menByAgeFilter = peopleList.stream()
+        return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
-        return menByAgeFilter;
     }
 
     /**
@@ -77,10 +74,9 @@ public class StreamPractice {
                 && (p.getAge() <= femaleToAge && p.getSex() == Person.Sex.WOMAN
                 || p.getAge() <= maleToAge && p.getSex() == Person.Sex.MAN);
 
-        List<Person> personsByAgeFilter = peopleList.stream()
+        return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
-        return personsByAgeFilter;
 
     }
 
@@ -90,13 +86,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        List<String> catNames = peopleList.stream()
+        return peopleList.stream()
                 .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
-        return catNames;
     }
 
     /**
