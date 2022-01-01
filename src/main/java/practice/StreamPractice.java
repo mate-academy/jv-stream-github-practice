@@ -1,8 +1,14 @@
 package practice;
 
-import java.util.Collections;
+import static java.util.stream.IntStream.range;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +20,15 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(s -> s.split(","))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .sorted()
+                .findFirst()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list:" + numbers));
     }
 
     /**
@@ -23,7 +37,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
+                .filter(i -> i % 2 != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,7 +53,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> customPredicate = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge && person.getSex().equals(Person.Sex.MAN);
+
+        return peopleList.stream()
+                .filter(customPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +73,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && (person.getAge() <= maleToAge && person.getSex().equals(Person.Sex.MAN)
+                || person.getAge() <= femaleToAge && person.getSex().equals(Person.Sex.WOMAN));
+
+        return peopleList.stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +88,16 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> peoplePredicate = person -> person.getAge() >= femaleAge
+                && person.getSex().equals(Person.Sex.WOMAN)
+                && !person.getCats().isEmpty();
+
+        return peopleList.stream()
+                .filter(peoplePredicate)
+                .map(Person::getCats)
+                .flatMap(List::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -74,7 +112,21 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        Predicate<Candidate> validatePredicate = candidate -> {
+            int one = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
+            int two = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]);
+            return two - one >= 10
+                    && candidate.getAge() >= 35
+                    && candidate.isAllowedToVote()
+                    && candidate.getNationality().equals("Ukrainian");
+        };
+
+        return candidates.stream()
+                .filter(validatePredicate)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
