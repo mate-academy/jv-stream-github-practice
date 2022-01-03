@@ -21,6 +21,7 @@ public class StreamPractice {
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
+
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
@@ -36,6 +37,7 @@ public class StreamPractice {
                         && e.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
+
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
