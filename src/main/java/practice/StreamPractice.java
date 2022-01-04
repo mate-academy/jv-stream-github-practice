@@ -4,7 +4,6 @@ import static java.util.stream.IntStream.range;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
@@ -12,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,8 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compareTo)
@@ -40,7 +39,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -88,8 +87,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> peoplePredicate = person -> person.getAge() >= femaleAge
-                && person.getSex().equals(Person.Sex.WOMAN)
-                && !person.getCats().isEmpty();
+                && person.getSex().equals(Person.Sex.WOMAN);
 
         return peopleList.stream()
                 .filter(peoplePredicate)
@@ -113,17 +111,8 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> validatePredicate = candidate -> {
-            int one = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
-            int two = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]);
-            return two - one >= 10
-                    && candidate.getAge() >= 35
-                    && candidate.isAllowedToVote()
-                    && candidate.getNationality().equals("Ukrainian");
-        };
-
         return candidates.stream()
-                .filter(validatePredicate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
