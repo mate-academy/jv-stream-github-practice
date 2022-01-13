@@ -37,7 +37,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.iterate(0, i -> i < numbers.size(), i -> i++)
+//        return IntStream.iterate(0, i -> i < numbers.size(), i -> i++)
+        return IntStream.iterate(0, i -> i + 1)
+                .limit(numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(i -> i % 2 != 0)
                 .average().orElseThrow(() -> new NoSuchElementException());
@@ -53,6 +55,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.MAN)
                 .filter(p -> p.getAge() >= fromAge)
                 .filter(p -> p.getAge() <= toAge)
                 .collect(toList());
@@ -72,7 +75,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
-                .filter(p -> p.getSex() == Person.Sex.WOMAN ? p.getAge() <= 55 : p.getAge() <= 60)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN ? p.getAge() <= femaleToAge
+                        : p.getAge() <= maleToAge)
                 .collect(toList());
     }
 
@@ -84,7 +88,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN)
-                .filter(p -> p.getAge() <= femaleAge)
+                .filter(p -> p.getAge() >= femaleAge)
                 .map(p -> p.getCats())
                 .flatMap(List::stream)
                 .map(Cat::getName)

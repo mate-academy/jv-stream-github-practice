@@ -31,8 +31,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean periodsIsInvalid(String periodsInUkr) {
         try {
-            int startPeriod = Integer.parseInt(periodsInUkr.substring(0,3));
-            int endPeriod = Integer.parseInt(periodsInUkr.substring(5,8));
+            int startPeriod = Integer.parseInt(periodsInUkr.substring(0,4));
+            int endPeriod = Integer.parseInt(periodsInUkr.substring(5,9));
             if (endPeriod - startPeriod < PERIOD_IN_UKR_LIMIT) {
                 return true;
             }
