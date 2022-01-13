@@ -3,11 +3,9 @@ package practice;
 import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,8 +25,8 @@ public class StreamPractice {
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: " +
-                        "< Here is our input 'numbers' >"));
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + "< Here is our input 'numbers' >"));
     }
 
     /**
@@ -37,7 +35,6 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-//        return IntStream.iterate(0, i -> i < numbers.size(), i -> i++)
         return IntStream.iterate(0, i -> i + 1)
                 .limit(numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
