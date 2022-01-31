@@ -1,9 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -17,17 +18,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(w -> w.split(","))
-                    .flatMap(Arrays::stream)
-                    .mapToInt(Integer::parseInt)
-                    .filter(i -> i % 2 == 0)
-                    .min()
-                    .orElseThrow();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list");
-        }
+        return numbers.stream()
+                //.map(w -> w.split(","))
+                //.flatMap(array -> Arrays.stream(array))
+                .flatMap(n -> Arrays.stream(n.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -36,16 +34,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        return numbers.stream()
-                .filter(i -> i % 2 != 0)
-                .mapToInt(Integer::intValue)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -94,8 +87,9 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                //.map(person -> person.getCats())
+                //.flatMap(cats -> cats.stream())
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
