@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -37,7 +36,7 @@ public class StreamPractice {
                .filter(i -> i % 2 == 1)
                .mapToInt(Integer::intValue)
                .average()
-               .orElseThrow(() -> new NoSuchElementException("No element founded"));
+               .orElseThrow();
 
     }
 
