@@ -5,9 +5,9 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final String nationality = "Ukrainian";
-    private final int lowAge = 35;
-    private final int liveInCountry = 10;
+    static final String NATIONALITY = "Ukrainian";
+    static final int LOW_AGE = 35;
+    static final int LIVE_IN_COUNTRY = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,9 +17,9 @@ public class CandidateValidator implements Predicate<Candidate> {
                  .reduce((s1,s2) -> s2 - s1)
                  .map(Math::abs)
                  .get();
-        return candidate.getAge() >= lowAge
-                && candidate.getNationality().equals(nationality)
-                && liveInUkraine >= liveInCountry
+        return candidate.getAge() >= LOW_AGE
+                && candidate.getNationality().equals(NATIONALITY)
+                && liveInUkraine >= LIVE_IN_COUNTRY
                 && candidate.isAllowedToVote();
     }
 }
