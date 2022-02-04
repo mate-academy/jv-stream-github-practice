@@ -50,19 +50,14 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
-     * or to `femaleToAge` (for women) inclusively.
-     * <p>
-     * Example: select people of working age
-     * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
-     */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> findWomenAndMenByAge = p -> p.getAge() >= fromAge
+                && (p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge
+                || p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge);
+        return peopleList.stream()
+                .filter(findWomenAndMenByAge)
+                .collect(Collectors.toList());
     }
 
     /**
