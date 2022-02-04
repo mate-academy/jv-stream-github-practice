@@ -28,7 +28,7 @@ public class StreamPractice {
                 -> new NoSuchElementException("There is not odd elements in list: " + numbers);
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
+                .filter(i -> i % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
                 .orElseThrow(newNoSuchElementException);
