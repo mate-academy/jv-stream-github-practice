@@ -8,12 +8,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_TIME_IN_UKRAINE = 10;
     @Override
     public boolean test(Candidate candidate) {
-        int toInUkraineYear = Integer.parseInt
-                (candidate
+        int toInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
                         .substring(candidate.getPeriodsInUkr().indexOf('-') + 1));
-        int fromInUkraineYear = Integer.parseInt
-                (candidate
+        int fromInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
                         .substring(0, candidate.getPeriodsInUkr().indexOf('-')));
         return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE

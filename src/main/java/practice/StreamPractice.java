@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import model.Candidate;
 import model.Cat;
@@ -22,17 +22,11 @@ public class StreamPractice {
                 .orElseThrow(newRunTimeException);
     }
 
-    /**
-     * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
-     */
     public Double getOddNumsAverage(List<Integer> numbers) {
         Supplier<NoSuchElementException> newNoSuchElementException = ()
                 -> new NoSuchElementException("There is not odd elements in list: " + numbers);
-        return numbers.stream()
-                .filter(i -> numbers.indexOf(i) % 2 != 0)
-                .map(n -> n - 1)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
@@ -68,18 +62,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 years, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(c -> new CandidateValidator().test(c))
