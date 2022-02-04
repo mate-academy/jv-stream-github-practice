@@ -3,7 +3,10 @@ package practice;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import model.Candidate;
@@ -27,19 +30,24 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        Supplier<NoSuchElementException> newNoSuchElementException = ()
+                -> new NoSuchElementException("There is not odd elements in list: " + numbers);
+        return numbers.stream()
+                .filter(i -> numbers.indexOf(i) % 2 != 0)
+                .map(n -> n - 1)
+                .filter(n -> n % 2 != 0)
+                .mapToDouble(Double::valueOf)
+                .average()
+                .orElseThrow(newNoSuchElementException);
     }
 
-    /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
-     * <p>
-     * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
-     */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> findManByAge = p -> p.getAge() >= fromAge
+                && p.getAge() <= toAge
+                && p.getSex().equals(Person.Sex.MAN);
+        return peopleList.stream()
+                .filter(findManByAge)
+                .collect(Collectors.toList());
     }
 
     /**
