@@ -1,11 +1,12 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
     private static final int MIN_TIME_IN_UKRAINE = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         int toInUkraineYear = Integer.parseInt(candidate
