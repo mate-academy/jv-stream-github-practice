@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-
     public static final int INDEX_OF_DATE_FROM = 0;
     public static final int INDEX_OF_DATE_TO = 1;
     public static final int MINIMUM_AGE_OF_CANDIDATE = 35;
