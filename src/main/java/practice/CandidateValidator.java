@@ -8,6 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_AGE = 35;
     private static final int MIN_PERIOD = 10;
+    private static final int INDEX_PERIOD_FROM = 0;
+    private static final int INDEX_PERIOD_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,8 +19,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.isAllowedToVote()
                 && NATIONALITY.equals(candidate.getNationality())
                 && candidate.getAge() >= MIN_AGE
-                && periods[1]
-                - periods[0]
+                && periods[INDEX_PERIOD_TO]
+                - periods[INDEX_PERIOD_FROM]
                 >= MIN_PERIOD;
     }
 }
