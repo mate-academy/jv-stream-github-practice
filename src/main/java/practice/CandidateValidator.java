@@ -6,19 +6,21 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
     private static final int MIN_TIME_IN_UKRAINE = 10;
+    private static final char DASH_CHARACTER = '-';
+    private static final String UKR_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
         int toInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
-                        .substring(candidate.getPeriodsInUkr().indexOf('-') + 1));
+                        .substring(candidate.getPeriodsInUkr().indexOf(DASH_CHARACTER) + 1));
         int fromInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
-                        .substring(0, candidate.getPeriodsInUkr().indexOf('-')));
+                        .substring(0, candidate.getPeriodsInUkr().indexOf(DASH_CHARACTER)));
         return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality() != null
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(UKR_NATIONALITY)
                 && toInUkraineYear - fromInUkraineYear >= MIN_TIME_IN_UKRAINE;
     }
 }
