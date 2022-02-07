@@ -12,7 +12,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        final IntSummaryStatistics intSummaryStatistics = Arrays.stream(candidate.getPeriodsInUkr()
+        final IntSummaryStatistics intSummaryStatistics =
+                Arrays.stream(candidate.getPeriodsInUkr()
                         .split("-"))
                 .mapToInt(Integer::parseInt).summaryStatistics();
         final boolean validPeriod = (intSummaryStatistics.getMax() - intSummaryStatistics.getMin())

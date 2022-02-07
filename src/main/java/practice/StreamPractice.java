@@ -24,7 +24,8 @@ public class StreamPractice {
                 .flatMapToInt(s -> Arrays.stream(s.split(","))
                         .mapToInt(Integer::parseInt))
                 .filter(x -> x % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -37,7 +38,8 @@ public class StreamPractice {
         return IntStream.range(0,numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(NoSuchElementException::new);
 
     }
 
@@ -105,7 +107,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
 
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
