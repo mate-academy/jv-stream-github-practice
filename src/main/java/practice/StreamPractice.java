@@ -39,8 +39,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
-
+                .orElseThrow(() -> new NoSuchElementException("Can't get odd numbers from list: "
+                + numbers));
     }
 
     /**
@@ -52,7 +52,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList.stream().filter(p -> p.getAge() >= fromAge
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
