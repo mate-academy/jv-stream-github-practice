@@ -1,10 +1,10 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -17,16 +17,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.size() == 0) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
         return numbers.stream()
-                .map(separation -> separation.split(","))
-                .flatMap(transition -> Arrays.stream(transition))
+                .flatMap(nums -> Arrays.stream(nums.split(",")))
                 .mapToInt(transition -> Integer.parseInt(String.valueOf(transition)))
                 .filter(parity -> parity % 2 == 0)
-                .reduce(Integer::min)
-                .getAsInt();
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
 
     }
 
@@ -36,22 +33,27 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int index = 0;
-        List<Integer> substraction = new ArrayList<Integer>();
-        for (Integer number : numbers) {
-            if (index % 2 != 0) {
-                number = number - 1;
-            }
-            index++;
-            substraction.add(number);
-        }
-        int sum = substraction.stream()
+        int count = (int) IntStream.range(0, numbers.size())
+                .mapToObj(number -> {
+                    if (number % 2 != 0) {
+                        return numbers.get(number) - 1;
+                    } else {
+                        return numbers.get(number);
+                    }
+                })
+                .filter(odd -> odd % 2 != 0)
+                .count();
+        int sum = IntStream.range(0, numbers.size())
+                .mapToObj(number -> {
+                    if (number % 2 != 0) {
+                        return numbers.get(number) - 1;
+                    } else {
+                        return numbers.get(number);
+                    }
+                })
                 .filter(odd -> odd % 2 != 0)
                 .reduce(Integer::sum)
                 .get();
-        int count = (int) substraction.stream()
-                .filter(odd -> odd % 2 != 0)
-                .count();
         if (count == 0) {
             throw new NoSuchElementException("No such odd element");
         }
