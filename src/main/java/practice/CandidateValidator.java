@@ -11,12 +11,14 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+        int indexOfDash = candidate.getPeriodsInUkr()
+                .indexOf(DASH_CHARACTER);
         int toInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
-                        .substring(candidate.getPeriodsInUkr().indexOf(DASH_CHARACTER) + 1));
+                        .substring(indexOfDash + 1));
         int fromInUkraineYear = Integer.parseInt(candidate
                         .getPeriodsInUkr()
-                        .substring(0, candidate.getPeriodsInUkr().indexOf(DASH_CHARACTER)));
+                        .substring(0, indexOfDash));
         return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality() != null
