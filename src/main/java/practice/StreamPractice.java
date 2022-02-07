@@ -39,8 +39,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get odd numbers from list: "
-                + numbers));
+                .getAsDouble();
     }
 
     /**
