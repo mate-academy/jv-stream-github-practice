@@ -14,7 +14,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] rangeLiveInUkraine = candidate.getPeriodsInUkr().split("-");
         int liveInUkraineFrom = Integer.parseInt(rangeLiveInUkraine[INDEX_OF_DATE_FROM]);
         int liveInUkraineTo = Integer.parseInt(rangeLiveInUkraine[INDEX_OF_DATE_TO]);
-
         return candidate.getAge() >= MINIMUM_AGE_OF_CANDIDATE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
                 && liveInUkraineTo - liveInUkraineFrom >= MINIMUM_YEARS_LIVED_IN_UKRAINE;
