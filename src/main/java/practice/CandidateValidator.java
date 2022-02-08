@@ -9,13 +9,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         int periodInUkr = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
                 - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
-        if (candidate.getAge() >= 35 && candidate.isAllowedToVote()
+        return candidate.getAge() >= 35 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
-                && periodInUkr >= 10) {
-            return true;
-        } else {
-            return false;
-        }
+                && periodInUkr >= 10;
     }
 }
 

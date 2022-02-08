@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -72,20 +71,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        List<Person> workablePeople = new ArrayList<>();
-        peopleList.stream()
-                .forEach(person -> {
-                    if (person.getSex() == Person.Sex.WOMAN
-                            && person.getAge() >= fromAge
-                            && person.getAge() <= femaleToAge) {
-                        workablePeople.add(person);
-                    } else if (person.getSex() == Person.Sex.MAN
-                            && person.getAge() >= fromAge
-                            && person.getAge() <= maleToAge) {
-                        workablePeople.add(person);
-                    }
-                });
-        return workablePeople;
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge
+                        || person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge)
+                .collect(Collectors.toList());
     }
 
     /**
