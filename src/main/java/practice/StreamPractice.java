@@ -1,11 +1,16 @@
 package practice;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+
+    public static final String REGEX = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +19,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(n -> List.of(n.split(REGEX)))
+                .flatMap(Collection::stream)
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .filter(i -> i % 2 == 0)
+                .min(Comparator.comparingInt(a -> a))
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
