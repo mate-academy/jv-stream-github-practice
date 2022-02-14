@@ -19,9 +19,6 @@ public class StreamPractice {
     private final Predicate<Integer> checkNumIsOdd = n -> n % DIVISION_CONSTANT != 0;
 
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers == null || numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
         return numbers
                 .stream()
                 .map(s -> s.split(COMA_SEPARATOR))
