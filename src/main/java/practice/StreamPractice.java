@@ -33,7 +33,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min(Comparator.comparing(integer -> integer));
         return min.orElseThrow(()
-                -> new RuntimeException("\"Can't get min value from list: \" + numbers"));
+                -> new RuntimeException("Can't get min value from list:  + " + numbers));
     }
 
     /**
@@ -113,12 +113,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(person -> person.getAge() >= MIN_YEARS_CANDIDATE
-                        && person.getNationality().equals(NATIONALITY_UKR)
-                        && person.isAllowedToVote()
-                        && (Integer.parseInt(person.getPeriodsInUkr().split(YEARS_DELIMITER)[1])
-                        - Integer.parseInt(person.getPeriodsInUkr()
-                        .split(YEARS_DELIMITER)[0])) >= MIN_YEARS_IN_UKR)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

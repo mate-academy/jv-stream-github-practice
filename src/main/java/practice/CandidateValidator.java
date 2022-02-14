@@ -18,5 +18,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .split(YEARS_DELIMITER)[1]) - Integer.parseInt(candidate.getPeriodsInUkr()
                 .split(YEARS_DELIMITER)[0])) >= MIN_YEARS_IN_UKR;
     }
-
 }
