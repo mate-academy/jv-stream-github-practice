@@ -10,13 +10,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] temporary = candidate.getPeriodsInUkr().split("-");
-        int[] yearsOfStayInUkraine = new int[2];
-        for (int i = 0; i < temporary.length; i++) {
-            yearsOfStayInUkraine[i] = Integer.parseInt(temporary[i]);
-        }
+        String[] yearsOfStayInUkraine = candidate.getPeriodsInUkr().split("-");
         return candidate.getAge() >= MIN_AGE && candidate.getNationality().equals(NATIONALITY)
-                && yearsOfStayInUkraine[1] - yearsOfStayInUkraine[0] >= MIN_PERIOD
+                && Integer.parseInt(yearsOfStayInUkraine[1])
+                - Integer.parseInt(yearsOfStayInUkraine[0]) >= MIN_PERIOD
                 && candidate.isAllowedToVote();
     }
 }
