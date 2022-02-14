@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -75,9 +76,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge)
-                        || (person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge)))
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge)
+                        || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -87,7 +88,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
+                        && p.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
