@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -14,15 +12,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int ZERO = 0;
-    private static final int ONE = 1;
-    private static final int TWO = 2;
-    private static final int TEN = 10;
-    private static final int THIRTYFIVE = 35;
-    private static final String COMMA = ",";
-    private static final String DASH = "-";
-    private static final String UKRAINIAN = "Ukrainian";
-    private static final String TEXT = "\"Can't get min value from list: \" + numbers";
+    private static final String NATIONALITY_UKR = "Ukrainian";
+    private static final String YEARS_DELIMITER = "-";
+    private static final String FIND_MIN_NUMBER_DELIMITER = ",";
+    private static final int MIN_YEARS_CANDIDATE = 35;
+    private static final int MIN_YEARS_IN_UKR = 10;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -33,13 +27,13 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         Optional<Integer> min = numbers.stream()
-                .map(s -> s.split(COMMA))
+                .map(s -> s.split(FIND_MIN_NUMBER_DELIMITER))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(i -> i % TWO == ZERO)
+                .filter(i -> i % 2 == 0)
                 .min(Comparator.comparing(integer -> integer));
         return min.orElseThrow(()
-                -> new RuntimeException(TEXT));
+                -> new RuntimeException("\"Can't get min value from list: \" + numbers"));
     }
 
     /**
@@ -48,11 +42,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(ZERO, numbers.size())
-                .map(x -> x % TWO != ZERO ? numbers.get(x) - ONE : numbers.get(x))
-                .filter(x -> x % TWO != ZERO)
-                .average();
-        return average.orElseThrow(NoSuchElementException::new);
+        return IntStream.range(0, numbers.size())
+                .map(x -> x % 2 != 0 ? numbers.get(x) - 1 : numbers.get(x))
+                .filter(x -> x % 2 != 0)
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -119,11 +113,12 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(person -> person.getAge() >= THIRTYFIVE
-                        && person.getNationality().equals(UKRAINIAN)
+                .filter(person -> person.getAge() >= MIN_YEARS_CANDIDATE
+                        && person.getNationality().equals(NATIONALITY_UKR)
                         && person.isAllowedToVote()
-                        && (Integer.parseInt(person.getPeriodsInUkr().split(DASH)[ONE])
-                        - Integer.parseInt(person.getPeriodsInUkr().split(DASH)[ZERO])) >= TEN)
+                        && (Integer.parseInt(person.getPeriodsInUkr().split(YEARS_DELIMITER)[1])
+                        - Integer.parseInt(person.getPeriodsInUkr()
+                        .split(YEARS_DELIMITER)[0])) >= MIN_YEARS_IN_UKR)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
