@@ -39,7 +39,7 @@ public class StreamPractice {
                 .filter(oddNumberPredicate)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
