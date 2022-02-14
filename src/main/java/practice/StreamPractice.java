@@ -30,17 +30,17 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> personPredicate = p -> p.getSex().equals(Person.Sex.MAN)
-            && p.getAge() >= fromAge && p.getAge() <= toAge;
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
         return peopleList.stream()
             .filter(personPredicate)
             .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
-        int maleToAge, List<Person> peopleList) {
+            int maleToAge, List<Person> peopleList) {
         Predicate<Person> personPredicate = (person) -> person.getAge() >= fromAge
-            && (person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge
-            || person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge);
+                && (person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge
+                || person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge);
         return peopleList.stream()
             .filter(personPredicate)
             .collect(Collectors.toList());
