@@ -18,8 +18,7 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(COMMA_REGEX)))
                 .map(Integer::parseInt)
                 .filter(evenPredicate)
-                .mapToInt(Integer::valueOf)
-                .min()
+                .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
