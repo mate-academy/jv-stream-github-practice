@@ -3,8 +3,11 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -24,18 +27,12 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger index = new AtomicInteger();
-        Predicate<Integer> oddNumberPredicate = n -> n % 2 != 0;
-        return numbers.stream()
-                .map(n -> {
-                    if (index.get() % 2 != 0) {
-                        n = n - 1;
-                    }
-                    index.getAndIncrement();
-                    return n;
-                })
-                .filter(oddNumberPredicate)
-                .mapToDouble(Integer::doubleValue)
+        return IntStream
+                .range(0, numbers.size())
+                .map(index -> index % 2 != 0
+                        ? numbers.get(index) - 1
+                        : numbers.get(index))
+                .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
     }
