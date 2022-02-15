@@ -24,12 +24,7 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(n -> {
-                    if (n % 2 == 1) {
-                        numbers.set(n, numbers.get(n) - 1);
-                    }
-                    return numbers.get(n);
-                })
+                .map(n -> n % 2 == 1 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(e -> e % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
