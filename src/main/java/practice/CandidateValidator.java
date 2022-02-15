@@ -7,8 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int FIRST_YEAR_INDEX = 0;
     private static final int LAST_YEAR_INDEX = 1;
     private static final int MIN_AGE_CANDIDATE = 35;
-    private static final int MIN_YEAR_IN_UKRAINE =10;
-
+    private static final int MIN_YEAR_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
