@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -24,9 +25,8 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .mapToInt(i -> i)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -73,13 +73,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
-                .filter(p -> fromAge <= p.getAge()
-                        & p.getAge() <= femaleToAge
-                        & p.getSex().equals(Person.Sex.WOMAN)
+
+        Predicate<Person> predicate = p -> fromAge <= p.getAge()
+                & p.getAge() <= femaleToAge
+                & p.getSex().equals(Person.Sex.WOMAN)
                 || (fromAge <= p.getAge()
-                        & p.getAge() <= maleToAge
-                        & p.getSex().equals(Person.Sex.MAN)))
+                & p.getAge() <= maleToAge
+                & p.getSex().equals(Person.Sex.MAN));
+
+        return peopleList.stream()
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
