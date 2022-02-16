@@ -15,7 +15,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
                 && isEligible(candidate.getPeriodsInUkr());
-
     }
 
     private boolean isEligible(String years) {
