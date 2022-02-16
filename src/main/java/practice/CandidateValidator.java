@@ -12,11 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int yearsInCountry = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .mapToInt(Integer::parseInt).reduce((year1, year2) -> year2 - year1).orElse(0);
-        return yearsInCountry >= MINIMUM_YEARS_TO_LIVE_FOR_ELECTIONS
+
+        return checkYearsLivedInCountry(candidate)
             && candidate.isAllowedToVote()
             && candidate.getAge() >= MIN_AGE_FOR_PRESIDENT
             && NATIONALITY_UKRAINIAN.equals(candidate.getNationality());
+    }
+
+    private boolean checkYearsLivedInCountry(Candidate candidate) {
+        int yearsInCountry = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+                .mapToInt(Integer::parseInt).reduce((year1, year2) -> year2 - year1).orElse(0);
+        return yearsInCountry >= MINIMUM_YEARS_TO_LIVE_FOR_ELECTIONS;
     }
 }

@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -29,7 +28,7 @@ public class StreamPractice {
             .map(number -> number % 2 == 1 ? numbers.get(number) - 1 : numbers.get(number))
         .filter(number -> number % 2 == 1)
         .average()
-        .orElseThrow(NoSuchElementException::new);
+        .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,7 +38,7 @@ public class StreamPractice {
     }
 
     private boolean personManFromAgeToAge(Person person, int fromAge, int toAge) {
-        return (person.getAge() >= fromAge) && (person.getAge() <= toAge)
+        return checkAge(fromAge, person, toAge)
             && (person.getSex() == Sex.MAN);
     }
 
@@ -53,8 +52,8 @@ public class StreamPractice {
     private boolean peopleManAndWomanFromToAge(int fromAge, Person person,
             int femaleToAge, int maleToAge) {
         return person.getSex() == Sex.MAN
-            ? person.getAge() >= fromAge && person.getAge() <= maleToAge
-            : person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+            ? checkAge(fromAge, person, maleToAge)
+            : checkAge(fromAge, person, femaleToAge);
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -78,5 +77,9 @@ public class StreamPractice {
         .map(Candidate::getName)
         .sorted()
         .collect(Collectors.toList());
+    }
+
+    private boolean checkAge(int fromAge, Person person, int toAge) {
+        return person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 }
