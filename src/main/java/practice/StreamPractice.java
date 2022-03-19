@@ -1,8 +1,13 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +19,19 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers
+                .stream()
+                .map(e -> List.of(e.split(",")))
+                .flatMap(Collection::stream)
+                .map(Integer::valueOf)
+                .mapToInt(e -> e)
+                .filter(e -> e % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException(massage(numbers)));
+    }
+
+    private static String massage(List<String> numbers) {
+        return "Can't get min value from list: " + numbers;
     }
 
     /**
@@ -23,7 +40,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(i -> i % 2 == 1)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,7 +56,14 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> validPerson = person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+
+        return peopleList
+                .stream()
+                .filter(validPerson)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +78,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(i -> i.getAge() >= fromAge
+                        && (i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge
+                        || i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +92,14 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(i -> i.getSex() == Person.Sex.WOMAN && i.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
+
     }
 
     /**
@@ -71,10 +111,15 @@ public class StreamPractice {
      * have nationality - 'Ukrainian'
      * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
      * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * We want to reuse our validation in the future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates
+                .stream()
+                .filter(i -> new CandidateValidator().test(i))
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
