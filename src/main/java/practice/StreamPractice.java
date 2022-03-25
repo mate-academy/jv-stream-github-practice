@@ -21,9 +21,8 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(e -> Arrays.stream(e.split(",")))
                 .map(Integer::valueOf)
-                .mapToInt(e -> e)
                 .filter(e -> e % 2 == 0)
-                .min()
+                .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
@@ -55,8 +54,7 @@ public class StreamPractice {
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
 
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(validPerson)
                 .collect(Collectors.toList());
     }
@@ -73,8 +71,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(i -> i.getAge() >= fromAge
                         && (i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge
                         || i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge))
@@ -87,8 +84,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(i -> i.getSex() == Person.Sex.WOMAN && i.getAge() >= femaleAge)
                 .flatMap(e -> e.getCats().stream())
                 .map(Cat::getName)
@@ -109,9 +105,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         //return Collections.emptyList();
-        return candidates
-                .stream()
-                .filter(i -> new CandidateValidator().test(i))
+        return candidates.stream()
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
