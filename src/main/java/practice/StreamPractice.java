@@ -104,7 +104,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        //return Collections.emptyList();
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
