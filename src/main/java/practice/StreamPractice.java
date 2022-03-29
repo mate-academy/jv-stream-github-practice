@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -76,14 +75,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> {
-            if (person.getSex().equals(Person.Sex.WOMAN)) {
-                return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
-            } else if (person.getSex().equals(Person.Sex.MAN)) {
-                return person.getAge() >= fromAge && person.getAge() <= maleToAge;
-            }
-            return false;
-        };
+        Predicate<Person> personPredicate = person -> person.getSex().equals(Person.Sex.WOMAN)
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= femaleToAge
+                    || person.getSex().equals(Person.Sex.MAN)
+                    && person.getAge() >= fromAge && person.getAge() <= maleToAge;
         return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
@@ -98,8 +94,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -117,7 +112,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
