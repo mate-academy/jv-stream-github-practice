@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
@@ -12,6 +11,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA = ",";
+    private final Predicate<Integer> isOdd = (i) -> i % 2 == 1;
+    private final Predicate<Integer> isEven = (i) -> i % 2 == 0;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,10 +25,10 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt max = numbers
                 .stream()
-                .map(s -> s.split(","))
-                .flatMap(arr -> Arrays.stream(arr))
-                .mapToInt(s -> Integer.parseInt(s))
-                .filter(i -> i % 2 == 0)
+                .map(s -> s.split(COMA))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(isEven::test)
                 .min();
         return max.orElseThrow(() -> new RuntimeException(("Can't get min value from list")));
     }
@@ -37,8 +40,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(i -> i % 2 == 1)
+                .map(i -> isOdd.test(i) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(isOdd::test)
                 .average()
                 .getAsDouble();
     }
@@ -85,8 +88,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && femaleAge <= person.getAge())
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
