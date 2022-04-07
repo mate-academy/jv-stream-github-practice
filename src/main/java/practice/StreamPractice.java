@@ -11,20 +11,23 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA_DELIMITER = ",";
+    private static final int DECREMENT = 1;
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(s -> s.split(COMMA_DELIMITER))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers));
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> i % 2 != 0 ? numbers.get(i) - DECREMENT : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
@@ -41,7 +44,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> workablePredicate = person -> person.getAge() >= fromAge
-                && (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
+                        && (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
                         || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge);
         return peopleList.stream()
                 .filter(workablePredicate)
@@ -57,7 +60,7 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
