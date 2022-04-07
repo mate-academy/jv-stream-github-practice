@@ -12,6 +12,7 @@ import model.Person;
 public class StreamPractice {
     private static final String COMA = ",";
     private final Predicate<Integer> isOdd = (i) -> i % 2 == 1;
+    private final Predicate<Integer> isEven = (i) -> i % 2 == 0;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -26,7 +27,7 @@ public class StreamPractice {
                 .map(s -> s.split(COMA))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter((i) -> i % 2 == 0)
+                .filter(isEven::test)
                 .min()
                 .orElseThrow(() -> new RuntimeException(("Can't get min value from list")));
     }
