@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,14 +22,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt max = numbers
+        return numbers
                 .stream()
                 .map(s -> s.split(COMA))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(isEven::test)
-                .min();
-        return max.orElseThrow(() -> new RuntimeException(("Can't get min value from list")));
+                .min()
+                .orElseThrow(() -> new RuntimeException(("Can't get min value from list")));
     }
 
     /**
