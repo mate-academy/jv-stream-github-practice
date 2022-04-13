@@ -10,8 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator candidateValidator = new CandidateValidator();
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -28,6 +26,7 @@ public class StreamPractice {
                 .min().orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
+
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
@@ -69,10 +68,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                .filter(p -> (p.getSex() == Person.Sex.MAN
+                        && p.getAge() <= maleToAge
                         || p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                        && p.getAge() <= femaleToAge)
+                        && p.getAge() >= fromAge)
                 .collect(Collectors.toList());
     }
 
@@ -89,6 +89,7 @@ public class StreamPractice {
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
+
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -103,6 +104,7 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
