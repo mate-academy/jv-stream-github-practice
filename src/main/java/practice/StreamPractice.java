@@ -27,8 +27,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .sorted()
                 .findFirst();
-        return minIntValue.orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                + " < Here is our input 'numbers'."));
+        return minIntValue.orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
