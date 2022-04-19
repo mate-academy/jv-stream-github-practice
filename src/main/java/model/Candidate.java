@@ -9,6 +9,10 @@ public class Candidate {
     private String periodsInUkr;
     private String name;
 
+    public Candidate(){
+
+    }
+
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
         this.age = age;
         this.nationality = nationality;
