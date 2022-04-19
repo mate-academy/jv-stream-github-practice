@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
@@ -25,13 +24,12 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(e -> e.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(isOddNumber.negate())
                 .min()
-                .orElseThrow(
-                        () -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -44,7 +42,7 @@ public class StreamPractice {
                 .map(decreaseOddNumbers(numbers))
                 .filter(isOddNumber)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -85,7 +83,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+                .filter(checkFemaleAge(femaleAge))
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -126,5 +124,9 @@ public class StreamPractice {
                 && p.getAge() >= fromAge && p.getAge() <= maleToAge
                 || p.getSex() == Person.Sex.WOMAN
                 && p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+    }
+
+    private Predicate<Person> checkFemaleAge(int femaleAge) {
+        return p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN;
     }
 }
