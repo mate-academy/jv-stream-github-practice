@@ -24,7 +24,7 @@ public class StreamPractice {
                 .flatMap(IntStream::boxed)
                 .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
                 .entrySet().stream()
-                .filter(v -> v.getValue() >1)
+                .filter(v -> v.getValue() > 1)
                 .map(k -> k.getKey())
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
