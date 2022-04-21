@@ -80,16 +80,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean workableValidation(int fromAge, int femaleToAge,
-                                       int maleToAge, Person person) {
-        return person.getSex() == Person.Sex.WOMAN
-                       && person.getAge() >= fromAge
-                       && person.getAge() <= femaleToAge
-                                          || (person.getSex() == Person.Sex.MAN
-                                                            && person.getAge() >= fromAge
-                                                            && person.getAge() <= maleToAge);
-    }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
@@ -123,5 +113,15 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean workableValidation(int fromAge, int femaleToAge,
+                                       int maleToAge, Person person) {
+        return person.getSex() == Person.Sex.WOMAN
+                       && person.getAge() >= fromAge
+                       && person.getAge() <= femaleToAge
+                       || (person.getSex() == Person.Sex.MAN
+                                   && person.getAge() >= fromAge
+                                   && person.getAge() <= maleToAge);
     }
 }
