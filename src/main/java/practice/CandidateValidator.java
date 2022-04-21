@@ -7,16 +7,14 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEARS_LIVE_IN_UA = 10;
     private static final int MIN_YEARS_CANDIDATE = 35;
+    private static final String NATIONALITY = "ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() >= MIN_YEARS_CANDIDATE
-                && candidate.getNationality().toLowerCase().equals("ukrainian")
+        return candidate.getAge() >= MIN_YEARS_CANDIDATE
+                && candidate.getNationality().toLowerCase().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
-                && getDifferenceBetweenYears(candidate) >= MIN_YEARS_LIVE_IN_UA) {
-            return true;
-        }
-        return false;
+                && getDifferenceBetweenYears(candidate) >= MIN_YEARS_LIVE_IN_UA;
     }
 
     private int getDifferenceBetweenYears(Candidate candidate) {
