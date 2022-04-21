@@ -57,8 +57,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)
-                .filter(person -> (person.getAge() >= fromAge && person.getAge() <= toAge))
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                                          && person.getAge() >= fromAge
+                                          && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -75,13 +76,18 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.WOMAN
-                                           && person.getAge() >= fromAge
-                                           && person.getAge() <= femaleToAge)
-                                          || (person.getSex() == Person.Sex.MAN
-                                                      && person.getAge() >= fromAge
-                                                      && person.getAge() <= maleToAge))
+                .filter(person -> workableValidation(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
+    }
+
+    private boolean workableValidation(int fromAge, int femaleToAge,
+                                       int maleToAge, Person person) {
+        return person.getSex() == Person.Sex.WOMAN
+                       && person.getAge() >= fromAge
+                       && person.getAge() <= femaleToAge
+                                          || (person.getSex() == Person.Sex.MAN
+                                                            && person.getAge() >= fromAge
+                                                            && person.getAge() <= maleToAge);
     }
 
     /**

@@ -6,19 +6,14 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int MINIMAL_AGE = 35;
     public static final String NATIONALITY = "Ukrainian";
+    public static final int MINIMAL_PERIOD = 10;
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate == null || candidate.getAge() < MINIMAL_AGE) {
-            return false;
-        }
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        if (!candidate.getNationality().equals(NATIONALITY)) {
-            return false;
-        }
-        return getTime(candidate.getPeriodsInUkr()) >= 10;
+        return candidate != null && candidate.getAge() >= MINIMAL_AGE
+                       && candidate.isAllowedToVote()
+                       && candidate.getNationality().equals(NATIONALITY)
+                       && getTime(candidate.getPeriodsInUkr()) >= MINIMAL_PERIOD;
     }
 
     private int getTime(String timeStrings) {
