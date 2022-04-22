@@ -10,6 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int MIN_AGE_CANDIDATE = 35;
+    private static final String CANDIDATE_NATIONALITY = "Ukrainian";
     private final CandidateValidator candidateValidator;
 
     public StreamPractice() {
@@ -112,8 +114,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(i -> i.getAge() >= 35 && i.isAllowedToVote())
-                .filter(i -> i.getNationality().equals("Ukrainian"))
+                .filter(i -> i.getAge() >= MIN_AGE_CANDIDATE && i.isAllowedToVote())
+                .filter(i -> i.getNationality().equals(CANDIDATE_NATIONALITY))
                 .filter(i -> candidateValidator.test(i.getPeriodsInUkr()))
                 .map(Candidate::getName)
                 .sorted()
