@@ -3,6 +3,7 @@ package practice;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -34,13 +35,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return Stream.concat(IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .mapToObj(numbers::get)
-                .map(num -> num - 1), IntStream.range(0, numbers.size())
-                        .filter(i -> i % 2 == 0)
-                        .mapToObj(numbers::get))
-                .mapToInt(num -> num)
+        return IntStream.range(0, numbers.size())
+                .map(num -> num % 2 != 0 ? numbers.get(num) - 1: numbers.get(num))
                 .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers in list: "
@@ -75,8 +71,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicate = person -> person.getAge() >= fromAge
+                                              && ((person.getSex() == Person.Sex.WOMAN
+                                                && person.getAge() <= femaleToAge)
+                                                          || (person.getSex() == Person.Sex.MAN
+                                                            && person.getAge() <= maleToAge));
+
         return peopleList.stream()
-                .filter(person -> workableValidation(fromAge, femaleToAge, maleToAge, person))
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
@@ -113,15 +115,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private boolean workableValidation(int fromAge, int femaleToAge,
-                                       int maleToAge, Person person) {
-        return person.getSex() == Person.Sex.WOMAN
-                       && person.getAge() >= fromAge
-                       && person.getAge() <= femaleToAge
-                       || (person.getSex() == Person.Sex.MAN
-                                   && person.getAge() >= fromAge
-                                   && person.getAge() <= maleToAge);
     }
 }
