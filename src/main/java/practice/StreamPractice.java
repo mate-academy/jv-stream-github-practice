@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,16 +18,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return Arrays.stream(numbers.stream()
+        return numbers.stream()
                         .map(number -> number.split(","))
                         .flatMap(Arrays::stream)
-                        .toArray(String[]::new))
                 .mapToInt(Integer::parseInt)
-                .boxed()
                 .filter(element -> element % 2 == 0)
-                .distinct()
-                .sorted()
-                .findFirst()
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
@@ -43,7 +38,7 @@ public class StreamPractice {
                         position % 2 == 1 ? numbers.get(position) - 1 : numbers.get(position))
                 .filter(element -> element % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -75,7 +70,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> checkWorkable(person, fromAge, femaleToAge, maleToAge))
+                .filter(person -> person.getAge() >= fromAge && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -111,15 +109,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private boolean checkWorkable(Person person, int fromAge, int femaleToAge,
-                                  int maleToAge) {
-        return (person.getSex() == Person.Sex.MAN
-                && person.getAge() <= maleToAge
-                && person.getAge() >= fromAge)
-                || (person.getSex() == Person.Sex.WOMAN
-                && person.getAge() <= femaleToAge
-                && person.getAge() >= fromAge);
     }
 }
