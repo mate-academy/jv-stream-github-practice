@@ -3,14 +3,12 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-    private static final int CANDIDATE_AGE = 35;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,16 +18,15 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        int minNumber = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::valueOf)
-                .sorted()
                 .filter(i -> i % 2 == 0)
                 .mapToInt(i -> i)
-                .findFirst().orElseThrow(() ->
+                .min()
+                .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: method_input_list"));
-        return minNumber;
+
     }
 
     /**
@@ -38,13 +35,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble averageDouble = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .boxed()
                 .filter(i -> i % 2 != 0)
-                .mapToDouble(i -> i)
-                .average();
-        return averageDouble.orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -58,8 +53,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         List<Person> people = peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN))
-                .filter(a -> a.getAge() > fromAge && a.getAge() <= toAge)
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
+                        && p.getAge() > fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
         return people;
     }
@@ -77,9 +72,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         List<Person> people = peopleList.stream()
-                .filter(a -> a.getAge() >= fromAge)
-                .filter(a -> (a.getAge() <= maleToAge && a.getSex().equals(Person.Sex.MAN))
-                        || (a.getAge() <= femaleToAge && a.getSex().equals(Person.Sex.WOMAN)))
+                .filter(a -> a.getAge() >= fromAge
+                        && ((a.getAge() <= maleToAge && a.getSex().equals(Person.Sex.MAN))
+                        || (a.getAge() <= femaleToAge && a.getSex().equals(Person.Sex.WOMAN))))
                 .collect(Collectors.toList());
         return people;
     }
@@ -92,8 +87,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         List<String> catNames = peopleList.stream()
                 .filter(a -> a.getAge() >= femaleAge && a.getSex().equals(Person.Sex.WOMAN))
-                .map(c -> c.getCats())
-                .flatMap(l -> l.stream())
+                .flatMap(c -> c.getCats().stream())
                 .map(c -> c.getName())
                 .collect(Collectors.toList());
         return catNames;
@@ -114,9 +108,6 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
         List<String> ukrainian = candidates.stream()
-                .filter(c -> c.getAge() >= CANDIDATE_AGE
-                        && c.getNationality().equals("Ukrainian")
-                        && c.isAllowedToVote())
                 .filter(candidateValidator::test)
                 .map(c -> c.getName())
                 .sorted()
