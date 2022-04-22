@@ -10,8 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int MIN_AGE_CANDIDATE = 35;
-    private static final String CANDIDATE_NATIONALITY = "Ukrainian";
     private final CandidateValidator candidateValidator;
 
     public StreamPractice() {
@@ -78,9 +76,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge)
-                .filter(i -> i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge
-                        || i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge)
+                .filter(i -> i.getSex() == Person.Sex.MAN
+                        && i.getAge() <= maleToAge
+                        && i.getAge() >= fromAge
+                        || i.getSex() == Person.Sex.WOMAN
+                        && i.getAge() <= femaleToAge
+                        && i.getAge() >= fromAge)
                 .collect(Collectors.toList());
     }
 
@@ -114,9 +115,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(i -> i.getAge() >= MIN_AGE_CANDIDATE && i.isAllowedToVote())
-                .filter(i -> i.getNationality().equals(CANDIDATE_NATIONALITY))
-                .filter(i -> candidateValidator.test(i.getPeriodsInUkr()))
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
