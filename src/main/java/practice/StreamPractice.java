@@ -3,7 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -30,7 +30,7 @@ public class StreamPractice {
                         ? numbers.get(i) - SUBTRACT_NUMBER : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -44,12 +44,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
+                .filter(p -> p.getAge() >= fromAge
+                        && (p.getSex() == Person.Sex.MAN
                         && p.getAge() <= maleToAge
                         || p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                        && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +62,7 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
