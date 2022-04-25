@@ -29,7 +29,6 @@ public class StreamPractice {
                         + numbers));
     }
 
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
