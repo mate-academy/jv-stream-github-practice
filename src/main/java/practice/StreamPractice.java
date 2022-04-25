@@ -30,7 +30,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == REST_FOR_EVEN_NUMBER)
                 .sorted()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     /**
