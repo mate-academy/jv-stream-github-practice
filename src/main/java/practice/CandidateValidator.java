@@ -6,6 +6,7 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
     private static final int ALLOWED_MIN_YEARS = 35;
+    private static final int MINIMAL_RESIDENCY_PERIOD = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -14,6 +15,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         int endPeriod = Integer.parseInt(years[1]);
         return candidate.getAge() >= ALLOWED_MIN_YEARS && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(ALLOWED_NATIONALITY)
-                && endPeriod - startPeriod >= 10;
+                && endPeriod - startPeriod >= MINIMAL_RESIDENCY_PERIOD;
     }
 }
