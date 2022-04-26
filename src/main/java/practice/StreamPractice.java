@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,12 +11,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator candidateValidator;
-
-    public StreamPractice() {
-        candidateValidator = new CandidateValidator();
-    }
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -109,8 +104,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
