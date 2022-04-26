@@ -19,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int getYearCandidateBeenInUkraine(String date) {
-        String[] dateInt = date.split("\\-");
+        String[] dateInt = date.split("-");
         return Integer.parseInt(dateInt[1]) - Integer.parseInt(dateInt[0]);
     }
 }
