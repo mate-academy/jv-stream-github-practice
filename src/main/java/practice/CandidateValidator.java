@@ -12,13 +12,13 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= CANDIDATE_MIN_AGE
-                && getYearCandidateBeenInUkraine(candidate.getPeriodsInUkr())
+                && getYearWhenCandidateBeenInUkraine(candidate.getPeriodsInUkr())
                 >= MIN_CANDIDATE_BEEN_IN_UKRAINE
                 && Objects.equals(candidate.getNationality(), CANDIDATE_NATIONALITY)
                 && candidate.isAllowedToVote();
     }
 
-    private int getYearCandidateBeenInUkraine(String date) {
+    private int getYearWhenCandidateBeenInUkraine(String date) {
         String[] dateInt = date.split("-");
         return Integer.parseInt(dateInt[1]) - Integer.parseInt(dateInt[0]);
     }
