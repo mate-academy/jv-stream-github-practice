@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,11 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator candidateValidator;
-
-    public StreamPractice() {
-        candidateValidator = new CandidateValidator();
-    }
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -55,9 +51,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.MAN
-                        && i.getAge() >= fromAge
-                        && i.getAge() <= toAge)
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge
+                        && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -74,9 +70,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(i -> (i.getAge() >= fromAge)
-                        && (i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge
-                        || i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge))
+                .filter(p -> (p.getAge() >= fromAge)
+                        && (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge
+                        || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -87,8 +83,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.WOMAN
-                        && i.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -107,8 +103,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
