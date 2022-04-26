@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -27,7 +28,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(e -> e % 2 == REMAINDER_FOR_ODD_NUMBER ? numbers.get(e) - DECREMENT
                         : numbers.get(e))
-                .filter(e -> e % 2 == REMAINDER_FOR_ODD_NUMBER).average()
+                .filter(e -> e % 2 == REMAINDER_FOR_ODD_NUMBER)
+                .average()
                 .orElseThrow();
     }
 
@@ -41,9 +43,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN ? p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge
-                        : p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +58,7 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
+        Predicate<Candidate> validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
