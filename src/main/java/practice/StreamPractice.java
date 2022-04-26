@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -18,8 +19,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(CONSTANT_COMA))
-                .flatMap(Stream::of)
+                .flatMap(s -> Arrays.stream(s.split(CONSTANT_COMA)))
                 .mapToInt(Integer::parseInt)
                 .filter(evenNumber::test)
                 .min()
