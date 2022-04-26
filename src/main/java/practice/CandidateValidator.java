@@ -12,11 +12,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MINIMAL_REQUIRED_AGE
                 && candidate.getNationality().equals(NATIONALITY)
-                && periodInUkraine(candidate)
+                && getPeriodInUkraine(candidate)
                 && candidate.isAllowedToVote();
     }
 
-    private boolean periodInUkraine(Candidate candidate) {
+    private boolean getPeriodInUkraine(Candidate candidate) {
         String periodSpentInUkraine = candidate.getPeriodsInUkr();
         String[] periodArray = periodSpentInUkraine.split("-");
         return Integer.parseInt(periodArray[1])
