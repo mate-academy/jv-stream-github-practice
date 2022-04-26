@@ -11,6 +11,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int DIVIDER = 2;
+    private static final int REMINDER = 0;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,7 +26,7 @@ public class StreamPractice {
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(i -> i % DIVIDER == REMINDER)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -36,8 +39,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .filter(number -> number % 2 != 0)
+                .map(i -> i % DIVIDER == REMINDER ? numbers.get(i) : numbers.get(i) - 1)
+                .filter(number -> number % DIVIDER != REMINDER)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd elements"));
     }
