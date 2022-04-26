@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Objects;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -14,7 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= CANDIDATE_MIN_AGE
                 && getYearWhenCandidateBeenInUkraine(candidate.getPeriodsInUkr())
                 >= MIN_CANDIDATE_BEEN_IN_UKRAINE
-                && Objects.equals(candidate.getNationality(), CANDIDATE_NATIONALITY)
+                && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
                 && candidate.isAllowedToVote();
     }
 
