@@ -18,7 +18,8 @@ public class StreamPractice {
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % DIVIDER == ZERO)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
