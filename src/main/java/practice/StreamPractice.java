@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,11 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator candidateValidator;
-
-    public StreamPractice() {
-        candidateValidator = new CandidateValidator();
-    }
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -74,12 +70,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(e -> e.getSex() == Person.Sex.MAN
-                        && e.getAge() >= fromAge
-                        && e.getAge() <= maleToAge
-                        || e.getSex() == Person.Sex.WOMAN
-                        && e.getAge() >= fromAge
-                        && e.getAge() <= femaleToAge)
+                .filter(p -> (p.getAge() >= fromAge)
+                        && (p.getSex() == Person.Sex.MAN
+                        && p.getAge() <= maleToAge
+                        || p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -110,8 +105,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
