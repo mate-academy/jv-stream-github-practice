@@ -18,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 - Integer.parseInt(inUkraine[FIRST_YEAR]);
         return candidate.getAge() >= AGE_BOUND
                 && candidate.getNationality().equals(NATION)
-                && candidate.isAllowedToVote() == VOTE_RIGHT
+                && candidate.isAllowedToVote()
                 && yearInUkraine >= LIVED_IN_UKRAINE;
     }
 }
