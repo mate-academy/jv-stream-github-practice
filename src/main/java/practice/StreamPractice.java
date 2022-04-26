@@ -9,7 +9,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final int DIVIDER = 2;
-    private static final int ZERO = 0;
+    private static final int REMAINDER = 0;
     private static final String SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
@@ -17,16 +17,16 @@ public class StreamPractice {
                 .map(string -> string.split(SEPARATOR))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number % DIVIDER == ZERO)
+                .filter(number -> number % DIVIDER == REMAINDER)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(iter -> iter % DIVIDER != ZERO
+                .mapToDouble(iter -> iter % DIVIDER != REMAINDER
                         ? Math.decrementExact(numbers.get(iter)) : numbers.get(iter))
-                .filter(number -> number % DIVIDER != ZERO)
+                .filter(number -> number % DIVIDER != REMAINDER)
                 .average()
                 .getAsDouble();
     }
