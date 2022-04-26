@@ -28,9 +28,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> !isEvenNumber.test(i) ? numbers.get(i) - SUBTRACT : numbers.get(i))
+                .map(i -> !isEvenNumber.test(i) ? numbers.get(i) - SUBTRACT : numbers.get(i))
                 .filter(number -> !isEvenNumber.test(number))
-                .mapToInt(Integer::valueOf)
                 .average()
                 .orElseThrow(()
                         -> new NoSuchElementException("Elements on odd index not found"));
