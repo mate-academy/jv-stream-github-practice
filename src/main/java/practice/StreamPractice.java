@@ -10,6 +10,12 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    CandidateValidator candidateValidator;
+
+    public StreamPractice() {
+        candidateValidator = new CandidateValidator();
+    }
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,10 +24,9 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .mapToInt(s -> Integer.parseInt(s))
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min().orElseThrow(() -> new
                         RuntimeException("Can't get min value from list: " + numbers));
@@ -70,12 +75,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge
+                .filter(p -> (p.getAge() >= fromAge)
+                        && (p.getAge() <= maleToAge
                         && p.getSex().equals(Person.Sex.MAN)
-                        || p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge
-                        && p.getSex().equals(Person.Sex.WOMAN))
+                        || p.getAge() <= femaleToAge
+                        && p.getSex().equals(Person.Sex.WOMAN)))
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +109,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
