@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -14,8 +15,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(SEPARATOR))
-                .flatMap(Arrays::stream)
+                .flatMap(string -> Arrays.stream(string.split(SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % DIVIDER == REMAINDER)
                 .min()
@@ -24,9 +24,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(iter -> iter % DIVIDER != REMAINDER
-                        ? Math.decrementExact(numbers.get(iter)) : numbers.get(iter))
-                .filter(number -> number % DIVIDER != REMAINDER)
+                .mapToDouble(index -> index % DIVIDER != REMAINDER
+                        ? Math.decrementExact(numbers.get(index)) : numbers.get(index))
+                .filter(index -> index % DIVIDER != REMAINDER)
                 .average()
                 .getAsDouble();
     }
@@ -52,13 +52,13 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(cats -> cats.stream()).map(cat -> cat.getName())
+                .flatMap(person -> person.getCats().stream())
+                .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator predicate = new CandidateValidator();
+        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
                 .filter(predicate)
                 .map(Candidate::getName)
