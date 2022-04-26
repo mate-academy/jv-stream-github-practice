@@ -10,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    CandidateValidator candidateValidator;
+    private final CandidateValidator candidateValidator;
 
     public StreamPractice() {
         candidateValidator = new CandidateValidator();
