@@ -10,7 +10,6 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(x -> Arrays.stream(x.split(",")))
                 .mapToInt(Integer::parseInt)
@@ -21,7 +20,6 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-
         return numbers.stream()
                 .map(x -> numbers.indexOf(x) % 2 != 0 ? x - 1 : x)
                 .mapToInt(Integer::intValue)
@@ -47,7 +45,6 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-
         return peopleList.stream()
                 .filter(x -> !x.getCats().isEmpty()
                         && x.getSex() == Person.Sex.WOMAN && x.getAge() >= femaleAge)
@@ -57,7 +54,6 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
