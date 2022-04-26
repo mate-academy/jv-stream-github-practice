@@ -26,7 +26,7 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .mapToDouble(index -> index % DIVIDER != REMAINDER
                         ? Math.decrementExact(numbers.get(index)) : numbers.get(index))
-                .filter(index -> index % DIVIDER != REMAINDER)
+                .filter(number -> number % DIVIDER != REMAINDER)
                 .average()
                 .getAsDouble();
     }
