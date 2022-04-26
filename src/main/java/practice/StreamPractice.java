@@ -2,6 +2,7 @@ package practice;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -10,11 +11,17 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final String CONSTANT_COMA = ",";
+    public static final int CONSTANT_DIVISION = 2;
+    public static final int CONSTANT_SUBTRACT = 1;
+    private final Predicate<Integer> evenNumber = n -> n % CONSTANT_DIVISION == 0;
+
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream().map(n -> n.split(","))
+        return numbers.stream()
+                .map(n -> n.split(CONSTANT_COMA))
                 .flatMap(Stream::of)
                 .mapToInt(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
+                .filter(evenNumber::test)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -22,8 +29,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
+                .map(i -> !evenNumber.test(i)
+                        ? numbers.get(i) - CONSTANT_SUBTRACT : numbers.get(i))
+                .filter(number -> !evenNumber.test(number))
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers in list: "
                         + numbers));
