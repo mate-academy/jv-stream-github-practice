@@ -12,7 +12,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(x -> Arrays.stream(x.split(",")))
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
                 .min()
@@ -22,10 +22,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return numbers.stream()
-                .map(n -> numbers.indexOf(n) % 2 != 0 ? n - 1 : n)
-                .mapToInt(Integer::intValue)
-                .filter(x -> x % 2 != 0)
                 .distinct()
+                .mapToInt(n -> numbers.indexOf(n) % 2 != 0 ? n - 1 : n)
+                .filter(x -> x % 2 != 0)
                 .average()
                 .orElseThrow();
     }
@@ -40,16 +39,14 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        ? p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        : p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(p -> p.getAge() >= fromAge && (p.getSex() == Person.Sex.MAN
+                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> !p.getCats().isEmpty()
-                        && p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
