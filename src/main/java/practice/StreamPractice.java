@@ -24,7 +24,7 @@ public class StreamPractice {
         return numbers.stream()
                 .distinct()
                 .mapToInt(n -> numbers.indexOf(n) % 2 != 0 ? n - 1 : n)
-                .filter(x -> x % 2 != 0)
+                .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow();
     }
