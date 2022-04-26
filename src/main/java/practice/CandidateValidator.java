@@ -14,14 +14,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split(SEPARATOR);
-        if (candidate.getAge() >= MIN_AGE_CANDIDATE
+        return (candidate.getAge() >= MIN_AGE_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
                 && Integer.parseInt(years[END_YEAR])
-                - Integer.parseInt(years[START_YEAR]) >= MINIMUM_NUMBER_YEARS) {
-            return true;
-        }
-        return false;
+                - Integer.parseInt(years[START_YEAR]) >= MINIMUM_NUMBER_YEARS);
     }
 }
 
