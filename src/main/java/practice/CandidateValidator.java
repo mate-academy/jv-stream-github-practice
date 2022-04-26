@@ -21,9 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int getYearsLivingInUkraine(Candidate candidate) {
-        return Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(PERIOD_DELIMITER)[INDEX_OF_END_YEAR])
-                - Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(PERIOD_DELIMITER)[INDEX_OF_START_YEAR]);
+        String[] splitted = candidate.getPeriodsInUkr().split(PERIOD_DELIMITER);
+        return Integer.parseInt(splitted[INDEX_OF_END_YEAR])
+                - Integer.parseInt(splitted[INDEX_OF_START_YEAR]);
     }
 }
