@@ -8,9 +8,9 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-    public static final int DIVIDER = 2;
-    public static final int ZERO = 0;
-    public static final String SEPARATOR = ",";
+    private static final int DIVIDER = 2;
+    private static final int ZERO = 0;
+    private static final String SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
