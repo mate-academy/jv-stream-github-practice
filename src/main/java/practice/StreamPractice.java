@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,8 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(digit -> Arrays.stream(digit.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(number -> number % 2 == 0)
                 .min()
@@ -68,7 +68,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        PersonValidator personValidator = new PersonValidator(fromAge, femaleToAge, maleToAge);
+        Predicate<Person> personValidator = new PersonValidator(fromAge, femaleToAge, maleToAge);
         return peopleList.stream()
                 .filter(personValidator)
                 .collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
