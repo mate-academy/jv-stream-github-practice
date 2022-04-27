@@ -9,7 +9,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
