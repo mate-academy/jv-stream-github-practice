@@ -24,7 +24,7 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(i -> i % 2 != 0 ? (i = numbers.get(i) - 1) : (i = numbers.get(i)))
+                .mapToDouble(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(d -> d % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -54,7 +54,6 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .distinct()
                 .collect(Collectors.toList());
     }
 
