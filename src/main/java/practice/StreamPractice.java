@@ -20,8 +20,7 @@ public class StreamPractice {
                 .distinct()
                 .min()
                 .orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list:"
-                        + " method_input_list"));
+                        -> new RuntimeException("Can't get min value from list:" + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
