@@ -5,15 +5,19 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_REQUIRED_AGE = 35;
-    private static final int YEARS_LIVED_IN_UKR = 10;
+    private static final int REQUIRED_YEARS_TO_LIVE_IN_UKR = 10;
+    private static final int STARTED_YEAR_TO_LIVE_IN_UKR = 0;
+    private static final int YEAR_TO_LIVE_IN_UKR = 1;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
         String[] periods = candidate.getPeriodsInUkr().split("-");
-        int yearInUkr = Integer.parseInt(periods[1]) - Integer.parseInt(periods[0]);
+        int yearInUkr = Integer.parseInt(periods[YEAR_TO_LIVE_IN_UKR])
+                - Integer.parseInt(periods[STARTED_YEAR_TO_LIVE_IN_UKR]);
         if (candidate.isAllowedToVote() && candidate.getAge() >= MIN_REQUIRED_AGE
-                && candidate.getNationality().equals("Ukrainian")
-                && yearInUkr >= YEARS_LIVED_IN_UKR) {
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && yearInUkr >= REQUIRED_YEARS_TO_LIVE_IN_UKR) {
             return true;
         }
         return false;
