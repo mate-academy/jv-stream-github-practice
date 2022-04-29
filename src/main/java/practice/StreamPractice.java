@@ -27,7 +27,7 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 != 0)
-                .mapToDouble(e -> (double) e)
+                .mapToInt(e -> e)
                 .average()
                 .orElseThrow(()
                         -> new NoSuchElementException("Elements on odd index not found"));
@@ -53,7 +53,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(e -> e.getSex().equals(Person.Sex.WOMAN)
-                        && e.getAge() >= femaleAge && e.getCats() != null)
+                        && e.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
