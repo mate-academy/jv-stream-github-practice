@@ -1,25 +1,23 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMAL_CANDIDATE_AGE = 35;
-    private static final String NATIONALITY = "Ukrainian";
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final int MINIMAL_YEARS_IN_COUNTRY = 10;
+    private static final int FIRST_YEAR_IN_PERIOD_INDEX = 0;
+    private static final int LAST_YEAR_IN_PERIOD_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
-        Integer[] periodInUkr =
-        Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .map(Integer::parseInt).toArray(Integer[]::new);
-        if (candidate.getAge() >= MINIMAL_CANDIDATE_AGE
+        String[] periodInUkr = candidate.getPeriodsInUkr().split("-");
+        return (candidate.getAge() >= MINIMAL_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(NATIONALITY)
-                && (periodInUkr[1] - periodInUkr[0] + 1) > MINIMAL_YEARS_IN_COUNTRY) {
-            return true;
-        }
-        return false;
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && (Integer.parseInt(periodInUkr[LAST_YEAR_IN_PERIOD_INDEX])
+                - Integer.parseInt(periodInUkr[FIRST_YEAR_IN_PERIOD_INDEX]))
+                > MINIMAL_YEARS_IN_COUNTRY);
     }
 }
