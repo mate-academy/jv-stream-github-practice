@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -15,14 +16,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return wrapperFindMinEvenNumber(numbers)
+        return numbers
                 .stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
-                .getAsInt();
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -31,10 +32,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return minusOneEachOddNumbers(numbers)
-                .stream()
-                .filter(n -> n % 2 == 1)
-                .mapToDouble(n -> n)
+        return IntStream
+                .range(0, numbers.size())
+                .mapToDouble(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(number -> number % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -109,21 +110,5 @@ public class StreamPractice {
                 .map(c -> c.getName())
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private List<String> wrapperFindMinEvenNumber(List<String> numbers) {
-        if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
-        }
-        return numbers;
-    }
-
-    private List<Integer> minusOneEachOddNumbers(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 == 1) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        return numbers;
     }
 }
