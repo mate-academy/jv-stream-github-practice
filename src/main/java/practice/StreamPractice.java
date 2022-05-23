@@ -3,8 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -20,15 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt minEvenNumber = numbers.stream()
+        return numbers.stream()
                 .flatMapToInt(n -> Arrays.stream(n.split(","))
-                        .mapToInt(Integer::parseInt))
+                .mapToInt(Integer::parseInt))
                 .filter(n -> n % 2 == 0)
-                .min();
-        if (minEvenNumber.isPresent()) {
-            return minEvenNumber.getAsInt();
-        }
-        throw new RuntimeException("Can't get min value from list: " + numbers);
+                .min()
+                .orElseThrow(() -> new RuntimeException(("Can't get min value from list: "
+                        + numbers)));
     }
 
     /**
@@ -37,19 +33,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble oddNumsAverage = IntStream.range(0, numbers.size())
-                .flatMap(i -> {
-                    if (i % 2 != 0) {
-                        return IntStream.of(numbers.get(i) - 1);
-                    }
-                    return IntStream.of(numbers.get(i));
-                })
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
-                .average();
-        if (oddNumsAverage.isPresent()) {
-            return oddNumsAverage.getAsDouble();
-        }
-        throw new NoSuchElementException();
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
