@@ -17,7 +17,6 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(i -> Arrays.stream(i.split(",")))
                 .map(Integer::parseInt)
@@ -32,15 +31,16 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                    if (i % 2 == 1) {
+                        return numbers.get(i) - 1;
+                    }
+                    return numbers.get(i);
+                })
                 .filter(i -> i % 2 == 1)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-        return numbers.stream()
-                .filter(i -> i % 2 == 1)
-                .mapToInt(i -> i)
                 .average()
-                .getAsDouble()
-                ;
+                .getAsDouble();
     }
 
     /**
@@ -71,10 +71,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(i -> (i.getSex() == Person.Sex.MAN
-                        && i.getAge() >= fromAge && i.getAge() <= maleToAge)
-                        || (i.getSex() == Person.Sex.WOMAN
-                        && i.getAge() >= fromAge && i.getAge() <= femaleToAge))
+                .filter(i -> i.getAge() >= fromAge)
+                .filter(i -> (i.getSex() == Person.Sex.MAN && i.getAge() <= maleToAge)
+                        || (i.getSex() == Person.Sex.WOMAN && i.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
