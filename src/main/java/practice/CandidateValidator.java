@@ -6,7 +6,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final int REQUIRED_PERIOD_IN_UKRAINE = 10;
+    private static final int MIN_PERIOD_IN_UKRAINE = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
@@ -16,6 +16,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .map(Integer::valueOf)
-                .reduce(0, (i, i2) -> i2 - i) >= REQUIRED_PERIOD_IN_UKRAINE;
+                .reduce(0, (i, i2) -> i2 - i) >= MIN_PERIOD_IN_UKRAINE;
     }
 }
