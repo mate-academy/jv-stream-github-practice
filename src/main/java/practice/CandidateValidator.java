@@ -10,7 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
-    public boolean test(Candidate c) {
+    public boolean test(Candidate candidate) {
         return c.getAge() >= AGE_THRESHOLD
                 && c.getNationality().equals(UKRAINIAN)
                 && c.isAllowedToVote()
