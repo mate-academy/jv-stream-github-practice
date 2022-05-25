@@ -11,11 +11,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate c) {
-        return c.getAge() >= AGE_THRESHOLD
-                && c.getNationality().equals(UKRAINIAN)
+        return c.getAge() >= MIN_AGE
+                && c.getNationality().equals(REQUIRED_NATIONALITY)
                 && c.isAllowedToVote()
                 && Arrays.stream(c.getPeriodsInUkr().split("-"))
                 .map(Integer::valueOf)
-                .reduce(0, (i, i2) -> i2 - i) >= PERIOD_IN_UKRAINE;
+                .reduce(0, (i, i2) -> i2 - i) >= REQUIRED_PERIOD_IN_UKRAINE;
     }
 }
