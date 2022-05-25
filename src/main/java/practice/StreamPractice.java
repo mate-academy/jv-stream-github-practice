@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.Candidate;
@@ -34,9 +33,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Function<Integer, Integer> mapper = i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i);
         return Stream.iterate(0, i -> i < numbers.size(), i -> i + 1)
-                .map(mapper)
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .mapToInt(number -> number)
                 .average()
