@@ -16,6 +16,9 @@ public class Candidate {
         this.periodsInUkr = periodsInUkr;
     }
 
+    public Candidate() {
+    }
+
     public int getAge() {
         return age;
     }
