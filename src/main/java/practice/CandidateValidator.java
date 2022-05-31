@@ -8,7 +8,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_AGE = 35;
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
     private static final int PERIODS_IN_UKRAINE = 10;
-    private static final Candidate candidate = new Candidate();
 
     @Override
     public boolean test(Candidate candidate) {
