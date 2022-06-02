@@ -78,7 +78,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         && p.getAge() >= fromAge
                         && p.getAge() <= maleToAge
-                || p.getSex() == Person.Sex.WOMAN
+                        || p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= fromAge
                         && p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
@@ -111,7 +111,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
