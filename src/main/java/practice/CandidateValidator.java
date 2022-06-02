@@ -4,9 +4,9 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final String NATIONALITY = "Ukrainian";
-    public static final int MIN_AGE = 35;
-    public static final int TIME_IN_UKRAINE = 10;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int MIN_AGE = 35;
+    private static final int TIME_IN_UKRAINE = 10;
     //write your code here
 
     @Override
