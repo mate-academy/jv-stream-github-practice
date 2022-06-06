@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -13,14 +14,9 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        List<String> resultList = numbers.stream()
-                .map(i -> i + ",")
-                .collect(Collectors.toList());
-        return Arrays.stream(String.join("", resultList)
-                        .split(","))
+        return numbers.stream()
+                .map(i -> i.split(","))
+                .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Comparator.naturalOrder())
@@ -45,10 +41,11 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicator = person -> person.getSex() == Person.Sex.MAN
+                ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge;
         return peopleList.stream()
                 .filter(i -> i.getAge() >= fromAge)
-                .filter(i -> i.getSex() == Person.Sex.MAN
-                        ? i.getAge() <= maleToAge : i.getAge() <= femaleToAge)
+                .filter(predicator)
                 .collect(Collectors.toList());
     }
 
