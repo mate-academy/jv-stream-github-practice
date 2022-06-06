@@ -15,9 +15,6 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
         String[] data = candidate.getPeriodsInUkr().split("-");
-        if (Integer.parseInt(data[1]) - Integer.parseInt(data[0]) <= YEARS_LIVING_IN_UKRAINE) {
-            return false;
-        }
-        return true;
+        return Integer.parseInt(data[1]) - Integer.parseInt(data[0]) > YEARS_LIVING_IN_UKRAINE;
     }
 }
