@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -28,7 +27,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -41,7 +40,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(new PredicateForWorkablePeople(fromAge, femaleToAge, maleToAge))
+                .filter(new WorkCandidateValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -49,16 +48,14 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(i -> i.getSex() == Person.Sex.WOMAN && i.getAge() >= femaleAge)
                 .map(Person::getCats)
-                .map(i -> i.stream()
-                        .map(Cat::getName)
-                        .collect(Collectors.toList()))
-                .flatMap(Collection::stream).collect(Collectors.toList());
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
