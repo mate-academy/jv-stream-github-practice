@@ -1,11 +1,17 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private final static String SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +20,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(x -> Arrays.stream(x.split(SEPARATOR)))
+                .mapToInt(Integer::parseInt)
+                .filter(x -> x % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + "method_input_list"));
+
     }
 
     /**
@@ -23,7 +36,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(x -> (x % 2 == 1) ? numbers.get(x) - 1 : numbers.get(x))
+                .filter(x -> x % 2 == 1)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
