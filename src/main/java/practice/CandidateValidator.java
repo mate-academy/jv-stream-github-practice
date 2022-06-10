@@ -15,9 +15,13 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MINIMUM_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
-                && Integer.parseInt(candidate.getPeriodsInUkr()
+                && checkPeriods(candidate);
+    }
+
+    private boolean checkPeriods(Candidate candidate) {
+        return Integer.parseInt(candidate.getPeriodsInUkr()
                 .split(PERIOD_SEPARATOR)[END_OF_PERIOD_INDEX])
                 - Integer.parseInt(candidate.getPeriodsInUkr()
-                        .split(PERIOD_SEPARATOR)[START_OF_PERIOD_INDEX]) >= MINIMUM_PERIOD;
+                .split(PERIOD_SEPARATOR)[START_OF_PERIOD_INDEX]) >= MINIMUM_PERIOD;
     }
 }
