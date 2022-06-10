@@ -13,8 +13,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return checkYears(candidate.getAge())
-                && candidate.isAllowedToVote()
+        return candidate.isAllowedToVote()
+                && checkYears(candidate.getAge())
                 && checkNationality(candidate.getNationality())
                 && checkPeriodInUkraine(candidate.getPeriodsInUkr());
     }
