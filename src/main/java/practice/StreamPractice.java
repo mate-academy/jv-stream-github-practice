@@ -1,9 +1,6 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +19,18 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        try {
+            return numbers.stream()
+                    .map(x -> x.split(","))
+                    .flatMap(Arrays::stream)
+                    .map(Integer::parseInt)
+                    .filter(x -> x % 2 == 0)
+                    .sorted()
+                    .findFirst()
+                    .get();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Can't get min value from list: " + numbers);
+        }
     }
 
     /**
@@ -31,7 +39,21 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        List<Integer> values = IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 == 0)
+                .mapToObj(numbers::get)
+                .collect(Collectors.toList());
+
+        List<Integer> oddValues = IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 != 0)
+                .mapToObj(i -> numbers.get(i) - 1)
+                .collect(Collectors.toList());
+        values.addAll(oddValues);
+        return values.stream()
+                .filter(i -> i % 2 != 0)
+                .mapToInt(Integer::intValue)
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -66,11 +88,11 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> personPredicate = x ->
                 (x.getAge() >= fromAge
-                && x.getAge() <= femaleToAge
-                && x.getSex() == Person.Sex.WOMAN)
-                | (x.getAge() >= fromAge
-                && x.getAge() <= maleToAge
-                && x.getSex() == Person.Sex.MAN);
+                        && x.getAge() <= femaleToAge
+                        && x.getSex() == Person.Sex.WOMAN)
+                        | (x.getAge() >= fromAge
+                        && x.getAge() <= maleToAge
+                        && x.getSex() == Person.Sex.MAN);
 
         return peopleList.stream()
                 .filter(personPredicate)
