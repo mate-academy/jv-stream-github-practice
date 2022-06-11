@@ -16,6 +16,14 @@ public class Candidate {
         this.periodsInUkr = periodsInUkr;
     }
 
+    public Candidate(String name, int age, String nationality, boolean allowedToVote, String periodsInUkr) {
+        this.age = age;
+        this.nationality = nationality;
+        this.allowedToVote = allowedToVote;
+        this.periodsInUkr = periodsInUkr;
+        this.name = name;
+    }
+
     public int getAge() {
         return age;
     }
@@ -76,5 +84,16 @@ public class Candidate {
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
             isAllowedToVote(), getPeriodsInUkr(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Candidate{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", nationality='" + nationality + '\'' +
+                ", allowedToVote=" + allowedToVote +
+                ", periodsInUkr='" + periodsInUkr + '\'' +
+                '}';
     }
 }

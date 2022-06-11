@@ -1,8 +1,16 @@
 package practice;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -35,7 +43,13 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = x -> x.getAge() >= fromAge
+                && x.getAge() <= toAge
+                && x.getSex() == Person.Sex.MAN;
+
+        return peopleList.stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +64,19 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = x ->
+                (x.getAge() >= fromAge
+                && x.getAge() <= femaleToAge
+                && x.getSex() == Person.Sex.WOMAN)
+                | (x.getAge() >= fromAge
+                && x.getAge() <= maleToAge
+                && x.getSex() == Person.Sex.MAN);
+
+        return peopleList.stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
+
+
     }
 
     /**
@@ -59,7 +85,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = x -> x.getSex() == Person.Sex.WOMAN && x.getAge() >= femaleAge;
+        return peopleList.stream()
+                .filter(personPredicate)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +107,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
