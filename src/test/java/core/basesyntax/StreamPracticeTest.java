@@ -204,7 +204,7 @@ public class StreamPracticeTest {
     public void validateCandidates_basicData() {
         List<String> expected = List.of("Casey", "Morty", "Philip");
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
-                candidates), expected, solution.validateCandidates(candidates));
+                    candidates), expected, solution.validateCandidates(candidates));
     }
 
     @Test

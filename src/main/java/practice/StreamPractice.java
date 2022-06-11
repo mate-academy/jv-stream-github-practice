@@ -1,11 +1,12 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -98,16 +99,17 @@ public class StreamPractice {
                 .filter(personPredicate)
                 .collect(Collectors.toList());
 
-
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> personPredicate = x -> x.getSex() == Person.Sex.WOMAN && x.getAge() >= femaleAge;
+        Predicate<Person> personPredicate = x ->
+                        x.getSex() == Person.Sex.WOMAN
+                        && x.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(personPredicate)
                 .map(Person::getCats)
