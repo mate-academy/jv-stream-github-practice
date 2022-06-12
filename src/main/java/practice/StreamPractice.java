@@ -13,11 +13,10 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) throws RuntimeException {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(","))
-                        .mapToInt(Integer::parseInt)
-                        .boxed())
+                .map(s -> s.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
                 .filter(integer -> integer % 2 == 0)
-                .mapToInt(i -> i)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
