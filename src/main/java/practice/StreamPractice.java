@@ -80,7 +80,7 @@ public class StreamPractice {
                         (x.getAge() >= fromAge
                         && x.getAge() <= femaleToAge
                         && x.getSex() == Person.Sex.WOMAN)
-                        | (x.getAge() >= fromAge
+                        || (x.getAge() >= fromAge
                         && x.getAge() <= maleToAge
                         && x.getSex() == Person.Sex.MAN);
 
