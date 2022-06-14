@@ -1,10 +1,12 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -85,10 +87,12 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(c -> c.stream())
-                .map(c -> c.getName())
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= femaleAge
+                        && !p.getCats().isEmpty())
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -107,11 +111,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(p -> p.getNationality().equals("Ukrainian"))
-                .filter(p -> p.getAge() >= 35)
-                .filter(Candidate::isAllowedToVote)
-                .filter(p -> (Integer.parseInt(p.getPeriodsInUkr().substring(5))
-                        - Integer.parseInt(p.getPeriodsInUkr().substring(0, 4))) > 10)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
