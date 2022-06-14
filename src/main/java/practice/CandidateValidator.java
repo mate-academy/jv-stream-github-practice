@@ -1,15 +1,15 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final static String NATIONALITY = "Ukrainian";
-    private final static int PERIOD_YEARS = 10;
-    private final static int MIN_AGE_CANDIDATE = 10;
-    private final static int INDEX_ONE = 0;
-    private final static int INDEX_TWO = 1;
-    private final static String REGEX = "-";
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int PERIOD_YEARS = 10;
+    private static final int MIN_AGE_CANDIDATE = 10;
+    private static final int INDEX_ONE = 0;
+    private static final int INDEX_TWO = 1;
+    private static final String REGEX = "-";
 
     @Override
     public boolean test(Candidate candidate) {
