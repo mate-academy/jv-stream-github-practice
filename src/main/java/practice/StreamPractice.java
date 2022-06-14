@@ -14,7 +14,6 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.replaceAll(" ", "").split(","))
                 .map(Integer::valueOf))
-                .distinct()
                 .filter(x -> x % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(()
