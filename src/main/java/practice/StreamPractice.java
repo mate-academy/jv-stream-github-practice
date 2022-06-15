@@ -38,7 +38,7 @@ public class StreamPractice {
                 .mapToObj(i -> (i % 2) != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(x -> x % 2 != 0)
                 .mapToDouble(x -> x).average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
