@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -82,10 +83,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(cats -> cats.stream()
-                        .map(Cat::getName))
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
