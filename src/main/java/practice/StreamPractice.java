@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -40,7 +39,7 @@ public class StreamPractice {
                 .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(k -> k % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**

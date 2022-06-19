@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -10,12 +11,15 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int firstDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(0, candidate.getPeriodsInUkr().indexOf("-")));
-        int lastDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(candidate.getPeriodsInUkr().indexOf("-") + 1));
         return (candidate.getAge() >= MIN_AGE) && candidate.isAllowedToVote()
                 && (candidate.getNationality().equals(NATIONALITY))
-                && ((lastDate - firstDate) > MIN_YEARS);
+                && (getPeriodInUkr(candidate.getPeriodsInUkr()) >= MIN_YEARS);
+    }
+
+    private int getPeriodInUkr(String periodsInUkraine) {
+        return Arrays.stream(periodsInUkraine.split("-"))
+                .mapToInt(Integer::parseInt)
+                .reduce((firstYear, secondYear) -> secondYear - firstYear)
+                .getAsInt();
     }
 }
