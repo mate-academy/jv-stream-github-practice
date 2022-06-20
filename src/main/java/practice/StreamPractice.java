@@ -36,9 +36,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-            .mapToObj(i -> isOdd(i) ? numbers.get(i) - 1 : numbers.get(i))
-            .filter(this::isOdd)
-            .mapToInt(n -> n)
+            .map(i -> !isEven(i) ? numbers.get(i) - 1 : numbers.get(i))
+            .filter(n -> !isEven(n))
             .average()
             .getAsDouble();
     }
@@ -53,8 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-            .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                    && p.getAge() >= fromAge && p.getAge() <= toAge)
+            .filter(new RecruitmentValiator(fromAge, toAge))
             .collect(Collectors.toList());
     }
 
@@ -71,9 +69,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-            .filter(p -> p.getAge() >= fromAge
-                && (p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge
-                    || p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge))
+            .filter(new WorkableValidator(fromAge, femaleToAge, maleToAge))
             .collect(Collectors.toList());
     }
 
@@ -113,9 +109,5 @@ public class StreamPractice {
 
     private boolean isEven(int number) {
         return number % 2 == 0;
-    }
-
-    private boolean isOdd(int number) {
-        return !isEven(number);
     }
 }
