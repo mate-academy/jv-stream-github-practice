@@ -26,8 +26,7 @@ public class StreamPractice {
                 .mapToInt(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get "
-                        + "average value from list: there is not valid numbers"));
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
