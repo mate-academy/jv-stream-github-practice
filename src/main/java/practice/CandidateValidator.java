@@ -4,13 +4,12 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-
-    public static final int FIRST_INDEX = 1;
-    public static final int SECOND_INDEX = 0;
-    public static final String REGEX = "-";
-    public static final String NATIONALITY_OF_UKRAINE = "Ukrainian";
-    public static final int MIN_AGE_CANDIDATE = 35;
-    public static final int MIN_NUMBER_OF_YEARS = 10;
+    private static final int FIRST_INDEX = 1;
+    private static final int SECOND_INDEX = 0;
+    private static final String REGEX = "-";
+    private static final String NATIONALITY_OF_UKRAINE = "Ukrainian";
+    private static final int MIN_AGE_CANDIDATE = 35;
+    private static final int MIN_NUMBER_OF_YEARS = 10;
 
     @Override
     public boolean test(Candidate candidate) {

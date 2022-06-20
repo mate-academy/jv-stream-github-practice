@@ -7,7 +7,7 @@
     
 2.  Given a List of Integer numbers,
     subtract 1 from each element on an odd position (having the odd index).
-    Then return thew average of all odd numbers or throw NoSuchElementException.
+    Then return the average of all odd numbers or throw NoSuchElementException.
 
 3.  Given a List of `People` instances (having `name`, `age` and `sex` fields),
     for example, `Arrays.asList( new People(«Victor», 16, Sex.MAN), new People(«Helen», 42, Sex.WOMEN))`,

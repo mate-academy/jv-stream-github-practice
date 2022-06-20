@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String DELIMITER = ",";
+    private static final String DELIMITER = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -19,15 +20,14 @@ public class StreamPractice {
                 .filter(x -> x % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: method_input_list"
+                        new RuntimeException("Can't get min value from list: "
                                 + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::valueOf)
                 .average()
                 .getAsDouble();
     }
@@ -42,13 +42,14 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> customPredicate = person -> Person.Sex.MAN == person.getSex()
+                && person.getAge() <= maleToAge
+                && person.getAge() >= fromAge
+                || Person.Sex.WOMAN == person.getSex()
+                && person.getAge() <= femaleToAge
+                && person.getAge() >= fromAge;
         return peopleList.stream()
-                .filter(p -> Person.Sex.MAN == p.getSex()
-                        && p.getAge() <= maleToAge
-                        && p.getAge() >= fromAge
-                        || Person.Sex.WOMAN == p.getSex()
-                        && p.getAge() <= femaleToAge
-                        && p.getAge() >= fromAge)
+                .filter(customPredicate)
                 .collect(Collectors.toList());
     }
 
