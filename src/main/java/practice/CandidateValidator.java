@@ -9,13 +9,13 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int SECOND_INDEX = 0;
     public static final String REGEX = "-";
     public static final String NATIONALITY_OF_UKRAINE = "Ukrainian";
-    public static final int MIN_AGE = 35;
+    public static final int MIN_AGE_CANDIDATE = 35;
     public static final int MIN_NUMBER_OF_YEARS = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         String[] periodInUkraine = candidate.getPeriodsInUkr().split(REGEX);
-        return candidate.getAge() >= MIN_AGE
+        return candidate.getAge() >= MIN_AGE_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_OF_UKRAINE)
                 && (Integer.valueOf(periodInUkraine[FIRST_INDEX])
