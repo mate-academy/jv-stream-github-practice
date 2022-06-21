@@ -21,4 +21,3 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote();
     }
 }
-
