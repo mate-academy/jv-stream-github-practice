@@ -38,8 +38,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> (index % 2 == 1) ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(integer -> integer % 2 != 0)
-                .mapToDouble(value -> value)
+                .filter(number -> number % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -71,7 +70,6 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
         Predicate<Person> personPredicate = person -> {
             if (person.getSex() == Person.Sex.MAN) {
                 return (person.getAge() >= fromAge) && (person.getAge() <= maleToAge);
