@@ -1,8 +1,6 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -38,16 +36,10 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .mapToObj(i -> {
-                    int number = numbers.get(i);
-                    if (i % 2 != 0) {
-                        return number - 1;
-                    }
-                    return number;
-                })
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(n -> n)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average().orElseThrow();
     }
 
     /**
@@ -100,8 +92,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .distinct()
                 .collect(Collectors.toList());
