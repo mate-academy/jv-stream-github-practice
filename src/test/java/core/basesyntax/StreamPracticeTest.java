@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
