@@ -5,21 +5,23 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final String NATIONALITY = "Ukrainian";
-    private static final int PERIODS_IN_UKRAINE = 10;
+    private static final int START_PERIOD_INDEX = 0;
+    private static final int END_PERIOD_INDEX = 1;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int MIN_PERIODS_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(NATIONALITY)
-                && getPeriodsInUkraine(candidate.getPeriodsInUkr()) >= PERIODS_IN_UKRAINE;
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && getTotalYearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIODS_IN_UKRAINE;
     }
 
-    private int getPeriodsInUkraine(String periodCandidate) {
-        String[] period = periodCandidate.split("-");
-        int startPeriod = Integer.parseInt(period[0]);
-        int endPeriod = Integer.parseInt(period[1]);
-        return endPeriod - startPeriod;
+    private int getTotalYearsInUkraine(String period) {
+        String[] years = period.split("-");
+        int yearFrom = Integer.parseInt(years [START_PERIOD_INDEX]);
+        int yearTo = Integer.parseInt(years [END_PERIOD_INDEX]);
+        return yearTo - yearFrom;
     }
 }

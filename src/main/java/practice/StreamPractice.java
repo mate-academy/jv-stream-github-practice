@@ -36,8 +36,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(v -> v % 2 != 0)
-                .average().orElseThrow(() -> new NoSuchElementException("Can't find : " + numbers));
-
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't find : " + numbers));
     }
 
     /**
@@ -69,7 +69,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> selectPeople(fromAge, femaleToAge, maleToAge, p))
+                .filter(p -> isValidPerson(fromAge, femaleToAge, maleToAge, p))
                 .collect(Collectors.toList());
     }
 
@@ -108,16 +108,13 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean selectPeople(int fromAge, int femaleToAge,
-                                 int maleToAge, Person people) {
-        if (people.getSex() == Person.Sex.MAN
-                && people.getAge() >= fromAge
-                && people.getAge() <= maleToAge) {
-            return true;
-        }
-        if (people.getSex() == Person.Sex.WOMAN
-                && people.getAge() >= fromAge
-                && people.getAge() <= femaleToAge) {
+    private boolean isValidPerson(int fromAge, int femaleToAge,
+                                  int maleToAge, Person person) {
+        if (person.getAge() >= fromAge
+                && (person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() <= maleToAge
+                || person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() <= femaleToAge)) {
             return true;
         }
         return false;
