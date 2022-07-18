@@ -110,13 +110,10 @@ public class StreamPractice {
 
     private boolean isValidPerson(int fromAge, int femaleToAge,
                                   int maleToAge, Person person) {
-        if (person.getAge() >= fromAge
+        return person.getAge() >= fromAge
                 && (person.getSex().equals(Person.Sex.MAN)
                 && person.getAge() <= maleToAge
                 || person.getSex().equals(Person.Sex.WOMAN)
-                && person.getAge() <= femaleToAge)) {
-            return true;
-        }
-        return false;
+                && person.getAge() <= femaleToAge);
     }
 }
