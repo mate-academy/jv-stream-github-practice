@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,15 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
-        }
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(","))
                         .map(Integer::parseInt))
                 .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
-                .min().getAsInt();
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -36,25 +33,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        double resultOddIndex;
-        double resultEvenIndex;
-        resultOddIndex = IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 == 1)
-                .map(i -> numbers.get(i) - 1)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElse(0);
-        resultEvenIndex = IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 == 0)
-                .map(numbers::get)
-                .filter(e -> e % 2 == 1)
-                .average()
-                .orElse(0);
-        if (resultOddIndex == 0 && resultEvenIndex == 0) {
-            throw new NoSuchElementException();
-        }
-        return resultOddIndex == 0 ? resultEvenIndex : resultEvenIndex == 0 ? resultOddIndex
-                : (resultOddIndex + resultEvenIndex) / 2;
+                .orElseThrow();
     }
 
     /**
@@ -85,12 +68,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getSex() == Person.Sex.MAN
                         && p.getAge() <= maleToAge)
                         || (p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge))
+                        && p.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
