@@ -22,7 +22,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(s -> s % 2 == 0)
+                .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
@@ -52,13 +52,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-
-        Predicate<Person> isValidAge = person -> person.getSex() == Person.Sex.MAN
+        Predicate<Person> isValidPerson = person -> person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
-
         return peopleList.stream()
-                .filter(isValidAge)
+                .filter(isValidPerson)
                 .collect(Collectors.toList());
     }
 
@@ -74,14 +72,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
-        Predicate<Person> isValidAgeBySex = person -> person.getAge() >= fromAge
+        Predicate<Person> isValidPerson = person -> person.getAge() >= fromAge
                 && (person.getSex() == Person.Sex.MAN
                 ? person.getAge() <= maleToAge
                 : person.getAge() <= femaleToAge);
-
         return peopleList.stream()
-                .filter(isValidAgeBySex)
+                .filter(isValidPerson)
                 .collect(Collectors.toList());
     }
 
