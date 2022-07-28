@@ -1,9 +1,7 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,10 +19,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> Arrays.stream(s.split(",")).collect(Collectors.toList()))
-                .flatMap(Collection::stream)
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(item -> (item % 2) == 0)
+                .filter(item -> item % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: < "
                         + numbers + " >"));
@@ -37,11 +34,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                        .mapToObj(i -> (i % 2 == 0) ? numbers.get(i) : numbers.get(i) - 1)
-                        .mapToInt(num -> num)
+                        .map(i -> (i % 2 == 0) ? numbers.get(i) : numbers.get(i) - 1)
                         .filter(i -> i % 2 == 1)
                         .average()
-                        .orElseThrow(NoSuchElementException::new);
+                        .orElseThrow();
     }
 
     /**
@@ -54,8 +50,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> predicate = p -> p.getAge() >= fromAge
-                                            && p.getAge() <= toAge
-                                            && p.getSex() == Person.Sex.MAN;
+                && p.getAge() <= toAge
+                && p.getSex() == Person.Sex.MAN;
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
@@ -73,9 +69,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = p -> p.getSex() == Person.Sex.MAN
-                ? p.getAge() >= fromAge && p.getAge() <= maleToAge :
-                  p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+        Predicate<Person> predicate = p -> p.getAge() >= fromAge
+                && (p.getSex() == Person.Sex.MAN
+                ? p.getAge() <= maleToAge
+                : p.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
@@ -88,11 +85,10 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> selectWomen = p -> p.getSex() == Person.Sex.WOMAN
-                                        && p.getAge() >= femaleAge;
+                && p.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(selectWomen)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
