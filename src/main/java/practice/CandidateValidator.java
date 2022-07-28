@@ -13,7 +13,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-
         String[] splitYearValues = candidate.getPeriodsInUkr().split("-");
         return ELIGIBLE_NATIONALITY.equals(candidate.getNationality())
                 && candidate.getAge() >= ELIGIBLE_AGE
