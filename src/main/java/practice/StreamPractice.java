@@ -1,9 +1,12 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -74,12 +77,12 @@ public class StreamPractice {
                     if (p.getSex() == Person.Sex.MAN) {
                         return p.getAge() >= fromAge
                                 && p.getAge() <= maleToAge;
-                    } return p.getAge() >= fromAge
+                    }
+                    return p.getAge() >= fromAge
                             && p.getAge() <= femaleToAge;
                 })
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
@@ -110,6 +113,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
