@@ -105,7 +105,7 @@ public class StreamPractice {
         return candidates.stream()
                 // .filter(() -> new CandidateValidator())
                 // does not work, gives "Cannot infer functional interface type"
-                .filter(c-> new CandidateValidator().test(c))
+                .filter(c -> new CandidateValidator().test(c))
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
