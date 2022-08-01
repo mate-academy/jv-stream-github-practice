@@ -10,7 +10,6 @@ import model.Person;
 
 public class StreamPractice {
 
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,3000", "0,22,7", ...}
@@ -20,12 +19,13 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
 
-        return Arrays.stream(String.join(",", numbers)
-                        .split(","))
-                .map(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
-                .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(num -> num % 2 == 0)
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list"));
     }
 
     /**
