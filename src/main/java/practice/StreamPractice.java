@@ -3,8 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -20,14 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
-                .map(s1 -> s1.split(","))
-                .flatMap(Arrays::stream)
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
-                .filter(integer -> integer % 2 == 0)
-                .reduce(Integer::min);
-        return min.orElseThrow(() ->
-                new RuntimeException("Can't get min value from list: " + numbers));
+                .filter(n -> n % 2 == 0)
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -36,12 +33,14 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? (numbers.get(i) - 1) : numbers.get(i))
                 .mapToDouble(value -> value)
                 .filter(value -> value % 2 != 0)
-                .average();
-        return average.orElseThrow(() -> new NoSuchElementException("Odd Number not found"));
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't calculate"
+                        + "average of odd numbers from list: "
+                        + numbers));
     }
 
     /**
