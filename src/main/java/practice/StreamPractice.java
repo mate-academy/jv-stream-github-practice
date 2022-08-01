@@ -20,8 +20,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(str -> str.split(","))
-                .flatMap(Arrays::stream)
+                // like this, or need to remove the next map too?
+                .flatMap(str -> Arrays.stream(str.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compare)
@@ -38,7 +38,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can`t get average value from list"));
     }
 
     /**
