@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                // like this, or need to remove the next map too?
                 .flatMap(str -> Arrays.stream(str.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
@@ -86,8 +84,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -106,7 +103,9 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                // .filter(() -> new CandidateValidator())
+                // does not work, gives "Cannot infer functional interface type"
+                .filter(c-> new CandidateValidator().test(c))
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
