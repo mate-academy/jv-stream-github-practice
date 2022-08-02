@@ -4,19 +4,21 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final int indexSinceYear = 0;
-    private final int indexByYear = 1;
-    private final int minPeriodsInUkraine = 10;
-    private final int minAge = 35;
-    private final String ukrainianNationality = "Ukrainian";
+    private static final int MINIMAL_REQUIRED_AGE = 35;
+    private static final int REQUIRED_YEARS_IN_UKRAINE = 10;
+    private static final int YEAR_TO_INDEX = 1;
+    private static final int YEAR_FROM_INDEX = 0;
+    private static final String UKRAINE_NATIONALITY = "Ukrainian";
+    private static final String SPLIT_REGEX = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] split = candidate.getPeriodsInUkr().split("-");
-        return candidate.getAge() >= minAge
-                && candidate.getNationality().equals(ukrainianNationality)
-                && (Integer.parseInt(split[indexByYear])
-                - Integer.parseInt(split[indexSinceYear])) >= minPeriodsInUkraine
+        String[] periodsInUkraine = candidate.getPeriodsInUkr().split(SPLIT_REGEX);
+        int duration = Integer.parseInt(periodsInUkraine[YEAR_TO_INDEX])
+                - Integer.parseInt(periodsInUkraine[YEAR_FROM_INDEX]);
+        return candidate.getAge() >= MINIMAL_REQUIRED_AGE
+                && candidate.getNationality().equals(UKRAINE_NATIONALITY)
+                && duration >= REQUIRED_YEARS_IN_UKRAINE
                 && candidate.isAllowedToVote();
     }
 }
