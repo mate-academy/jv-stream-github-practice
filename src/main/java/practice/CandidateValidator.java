@@ -8,11 +8,12 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_FINISH_YEAR_RESIDENCE = 1;
     private static final int MIN_YEARS_RESIDENCE = 10;
     private static final int MIN_YEAR_OLD = 35;
+    private static final String NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_YEAR_OLD && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(NATIONALITY)
                 && checkResidence(candidate);
     }
 

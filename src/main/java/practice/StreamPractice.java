@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,7 +24,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -36,7 +38,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(integer -> integer % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list"));
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -100,9 +102,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
