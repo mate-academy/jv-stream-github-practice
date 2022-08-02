@@ -9,11 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int YEAR_TO_INDEX = 1;
     private static final int YEAR_FROM_INDEX = 0;
     private static final String UKRAINE_NATIONALITY = "Ukrainian";
-    private static final String SPLIT_REGEX = "-";
+    private static final String SPLIT_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] periodsInUkraine = candidate.getPeriodsInUkr().split(SPLIT_REGEX);
+        String[] periodsInUkraine = candidate.getPeriodsInUkr().split(SPLIT_SEPARATOR);
         int duration = Integer.parseInt(periodsInUkraine[YEAR_TO_INDEX])
                 - Integer.parseInt(periodsInUkraine[YEAR_FROM_INDEX]);
         return candidate.getAge() >= MINIMAL_REQUIRED_AGE
