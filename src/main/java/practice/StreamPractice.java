@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -15,9 +14,8 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .mapToInt(i -> i)
                 .min().orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -52,8 +50,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
