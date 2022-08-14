@@ -20,9 +20,9 @@ public class StreamPractice {
         return numbers.stream()
                 .map(z -> z.split(","))
                 .flatMap((Arrays::stream))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(z -> z % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
@@ -36,7 +36,7 @@ public class StreamPractice {
                 .map(z -> z % 2 != 0 ? numbers.get(z) - 1 : numbers.get(z))
                 .filter(z -> z % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElseThrow(() -> new NoSuchElementException("Can't find odd numbers"));
     }
 
     /**
@@ -81,10 +81,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(z -> z.getSex().equals(Person.Sex.WOMAN) && z.getAge() >= femaleAge)
-                .map(z -> z.getCats())
-                .flatMap(List::stream)
-                .map(z -> z.getName())
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
+                .map(p -> p.getName())
                 .collect(Collectors.toList());
     }
 
@@ -102,7 +101,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(z -> new CandidateValidator().test(z))
+                .filter(new CandidateValidator())
                 .map(z -> z.getName())
                 .sorted()
                 .collect(Collectors.toList());
