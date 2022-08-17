@@ -1,11 +1,17 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+
+    private final Predicate<Integer> isOddNumber = n -> n % 2 != 0;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +20,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        int minEvenNumber = numbers.stream().map(s -> s.split(",")).flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(n -> !isOddNumber.test(n))
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+        return minEvenNumber;
     }
 
     /**
@@ -23,7 +34,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        double averageNumsOdd = IntStream.range(0, numbers.size())
+                .mapToObj(i -> isOddNumber.test(i) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(isOddNumber)
+                .mapToInt(Integer::valueOf)
+                .average()
+                .getAsDouble();
+        return averageNumsOdd;
     }
 
     /**
