@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.Candidate;
@@ -52,7 +53,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> filterPersonByAgeAndSex = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge && person.getSex().equals(Person.Sex.MAN);
+        List<Person> selectMen = peopleList.stream()
+                .filter(filterPersonByAgeAndSex)
+                .collect(Collectors.toList());
+        return selectMen;
     }
 
     /**
@@ -67,7 +73,15 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> filterPersonByAge = person -> person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge
+                && person.getAge() <= femaleToAge
+                || person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge;
+        List<Person> workablePeople = peopleList.stream()
+                .filter(filterPersonByAge)
+                .collect(Collectors.toList());
+        return workablePeople;
     }
 
     /**
