@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -35,17 +36,16 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         Integer subtractNumber = 1;
-        return numbers.stream().map(i -> {
-            if (numbers.indexOf(i) % 2 != 0) {
-                i = i - subtractNumber;
-            }
-            return i;
-        })
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                    if (i % 2 == 1) {
+                        numbers.set(i, numbers.get(i) - subtractNumber);
+                    }
+                    return numbers.get(i);
+                })
                 .filter(i -> i % 2 != 0)
-                .mapToInt(i -> i)
                 .average()
                 .getAsDouble();
-
     }
 
     /**
