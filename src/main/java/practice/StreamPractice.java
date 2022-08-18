@@ -3,7 +3,10 @@ package practice;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
@@ -20,9 +23,9 @@ public class StreamPractice {
         Pattern pattern = Pattern.compile(",");
         return numbers.stream()
                 .flatMap(pattern::splitAsStream)
-                .mapToInt(Integer::valueOf)
+                .map(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
-                .min()
+                .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
 
@@ -34,7 +37,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 != 0 ? (numbers.get(index) - 1) : numbers.get(index))
+                .mapToDouble(v -> v)
+                .filter(v -> v % 2 != 0)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't calculate"
+                        + "average of odd numbers from list: "
+                        + numbers));
     }
 
     /**
