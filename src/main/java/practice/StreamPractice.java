@@ -1,9 +1,12 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import model.Candidate;
 import model.Person;
+
 
 public class StreamPractice {
     /**
@@ -14,7 +17,15 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        Pattern pattern = Pattern.compile(",");
+        return numbers.stream()
+                .flatMap(pattern::splitAsStream)
+                .mapToInt(Integer::valueOf)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
+
     }
 
     /**
