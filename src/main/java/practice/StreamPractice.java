@@ -38,9 +38,7 @@ public class StreamPractice {
         Integer subtractNumber = 1;
         return IntStream.range(0, numbers.size())
                 .map(i -> {
-                    if (i % 2 == 1) {
-                        numbers.set(i, numbers.get(i) - subtractNumber);
-                    }
+                    i % 2 == 1 ? numbers.set(i, numbers.get(i) - subtractNumber) : null;
                     return numbers.get(i);
                 })
                 .filter(i -> i % 2 != 0)
@@ -60,7 +58,6 @@ public class StreamPractice {
         Predicate<Person> predicate = person -> person.getAge() <= toAge
                 && person.getAge() >= fromAge
                 && person.getSex() == Person.Sex.MAN;
-
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
