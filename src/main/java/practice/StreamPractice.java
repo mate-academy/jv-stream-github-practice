@@ -37,10 +37,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         Integer subtractNumber = 1;
         return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    i % 2 == 1 ? numbers.set(i, numbers.get(i) - subtractNumber) : null;
-                    return numbers.get(i);
-                })
+                .map(i -> i % 2 == 1 ? numbers.get(i) - subtractNumber : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
                 .getAsDouble();
@@ -75,13 +72,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = person -> person.getSex() == Person.Sex.MAN
+        Predicate<Person> predicate = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN
                 && person.getAge() <= maleToAge
-                && person.getAge() >= fromAge
-                || person.getSex() == Person.Sex.WOMAN
-                && person.getAge() <= femaleToAge
-                && person.getAge() >= fromAge;
-
+                || person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
@@ -95,7 +89,6 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> predicate = person -> person.getAge() >= femaleAge
                 && person.getSex() == Person.Sex.WOMAN;
-
         return peopleList.stream()
                 .filter(predicate)
                 .map(Person::getCats)
