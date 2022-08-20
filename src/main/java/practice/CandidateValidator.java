@@ -14,7 +14,6 @@ import model.Candidate;
  * We want to reuse our validation in future, so let's write our own impl of Predicate
  * parametrized with Candidate in CandidateValidator.
  */
-
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
