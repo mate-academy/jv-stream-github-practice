@@ -118,7 +118,6 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
