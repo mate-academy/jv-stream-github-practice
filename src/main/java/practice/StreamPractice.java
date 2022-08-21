@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -10,6 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private int counter = 0;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -25,7 +26,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: < Here is our input 'numbers' >"));
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -34,12 +35,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
         return numbers.stream()
+                .map(n -> {
+                    n = (counter % 2 != 0) ? n - 1 : n;
+                    counter++;
+                    return n;
+                })
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(n -> n)
                 .average()
@@ -90,7 +91,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(List::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -108,7 +109,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
