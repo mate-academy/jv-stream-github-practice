@@ -15,7 +15,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         IntSummaryStatistics range = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .mapToInt(Integer::parseInt)
                 .summaryStatistics();
-
         return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && range.getMax() - range.getMin() >= MIN_LIVE_IN_UKRAINE
                 && candidate.getNationality().equals(NATIONALITY)
