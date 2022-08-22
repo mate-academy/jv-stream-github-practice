@@ -19,5 +19,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .substring(0,candidate.getPeriodsInUkr().indexOf("-")))
                 >= YEARS_OF_RESIDENCY_REQUIRED;
     }
-    //write your code here
 }
