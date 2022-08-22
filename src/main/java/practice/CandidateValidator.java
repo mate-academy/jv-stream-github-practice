@@ -16,11 +16,15 @@ import model.Candidate;
  */
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_REQUIRED_CANDIDATE_AGE = 35;
+    private static final int MIN_REQUIRED_YEARS_IN_UKRAINE = 10;
+    private static final String NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
-        return (candidate.getAge() >= 35
+        return (candidate.getAge() >= MIN_REQUIRED_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(NATIONALITY)
                 && checkYearsInUkraine(candidate.getPeriodsInUkr()));
     }
 
@@ -29,6 +33,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 periodsInUkr.substring(0, periodsInUkr.indexOf("-")));
         int finishLiveInUkraine = Integer.parseInt(
                 periodsInUkr.substring(periodsInUkr.indexOf("-") + 1));
-        return (finishLiveInUkraine - startLiveInUkraine >= 10);
+        return (finishLiveInUkraine - startLiveInUkraine >= MIN_REQUIRED_YEARS_IN_UKRAINE);
     }
 }
