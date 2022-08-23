@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -18,19 +17,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(string -> string.split(","))
-                    .flatMap(Arrays::stream)
-                    .map(Integer::parseInt)
-                    .filter(e -> e % 2 == 0)
-                    .mapToInt(Integer::intValue)
-                    .min()
-                    .orElseThrow((Supplier<Throwable>) ()
-                            -> new RuntimeException("Can't get min value from list: " + numbers));
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        return numbers.stream().map(string -> string.split(","))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
+                .filter(e -> e % 2 == 0)
+                .mapToInt(Integer::intValue)
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -92,7 +86,6 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() > femaleAge)
-                .filter(person -> !person.getCats().isEmpty())
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
