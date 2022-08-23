@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -41,8 +40,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
-
+                .orElseThrow(() -> new NoSuchElementException("No value found"));
     }
 
     /**
@@ -74,9 +72,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN ? person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge : person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -90,8 +90,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge
                         && person.getCats().size() != 0)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
