@@ -3,12 +3,12 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private boolean isOdd = false;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -33,15 +33,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return numbers.stream()
-                .map(number -> {
-                    if (isOdd) {
-                        number--;
+        return IntStream.range(0, numbers.size())
+                .map(index -> {
+                    if (index % 2 == 1) {
+                        return numbers.get(index) - 1;
                     }
-                    isOdd = !isOdd;
-                    return number;
+                    return numbers.get(index);
                 })
-                .mapToInt(Integer::intValue)
                 .filter(number -> number % 2 == 1)
                 .average()
                 .orElseThrow();
