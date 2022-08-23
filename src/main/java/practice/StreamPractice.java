@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -34,26 +33,25 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(m -> m.getAge() >= fromAge && m.getAge() <= toAge)
-                .filter(s -> s.getSex().equals(Person.Sex.MAN))
+                .filter(m -> m.getAge() >= fromAge && m.getAge() <= toAge
+                        && m.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() >= fromAge && p.getAge() <= femaleToAge
-                        && p.getSex() == Person.Sex.WOMAN)
-                        || (p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        && p.getSex() == Person.Sex.MAN))
+                .filter(p -> p.getAge() >= fromAge && ((p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() <= femaleToAge)
+                        || (p.getAge() <= maleToAge
+                        && p.getSex() == Person.Sex.MAN)))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(owner -> owner.getAge() >= femaleAge && owner.getSex() == Person.Sex.WOMAN)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(c -> c.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }

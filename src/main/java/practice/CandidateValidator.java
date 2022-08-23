@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int YEARS_SPENT_IN_UA = 10;
     private static final int YEAR_FROM = 0;
     private static final int YEAR_TO = 1;
+    private static final String SPLITTER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int totalYearsSpentInUA(String periodsInUA) {
-        String[] splittedYears = periodsInUA.split("-");
+        String[] splittedYears = periodsInUA.split(SPLITTER);
         return Integer.parseInt(splittedYears[YEAR_TO])
                 - Integer.parseInt(splittedYears[YEAR_FROM]);
     }
