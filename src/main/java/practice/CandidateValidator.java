@@ -17,12 +17,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String YEAR_SEPARATOR = "-";
     private static final int CANDIDATE_MIN_AGE = 35;
     private static final int CANDIDATE_MIN_PERIOD_IN_UKRAINE = 10;
+    private static final int INDEX_END_PERIOD = 1;
+    private static final int INDEX_BEGIN_PERIOD = 0;
 
     private static Integer apply(String arg) {
         int[] data = Arrays.stream(arg.split(YEAR_SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        return data[1] - data[0];
+        return data[INDEX_END_PERIOD] - data[INDEX_BEGIN_PERIOD];
     }
 
     @Override
