@@ -20,20 +20,20 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_END_PERIOD = 1;
     private static final int INDEX_BEGIN_PERIOD = 0;
 
-    private static Integer apply(String arg) {
-        int[] data = Arrays.stream(arg.split(YEAR_SEPARATOR))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-        return data[INDEX_END_PERIOD] - data[INDEX_BEGIN_PERIOD];
-    }
-
     @Override
     public boolean test(Candidate candidate) {
-        Function<String, Integer> getPeriod = CandidateValidator::apply;
-        
+        Function<String, int[]> parse = data
+                -> Arrays.stream(data.split(YEAR_SEPARATOR))
+                    .mapToInt(Integer::parseInt)
+                    .toArray();
+
+        Predicate<int[]> delta = array
+                -> array[INDEX_END_PERIOD] - array[INDEX_BEGIN_PERIOD]
+                    >= CANDIDATE_MIN_PERIOD_IN_UKRAINE;
+
         return candidate.getAge() >= CANDIDATE_MIN_AGE
                 && candidate.getNationality().equals("Ukrainian")
                 && candidate.isAllowedToVote()
-                && getPeriod.apply(candidate.getPeriodsInUkr()) >= CANDIDATE_MIN_PERIOD_IN_UKRAINE;
+                && delta.test(parse.apply(candidate.getPeriodsInUkr()));
     }
 }
