@@ -29,10 +29,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean checkYearsInUkraine(String periodsInUkr) {
-        int startLiveInUkraine = Integer.parseInt(
-                periodsInUkr.substring(0, periodsInUkr.indexOf("-")));
-        int finishLiveInUkraine = Integer.parseInt(
-                periodsInUkr.substring(periodsInUkr.indexOf("-") + 1));
-        return (finishLiveInUkraine - startLiveInUkraine >= MIN_REQUIRED_YEARS_IN_UKRAINE);
+        String[] yearsInUkraine = periodsInUkr.split("-");
+        int startLiveInUkraine = Integer.parseInt(yearsInUkraine[0]);
+        int finishLiveInUkraine = Integer.parseInt(yearsInUkraine[1]);
+        return (finishLiveInUkraine - startLiveInUkraine) >= MIN_REQUIRED_YEARS_IN_UKRAINE;
     }
 }
