@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -36,7 +35,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .mapToDouble(n -> (double) n)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException());
+                .getAsDouble();
     }
 
     /**
