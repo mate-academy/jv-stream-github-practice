@@ -39,7 +39,6 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(e -> e % 2 == 0 ? numbers.get(e) : numbers.get(e) - 1)
                 .filter(e -> e % 2 != 0)
-                .mapToDouble(e -> e)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get value from list"));
     }
