@@ -112,7 +112,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> isCandidateValid = new CandidateValidator<>();
+        Predicate<Candidate> isCandidateValid = new CandidateValidator();
         return candidates
                 .stream()
                 .filter(isCandidateValid)
