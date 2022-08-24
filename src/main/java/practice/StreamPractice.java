@@ -3,8 +3,8 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -36,11 +36,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
 
-        AtomicInteger index = new AtomicInteger();
-
-        return Arrays.stream(numbers.toArray())
-                .mapToInt(x -> (int) x)
-                .map(e -> index.getAndIncrement() % 2 == 0 ? e : e - 1)
+        return IntStream.range(0, numbers.size())
+                .map(e -> e % 2 == 0 ? numbers.get(e) : numbers.get(e) - 1)
                 .filter(e -> e % 2 != 0)
                 .mapToDouble(e -> e)
                 .average()
