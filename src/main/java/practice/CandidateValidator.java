@@ -16,11 +16,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] liveFromTo = candidate.getPeriodsInUkr().split(DATE_SEPARATOR);
-        int peroid = Integer.parseInt(liveFromTo[INDEX_END_LIVE_IN_UKRAIN])
+        int livingPeroid = Integer.parseInt(liveFromTo[INDEX_END_LIVE_IN_UKRAIN])
                 - Integer.parseInt(liveFromTo[INDEX_START_LIVE_IN_UKRAIN]);
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && Objects.equals(candidate.getNationality(), NATIONALITY)
-                && peroid >= MIN_LIVING_PERIOD;
+                && livingPeroid >= MIN_LIVING_PERIOD;
     }
 }
