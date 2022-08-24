@@ -8,7 +8,6 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-    private boolean checkOddPosition = false;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +17,7 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        return (int) numbers.stream()
+        return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(s -> Arrays.stream(s))
                 .mapToInt(i -> Integer.parseInt(i))
@@ -33,18 +32,19 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        final boolean[] checkOddPosition = {false};
         return numbers.stream()
                 .map(n -> {
-                    if (checkOddPosition) {
+                    if (checkOddPosition[0]) {
                         n--;
                     }
-                    checkOddPosition = !checkOddPosition;
+                    checkOddPosition[0] = !checkOddPosition[0];
                     return n;
                 })
                 .mapToInt(n -> n)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElseThrow(() -> new NoSuchElementException("Can't find element!"));
     }
 
     /**
@@ -77,9 +77,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
-                .filter(m -> m.getSex().equals(Person.Sex.MAN) && m.getAge() <= maleToAge
-                        || m.getSex().equals(Person.Sex.WOMAN) && m.getAge() <= femaleToAge)
-                //.filter(w -> w.getSex().equals(Person.Sex.WOMAN) && w.getAge() <= femaleToAge)
+                .filter(m -> m.getSex() == Person.Sex.MAN && m.getAge() <= maleToAge
+                        || m.getSex() == Person.Sex.WOMAN && m.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
