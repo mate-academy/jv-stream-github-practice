@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final int INDEX_START_LIVE_IN_UKRAIN = 0;
     private static final int INDEX_END_LIVE_IN_UKRAIN = 1;
+    private static final int MIN_LIVING_PERIOD = 1;
     private static final String DATE_SEPARATOR = "-";
 
     //write your code here
@@ -20,6 +21,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && Objects.equals(candidate.getNationality(), NATIONALITY)
-                && peroid >= 10;
+                && peroid >= MIN_LIVING_PERIOD;
     }
 }
