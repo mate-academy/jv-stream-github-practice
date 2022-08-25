@@ -1,8 +1,7 @@
 package practice;
 
-import model.Person;
-
 import java.util.function.Predicate;
+import model.Person;
 
 public class PredicateWorkablePeople implements Predicate<Person> {
     private int fromAge;
