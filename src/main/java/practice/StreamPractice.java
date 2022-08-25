@@ -40,7 +40,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 != 0)
                 .mapToDouble(i -> i)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No such elements in list"));
     }
 
     /**
@@ -72,9 +72,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
-                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge
-                        : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
