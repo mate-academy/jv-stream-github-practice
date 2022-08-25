@@ -17,3 +17,4 @@ public class PredicateGetCatsNames implements Predicate<Person> {
                 && !person.getCats().isEmpty();
     }
 }
+

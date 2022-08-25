@@ -25,7 +25,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new NoSuchElementException(
-                        "Can't get min value from list: < Here is our input + " + numbers + ">"));
+                        "Can't get min value from list: " + numbers));
     }
     /**
      * Given a List of Integer numbers,
@@ -39,9 +39,9 @@ public class StreamPractice {
                 .filter(number -> number % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -50,6 +50,7 @@ public class StreamPractice {
      * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
+
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN
@@ -57,7 +58,6 @@ public class StreamPractice {
                         && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -68,6 +68,7 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
+
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         PredicateWorkablePeople person = new PredicateWorkablePeople(fromAge,
@@ -76,12 +77,12 @@ public class StreamPractice {
                 .filter(person)
                 .collect(Collectors.toList());
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         PredicateGetCatsNames persons = new PredicateGetCatsNames(femaleAge);
         return peopleList.stream()
@@ -111,5 +112,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 }
+
 
 

@@ -24,3 +24,4 @@ public class PredicateWorkablePeople implements Predicate<Person> {
                 && person.getAge() <= femaleToAge;
     }
 }
+
