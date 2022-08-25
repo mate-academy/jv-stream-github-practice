@@ -1,14 +1,13 @@
 package practice;
 
-import model.Candidate;
-import model.Person;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import model.Candidate;
+import model.Person;
 
 public class StreamPractice {
     /**
@@ -24,7 +23,8 @@ public class StreamPractice {
                 .flatMap(strings -> Arrays.stream(strings))
                 .mapToInt(string -> Integer.parseInt(string))
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -73,9 +73,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person ->
-                        person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
-                                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
+                .filter(p ->
+                        p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge
+                                || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
                 )
                 .collect(Collectors.toList());
     }
@@ -86,7 +86,11 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(cat -> cat.getName())
+                .collect(Collectors.toList());
     }
 
     /**
