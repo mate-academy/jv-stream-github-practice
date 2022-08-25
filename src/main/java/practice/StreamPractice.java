@@ -22,7 +22,7 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
-                .reduce(Integer::min)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -37,7 +37,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There is no odd numbers"));
     }
 
     /**
