@@ -22,6 +22,7 @@ public class StreamPractice {
                 .map(s -> s.split(","))
                 .flatMap(strings -> Arrays.stream(strings))
                 .mapToInt(string -> Integer.parseInt(string))
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
