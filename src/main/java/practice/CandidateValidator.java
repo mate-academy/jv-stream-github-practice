@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Comparator;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -17,12 +16,5 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(COUNTRY)
                 && periodsInUkraine > MIN_LIVE_IN_COUNTRY;
-    }
-
-    static class CandidateComparator implements Comparator<Candidate> {
-        @Override
-        public int compare(Candidate candidate1, Candidate candidate2) {
-            return candidate1.getName().toUpperCase().compareTo(candidate2.getName().toUpperCase());
-        }
     }
 }
