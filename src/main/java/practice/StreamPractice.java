@@ -27,7 +27,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Can't find elements."));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -41,12 +41,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
                         && person.getAge() <= maleToAge)
                         || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge))
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
