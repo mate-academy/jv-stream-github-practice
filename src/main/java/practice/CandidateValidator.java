@@ -15,7 +15,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         int periodsInUkraine = Integer.parseInt(yearLiveInUkraine[1])
                 - Integer.parseInt(yearLiveInUkraine[0]);
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(COUNTRY) && periodsInUkraine > MIN_LIVE_IN_COUNTRY;
+                && candidate.getNationality().equals(COUNTRY)
+                && periodsInUkraine > MIN_LIVE_IN_COUNTRY;
     }
 
     static class CandidateComparator implements Comparator<Candidate> {
