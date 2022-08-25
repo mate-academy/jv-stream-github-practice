@@ -85,8 +85,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(p -> p.getAge() >= femaleAge
                         && p.getSex() == Person.Sex.WOMAN)
                 .map(Person::getCats)
