@@ -7,17 +7,18 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_PERIOD_IN_UKRAINE = 10;
+    private static final String REGEX = "-";
+    private static final int TO_YEAR_LIVING = 1;
+    private static final int FROM_YEAR_LIVING = 0;
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] years = candidate.getPeriodsInUkr().split("-");
-        int period = Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
-        if (candidate.getAge() >= MIN_AGE
+        String[] years = candidate.getPeriodsInUkr().split(REGEX);
+        int period = Integer.parseInt(years[TO_YEAR_LIVING])
+                - Integer.parseInt(years[FROM_YEAR_LIVING]);
+        return candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
-                && period >= MIN_PERIOD_IN_UKRAINE) {
-            return true;
-        }
-        return false;
+                && period >= MIN_PERIOD_IN_UKRAINE;
     }
 }
