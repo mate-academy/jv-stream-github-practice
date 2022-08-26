@@ -50,8 +50,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(n -> n.getAge() >= fromAge && n.getAge() <= toAge)
-                .filter(n -> n.getSex() == Person.Sex.MAN)
+                .filter(n -> n.getAge() >= fromAge
+                        && n.getAge() <= toAge
+                        && n.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -68,10 +69,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(n -> n.getAge() >= fromAge)
-                .filter(n -> n.getSex() == Person.Sex.MAN
-                        ? n.getAge() <= maleToAge
-                        : n.getAge() <= femaleToAge)
+                .filter(n -> n.getAge() >= fromAge
+                        && ((n.getSex() == Person.Sex.MAN
+                        && n.getAge() <= maleToAge)
+                        || (n.getSex() == Person.Sex.WOMAN
+                        && n.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
