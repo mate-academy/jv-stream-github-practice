@@ -21,7 +21,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(array -> Arrays.stream(array))
                 .map(Integer::parseInt)
                 .mapToInt(n -> n)
                 .filter(n -> n % 2 == 0)
@@ -40,7 +40,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(()
+                        -> new NoSuchElementException("Impossible to calculate the average"));
     }
 
     /**
@@ -108,7 +109,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
