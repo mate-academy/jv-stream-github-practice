@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -39,10 +40,10 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        PredicateWorkablePeople people = new PredicateWorkablePeople(fromAge,
+        Predicate<Person> peoplePredicate = new PredicateWorkablePeople(fromAge,
                 femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(people)
+                .filter(peoplePredicate)
                 .collect(Collectors.toList());
     }
 
