@@ -71,7 +71,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> person = new Predicate<Person>() {
+        Predicate<Person> personPredicate = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
                 return person.getSex() == Person.Sex.MAN
@@ -84,7 +84,7 @@ public class StreamPractice {
         };
 
         return peopleList.stream()
-                .filter(person)
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
@@ -95,7 +95,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
 
-        Predicate<Person> person = new Predicate<Person>() {
+        Predicate<Person> personPredicate = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
                 return person.getSex() == Person.Sex.WOMAN
@@ -105,7 +105,7 @@ public class StreamPractice {
         };
 
         return peopleList.stream()
-                .filter(person)
+                .filter(personPredicate)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
