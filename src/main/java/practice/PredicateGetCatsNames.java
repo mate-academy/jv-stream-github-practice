@@ -13,8 +13,7 @@ public class PredicateGetCatsNames implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         return person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= femaleAge
-                && !person.getCats().isEmpty();
+                && person.getAge() >= femaleAge;
     }
 }
 
