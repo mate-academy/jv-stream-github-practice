@@ -87,7 +87,7 @@ public class StreamPractice {
      */
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        PredicateGetCatsNames persons = new PredicateGetCatsNames(femaleAge);
+        Predicate<Person> persons = new PredicateGetCatsNames(femaleAge);
         return peopleList.stream()
                 .filter(persons)
                 .flatMap(p -> p.getCats().stream())
