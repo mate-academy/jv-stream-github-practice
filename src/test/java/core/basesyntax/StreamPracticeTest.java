@@ -87,7 +87,7 @@ public class StreamPracticeTest {
     @Test
     public void getOddNumsAverage_basicData() {
         Double expected = 2.0;
-        List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);//5,1,3,6,2,4
+        List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
@@ -95,7 +95,7 @@ public class StreamPracticeTest {
     @Test
     public void getOddNumsAverage_twoEven() {
         Double expected = 4.0;
-        List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);//6,1,3,3,5,5
+        List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }

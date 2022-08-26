@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.function.Predicate;
+
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -21,9 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int periodOfResidence(Candidate candidate) {
         String[] year = candidate.getPeriodsInUkr().split(SPLIT);
-        int since = Integer.parseInt(year[YEAR_FROM]);
-        int till = Integer.parseInt(year[YEAR_TILL]);
-        return till - since;
+        return Integer.parseInt(year[YEAR_TILL]) - Integer.parseInt(year[YEAR_FROM]);
     }
 }
 
