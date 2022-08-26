@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.function.Predicate;
+
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -10,6 +11,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String SPLITERATOR = "-";
     private static final byte PERIOD_TO_INDEX = 1;
     private static final byte PERIOD_FROM_INDEX = 0;
+
     @Override
     public boolean test(Candidate candidate) {
         String[] splitted = candidate.getPeriodsInUkr().split(SPLITERATOR);
