@@ -97,7 +97,7 @@ public class StreamPractice {
     }
 
     /**
-     * Your help with a election is needed. Given list of candidates, where each element
+     * Your help with an election is needed. Given list of candidates, where each element
      * has Candidate.class type.
      * Check which candidates are eligible to apply for president position and return their
      * names sorted alphabetically.
