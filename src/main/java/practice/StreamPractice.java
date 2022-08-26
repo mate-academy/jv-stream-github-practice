@@ -12,7 +12,6 @@ import model.Person;
 public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(element -> Arrays.stream(element.split(",")))
                 .mapToInt(Integer::parseInt)
@@ -34,7 +33,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter((p) -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge
-                        && p.getAge() <= toAge).collect(Collectors.toList());
+                        && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
