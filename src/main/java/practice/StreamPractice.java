@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
