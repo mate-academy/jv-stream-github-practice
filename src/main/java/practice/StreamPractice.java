@@ -26,12 +26,13 @@ public class StreamPractice {
                 .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "There's no such element!"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter((p) -> p.getSex().equals(Person.Sex.MAN)
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge)
                 .collect(Collectors.toList());
