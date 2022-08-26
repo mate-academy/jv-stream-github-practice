@@ -1,12 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -25,7 +23,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(
+                        () -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -34,13 +33,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-
-        return  IntStream
+        return IntStream
                 .range(0, numbers.size())
-                .map(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) -1)
+                .map(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't average from this numbers list: " + numbers));
+                .orElseThrow(
+                        () -> new NoSuchElementException("Can't average from list: " + numbers));
     }
 
     /**
@@ -55,8 +54,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person ->
                         person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                                && person.getAge() >= fromAge
+                                && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -105,6 +104,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
