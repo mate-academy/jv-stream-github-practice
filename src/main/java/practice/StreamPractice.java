@@ -1,10 +1,10 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,11 +19,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(w -> w.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(w -> Stream.of(w.split(",")))
                 .map(Integer::parseInt)
                 .filter(w -> w % 2 == 0)
-                .min(Integer::compareTo)
+                .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
