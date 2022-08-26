@@ -19,8 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(word -> word.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(word -> Arrays.stream(word.split(",")))
                 .map(Integer::parseInt)
                 .filter(odd -> odd % 2 == 0)
                 .min(Integer::compareTo)
@@ -76,10 +75,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(people -> people.getAge() >= fromAge
-                        && (people.getSex() == Person.Sex.MAN
-                        ? people.getAge() <= maleToAge : people.getAge() <= femaleToAge))
+                        && ((people.getSex() == Person.Sex.MAN && people.getAge() <= maleToAge)
+                        || (people.getSex() == Person.Sex.WOMAN && people.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -110,7 +108,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(p -> new CandidateValidator().test(p))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

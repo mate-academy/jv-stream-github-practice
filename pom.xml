@@ -25,18 +25,6 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>cljs-numbers</groupId>
-            <artifactId>cljs-numbers</artifactId>
-            <version>0.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>numberto</groupId>
-            <artifactId>numberto</artifactId>
-            <version>0.0.4</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -77,10 +65,5 @@
         </pluginManagement>
     </build>
     <repositories>
-        <repository>
-            <id>clojars</id>
-            <name>Clojars</name>
-            <url>https://repo.clojars.org/</url>
-        </repository>
     </repositories>
 </project>
