@@ -111,7 +111,7 @@ public class StreamPracticeTest {
     @Test(expected = NoSuchElementException.class)
     public void getOddNumsAverage_empty() {
         Double expected = 2.0;
-        List<Integer> digits = Arrays.asList(6, 1, 2, 7, 2, 5);
+        List<Integer> digits = Arrays.asList(6, 1, 2, 7, 2, 5);//6,0,2,6,2,4
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
