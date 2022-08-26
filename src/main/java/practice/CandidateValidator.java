@@ -22,5 +22,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY);
     }
-    //write your code here
 }
