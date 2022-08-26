@@ -59,9 +59,6 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .filter(candidate -> candidate.getAge() >= 35)
-                .filter(candidate -> candidate.getNationality().equals("Ukrainian"))
-                .filter(candidate -> candidate.isAllowedToVote())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
