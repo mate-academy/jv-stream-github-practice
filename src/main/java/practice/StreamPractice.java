@@ -38,7 +38,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 != 0)
                 .mapToDouble(integer -> integer)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("no odd numbers in the list"));
     }
 
     /**
