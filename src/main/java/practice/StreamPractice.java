@@ -38,7 +38,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Don't have the min element."));
+                .orElseThrow(() -> new NoSuchElementException("Don't have the element."));
     }
 
     /**
