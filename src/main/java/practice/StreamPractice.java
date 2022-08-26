@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -70,8 +71,18 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        PredicateWorkablePeople person = new PredicateWorkablePeople(fromAge,
-                maleToAge, femaleToAge);
+        Predicate<Person> person = new Predicate<Person>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge
+                        || person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge;
+            }
+        };
+
         return peopleList.stream()
                 .filter(person)
                 .collect(Collectors.toList());
@@ -83,9 +94,18 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        PredicateGetCatsNames persons = new PredicateGetCatsNames(femaleAge);
+
+        Predicate<Person> person = new Predicate<Person>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge
+                        && !person.getCats().isEmpty();
+            }
+        };
+
         return peopleList.stream()
-                .filter(persons)
+                .filter(person)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
