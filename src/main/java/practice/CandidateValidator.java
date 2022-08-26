@@ -19,6 +19,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                                 - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[OLD_YEAR])
                         >= LIVE_IN_UKRAINE_FOR_YEARS;
     }
-
-    // write your code here
 }
