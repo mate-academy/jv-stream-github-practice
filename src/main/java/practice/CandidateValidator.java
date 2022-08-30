@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -21,6 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int periodsInUkraine(String periodsInUkr) {
         String[] splitted = periodsInUkr.split("-");
-        return Integer.parseInt(splitted[PERIOD_TO_INDEX]) - Integer.parseInt(splitted[PERIOD_FROM_INDEX]);
+        return Integer.parseInt(splitted[PERIOD_TO_INDEX])
+                - Integer.parseInt(splitted[PERIOD_FROM_INDEX]);
     }
 }
