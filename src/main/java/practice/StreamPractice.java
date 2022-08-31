@@ -37,7 +37,7 @@ public class StreamPractice {
                 .mapToDouble(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No elements in the list"));
+                .orElseThrow(() -> new NoSuchElementException("No elements in the list: " + numbers));
     }
 
     /**
