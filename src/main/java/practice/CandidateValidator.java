@@ -5,23 +5,22 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final int MIN_PERIOD_IN_UKRAINE = 10;
-    private static final int LIVE_IN_UKR_FROM = 0;
-    private static final int LIVE_IN_UKR_TO = 1;
-    private static final String NATIONALITY = "Ukrainian";
+    private static final int MIN_PERIOD_IN_COUNTRY = 10;
+    private static final int IN_COUNTRY_FROM_INDEX = 0;
+    private static final int IN_COUNTRY_TO_INDEX = 1;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate != null
-                && candidate.getAge() >= MIN_AGE
+        return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(NATIONALITY)
-                && getPeriodLiveInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKRAINE;
+                && REQUIRED_NATIONALITY.equals(candidate.getNationality())
+                && getPeriodLiveInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_COUNTRY;
     }
 
     private int getPeriodLiveInUkraine(String periodsInUkr) {
         String[] period = periodsInUkr.split("-");
-        return Integer.parseInt(period[LIVE_IN_UKR_TO])
-                - Integer.parseInt(period[LIVE_IN_UKR_FROM]);
+        return Integer.parseInt(period[IN_COUNTRY_TO_INDEX])
+                - Integer.parseInt(period[IN_COUNTRY_FROM_INDEX]);
     }
 }

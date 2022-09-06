@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -34,12 +33,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Predicate<Integer> checkOddNumbers = i -> i % 2 != 0;
         return IntStream.range(0,numbers.size())
-                .map(i -> checkOddNumbers.test(i) ? numbers.get(i) - 1 : numbers.get(i))
-                .boxed()
-                .filter(checkOddNumbers)
-                .mapToDouble(Integer::intValue)
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(i -> i % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -98,8 +94,7 @@ public class StreamPractice {
                         && p.getCats() != null;
         return peopleList.stream()
                   .filter(selectAgeFemaleCatOwner)
-                  .map(Person::getCats)
-                  .flatMap(Collection::stream)
+                  .flatMap(person -> person.getCats().stream())
                   .map(Cat::getName)
                   .collect(Collectors.toList());
     }
@@ -117,9 +112,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator checkCandidat = new CandidateValidator();
         return candidates.stream()
-                .filter(checkCandidat)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
