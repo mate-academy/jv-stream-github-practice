@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int REQUIRED_PERIOD_IN_COUNTRY = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String SPLIT_SIGN = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,7 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int getPeriodsInUkr(Candidate candidate) {
-        String[] splitedData = candidate.getPeriodsInUkr().split("-");
-        return Integer.parseInt(splitedData[1]) - Integer.parseInt(splitedData[0]);
+        String[] splitedData = candidate.getPeriodsInUkr().split(SPLIT_SIGN);
+        return Integer.parseInt(splitedData[splitedData.length - 1])
+                - Integer.parseInt(splitedData[0]);
     }
 }
