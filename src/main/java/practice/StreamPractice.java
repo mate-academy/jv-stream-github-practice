@@ -36,7 +36,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Average of all odd numbers not found"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Average of all odd numbers not found"));
     }
 
     /**
