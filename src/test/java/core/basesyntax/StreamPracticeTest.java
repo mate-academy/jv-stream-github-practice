@@ -103,7 +103,7 @@ public class StreamPracticeTest {
     @Test
     public void getOddNumsAverage_twoOdd() {
         Double expected = 3.0;
-        List<Integer> digits = Arrays.asList(6, 4, 8, 7, 2, 5); //
+        List<Integer> digits = Arrays.asList(6, 4, 8, 7, 2, 5);
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
