@@ -1,8 +1,6 @@
 package practice;
 
 import model.Candidate;
-
-import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class CandidateValidator implements Predicate<Candidate> {
