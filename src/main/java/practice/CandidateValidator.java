@@ -1,8 +1,8 @@
 package practice;
 
+import java.util.function.Predicate;
 import model.Candidate;
 
-import java.util.function.Predicate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int EXIT_FROM_UKRAINE = 1;
