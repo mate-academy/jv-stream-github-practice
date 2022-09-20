@@ -1,15 +1,13 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -40,7 +38,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new RuntimeException("Cant get average value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Cant get average value from list: " + numbers));
     }
 
     /**
@@ -52,7 +50,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex().equals(Person.Sex.MAN))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -67,7 +69,15 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p ->
+                        (p.getSex().equals(Person.Sex.MAN)
+                                && p.getAge() >= fromAge
+                                && p.getAge() <= maleToAge)
+                                || (p.getSex().equals(Person.Sex.WOMAN)
+                                && p.getAge() >= fromAge
+                                && p.getAge() <= femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -76,11 +86,16 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(owner -> owner.getSex().equals(Person.Sex.WOMAN)
+                        && owner.getAge() >= femaleAge)
+                .flatMap(owner -> owner.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Your help with a election is needed. Given list of candidates, where each element
+     * Your help with a selection is needed. Given list of candidates, where each element
      * has Candidate.class type.
      * Check which candidates are eligible to apply for president position and return their
      * names sorted alphabetically.
@@ -92,6 +107,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
