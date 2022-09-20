@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,9 +12,8 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
-                .mapToInt(Integer::valueOf)
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -25,7 +25,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,12 +39,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> ((person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge)
-                        || (person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)))
+                .filter(p -> (p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                        || (p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
