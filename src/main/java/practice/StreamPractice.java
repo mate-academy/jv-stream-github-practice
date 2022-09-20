@@ -1,8 +1,8 @@
 package practice;
 
-import java.util.*;
-import java.util.function.ToIntFunction;
-import java.util.stream.Collector;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,7 +24,8 @@ public class StreamPractice {
                 .filter(n -> Integer.parseInt(n) % 2 == 0)
                 .mapToInt(Integer::parseInt)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list:" + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                        + numbers));
     }
 
     /**
@@ -38,7 +39,9 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Cant get average value from list: " + numbers));
+                .orElseThrow(()
+                        -> new NoSuchElementException("Cant get average value from list: "
+                        + numbers));
     }
 
     /**
