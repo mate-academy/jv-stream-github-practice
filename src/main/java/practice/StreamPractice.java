@@ -34,13 +34,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
+                .map(n -> (n % 2 != 0) ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(()
-                        -> new NoSuchElementException("Cant get average value from list: "
-                        + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Cant get avarage value from list" + numbers));
+
     }
 
     /**
