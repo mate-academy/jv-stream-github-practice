@@ -38,7 +38,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(()
-                        -> new NoSuchElementException("Cant get avarage value from list" + numbers));
+                        -> new NoSuchElementException("Cant get avarage value from list"
+                        + numbers));
 
     }
 
