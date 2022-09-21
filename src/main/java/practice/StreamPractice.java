@@ -25,7 +25,9 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(()
+                        -> new NoSuchElementException("Cant get avarage value from list"
+                        + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -48,10 +50,9 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getCats() != null
-                        && person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= femaleAge)
-                .flatMap(woman -> woman.getCats().stream())
+                .filter(owner -> owner.getSex() == (Person.Sex.WOMAN)
+                        && owner.getAge() >= femaleAge)
+                .flatMap(owner -> owner.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
