@@ -55,7 +55,6 @@ public class StreamPractice {
                 .filter(x -> x.getAge() >= fromAge
                         && x.getAge() <= toAge && x.getSex().equals(Person.Sex.MAN))
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -105,7 +104,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(new CandidateValidator())

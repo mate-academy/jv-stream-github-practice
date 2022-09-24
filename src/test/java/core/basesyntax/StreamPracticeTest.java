@@ -84,9 +84,6 @@ public class StreamPracticeTest {
         solution.findMinEvenNumber(basicInput);
     }
 
-
-
-
     @Test
     public void getOddNumsAverage_basicData() {
         Double expected = 2.0;
@@ -126,8 +123,6 @@ public class StreamPracticeTest {
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
-
-
 
     @Test
     public void selectMenByAge_basicData() {
@@ -175,8 +170,6 @@ public class StreamPracticeTest {
         Assert.assertEquals(expected, result);
     }
 
-
-
     @Test
     public void getCatsNames_basicDate() {
         List<String> expected = Arrays.asList("Tom", "Leo", "Sunny", "Kitty", "Fluffy", "Jackie");
@@ -197,9 +190,6 @@ public class StreamPracticeTest {
         List<String> result = solution.getCatsNames(peopleList, 60);
         Assert.assertEquals(expected, result);
     }
-
-
-
 
     @Test
     public void validateCandidates_validatePredicate() {
