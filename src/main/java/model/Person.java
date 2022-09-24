@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class Person {
-        private String name;
-        private int age;
-        private Sex sex;
+    private String name;
+    private int age;
+    private Sex sex;
     private List<Cat> cats;
 
     public Person(String name, int age, Sex sex) {
