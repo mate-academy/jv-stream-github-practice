@@ -38,7 +38,7 @@ public class StreamPractice {
                 .mapToDouble(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Odd numbers do not found"));
     }
 
     /**
