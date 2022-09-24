@@ -1,6 +1,5 @@
 package practice;
 
-//import java.util.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -20,12 +19,10 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap((p) -> Arrays.stream(p.split(",")))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(m -> m % 2 == 0)
-                .mapToInt(i -> i)
                 .min()
                 .orElseThrow(()
                         -> new RuntimeException("Can't get min value from list:" + numbers));
@@ -39,12 +36,11 @@ public class StreamPractice {
      * @return
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-
         return IntStream.range(0, numbers.size())
                 .map(x -> (x % 2 != 0 ? numbers.get(x) - 1 : numbers.get(x)))
                 .filter(x -> x % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There no odd element!"));
     }
 
     /**
@@ -114,7 +110,7 @@ public class StreamPractice {
 
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator::test)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
