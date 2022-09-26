@@ -10,6 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEARS_WHICH_CANDIDATE_MUST_STAND_IN_COUNTRY = 10;
     private static final String UKRAINIAN = "Ukrainian";
     private static final String DELIMITER = "-";
+    
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_CANDIDATE_AGE
@@ -21,7 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getYearsInUkraine(String period) {
         String[] yearsInUkraine = period.split(DELIMITER);
-        return Integer.parseInt(yearsInUkraine[POSITION_ACTUAL_YEAR]) -
-                Integer.parseInt(yearsInUkraine[POSITION_YEAR_WHEN_ARRIVAL_TO_UKRAINE]);
+        return Integer.parseInt(yearsInUkraine[POSITION_ACTUAL_YEAR])
+                - Integer.parseInt(yearsInUkraine[POSITION_YEAR_WHEN_ARRIVAL_TO_UKRAINE]);
     }
 }

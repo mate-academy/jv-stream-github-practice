@@ -20,9 +20,9 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        final String DELIMITER = ",";
+        final String delimiter = ",";
         List<Integer> sortedNumbersList = numbers.stream()
-                .map(s -> s.split(DELIMITER))
+                .map(s -> s.split(delimiter))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(n -> !isOddNUmber(n))
