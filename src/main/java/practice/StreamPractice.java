@@ -20,19 +20,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        final String delimiter = ",";
-        List<Integer> sortedNumbersList = numbers.stream()
-                .map(s -> s.split(delimiter))
-                .flatMap(Arrays::stream)
+        return numbers.stream()
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::parseInt)
                 .filter(n -> !isOddNUmber(n))
-                .sorted()
-                .collect(Collectors.toList());
-        try {
-            return sortedNumbersList.get(0);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -45,7 +38,8 @@ public class StreamPractice {
                 .map(i -> isOddNUmber(i) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(this::isOddNUmber)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("List " + numbers
+                        + " doesn't have odd numbers."));
     }
 
     /**
@@ -89,8 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> isCurrentWomanCatsOwners(p, femaleAge))
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
