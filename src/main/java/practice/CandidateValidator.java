@@ -11,7 +11,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_END_LIVE = 1;
     private static final String SEPARATOR = "-";
 
-
     @Override
     public boolean test(Candidate candidate) {
         return candidate.isAllowedToVote()
