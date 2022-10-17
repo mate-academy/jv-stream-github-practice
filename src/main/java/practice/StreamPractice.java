@@ -24,14 +24,13 @@ public class StreamPractice {
                 .map(index -> (index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index)))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list"));
+                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list - "
+                        + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(new MenByAgeValidator(fromAge,toAge))
                 .collect(Collectors.toList());
     }
 
