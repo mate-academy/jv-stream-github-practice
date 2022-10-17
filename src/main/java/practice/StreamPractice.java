@@ -21,7 +21,7 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> (index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index)))
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get average value from list - "
@@ -30,14 +30,14 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(new MenByAgeValidator(fromAge,toAge))
+                .filter(new MenByAgeValidator(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge,
                                           List<Person> peopleList) {
         return peopleList.stream()
-                .filter(new WorkablePeopleValidator(fromAge,femaleToAge,maleToAge))
+                .filter(new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
