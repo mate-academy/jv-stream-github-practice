@@ -27,7 +27,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min();
         if (min.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
+            throw new RuntimeException("Can't get min value from list: " + numbers);
         }
         return min.getAsInt();
     }
@@ -119,6 +119,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
