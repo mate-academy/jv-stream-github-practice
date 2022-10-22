@@ -11,17 +11,14 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(e -> e.split(","))
-                    .flatMap(Arrays::stream)
-                    .mapToInt(Integer::parseInt)
-                    .filter(i -> (i & 1) == 0)
-                    .min()
-                    .orElseThrow(RuntimeException::new);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list " + numbers);
-        }
+        return numbers.stream()
+                .map(e -> e.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(i -> (i & 1) == 0)
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
