@@ -1,6 +1,5 @@
 package practice;
 
-//import java.util.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -20,9 +19,6 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers == null || numbers.size() == 0) {
-            throw new RuntimeException("Can't get min value from list");
-        }
         return numbers
                 .stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
