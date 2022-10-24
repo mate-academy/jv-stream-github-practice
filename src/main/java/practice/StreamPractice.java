@@ -13,9 +13,11 @@ import practice.custompredicates.MenBetweenAgePredicate;
 import practice.custompredicates.WorkablePeoplePredicate;
 
 public class StreamPractice {
+    public static final String COMA_SEPARATOR = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(e -> e.split(","))
+                .map(e -> e.split(COMA_SEPARATOR))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> (i & 1) == 0)
