@@ -8,6 +8,9 @@ import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
+import practice.custompredicates.CatOwnersPredicate;
+import practice.custompredicates.MenBetweenAgePredicate;
+import practice.custompredicates.WorkablePeoplePredicate;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
@@ -34,21 +37,20 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> isMenPersonsBetweenAge(p, fromAge, toAge))
+                .filter(new MenBetweenAgePredicate(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> isPersonWorkable(p, fromAge, femaleToAge, maleToAge))
+                .filter(new WorkablePeoplePredicate(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                //.filter(new CustomPredicate())
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .filter(new CatOwnersPredicate(femaleAge))
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -60,19 +62,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private boolean isMenPersonsBetweenAge(Person person, int fromAge, int toAge) {
-        return person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge
-                && person.getAge() <= toAge;
-    }
-
-    private boolean isPersonWorkable(Person person, int fromAge, int femaleToAge, int maleToAge) {
-        if (person.getAge() >= fromAge) {
-            return person.getSex() == Person.Sex.MAN
-                    ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge;
-        }
-        return false;
     }
 }
