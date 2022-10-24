@@ -19,8 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -37,7 +36,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No average value found"));
     }
 
     /**
@@ -87,9 +86,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(w -> w.getSex() == Person.Sex.WOMAN
                         && w.getAge() >= femaleAge)
-                .flatMap(p -> p.getCats()
-                        .stream()
-                        .map(Cat::getName))
+                .flatMap(p -> p.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -106,9 +104,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
