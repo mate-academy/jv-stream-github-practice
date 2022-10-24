@@ -3,19 +3,21 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
         if (numbers == null || numbers.isEmpty()) {
             throw new RuntimeException("Can't get min value from list: " + numbers);
         }
-        return Arrays.stream(String.join(",", numbers)
-                        .split(","))
+        return Arrays.stream(numbers.stream()
+                .collect(Collectors.joining(","))
+                        .split(SEPARATOR))
                 .map(Integer::parseInt)
                 .mapToInt(n -> n)
                 .filter(n -> n % 2 == 0)
@@ -30,7 +32,7 @@ public class StreamPractice {
                     .mapToDouble(n -> n)
                     .distinct()
                     .average()
-                    .orElseThrow(NoSuchElementException::new);
+                    .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -44,10 +46,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(n -> n.getSex() == Person.Sex.MAN
-                        && n.getAge() >= fromAge && n.getAge() <= maleToAge
-                        || n.getSex() == Person.Sex.WOMAN && n.getAge() >= fromAge
-                        && n.getAge() <= femaleToAge)
+                .filter(n -> new WorkablePeopleValidator(fromAge, maleToAge, femaleToAge).test(n))
                 .collect(Collectors.toList());
     }
 
@@ -68,4 +67,3 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 }
-
