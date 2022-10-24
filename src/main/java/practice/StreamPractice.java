@@ -28,7 +28,6 @@ public class StreamPractice {
                  .min();
         return min.orElseThrow(() ->
                 new RuntimeException("Can't get min value from list: " + numbers));
-
     }
 
     /**
