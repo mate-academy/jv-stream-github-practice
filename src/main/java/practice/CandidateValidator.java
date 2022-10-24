@@ -17,7 +17,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_REQUIRED)
                 && isPeriodsInUkraineSatisfied(candidate.getPeriodsInUkr());
-
     }
 
     private boolean isPeriodsInUkraineSatisfied(String period) {
