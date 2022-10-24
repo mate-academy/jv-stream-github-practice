@@ -1,10 +1,8 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -13,7 +11,8 @@ import practice.custompredicates.MenBetweenAgePredicate;
 import practice.custompredicates.WorkablePeoplePredicate;
 
 public class StreamPractice {
-    public static final String COMA_SEPARATOR = ",";
+    private static final String COMA_SEPARATOR = ",";
+    private static int iteratorIndex;
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -27,10 +26,9 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> copyNumbers = new ArrayList<>(numbers);
-        Stream.iterate(1, i -> i < numbers.size(), i -> i + 2)
-                .forEach(i -> copyNumbers.set(i, numbers.get(i) - 1));
-        return copyNumbers.stream()
+        iteratorIndex = 0;
+        return numbers.stream()
+                .map(n -> (iteratorIndex++ & 1) == 1 ? n - 1 : n)
                 .filter(n -> (n & 1) == 1)
                 .mapToInt(Integer::intValue)
                 .average()

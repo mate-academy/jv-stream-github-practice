@@ -21,6 +21,5 @@ public class WorkablePeoplePredicate implements Predicate<Person> {
                     ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge;
         }
         return false;
-
     }
 }
