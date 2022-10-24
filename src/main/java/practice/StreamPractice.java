@@ -15,9 +15,9 @@ public class StreamPractice {
         if (numbers == null || numbers.isEmpty()) {
             throw new RuntimeException("Can't get min value from list: " + numbers);
         }
-        return Arrays.stream(numbers.stream()
-                .collect(Collectors.joining(","))
-                        .split(SEPARATOR))
+        return numbers.stream()
+                .map(n -> n.split(","))
+                .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .mapToInt(n -> n)
                 .filter(n -> n % 2 == 0)
