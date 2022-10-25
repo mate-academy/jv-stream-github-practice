@@ -10,10 +10,12 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(x -> x.split(","))
+                .map(x -> x.split(COMMA))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
