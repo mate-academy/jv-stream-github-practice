@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,6 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,15 +18,15 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(e -> e.split(","))
+                .map(e -> e.split(COMMA_SEPARATOR))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
-                .sorted()
-                .findFirst().orElseThrow(() ->
+                .min(Integer::compare).orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
 
@@ -40,7 +40,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -71,12 +71,14 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && (p.getSex() == Person.Sex.MAN
-                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
+                .filter((p -> p.getAge() >= fromAge && (p.getSex() == Person.Sex.MAN
+                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
     /**
+     * p -> p.getAge() >= fromAge && (p.getSex() == Person.Sex.MAN
+     *                         ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
