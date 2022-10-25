@@ -3,7 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLIT_REGEX = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,9 +19,10 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(i -> Arrays.stream(i.split(",")))
+                .flatMap(i -> Arrays.stream(i.split(SPLIT_REGEX)))
                 .map(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
                 .reduce(Integer::min)
@@ -38,7 +40,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -69,10 +71,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> myPredicate = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
+                : person.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge
-                        && (i.getSex() == Person.Sex.MAN ? i.getAge() <= maleToAge
-                        : i.getAge() <= femaleToAge))
+                .filter(myPredicate)
                 .collect(Collectors.toList());
     }
 
