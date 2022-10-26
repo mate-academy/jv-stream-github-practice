@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
@@ -33,10 +34,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger iterator1 = new AtomicInteger();
-        return numbers.stream()
-                .mapToInt(n -> iterator1.getAndIncrement() % 2 != 0 ? --n : n)
-                .filter(n -> n % 2 != 0)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
+                .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
