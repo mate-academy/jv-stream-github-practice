@@ -8,6 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String REGEX = "-";
     private static final int MIN_PERIOD_OF_RESIDENCE = 10;
     private static final int MIN_AGE = 35;
+    private static final int INDEX_OF_END_YEAR = 1;
+    private static final int INDEX_OF_START_YEAR = 0;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -19,6 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getPeriodOfResidence(Candidate candidate) {
         String[] arrWithYears = candidate.getPeriodsInUkr().split(REGEX);
-        return Integer.parseInt(arrWithYears[1]) - Integer.parseInt(arrWithYears[0]);
+        return Integer.parseInt(arrWithYears[INDEX_OF_END_YEAR])
+                - Integer.parseInt(arrWithYears[INDEX_OF_START_YEAR]);
     }
 }

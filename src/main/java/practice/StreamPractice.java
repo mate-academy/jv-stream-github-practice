@@ -2,9 +2,9 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -12,7 +12,6 @@ import model.Person;
 public class StreamPractice {
     private static final String REGEX = ",";
     private static final int REMAINDER = 2;
-    private int count;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -38,18 +37,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        count = 0;
-        Function<Integer, Integer> mapper = num -> {
-            if (count < numbers.size() && count % REMAINDER != 0) {
-                num--;
-            }
-            count++;
-            return num;
-        };
-        return numbers.stream()
-                .map(mapper)
-                .filter(num -> num % REMAINDER != 0)
-                .mapToInt(num -> num)
+        return IntStream.range(0, numbers.size())
+                .map(n -> n % REMAINDER != 0 ? numbers.get(n) - 1 : numbers.get(n))
+                .filter(n -> n % REMAINDER != 0)
                 .average()
                 .orElseThrow();
     }
