@@ -13,13 +13,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int beforeDataSplit = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(DATA_SEPARATOR)[INDEX_DATA_BEFORE_SPLIT]);
-        int afterDataSplit = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(DATA_SEPARATOR)[INDEX_DATA_AFTER_SPLIT]);
+        String[] splitData = candidate.getPeriodsInUkr().split(DATA_SEPARATOR);
+        int periodLivingInUkraine = Integer.parseInt(splitData[INDEX_DATA_AFTER_SPLIT])
+                - Integer.parseInt(splitData[INDEX_DATA_BEFORE_SPLIT]);
         return candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_UKRAINIAN)
                 && candidate.getAge() >= MIN_AGE_VALUE
-                && afterDataSplit - beforeDataSplit >= MIM_TERM_LIVING_IN_UKRAINE;
+                && periodLivingInUkraine >= MIM_TERM_LIVING_IN_UKRAINE;
     }
 }

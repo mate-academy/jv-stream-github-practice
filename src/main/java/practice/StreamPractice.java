@@ -2,7 +2,9 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -16,18 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.size() == 0) {
-            throw new RuntimeException("Can't get min value from list");
-        }
-
         return numbers.stream()
                 .map(n -> n.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value"
-                        + "from list with numbers: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -36,15 +33,22 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return numbers.stream()
-                 .map(n -> numbers.indexOf(n) % 2 == 1
-                         ? n - 1
-                         : n)
-                 .filter(n -> n % 2 == 1)
-                 .distinct()
-                 .mapToDouble(i -> i)
-                 .average()
-                 .getAsDouble();
+        return IntStream.range(0, numbers.size())
+                .map(n -> n % 2 == 0
+                        ? numbers.get(n)
+                        : numbers.get(n) - 1)
+                .filter(i -> i % 2 == 1)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
+//        return numbers.stream()
+//                 .map(n -> numbers.indexOf(n) % 2 == 1
+//                         ? n - 1
+//                         : n)
+//                 .filter(n -> n % 2 == 1)
+//                 .distinct()
+//                 .mapToDouble(i -> i)
+//                 .average()
+//                 .getAsDouble();
     }
 
     /**
