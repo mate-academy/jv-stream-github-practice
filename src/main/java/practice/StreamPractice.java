@@ -21,16 +21,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt minNumber = numbers.stream()
-                .flatMapToInt(number -> Arrays.stream(number
-                        .split(SPLITERATOR))
-                        .mapToInt(Integer::parseInt))
+        return numbers.stream()
+                .flatMap(number -> Arrays.stream(number.split(SPLITERATOR)))
+                .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
-                .min();
-        if (minNumber.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return minNumber.getAsInt();
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,8 +37,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0
-                ? numbers.get(i) - 1
-                : numbers.get(i))
+                ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -76,12 +71,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        WorkablePeopleValidator workablePeopleValidator
+                = new WorkablePeopleValidator(fromAge, maleToAge, femaleToAge);
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() <= maleToAge
-                        || person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge)
-                        && person.getAge() >= fromAge)
+                .filter(workablePeopleValidator)
                 .collect(Collectors.toList());
     }
 
