@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -26,7 +25,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
