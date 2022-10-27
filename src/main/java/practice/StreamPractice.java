@@ -40,15 +40,6 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
-//        return numbers.stream()
-//                 .map(n -> numbers.indexOf(n) % 2 == 1
-//                         ? n - 1
-//                         : n)
-//                 .filter(n -> n % 2 == 1)
-//                 .distinct()
-//                 .mapToDouble(i -> i)
-//                 .average()
-//                 .getAsDouble();
     }
 
     /**
