@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_DATA_BEFORE_SPLIT = 0;

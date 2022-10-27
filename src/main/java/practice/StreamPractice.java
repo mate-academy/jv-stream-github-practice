@@ -1,13 +1,10 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,10 +18,17 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Stream<String> stream = numbers.stream();
-        IntStream intStream = stream.mapToInt(String::length);
-        IntStream intStream1 = intStream.filter(n -> numbers.indexOf(n) % 2 == 0);
-        return intStream1.min().getAsInt();
+        if (numbers.size() == 0) {
+            throw  new RuntimeException("Can't get min value from list");
+        }
+        return numbers.stream()
+                .map(n -> n.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value"
+                        + "from list with numbers: " + numbers));
     }
 
     /**
@@ -34,14 +38,14 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
          return numbers.stream()
-                .map(n -> numbers.indexOf(n) % 2 == 1
-                ? n - 1
-                : n)
-                .filter(n -> n % 2 == 1)
-                .distinct()
-                .mapToDouble(i -> i)
-                .average()
-                .getAsDouble();
+                 .map(n -> numbers.indexOf(n) % 2 == 1
+                         ? n - 1
+                         : n)
+                 .filter(n -> n % 2 == 1)
+                 .distinct()
+                 .mapToDouble(i -> i)
+                 .average()
+                 .getAsDouble();
     }
 
     /**
@@ -54,7 +58,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN) && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +90,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p ->  p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
