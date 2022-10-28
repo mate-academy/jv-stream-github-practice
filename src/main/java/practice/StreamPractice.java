@@ -4,11 +4,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String KOMA_RGX = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -16,9 +18,10 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(KOMA_RGX)))
                 .mapToInt(i -> Integer.valueOf(i))
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -67,12 +70,18 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
+        Predicate<Person> personPredicate = new Predicate<Person>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getAge() >= fromAge
                         && (((person.getSex().equals(Person.Sex.MAN))
-                            && person.getAge() <= maleToAge)
+                        && person.getAge() <= maleToAge)
                         || ((person.getSex().equals(Person.Sex.WOMAN))
-                        && person.getAge() <= femaleToAge)))
+                        && person.getAge() <= femaleToAge));
+            }
+        };
+        return peopleList.stream()
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
