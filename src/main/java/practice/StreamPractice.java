@@ -1,11 +1,10 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.Arrays;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -37,16 +36,15 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        WorkablePeopleValidator workablePeopleValidator = new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(workablePeopleValidator)
+                .filter(new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> Person.Sex.WOMAN == person.getSex() && person.getAge() >= femaleAge)
-                .flatMap(person -> person.getCats().stream())
+                .filter(p -> Person.Sex.WOMAN == p.getSex() && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
