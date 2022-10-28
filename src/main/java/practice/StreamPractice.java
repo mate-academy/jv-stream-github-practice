@@ -11,27 +11,16 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private Predicate<Person> getPersonPredicate(int minAge, int maxAge, String sex) {
-        return (p) -> p.getAge() >= minAge && p.getAge() <= maxAge
-                && p.getSex().name().equals(sex);
-    }
-
-    private Predicate<Person> testPersonWorkability(int fromAge, int femaleToAge, int maleToAge) {
-        return (p) -> {
-            if (p.getSex().name().equals("MAN")) {
-                return p.getAge() >= fromAge && p.getAge() <= maleToAge;
-            }
-            return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
-        };
-    }
+    private static final String SPLITTERATOR = ",";
+    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(s -> s.split(SPLITTERATOR))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min().orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE
                              + numbers));
     }
 
@@ -45,20 +34,20 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(getPersonPredicate(fromAge, toAge, "MAN"))
+                .filter(testPerson(fromAge, toAge, Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(testPersonWorkability(fromAge, femaleToAge, maleToAge))
+                .filter(canPersonWork(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().name().equals("WOMAN") && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -71,5 +60,19 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Person> testPerson(int minAge, int maxAge, Person.Sex sex) {
+        return (p) -> p.getAge() >= minAge && p.getAge() <= maxAge
+                && p.getSex() == sex;
+    }
+
+    private Predicate<Person> canPersonWork(int fromAge, int femaleToAge, int maleToAge) {
+        return (p) -> {
+            if (p.getSex() == Person.Sex.MAN) {
+                return p.getAge() >= fromAge && p.getAge() <= maleToAge;
+            }
+            return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+        };
     }
 }
