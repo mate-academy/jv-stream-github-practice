@@ -10,9 +10,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static String REGEX = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(s -> s.split(REGEX))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
@@ -24,7 +26,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(i -> i % 2 != 0).average()
+                .filter(i -> i % 2 != 0)
+                .average()
                 .orElseThrow(NoSuchElementException::new);
     }
 
@@ -39,12 +42,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge
-                        || p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                .filter(new WorkablePeoplePredicate(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +50,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .flatMap(c -> c.getCats().stream())
-                .map(Cat::getName)
+                    .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
