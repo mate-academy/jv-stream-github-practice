@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -25,11 +26,10 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return numbers.stream()
-                .map(i -> numbers.indexOf(i) % 2 == 0 ? i : i - 1)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(i -> i % 2 != 0)
                 .mapToDouble(i -> (double) i)
-                .distinct()
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("Can't get average value from list: "
