@@ -2,7 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -39,7 +39,7 @@ public class StreamPractice {
                         : numbers.get(n) - 1)
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
 //        return numbers.stream()
 //                 .map(n -> numbers.indexOf(n) % 2 == 1
 //                         ? n - 1
@@ -60,9 +60,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> predicateByMansAge = person -> person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(predicateByMansAge)
                 .collect(Collectors.toList());
     }
 
@@ -78,11 +79,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicateOfAge = person -> person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge
+                || person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        || p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(predicateOfAge)
                 .collect(Collectors.toList());
     }
 
