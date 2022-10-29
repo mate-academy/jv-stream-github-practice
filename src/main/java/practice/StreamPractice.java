@@ -4,6 +4,7 @@ import model.Candidate;
 import model.Person;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class StreamPractice {
 
@@ -37,7 +38,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .filter(index -> index % 2 != 0)
+                .mapToObj(index -> numbers.get(index) - 1)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow();
     }
 
     /**
