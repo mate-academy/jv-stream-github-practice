@@ -49,15 +49,13 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Supplier<NoSuchElementException> noElementExceptionSupplier = () ->
-                new NoSuchElementException("Can't get avg value from list: " + numbers);
         return Math.floor(numbers
                 .stream()
                 .mapToInt(i -> i)
                 .map(INCREMENT_VALUE_ON_ODD_POSITION)
                 .filter(i -> !isEven(i))
                 .average()
-                .orElseThrow(noElementExceptionSupplier));
+                .orElseThrow());
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
