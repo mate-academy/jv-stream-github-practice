@@ -9,13 +9,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START_PERIOD_IN_UKR = 0;
     private static final int END_PERIOD_IN_UKR = 1;
     private static final String VALID_NATIONALITY = "Ukrainian";
+    private static final String DELIMITER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
         if (Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[END_PERIOD_IN_UKR])
+                .split(DELIMITER)[END_PERIOD_IN_UKR])
                 - Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[START_PERIOD_IN_UKR]) > MIN_PERIOD_IN_UKR
+                .split(DELIMITER)[START_PERIOD_IN_UKR]) > MIN_PERIOD_IN_UKR
                 && candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.getNationality().equals(VALID_NATIONALITY)
                 && candidate.isAllowedToVote()) {

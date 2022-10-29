@@ -6,16 +6,18 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
     private static final int NUMBER_TO_SUBTRACT = 1;
-    private static final Enum MAN = Person.Sex.MAN;
-    private static final Enum WOMAN = Person.Sex.WOMAN;
+    private static final String COMA = ",";
+    private static final Enum<Person.Sex> MAN = Person.Sex.MAN;
+    private static final Enum<Person.Sex> WOMAN = Person.Sex.WOMAN;
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(e -> Arrays.stream(e.split(",")))
+                .flatMap(e -> Arrays.stream(e.split(COMA)))
                 .map(Integer::parseInt)
                 .mapToInt(e -> e)
                 .filter(e -> e % 2 == 0)
@@ -56,14 +58,14 @@ public class StreamPractice {
                 .filter(i -> i.getSex() == WOMAN
                         && i.getAge() >= femaleAge)
                 .flatMap(i -> i.getCats().stream())
-                .map(i -> i.getName())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .map(i -> i.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
