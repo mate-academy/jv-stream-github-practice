@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -28,7 +27,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -42,9 +41,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && ((p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge)
-                        || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge)))
+                .filter(new WorkablePeopleIdentifier(fromAge,femaleToAge,maleToAge))
                 .collect(Collectors.toList());
     }
 
