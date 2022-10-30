@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -13,9 +12,10 @@ public class StreamPractice {
     private static String REGEX = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream()
+        return numbers
+                .stream()
                 .flatMap(s -> Arrays.stream(s.split(REGEX)))
-                .mapToInt(Integer::valueOf)
+                .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
@@ -27,35 +27,38 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
-                .filter(p -> Person.Sex.MAN == p.getSex())
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
+        return peopleList
+                .stream()
+                .filter(p -> Person.Sex.MAN == p.getSex()
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(new WorkablePeopleValidator(fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .flatMap(person -> person.getCats().stream())
-                .map(Cat::getName)
+                .flatMap(person -> person.getCats().stream().map(Cat::getName))
                 .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
-        return candidates.stream()
+        return candidates
+                .stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
