@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,19 +23,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         final String splitRegex = ",";
-        int minEvenNumber;
-
-        try {
-            minEvenNumber = numbers.stream()
-                    .flatMap(s -> Arrays.stream(s.split(splitRegex)))
-                    .map(Integer::parseInt)
-                    .filter(i -> i % 2 == 0)
-                    .min(Comparator.naturalOrder())
-                    .orElseThrow();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException(CANNOT_GET_MIN_VALUE_FROM_LIST + numbers);
-        }
-        return minEvenNumber;
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(splitRegex)))
+                .map(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException(CANNOT_GET_MIN_VALUE_FROM_LIST));
     }
 
     /**
