@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
-
 public class StreamPractice {
     private static final String SPLITTER_FOR_FIND_MIN_EVEN_NUMBER = ",";
 
@@ -39,7 +38,6 @@ public class StreamPractice {
                 .filter(o -> o % 2 != 0)
                 .average()
                 .orElseThrow();
-
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
