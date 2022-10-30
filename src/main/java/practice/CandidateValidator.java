@@ -13,13 +13,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (getPeriodInUkr(candidate) > MIN_PERIOD_IN_UKR
+        return getPeriodInUkr(candidate) > MIN_PERIOD_IN_UKR
                 && candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.getNationality().equals(VALID_NATIONALITY)
-                && candidate.isAllowedToVote()) {
-            return true;
-        }
-        return false;
+                && candidate.isAllowedToVote();
     }
 
     private Integer getPeriodInUkr(Candidate candidate) {
