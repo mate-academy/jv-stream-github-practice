@@ -17,7 +17,8 @@ public class WorkablePeopleValidator implements Predicate<Person> {
     @Override
     public boolean test(Person person) {
         return person.getAge() >= fromAge
-                && ((Person.Sex.MAN == person.getSex() && person.getAge() <= maleToAge)
-                || (Person.Sex.WOMAN == person.getSex() && person.getAge() <= femaleToAge));
+                && person.getAge() <= (person.getSex() == Person.Sex.MAN
+                ? maleToAge
+                : femaleToAge);
     }
 }

@@ -24,5 +24,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         int yearTo = Integer.parseInt(date[YEAR_TO_INDEX]);
         return yearTo - yearFrom >= PERIOD_IN_COUNTRY;
     }
-
 }
