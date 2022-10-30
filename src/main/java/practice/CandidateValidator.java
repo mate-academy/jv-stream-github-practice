@@ -16,7 +16,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] years = candidate.getPeriodsInUkr().split(REGEX);
         int yearTo = Integer.parseInt(years[INDEX_TO]);
         int yearFrom = Integer.parseInt(years[INDEX_FROM]);
-
         return candidate.getNationality().equals(NATIONALITY)
                 && candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
