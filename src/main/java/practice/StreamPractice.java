@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
+
 public class StreamPractice {
     private static final String SPLITTER_FOR_FIND_MIN_EVEN_NUMBER = ",";
 
