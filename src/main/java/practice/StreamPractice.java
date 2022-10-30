@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -9,16 +10,15 @@ import model.Person;
 
 public class StreamPractice {
     private static final String REGEX = ",";
+    private static final String MESSAGE = "Can't get min value from list: ";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(REGEX))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(REGEX)))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers));
+                .orElseThrow(() -> new RuntimeException(MESSAGE + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -40,22 +40,12 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> customPredicate = person -> person.getSex() == Person.Sex.WOMAN
+                ? person.getAge() >= fromAge && person.getAge() <= femaleToAge
+                : person.getAge() >= fromAge && person.getAge() <= maleToAge;
         return peopleList.stream()
-                .filter(p -> getPersonByAgeAndSex(p, fromAge, femaleToAge, maleToAge))
+                .filter(customPredicate)
                 .collect(Collectors.toList());
-    }
-
-    private boolean getPersonByAgeAndSex(Person person, int fromAge,
-                                         int femaleToAge, int maleToAge) {
-        if (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
-                && person.getAge() <= femaleToAge) {
-            return true;
-        }
-        if (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
-                && person.getAge() <= maleToAge) {
-            return true;
-        }
-        return false;
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -71,7 +61,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
