@@ -19,7 +19,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         if (getStreamEvenNumber(numbers).count() == 0) {
-            throw new RuntimeException("Can't get min value from list: " + numbers.toString());
+            throw new NoSuchElementException("Can't get min value from list: "
+                    + numbers.toString());
         }
         return getStreamEvenNumber(numbers).min().getAsInt();
     }
@@ -86,11 +87,10 @@ public class StreamPractice {
                 == Person.Sex.WOMAN && p.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(isWomanOlderArg)
-                .map(p -> p.getCats())
-                    .flatMap(l -> l.stream())
-                    .distinct()
-                    .map(c -> c.getName())
-                    .collect(Collectors.toList());
+                .flatMap(p -> p.getCats().stream())
+                .distinct()
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -115,8 +115,7 @@ public class StreamPractice {
 
     private IntStream getStreamEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(a -> Arrays.stream(a))
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(n -> Integer.valueOf(n))
                 .filter(n -> n % 2 == 0);
     }

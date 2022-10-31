@@ -10,7 +10,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= 35 && candidate.isAllowedToVote()
                 && RIGHT_NATIONALITY.equals(candidate.getNationality())
-                && Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
-                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]) >= 10;
+                && getPeriod(candidate) >= 10;
+    }
+
+    private int getPeriod(Candidate candidate) {
+        return Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
+                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
     }
 }
