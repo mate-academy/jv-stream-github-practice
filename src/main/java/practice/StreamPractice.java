@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import model.Candidate;
@@ -9,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String RUNTIME_MESSAGE_OUT_EXCEPTION = "Can't get min value from list";
+    private static final String NSEE_MESSAGE_OUT_EXCEPTION = "Can't get min value from list";
     private static final String COMMA = ",";
 
     /**
@@ -26,7 +27,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(RUNTIME_MESSAGE_OUT_EXCEPTION));
+                .orElseThrow(() -> new NoSuchElementException(NSEE_MESSAGE_OUT_EXCEPTION));
     }
 
     /**

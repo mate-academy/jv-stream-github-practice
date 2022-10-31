@@ -21,8 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean getValue(String period) {
         final String [] years = period.split(HYPHEN);
-        final int givenPeriod;
-        givenPeriod = Integer.parseInt(years[INDEX_AFTER]) - Integer.parseInt(years[INDEX_BEFORE]);
+        final int givenPeriod = Integer.parseInt(years[INDEX_AFTER])
+                - Integer.parseInt(years[INDEX_BEFORE]);
         return givenPeriod > RESIDENCE;
     }
 }
