@@ -19,7 +19,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list" + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -42,10 +42,11 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge));
         return peopleList.stream()
-                .filter(h -> h.getAge() >= fromAge
-                        && ((h.getSex() == Person.Sex.MAN && h.getAge() <= maleToAge)
-                        || (h.getSex() == Person.Sex.WOMAN && h.getAge() <= femaleToAge)))
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
