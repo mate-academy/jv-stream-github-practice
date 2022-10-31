@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -18,8 +19,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
