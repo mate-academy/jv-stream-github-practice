@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -28,7 +29,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new RuntimeException(CANNOT_GET_MIN_VALUE_FROM_LIST));
+                .orElseThrow(() ->
+                        new NoSuchElementException(CANNOT_GET_MIN_VALUE_FROM_LIST + numbers));
     }
 
     /**
