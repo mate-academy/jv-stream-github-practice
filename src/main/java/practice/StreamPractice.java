@@ -19,18 +19,15 @@ public class StreamPractice {
     };
 
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(m -> m.split(SPLITTER_FOR_FIND_MIN_EVEN_NUMBER))
-                    .flatMap(Arrays::stream)
-                    .map(Integer::parseInt)
-                    .filter(evenNumber)
-                    .mapToInt(m -> m)
-                    .min()
-                    .getAsInt();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list");
-        }
+        return numbers
+                .stream()
+                .map(m -> m.split(SPLITTER_FOR_FIND_MIN_EVEN_NUMBER))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
+                .filter(evenNumber)
+                .mapToInt(m -> m)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -42,7 +39,8 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(m -> m.getSex() == Person.Sex.MAN)
                 .filter(m -> m.getAge() > fromAge)
                 .filter(m -> m.getAge() <= toAge)
@@ -51,7 +49,8 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(m -> m.getAge() >= fromAge)
                 .filter(m -> m.getSex().equals(Person.Sex.WOMAN)
                         ? m.getAge() <= femaleToAge : m.getAge() <= maleToAge)
@@ -59,7 +58,8 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList.stream()
+        return peopleList
+                .stream()
                 .filter(m -> m.getSex().equals(Person.Sex.WOMAN))
                 .filter(m -> m.getAge() >= femaleAge)
                 .flatMap(m -> m.getCats().stream())
