@@ -33,9 +33,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.toArray().length)
-                .filter(n -> n % 2 == 0)
-                .map(n -> n - 1)
+        return IntStream.range(0, numbers.size())
+                .map(n -> n % 2 == 0
+                        ? numbers.get(n)
+                        : numbers.get(n) - 1)
+                .filter(i -> i % 2 == 1)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get average value from list"));
     }
