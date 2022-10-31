@@ -2,7 +2,8 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.NoSuchElementException;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,10 +12,10 @@ import model.Person;
 public class StreamPractice {
     private static final String SPLITTER_FOR_FIND_MIN_EVEN_NUMBER = ",";
 
-    private Predicate<Integer> evenNumber = new Predicate<Integer>() {
+    private IntPredicate evenNumber = new IntPredicate() {
         @Override
-        public boolean test(Integer integer) {
-            return integer % 2 == 0;
+        public boolean test(int value) {
+            return value % 2 == 0;
         }
     };
 
@@ -23,11 +24,11 @@ public class StreamPractice {
                 .stream()
                 .map(m -> m.split(SPLITTER_FOR_FIND_MIN_EVEN_NUMBER))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(evenNumber)
-                .mapToInt(m -> m)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list" + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -41,9 +42,9 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(m -> m.getSex() == Person.Sex.MAN)
-                .filter(m -> m.getAge() > fromAge)
-                .filter(m -> m.getAge() <= toAge)
+                .filter(m -> m.getSex() == Person.Sex.MAN
+                        && m.getAge() > fromAge
+                        && m.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
