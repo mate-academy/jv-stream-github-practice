@@ -21,8 +21,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
-                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list" +
-                        numbers));
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list" 
+                        + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
