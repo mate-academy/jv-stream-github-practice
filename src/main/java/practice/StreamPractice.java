@@ -1,7 +1,8 @@
 package practice;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,12 +15,11 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> List.of(s.split(COMMA)))
-                .flatMap(Collection::stream)
+                .flatMap(s -> Arrays.stream(s.split(COMMA)))
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -33,8 +33,7 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> predicate = h -> h.getSex() == Person.Sex.MAN
-                && h.getAge() > fromAge
-                && h.getAge() <= toAge;
+                && h.getAge() > fromAge && h.getAge() <= toAge;
         return peopleList.stream()
                 .filter(predicate)
                 .collect(Collectors.toList());
