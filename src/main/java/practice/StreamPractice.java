@@ -38,7 +38,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         Supplier<RuntimeException> exceptionSupplier = () ->
-                new RuntimeException("Can't get min value from list: " + numbers);
+                new NoSuchElementException("Can't get min value from list: " + numbers);
         return numbers
                 .stream()
                 .flatMapToInt(COMMA_SEPARATED_INTEGERS_FLAT_MAPPER)
