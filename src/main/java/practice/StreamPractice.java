@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,12 +20,11 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(COMA))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(COMA)))
                 .mapToInt(n -> Integer.parseInt(n))
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -51,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(new MenValidator(fromAge,toAge))
+                .filter(new MenValidator(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -68,7 +68,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(new WorkablePeopleValidator(fromAge,femaleToAge,maleToAge))
+                .filter(new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(n -> n.getAge() >= femaleAge && n.getSex().equals(Person.Sex.WOMAN))
+                .filter(n -> n.getAge() >= femaleAge && n.getSex() == Person.Sex.WOMAN)
                 .flatMap(n -> n.getCats().stream())
                 .map(n -> n.getName())
                 .collect(Collectors.toList());

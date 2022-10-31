@@ -25,5 +25,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         return Integer.parseInt(years[INDEX_END_LIVING_YEAR])
                 - Integer.parseInt(years[INDEX_START_LIVING_YEAR]);
     }
-    //write your code here
 }
