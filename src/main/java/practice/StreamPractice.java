@@ -38,26 +38,20 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                && p.getAge() <= toAge)
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(canPersonBeRecruit(fromAge, toAge, Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> person.getSex() == Person.Sex.MAN
-                && (person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                || person.getSex() == Person.Sex.WOMAN
-                && (person.getAge() >= fromAge && person.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(personPredicate)
+                .filter(canPersonWork(fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() > femaleAge
+                .filter(p -> p.getAge() >= femaleAge
                 && p.getSex() == Person.Sex.WOMAN)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
@@ -71,5 +65,18 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Person> canPersonBeRecruit(int minAge, int maxAge, Person.Sex sex) {
+        return person -> person.getAge() >= minAge
+                && person.getAge() <= maxAge
+                && person.getSex() == sex;
+    }
+
+    private Predicate<Person> canPersonWork(int fromAge, int maleToAge, int femaleToAge) {
+        return person -> person.getSex() == Person.Sex.MAN
+                && (person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                || person.getSex() == Person.Sex.WOMAN
+                && (person.getAge() >= fromAge && person.getAge() <= femaleToAge);
     }
 }
