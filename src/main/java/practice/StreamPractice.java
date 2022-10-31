@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -31,25 +32,29 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> predicate = h -> h.getSex() == Person.Sex.MAN
+                && h.getAge() > fromAge
+                && h.getAge() <= toAge;
         return peopleList.stream()
-                .filter(h -> h.getSex() == Person.Sex.MAN
-                        && h.getAge() > fromAge
-                        && h.getAge() <= toAge)
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicate = h -> h.getAge() >= fromAge
+                && ((h.getSex() == Person.Sex.MAN && h.getAge() <= maleToAge)
+                || (h.getSex() == Person.Sex.WOMAN && h.getAge() <= femaleToAge));
         return peopleList.stream()
-                .filter(h -> h.getAge() >= fromAge
-                        && ((h.getSex() == Person.Sex.MAN && h.getAge() <= maleToAge)
-                        || (h.getSex() == Person.Sex.WOMAN && h.getAge() <= femaleToAge)))
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> predicate = p -> p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .filter(predicate)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
