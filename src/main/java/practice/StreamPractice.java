@@ -20,7 +20,8 @@ public class StreamPractice {
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE
+                .min()
+                .orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE
                              + numbers));
     }
 
@@ -63,16 +64,13 @@ public class StreamPractice {
     }
 
     private Predicate<Person> testPerson(int minAge, int maxAge, Person.Sex sex) {
-        return (p) -> p.getAge() >= minAge && p.getAge() <= maxAge
+        return p -> p.getAge() >= minAge && p.getAge() <= maxAge
                 && p.getSex() == sex;
     }
 
     private Predicate<Person> canPersonWork(int fromAge, int femaleToAge, int maleToAge) {
-        return (p) -> {
-            if (p.getSex() == Person.Sex.MAN) {
-                return p.getAge() >= fromAge && p.getAge() <= maleToAge;
-            }
-            return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
-        };
+        return p -> p.getAge() >= fromAge
+                && ((p.getSex() == Person.Sex.MAN) ? p.getAge() <= maleToAge
+                : p.getAge() <= femaleToAge);
     }
 }
