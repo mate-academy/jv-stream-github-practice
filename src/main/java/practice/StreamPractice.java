@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -24,7 +25,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list" + numbers));
     }
 
     /**
@@ -39,7 +41,7 @@ public class StreamPractice {
                         : numbers.get(n) - 1)
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list"));
+                .orElseThrow();
     }
 
     /**
@@ -69,11 +71,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicateOfAge = p -> p.getSex().equals(Person.Sex.MAN)
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                || p.getSex().equals(Person.Sex.WOMAN)
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        || p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(predicateOfAge)
                 .collect(Collectors.toList());
     }
 
