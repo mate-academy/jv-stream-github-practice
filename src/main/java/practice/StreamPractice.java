@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
@@ -28,7 +29,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min();
         return minEvenNumber.orElseThrow(() -> {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
+            throw new NoSuchElementException("Can't get min value from list: " + numbers);
         });
     }
 
@@ -54,14 +55,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> personPredicate = new Predicate<Person>() {
-            @Override
-            public boolean test(Person person) {
-                return person.getAge() >= fromAge
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
                         && person.getAge() <= toAge
-                        && person.getSex().equals(Person.Sex.MAN);
-            }
-        };
+                        && person.getSex() == Person.Sex.MAN;
         return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
@@ -82,7 +78,7 @@ public class StreamPractice {
         Predicate<Person> personPredicate = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
-                if (person.getSex().equals(Person.Sex.MAN)) {
+                if (person.getSex() == Person.Sex.MAN) {
                     return person.getAge() >= fromAge && person.getAge() <= maleToAge;
                 }
                 return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
@@ -100,7 +96,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
