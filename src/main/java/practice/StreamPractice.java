@@ -37,7 +37,8 @@ public class StreamPractice {
                 .mapToObj(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(n -> n % 2 == 1)
                 .mapToDouble(n -> (double) n)
-                .average().getAsDouble();
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -104,9 +105,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
