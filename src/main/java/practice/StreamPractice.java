@@ -8,6 +8,23 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static class menForArmy {
+        private static boolean check(Person person, int fromAge, int toAge) {
+            return person.getSex() == Person.Sex.MAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= toAge;
+        }
+    }
+    private static class personForWork {
+        private static boolean check(Person person, int fromAge, int maleToAge, int femaleToAge) {
+            return (person.getSex() == Person.Sex.MAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= maleToAge) ||
+                   (person.getSex() == Person.Sex.WOMAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= femaleToAge);
+        }
+    }
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -57,11 +74,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
-                .stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                                && person.getAge() >= fromAge
-                                && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+            .stream()
+            .filter(person -> menForArmy.check(person, fromAge, toAge))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -76,7 +91,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(person -> personForWork.check(person, fromAge, maleToAge, femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
