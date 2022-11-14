@@ -8,23 +8,26 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-    private static class menForArmy {
+    private static class MenForArmy {
         private static boolean check(Person person, int fromAge, int toAge) {
             return person.getSex() == Person.Sex.MAN
                     && person.getAge() >= fromAge
                     && person.getAge() <= toAge;
         }
     }
-    private static class personForWork {
+
+    private static class PersonForWork {
         private static boolean check(Person person, int fromAge, int maleToAge, int femaleToAge) {
             return (person.getSex() == Person.Sex.MAN
                     && person.getAge() >= fromAge
-                    && person.getAge() <= maleToAge) ||
+                    && person.getAge() <= maleToAge)
+                    ||
                    (person.getSex() == Person.Sex.WOMAN
                     && person.getAge() >= fromAge
                     && person.getAge() <= femaleToAge);
         }
     }
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -75,7 +78,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
             .stream()
-            .filter(person -> menForArmy.check(person, fromAge, toAge))
+            .filter(person -> MenForArmy.check(person, fromAge, toAge))
             .collect(Collectors.toList());
     }
 
@@ -93,7 +96,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList
                 .stream()
-                .filter(person -> personForWork.check(person, fromAge, maleToAge, femaleToAge))
+                .filter(person -> PersonForWork.check(person, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
