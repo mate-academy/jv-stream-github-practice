@@ -8,8 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEAR_IN_UA = 10;
     private static final String BEST_NATIONALITY = "Ukrainian";
     private static final String DATE_SPLIT_REGEX = "-";
-    private static final int YEAR_TO_INDEX = 1;
     private static final int YEAR_FROM_INDEX = 0;
+    private static final int YEAR_TO_INDEX = 1;
 
     //write your code here
     @Override
