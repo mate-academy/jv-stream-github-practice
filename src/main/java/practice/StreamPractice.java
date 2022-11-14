@@ -136,9 +136,9 @@ public class StreamPractice {
                     && person.getAge() >= fromAge
                     && person.getAge() <= maleToAge)
                     ||
-                    (person.getSex() == Person.Sex.WOMAN
-                            && person.getAge() >= fromAge
-                            && person.getAge() <= femaleToAge);
+                   (person.getSex() == Person.Sex.WOMAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= femaleToAge);
         }
     }
 }
