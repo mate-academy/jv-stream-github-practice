@@ -11,6 +11,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
     @Override
     public boolean test(Candidate candidate) {
+    String[] periodInUkr = person.getPeriodsInUkr().split(DATE_SPLIT_REGEX);
+    int periodDuration = Integer.parseInt(periodInUkr [YEAR_TO_INDEX])
+      - Integer.parseInt(periodInUkr [YEAR_FROM_INDEX]);
+    boolean livedInUrkEnough = periodDuration >= MIN_YEAR_IN_UA;
         if (candidate == null
                 || !candidate.isAllowedToVote()
                 || candidate.getAge() < MIN_AGE
