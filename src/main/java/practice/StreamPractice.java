@@ -1,8 +1,8 @@
 package practice;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.Candidate;
@@ -10,25 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static class MenForArmy {
-        private static boolean check(Person person, int fromAge, int toAge) {
-            return person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge
-                    && person.getAge() <= toAge;
-        }
-    }
-
-    private static class PersonForWork {
-        private static boolean check(Person person, int fromAge, int maleToAge, int femaleToAge) {
-            return (person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge
-                    && person.getAge() <= maleToAge)
-                    ||
-                   (person.getSex() == Person.Sex.WOMAN
-                    && person.getAge() >= fromAge
-                    && person.getAge() <= femaleToAge);
-        }
-    }
+    private final Predicate<Candidate> candidatePredicate = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -132,6 +114,31 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates
+                .stream()
+                .filter(candidatePredicate)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private static class MenForArmy {
+        private static boolean check(Person person, int fromAge, int toAge) {
+            return person.getSex() == Person.Sex.MAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= toAge;
+        }
+    }
+
+    private static class PersonForWork {
+        private static boolean check(Person person, int fromAge, int maleToAge, int femaleToAge) {
+            return (person.getSex() == Person.Sex.MAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= maleToAge)
+                    ||
+                    (person.getSex() == Person.Sex.WOMAN
+                            && person.getAge() >= fromAge
+                            && person.getAge() <= femaleToAge);
+        }
     }
 }
