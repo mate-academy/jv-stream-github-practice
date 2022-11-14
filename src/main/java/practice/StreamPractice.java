@@ -12,8 +12,6 @@ import model.Person;
 
 public class StreamPractice {
     private final Predicate<Candidate> candidatePredicate = new CandidateValidator();
-    private final PersonForWork personForWork = new PersonForWork();
-    private final MenForArmy menForArmy = new MenForArmy();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -57,7 +55,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
             .stream()
-            .filter(person -> menForArmy.check(person, fromAge, toAge))
+            .filter(person -> ifManBetweenAges(person, fromAge, toAge))
             .collect(Collectors.toList());
     }
 
@@ -75,7 +73,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList
                 .stream()
-                .filter(person -> personForWork.check(person, fromAge, maleToAge, femaleToAge))
+                .filter(person -> checkPersonForWork(person, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -115,5 +113,21 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean ifManBetweenAges(Person person, int fromAge, int toAge) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+    }
+
+    private boolean checkPersonForWork(Person person, int fromAge, int maleToAge, int femaleToAge) {
+        return (person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= maleToAge)
+                ||
+                (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge);
     }
 }
