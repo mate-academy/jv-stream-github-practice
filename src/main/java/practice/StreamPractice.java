@@ -1,9 +1,9 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
@@ -21,8 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Stream::of)
+                .flatMap(n -> Stream.of(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -36,14 +35,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        final int[] index = {0};
-        return numbers.stream()
-                .mapToInt(n -> {
-                    if (index[0] % 2 == 1) {
-                        n--;
-                    }
-                    ++index[0];
-                    return n; })
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(a -> a % 2 == 1)
                 .average()
                 .getAsDouble();
@@ -77,8 +70,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = p -> check(p, fromAge, femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(p -> CheckedPerson.check(p, fromAge, femaleToAge, maleToAge))
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
@@ -91,8 +85,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -117,14 +110,12 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public static class CheckedPerson {
-        public static boolean check(Person person, int fromAge, int femaleToAge, int maleToAge) {
-            return (person.getSex().equals(Person.Sex.MAN)
+    private boolean check(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        return (person.getSex().equals(Person.Sex.MAN)
                 && person.getAge() >= fromAge
                 && person.getAge() <= maleToAge)
                 || (person.getSex().equals(Person.Sex.WOMAN)
                 && person.getAge() >= fromAge
                 && person.getAge() <= femaleToAge);
-        }
     }
 }
