@@ -11,11 +11,14 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+        boolean hasMinumumPeriodOfResidence = Arrays
+                .stream(candidate.getPeriodsInUkr()
+                .split("-"))
+                .map(Integer::valueOf)
+                .reduce(0, (a, b) -> b - a) >= MINIMUM_PERIOD_IN_COUNTRY;
         return candidate.getAge() >= MINIMUM_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .map(Integer::valueOf)
-                .reduce(0, (a, b) -> b - a) >= MINIMUM_PERIOD_IN_COUNTRY;
+                && hasMinumumPeriodOfResidence;
     }
 }
