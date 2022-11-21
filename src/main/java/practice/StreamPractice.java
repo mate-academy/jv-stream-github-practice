@@ -11,6 +11,12 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int SUBTRACTOR = 1;
+    private static final int AGE_QUALIFICATION = 35;
+    private static final int AGES_IN_UKRAINE = 10;
+    private static final String DEFAULT_MESSAGE = "Can't get min value from list:"
+            + " < Here is our input 'numbers' >";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -26,8 +32,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list:"
-                                + " < Here is our input 'numbers' >"));
+                        new RuntimeException(DEFAULT_MESSAGE));
     }
 
     /**
@@ -38,7 +43,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         AtomicInteger index = new AtomicInteger();
         return numbers.stream()
-                .map(n -> index.getAndIncrement() % 2 == 0 ? n : n - 1)
+                .map(n -> index.getAndIncrement() % 2 == 0 ? n : n - SUBTRACTOR)
                 .filter(n -> n % 2 != 0)
                 .mapToInt(n -> n)
                 .average()
@@ -55,9 +60,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                         .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                                 && p.getAge() >= fromAge && p.getAge() <= toAge)
-                         .collect(Collectors.toList());
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -111,14 +116,14 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates
                 .stream()
-                .filter(c -> c.getAge() >= 35
+                .filter(c -> c.getAge() >= AGE_QUALIFICATION
                         && c.getNationality().equals("Ukrainian")
                         && (Integer.parseInt(c.getPeriodsInUkr()
                         .substring(c.getPeriodsInUkr()
                                 .indexOf("-") + 1))
                         - Integer.parseInt(c.getPeriodsInUkr()
                         .substring(0, c.getPeriodsInUkr()
-                                .indexOf("-")))) >= 10
+                                .indexOf("-")))) >= AGES_IN_UKRAINE
                         && c.isAllowedToVote())
                 .map(Candidate::getName)
                 .sorted()
