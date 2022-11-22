@@ -1,21 +1,20 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
     private static final int SUBTRACTOR = 1;
-    private static final int AGE_QUALIFICATION = 35;
-    private static final int MIN_AGES_IN_UKRAINE = 10;
-    private static final String DEFAULT_MESSAGE = "Can't get min value from list: ";
+    private static final String DEFAULT_MESSAGE_RE = "Can't get min value from list: ";
+    private static final String DEFAULT_MESSAGE_NSEE = "The list don`t have odd elements";
+    private static final String SYMBOL_FOR_SPLIT = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -26,13 +25,14 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
+                .map(n -> n.split(SYMBOL_FOR_SPLIT))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .flatMap(n -> Arrays.stream(n.split(SYMBOL_FOR_SPLIT)))
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() ->
-                        new RuntimeException(DEFAULT_MESSAGE + numbers));
+                        new RuntimeException(DEFAULT_MESSAGE_RE + numbers));
     }
 
     /**
@@ -41,13 +41,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger index = new AtomicInteger();
-        return numbers.stream()
-                .map(n -> index.getAndIncrement() % 2 == 0 ? n : n - SUBTRACTOR)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - SUBTRACTOR : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(n -> n)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException(DEFAULT_MESSAGE_NSEE));
     }
 
     /**
@@ -97,8 +96,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -116,25 +114,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> filterCandidates = c -> c.getAge() >= AGE_QUALIFICATION
-                && c.getNationality().equals("Ukrainian")
-                && (Integer.parseInt(c.getPeriodsInUkr()
-                .substring(c.getPeriodsInUkr().indexOf("-") + SUBTRACTOR))
-                - Integer.parseInt(c.getPeriodsInUkr()
-                .substring(0, c.getPeriodsInUkr().indexOf("-"))))
-                >= MIN_AGES_IN_UKRAINE
-                && c.isAllowedToVote();
-
         return candidates.stream()
-                .filter(filterCandidates)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private int getAgesInUkraine(Candidate candidate) {
-        String[] ages = candidate.getPeriodsInUkr().split("-");
-        return Integer.parseInt(ages[1]) - Integer.parseInt(ages[0]);
     }
 }
 
