@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -13,9 +14,8 @@ import model.Person;
 public class StreamPractice {
     private static final int SUBTRACTOR = 1;
     private static final int AGE_QUALIFICATION = 35;
-    private static final int AGES_IN_UKRAINE = 10;
-    private static final String DEFAULT_MESSAGE = "Can't get min value from list:"
-            + " < Here is our input 'numbers' >";
+    private static final int MIN_AGES_IN_UKRAINE = 10;
+    private static final String DEFAULT_MESSAGE = "Can't get min value from list: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -32,7 +32,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException(DEFAULT_MESSAGE));
+                        new RuntimeException(DEFAULT_MESSAGE + numbers));
     }
 
     /**
@@ -59,9 +59,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> filterMenByAge = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
+
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(filterMenByAge)
                 .collect(Collectors.toList());
     }
 
@@ -77,11 +79,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList
-                .stream()
-                .filter(p -> p.getAge() >= fromAge && ((p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() <= maleToAge)
-                        || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge)))
+        Predicate<Person> filterWorkablePeople = p -> p.getAge() >= fromAge
+                && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge));
+
+        return peopleList.stream()
+                .filter(filterWorkablePeople)
                 .collect(Collectors.toList());
     }
 
@@ -91,9 +94,8 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList
-                .stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
@@ -114,19 +116,26 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates
-                .stream()
-                .filter(c -> c.getAge() >= AGE_QUALIFICATION
-                        && c.getNationality().equals("Ukrainian")
-                        && (Integer.parseInt(c.getPeriodsInUkr()
-                        .substring(c.getPeriodsInUkr()
-                                .indexOf("-") + 1))
-                        - Integer.parseInt(c.getPeriodsInUkr()
-                        .substring(0, c.getPeriodsInUkr()
-                                .indexOf("-")))) >= AGES_IN_UKRAINE
-                        && c.isAllowedToVote())
+        Predicate<Candidate> filterCandidates = c -> c.getAge() >= AGE_QUALIFICATION
+                && c.getNationality().equals("Ukrainian")
+                && (Integer.parseInt(c.getPeriodsInUkr()
+                .substring(c.getPeriodsInUkr().indexOf("-") + SUBTRACTOR))
+                - Integer.parseInt(c.getPeriodsInUkr()
+                .substring(0, c.getPeriodsInUkr().indexOf("-"))))
+                >= MIN_AGES_IN_UKRAINE
+                && c.isAllowedToVote();
+
+        return candidates.stream()
+                .filter(filterCandidates)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
+
+    private int getAgesInUkraine(Candidate candidate) {
+        String[] ages = candidate.getPeriodsInUkr().split("-");
+        return Integer.parseInt(ages[1]) - Integer.parseInt(ages[0]);
+    }
 }
+
+

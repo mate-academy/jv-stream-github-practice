@@ -1,16 +1,22 @@
 package practice;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int AGE_QUALIFICATION = 35;
+    private static final int MIN_AGES_IN_UKRAINE = 10;
+
     @Override
     public boolean test(Candidate candidate) {
-        List<Candidate> candidates = new ArrayList<>();
-        candidates.add(candidate);
-        List<String> validateCandidate = new StreamPractice().validateCandidates(candidates);
-        return !validateCandidate.isEmpty();
+        return candidate.getAge() >= AGE_QUALIFICATION
+                && candidate.getNationality().equals("Ukrainian")
+                && getAgesInUkraine(candidate) >= MIN_AGES_IN_UKRAINE
+                && candidate.isAllowedToVote();
+    }
+
+    private int getAgesInUkraine(Candidate candidate) {
+        String[] ages = candidate.getPeriodsInUkr().split("-");
+        return Integer.parseInt(ages[1]) - Integer.parseInt(ages[0]);
     }
 }
