@@ -2,6 +2,7 @@ package practice;
 
 import java.util.function.Predicate;
 import model.Candidate;
+
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_AGE = 35;
     private static final int MIN_YEARS_UKR = 10;
@@ -13,7 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MINIMUM_AGE
                         && candidate.getNationality().equals(NATIONALITY)
                         && candidate.isAllowedToVote()
-                        && Integer.parseInt(yearsHere[1]) -
-                Integer.parseInt(yearsHere[0]) >= MIN_YEARS_UKR;
+                        && Integer.parseInt(yearsHere[1])
+                - Integer.parseInt(yearsHere[0]) >= MIN_YEARS_UKR;
     }
 }
