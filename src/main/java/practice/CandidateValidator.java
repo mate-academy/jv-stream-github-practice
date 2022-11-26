@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private static final int MIN_CANDIDATE_AGE = 35;
     private static final int MIN_CANDIDATE_PERIOD_IN_UKRAINE = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         String [] years = candidate.getPeriodsInUkr().split("-");

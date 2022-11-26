@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(n -> Integer.parseInt(n))
-                .filter(n -> n % 2 ==0)
+                .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
 
@@ -39,7 +38,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .getAsDouble ();
+                .getAsDouble();
     }
 
     /**
