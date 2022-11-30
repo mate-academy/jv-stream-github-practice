@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int VALUE_TO_SUBTRACT = 1;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -36,18 +37,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Stream<Integer> streamWithEvenPositions = IntStream.range(0, numbers.size())
-                .filter(n -> n % 2 == 0)
-                .map(numbers::get)
-                .boxed();
-        Stream<Integer> streamWithOddPositions = IntStream.range(0, numbers.size())
-                .filter(n -> n % 2 != 0)
-                .map(numbers::get)
-                .boxed()
-                .map(integer -> --integer);
-        return Stream.concat(streamWithEvenPositions, streamWithOddPositions)
-                .filter(n -> n % 2 != 0)
-                .mapToDouble(n -> n)
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(n -> n % 2 == 0 ? numbers.get(n) : numbers.get(n) - VALUE_TO_SUBTRACT)
+                .filter(d -> d % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -115,9 +107,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidatePredicate)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
