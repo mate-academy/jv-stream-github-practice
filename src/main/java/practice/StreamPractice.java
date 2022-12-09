@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -37,7 +36,8 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list:" + numbers));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get average value from list:" + numbers));
     }
 
     /**
@@ -84,7 +84,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .flatMap(p-> p.getCats().stream())
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
