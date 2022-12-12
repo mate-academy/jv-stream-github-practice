@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -83,10 +84,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         List<Person> persons = peopleList.stream()
-                        .filter(person -> person.getSex().equals(Person.Sex.MAN)
-                                && person.getAge() >= fromAge && person.getAge() <= maleToAge
-                                || person.getSex().equals(Person.Sex.WOMAN)
-                                && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                        .filter(person -> (person.getSex().equals(Person.Sex.MAN)
+                                && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                                || (person.getSex().equals(Person.Sex.WOMAN)
+                                && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
         return persons;
     }
@@ -100,8 +101,7 @@ public class StreamPractice {
         List<String> catNames = peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
         return catNames;
@@ -120,8 +120,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         List<String> candidatesNames = candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(candidatePredicate::test)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

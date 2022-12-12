@@ -4,9 +4,11 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int VOTE_AGE = 35;
+
     @Override
     public boolean test(Candidate candidate) {
-        return hasVotingAge(candidate,35) && isCitizen(candidate)
+        return hasVotingAge(candidate,VOTE_AGE) && isCitizen(candidate)
                 && isAllowedToVote(candidate) && hasLivedPeriod(candidate);
     }
 
