@@ -11,10 +11,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLIT_SYMBOL = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(SPLIT_SYMBOL)))
                 .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -29,10 +30,11 @@ public class StreamPractice {
                 .collect(Collectors.toMap(i -> i, numbers::get))
                 .entrySet()
                 .stream()
-                .peek(m -> {
+                .map(m -> {
                     if (m.getKey() % 2 == 1) {
                         m.setValue(m.getValue() - 1);
                     }
+                    return m;
                 })
                 .map(Map.Entry::getValue)
                 .filter(i -> i % 2 == 1)
