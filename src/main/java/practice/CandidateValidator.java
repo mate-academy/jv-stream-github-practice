@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int TO_DATE_INDEX = 1;
     private static final int REQUIRED_AGE = 35;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int REQUIRED_YEARS_IN_COUNTRY = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -20,6 +21,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private boolean livesInUkraineForTenYears(Candidate candidate) {
         String[] periods = candidate.getPeriodsInUkr().split("-");
         return Integer.parseInt(periods[TO_DATE_INDEX])
-                - Integer.parseInt(periods[FROM_DATE_INDEX]) >= 10;
+                - Integer.parseInt(periods[FROM_DATE_INDEX]) >= REQUIRED_YEARS_IN_COUNTRY;
     }
 }
