@@ -137,6 +137,6 @@ public class StreamPractice {
         return candidates.stream().filter(candidateValidator)
                                 .map(c -> c.getName())
                                 .sorted()
-                                .toList();
+                                .collect(Collectors.toList());
     }
 }
