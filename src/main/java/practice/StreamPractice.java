@@ -25,28 +25,11 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> integerList = IntStream.range(0, numbers.size())
-                .boxed()
-                .collect(Collectors.toMap(i -> i, numbers::get))
-                .entrySet()
-                .stream()
-                .map(m -> {
-                    if (m.getKey() % 2 == 1) {
-                        m.setValue(m.getValue() - 1);
-                    }
-                    return m;
-                })
-                .map(Map.Entry::getValue)
-                .filter(i -> i % 2 == 1)
-                .collect(Collectors.toList());
-        if (integerList.size() == 0) {
-            throw new NoSuchElementException();
-        }
-        return integerList.stream()
-                .mapToInt(i -> i)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(a -> a % 2 == 1)
                 .average()
                 .getAsDouble();
-
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
