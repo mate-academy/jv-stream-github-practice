@@ -20,10 +20,11 @@ public class StreamPractice {
         return numbers.stream()
                     .flatMap(str -> Arrays.stream(str.split(",")))
                     .mapToInt(Integer::parseInt)
-                    .filter(number -> number % 2 == 0).min()
+                    .filter(number -> number % 2 == 0)
+                    .min()
                     .orElseThrow(() -> 
                         new RuntimeException("Can't get min value from list: " 
-                                            + numbers.toString()));
+                                            + numbers));
     }
 
     /**
