@@ -73,10 +73,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
-                        && p.getSex()
-                        .equals(Person.Sex.MAN)
+                        && (p.getSex().equals(Person.Sex.MAN)
                         ? p.getAge() <= maleToAge
-                        : p.getAge() <= femaleToAge)
+                        : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
