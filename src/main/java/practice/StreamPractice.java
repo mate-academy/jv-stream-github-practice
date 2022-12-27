@@ -1,13 +1,14 @@
 package practice;
 
+import model.Candidate;
+import model.Cat;
+import model.Person;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-import model.Candidate;
-import model.Cat;
-import model.Person;
 
 public class StreamPractice {
     /**
@@ -24,7 +25,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list : Here is our inputmvn " + numbers));
+                        "Can't get min value from list : " + numbers));
     }
 
     /**
@@ -72,7 +73,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && (p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)
-                        || (p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))))
+                        || (p.getAge() <= maleToAge && p.getSex() == Person.Sex.MAN)))
                 .collect(Collectors.toList());
     }
 
