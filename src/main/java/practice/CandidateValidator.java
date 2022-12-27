@@ -19,11 +19,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private static int countPeriodInUkraine(Candidate candidate) {
-        return Integer.parseInt(candidate
+        String[] periodInUkraine = candidate
                 .getPeriodsInUkr()
-                .split("-")[YEAR_TO_INDEX])
-                - Integer.parseInt(candidate
-                .getPeriodsInUkr()
-                .split("-")[YEAR_FROM_INDEX]);
+                .split("-");
+        return Integer.parseInt(periodInUkraine[YEAR_TO_INDEX])
+                - Integer.parseInt(periodInUkraine[YEAR_FROM_INDEX]);
     }
 }
