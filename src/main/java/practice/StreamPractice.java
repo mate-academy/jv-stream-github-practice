@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -20,8 +22,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(word -> word.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(word -> Stream.of(word.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(index -> index % 2 == 0)
                 .min()
@@ -41,9 +42,7 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0
                         ? numbers.get(index) - 1
                         : numbers.set(index, numbers.get(index)))
-                .boxed()
                 .filter(value -> value % 2 != 0)
-                .mapToInt(Integer::valueOf)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -95,8 +94,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
