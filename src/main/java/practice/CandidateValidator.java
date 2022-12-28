@@ -8,7 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String BEST_NATIONALITY_IN_WORLD = "Ukrainian";
     private static final int LIVES_IN_UKRAINE_TO_INDEX = 1;
     private static final int LIVES_IN_UKRAINE_FROM_INDEX = 0;
-    private static final int REGUIREMENT_PERIOD = 10;
+    private static final int REGUIRED_PERIOD = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,7 +17,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 - Integer.parseInt(period[LIVES_IN_UKRAINE_FROM_INDEX]);
         return candidate.getAge() >= ALLOWED_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(BEST_NATIONALITY_IN_WORLD)
-                && yearsLivesInUkraine >= REGUIREMENT_PERIOD;
+                && yearsLivesInUkraine >= REGUIRED_PERIOD;
     }
     //write your code here
 }
