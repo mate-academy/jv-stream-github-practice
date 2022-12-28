@@ -21,3 +21,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && periodsOfResidence >= MIN_PERIODS_IN_UKR;
     }
 }
+
