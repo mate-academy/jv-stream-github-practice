@@ -10,7 +10,6 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-
 public class StreamPractice {
     private static final String SEPARATOR = ",";
     private static final String ERROR_MSG = "Can't get min value from list: ";
