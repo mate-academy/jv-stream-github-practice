@@ -13,6 +13,7 @@ import model.Person;
 public class StreamPractice {
     private static final String SEPARATOR = ",";
     private static final String ERROR_MSG = "Can't get min value from list: ";
+    private final IntPredicate isEven = value -> (value & 1) == 0;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -23,10 +24,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(SEPARATOR))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
                 .mapToInt(Integer::valueOf)
-                .filter(new IsEven())
+                .filter(isEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException(ERROR_MSG + numbers));
     }
@@ -37,7 +37,7 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntPredicate isOdd = new IsEven().negate();
+        IntPredicate isOdd = isEven.negate();
         return IntStream.range(0, numbers.size())
                 .map(i -> isOdd.test(i) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(isOdd)
@@ -54,9 +54,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> predicate = new PersonSexAndAgePredicate(Person.Sex.MAN, fromAge, toAge);
+        Predicate<Person> isMaleRightAge =
+                getPersonSexAndAgePredicate(Person.Sex.MAN, fromAge, toAge);
         return peopleList.stream()
-                .filter(predicate)
+                .filter(isMaleRightAge)
                 .collect(Collectors.toList());
     }
 
@@ -72,12 +73,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> malePredicate =
-                new PersonSexAndAgePredicate(Person.Sex.MAN, fromAge, maleToAge);
-        Predicate<Person> femalePredicate =
-                new PersonSexAndAgePredicate(Person.Sex.WOMAN, fromAge, femaleToAge);
+        Predicate<Person> isMaleRightAge =
+                getPersonSexAndAgePredicate(Person.Sex.MAN, fromAge, maleToAge);
+        Predicate<Person> isFemaleRightAge =
+                getPersonSexAndAgePredicate(Person.Sex.WOMAN, fromAge, femaleToAge);
         return peopleList.stream()
-                .filter(malePredicate.or(femalePredicate))
+                .filter(isMaleRightAge.or(isFemaleRightAge))
                 .collect(Collectors.toList());
     }
 
@@ -87,12 +88,11 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> predicate =
-                new PersonSexAndAgePredicate(Person.Sex.WOMAN, femaleAge, Integer.MAX_VALUE);
+        Predicate<Person> isFemaleOverAge =
+                getPersonSexAndAgePredicate(Person.Sex.WOMAN, femaleAge, Integer.MAX_VALUE);
         return peopleList.stream()
-                .filter(predicate)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .filter(isFemaleOverAge)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -115,5 +115,11 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private Predicate<Person> getPersonSexAndAgePredicate(Person.Sex sex, int fromAge, int toAge) {
+        return person -> person.getSex() == sex
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
     }
 }
