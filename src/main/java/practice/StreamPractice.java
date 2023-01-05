@@ -17,14 +17,16 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list\" "
-                        + "+ numbers.toString()"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
+
     }
 
     /**
