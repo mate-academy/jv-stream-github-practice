@@ -5,10 +5,10 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
-    private static final int MIN_TERM_IN_UKR = 35;
+    private static final int MIN_AGE_CANDIDATE = 35;
     private static final int START_YEAR_INDEX = 0;
     private static final int END_YEAR_INDEX = 1;
-    private static final int TEN_YEARS = 10;
+    private static final int MIN_TERM_IN_UKR = 10;
     private static final String NATIONALITY_UKR = "Ukrainian";
 
     @Override
@@ -18,6 +18,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getNationality().equals(NATIONALITY_UKR)
                 && (Integer.valueOf(candidate.getPeriodsInUkr().split("-")[END_YEAR_INDEX])
                 - Integer.valueOf(candidate.getPeriodsInUkr().split("-")[START_YEAR_INDEX]))
-                >= TEN_YEARS;
+                >= MIN_TERM_IN_UKR;
     }
 }
