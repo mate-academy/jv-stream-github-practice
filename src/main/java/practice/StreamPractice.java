@@ -39,7 +39,8 @@ public class StreamPractice {
                 .map(i -> numbers.get(i) - (i % 2))
                 .filter(n -> (n % 2) == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list: "
+                        + numbers));
     }
 
     /**
