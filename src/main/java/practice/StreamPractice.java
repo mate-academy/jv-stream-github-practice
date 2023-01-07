@@ -1,11 +1,10 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -20,8 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Stream.of(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
                 .min()
@@ -88,8 +86,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(x -> x.getSex() == Person.Sex.WOMAN && x.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -108,12 +105,8 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates.stream().filter(candidate -> candidate.getAge() >= 35
-                        && candidate.isAllowedToVote()
-                        && candidate.getNationality().equals("Ukrainian")
-                        && (Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
-                        - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]))
-                        >= 10)
+        return candidates.stream()
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
