@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -21,10 +22,10 @@ public class StreamPractice {
             throw new RuntimeException("Can't get min value from list: " + numbers);
         }
         return numbers.stream()
-                .map(e -> e.split(","))
+                .map(n -> n.split(","))
                 .flatMap(Arrays::stream)
-                .mapToInt(e -> (int)(Integer.parseInt(e)))
-                .filter(e -> e % 2 == 0)
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
                 .min()
                 .getAsInt();
     }
@@ -39,8 +40,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 != 0)
                 .average()
-                .getAsDouble();
-
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average value from list" + numbers));
     }
 
     /**
@@ -71,9 +72,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(e -> e.getAge() >= fromAge && ((e.getAge() <= maleToAge
-                        && e.getSex() == Person.Sex.MAN) || (e.getAge() <= femaleToAge
-                        && e.getSex() == Person.Sex.WOMAN)))
+                .filter(p -> p.getAge() >= fromAge && ((p.getAge() <= maleToAge
+                        && p.getSex() == Person.Sex.MAN) || (p.getAge() <= femaleToAge
+                        && p.getSex() == Person.Sex.WOMAN)))
                 .collect(Collectors.toList());
     }
 
