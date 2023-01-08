@@ -11,7 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator validator = new CandidateValidator();
+    private CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -39,7 +39,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(e -> e % 2 == 1 ? numbers.get(e) - 1 : numbers.get(e))
-                .filter(e -> e % 2 != 0).mapToDouble(e -> e)
+                .filter(e -> e % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -55,7 +55,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(e -> e.getAge() >= fromAge && e.getAge() <= toAge)
-                .filter(e -> e.getSex().equals(Person.Sex.MAN))
+                .filter(e -> e.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -72,10 +72,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(e -> e.getSex().equals(Person.Sex.MAN)
-                        && e.getAge() >= fromAge && e.getAge() <= maleToAge
-                        || e.getSex().equals(Person.Sex.WOMAN)
-                        && e.getAge() >= fromAge && e.getAge() <= femaleToAge)
+                .filter(p -> p.getAge() >= fromAge
+                        && (p.getSex() == Person.Sex.MAN
+                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +85,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(e -> e.getSex().equals(Person.Sex.WOMAN) && e.getAge() >= femaleAge)
+                .filter(e -> e.getSex() == Person.Sex.WOMAN && e.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -107,7 +106,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(e -> validator.test(e))
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
