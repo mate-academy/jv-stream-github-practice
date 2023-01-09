@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -39,7 +38,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -70,11 +69,6 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
-        /*Predicate<Person> isMale = p -> p.getSex() == Person.Sex.MAN
-                && p.getAge() >= fromAge && p.getAge() <= maleToAge;
-        Predicate<Person> isFemale = p -> p.getSex() == Person.Sex.WOMAN
-                && p.getAge() >= fromAge && p.getAge() <= femaleToAge;*/
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && (p.getSex() == Person.Sex.MAN
@@ -112,7 +106,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

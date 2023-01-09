@@ -77,9 +77,4 @@ public class Candidate {
         return Objects.hash(getAge(), getNationality(),
             isAllowedToVote(), getPeriodsInUkr(), getName());
     }
-
-    @Override
-    public String toString() {
-        return name;
-    }
 }
