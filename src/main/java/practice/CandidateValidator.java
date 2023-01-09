@@ -14,14 +14,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int [] periods = Arrays.stream(candidate.getPeriodsInUkr().split(DELIMITER))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-        int yearsInUkr = periods[TO_YEAR_INDEX] - periods[FROM_YEAR_INDEX];
+        String[] periods = candidate.getPeriodsInUkr().split(DELIMITER);
+        int yearsInUkr = Integer.parseInt(periods[TO_YEAR_INDEX])
+                - Integer.parseInt(periods[FROM_YEAR_INDEX]);
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= MIN_AGE
                 && NATIONALITY.equals(candidate.getNationality())
                 && yearsInUkr >= MIN_YEARS_IN_UKRAINE;
     }
-    //write your code here
 }
