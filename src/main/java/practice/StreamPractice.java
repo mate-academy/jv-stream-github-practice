@@ -39,7 +39,6 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 == 1 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 == 1)
-                .mapToDouble(n -> n)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -56,7 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
-                        && p.getSex().equals(Person.Sex.MAN))
+                        && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -74,7 +73,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
-                        && (p.getSex().equals(Person.Sex.MAN)
+                        && (p.getSex() == Person.Sex.MAN
                         ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
@@ -86,7 +85,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex().equals(Person.Sex.WOMAN))
+                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -101,8 +100,8 @@ public class StreamPractice {
      * The requirements are: person should be older than 35 years, should be allowed to vote,
      * have nationality - 'Ukrainian'
      * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * which has the following view: "2002-2015"
+     * We want to reuse our validation in the future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
