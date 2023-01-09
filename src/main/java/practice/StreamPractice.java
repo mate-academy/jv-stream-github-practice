@@ -41,7 +41,7 @@ public class StreamPractice {
                 .map(e -> e % 2 == 1 ? numbers.get(e) - 1 : numbers.get(e))
                 .filter(e -> e % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -74,7 +74,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && (p.getSex() == Person.Sex.MAN
-                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
+                        ? p.getAge() <= maleToAge
+                        : p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
