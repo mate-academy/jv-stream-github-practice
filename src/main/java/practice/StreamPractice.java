@@ -38,7 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % EVEN_NUMBERS_INDEX != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .map(index -> index % EVEN_NUMBERS_INDEX != 0
+                        ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % EVEN_NUMBERS_INDEX != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
@@ -107,9 +108,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

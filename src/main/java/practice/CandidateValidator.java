@@ -21,10 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int getPeriodOfLeaving(Candidate candidate) {
-        int firstDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(SPLIT_SYMBOL)[YEAR_FROM_INDEX]);
-        int secondDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(SPLIT_SYMBOL)[YEAR_TO_INDEX]);
-        return secondDate - firstDate;
+        String[] periodsYears = candidate.getPeriodsInUkr().split(SPLIT_SYMBOL);
+        return Integer.parseInt(periodsYears[YEAR_TO_INDEX])
+                - Integer.parseInt(periodsYears[YEAR_FROM_INDEX]);
     }
 }
