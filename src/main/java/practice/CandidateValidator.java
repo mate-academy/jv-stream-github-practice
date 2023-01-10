@@ -16,8 +16,9 @@ public class CandidateValidator<T extends Candidate> implements Predicate<T> {
         int yearsLiveInCountry = Integer.parseInt(years[TO_YEAR_INDEX])
                 - Integer.parseInt(years[FROM_YEAR_INDEX]);
         return candidate.isAllowedToVote()
-                && (candidate.getAge() >= MIN_AGE)
-                && (candidate.getNationality().equals(REQUIRED_NATIONALITY))
-                && (yearsLiveInCountry >= MIN_PERIOD_IN_COUNTRY);
+                && candidate.getAge() >= MIN_AGE
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && yearsLiveInCountry >= MIN_PERIOD_IN_COUNTRY;
     }
 }
+
