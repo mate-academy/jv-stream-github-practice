@@ -5,8 +5,8 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MAX_VALID_AGE = 35;
-    private static final int MIN_VALID_PERIOD_OF_LIVING_IN_UKRAiNE = 10;
-    private static final String VALID_NATIONALITY = "Ukrainian";
+    private static final int MIN_VALID_PERIOD_OF_RESIDENCE_IN_COUNTRY = 10;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final int FIRST_DATE_INDEX = 0;
     private static final int SECOND_DATE_INDEX = 1;
     private static final String SPLIT_SYMBOL = "-";
@@ -16,8 +16,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         int periodsInUkr = getPeriodOfLeaving(candidate);
         return candidate.getAge() >= MAX_VALID_AGE
                 & candidate.isAllowedToVote()
-                & candidate.getNationality().equals(VALID_NATIONALITY)
-                & periodsInUkr >= MIN_VALID_PERIOD_OF_LIVING_IN_UKRAiNE;
+                & candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                & periodsInUkr >= MIN_VALID_PERIOD_OF_RESIDENCE_IN_COUNTRY;
     }
 
     private int getPeriodOfLeaving(Candidate candidate) {
