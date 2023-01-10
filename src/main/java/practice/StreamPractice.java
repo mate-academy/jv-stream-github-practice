@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -41,7 +40,7 @@ public class StreamPractice {
                 .mapToDouble(n -> n)
                 .distinct()
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
