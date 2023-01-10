@@ -7,8 +7,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MAX_VALID_AGE = 35;
     private static final int MIN_VALID_PERIOD_OF_RESIDENCE_IN_COUNTRY = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
-    private static final int FIRST_DATE_INDEX = 0;
-    private static final int SECOND_DATE_INDEX = 1;
+    private static final int YEAR_FROM_INDEX = 0;
+    private static final int YEAR_TO_INDEX = 1;
     private static final String SPLIT_SYMBOL = "-";
 
     @Override
@@ -22,9 +22,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getPeriodOfLeaving(Candidate candidate) {
         int firstDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(SPLIT_SYMBOL)[FIRST_DATE_INDEX]);
+                .split(SPLIT_SYMBOL)[YEAR_FROM_INDEX]);
         int secondDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(SPLIT_SYMBOL)[SECOND_DATE_INDEX]);
+                .split(SPLIT_SYMBOL)[YEAR_TO_INDEX]);
         return secondDate - firstDate;
     }
 }
