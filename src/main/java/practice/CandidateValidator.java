@@ -1,14 +1,14 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final static int MIN_VALID_AGE = 35;
-    private final static String VALID_NATIONALITY = "Ukrainian";
-    private final static int MIN_VALID_PERIODS = 10;
-    private final static int FROM_YEAR_INDEX = 0;
-    private final static int TO_YEAR_INDEX = 1;
+    private static final int MIN_VALID_AGE = 35;
+    private static final String VALID_NATIONALITY = "Ukrainian";
+    private static final int MIN_VALID_PERIODS = 10;
+    private static final int FROM_YEAR_INDEX = 0;
+    private static final int TO_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {

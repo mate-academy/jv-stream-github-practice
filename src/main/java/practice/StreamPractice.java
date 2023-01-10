@@ -1,7 +1,11 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -14,22 +18,17 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
-    /**
-     * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
-     */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        numbers.stream()
-                .filter(n -> numbers.indexOf(n) % 2 != 0)
-                .forEach(n -> numbers.set(numbers.indexOf(n), --n));
-        return numbers.stream()
+        return IntStream
+                .range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(Double::valueOf)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
