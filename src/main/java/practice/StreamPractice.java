@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,9 +14,9 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> Arrays.asList(s.split(",")))
                 .flatMap(Collection::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Comparator.naturalOrder())
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
