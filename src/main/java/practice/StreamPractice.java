@@ -1,7 +1,11 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 import model.Candidate;
 import model.Person;
 
@@ -13,8 +17,15 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+    public static int findMinEvenNumber(List<String> numbers) {
+        Supplier<RuntimeException> runtExeptSupplier =
+                () -> new RuntimeException("Can't get min value from list " + numbers);
+        Optional<Integer> min = numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min(Comparator.naturalOrder());
+        return min.orElseThrow(runtExeptSupplier);
     }
 
     /**
@@ -76,5 +87,11 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return Collections.emptyList();
+    }
+
+    public static void main(String[] args) {
+        List<String> numbers = List.of("12,11,5", "1,22,757", "71", "39,31,55,148",
+                "3,2,2,5", "27,44,89", "12,11,5", "64,22,757");
+        System.out.println(findMinEvenNumber(numbers));
     }
 }
