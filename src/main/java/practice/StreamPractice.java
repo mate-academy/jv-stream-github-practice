@@ -14,7 +14,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -54,7 +53,8 @@ public class StreamPractice {
                 .filter(e -> e.getKey() % 2 == 1)
                 .map(e -> e.getValue() - 1)
                 .collect(Collectors.toList());
-        OptionalDouble average = Stream.concat(evenNumbers.stream(), oddNumbersSubtractedOne.stream())
+        OptionalDouble average = Stream.concat(evenNumbers.stream(),
+                        oddNumbersSubtractedOne.stream())
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(i -> i)
                 .average();
@@ -136,3 +136,4 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 }
+
