@@ -4,8 +4,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Person;
 
@@ -17,7 +25,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public static int findMinEvenNumber(List<String> numbers) {
+    public int findMinEvenNumber(List<String> numbers) {
         Supplier<RuntimeException> runtExeptSupplier =
                 () -> new RuntimeException("Can't get min value from list " + numbers);
         Optional<Integer> min = numbers.stream()
@@ -33,8 +41,22 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-    public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+    public static Double getOddNumsAverage(List<Integer> numbers) {
+        Map<Integer, Integer> numbersMap = IntStream.range(0, numbers.size()).boxed()
+                .collect(Collectors.toMap(Function.identity(), numbers::get));
+        List<Integer> evenNumbers = numbersMap.entrySet().stream()
+                .filter(e -> e.getKey() % 2 == 0)
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        List<Integer> oddNumbersSubtractedOne = numbersMap.entrySet().stream()
+                .filter(e -> e.getKey() % 2 == 1)
+                .map(e -> e.getValue() - 1)
+                .collect(Collectors.toList());
+        OptionalDouble average = Stream.concat(evenNumbers.stream(), oddNumbersSubtractedOne.stream())
+                .filter(n -> n % 2 != 0)
+                .mapToDouble(i -> i)
+                .average();
+        return average.orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -46,7 +68,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex() == Person.Sex.MAN)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -90,8 +116,7 @@ public class StreamPractice {
     }
 
     public static void main(String[] args) {
-        List<String> numbers = List.of("12,11,5", "1,22,757", "71", "39,31,55,148",
-                "3,2,2,5", "27,44,89", "12,11,5", "64,22,757");
-        System.out.println(findMinEvenNumber(numbers));
+        List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
+        System.out.println(getOddNumsAverage(digits));
     }
 }
