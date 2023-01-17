@@ -25,8 +25,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Comparator.naturalOrder());
-        return min.orElseThrow(() -> new RuntimeException
-                ("Can't get min value from list " + numbers));
+        return min.orElseThrow(() -> new RuntimeException(
+                "Can't get min value from list " + numbers));
     }
 
     /**
