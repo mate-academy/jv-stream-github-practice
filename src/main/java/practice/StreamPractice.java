@@ -1,19 +1,12 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,14 +20,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Supplier<RuntimeException> runtExeptSupplier =
-                () -> new RuntimeException("Can't get min value from list " + numbers);
         Optional<Integer> min = numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Comparator.naturalOrder());
-        return min.orElseThrow(runtExeptSupplier);
+        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list " + numbers));
     }
 
     /**
@@ -43,22 +34,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public static Double getOddNumsAverage(List<Integer> numbers) {
-        Map<Integer, Integer> numbersMap = IntStream.range(0, numbers.size()).boxed()
-                .collect(Collectors.toMap(Function.identity(), numbers::get));
-        List<Integer> evenNumbers = numbersMap.entrySet().stream()
-                .filter(e -> e.getKey() % 2 == 0)
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-        List<Integer> oddNumbersSubtractedOne = numbersMap.entrySet().stream()
-                .filter(e -> e.getKey() % 2 == 1)
-                .map(e -> e.getValue() - 1)
-                .collect(Collectors.toList());
-        OptionalDouble average = Stream.concat(evenNumbers.stream(),
-                        oddNumbersSubtractedOne.stream())
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(i -> i)
-                .average();
-        return average.orElseThrow(NoSuchElementException::new);
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -109,8 +89,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
