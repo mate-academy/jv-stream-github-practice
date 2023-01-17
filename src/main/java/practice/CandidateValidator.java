@@ -18,12 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && yearTill - yearFrom >= MIN_PERIOD_SPEND_IN_UKRAINE;
     };
 
-    public Predicate<Candidate> getCandidatePredicate() {
-        return candidatePredicate;
-    }
-
     @Override
     public boolean test(Candidate candidate) {
-        return false;
+        return candidatePredicate.test(candidate);
     }
 }
