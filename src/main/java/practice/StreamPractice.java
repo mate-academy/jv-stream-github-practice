@@ -4,9 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,14 +20,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public static int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+        return numbers.stream()
+                .flatMap(t -> Arrays.stream(t.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(t -> t % 2 == 0)
-                .min();
-        return min.orElseThrow(() ->
-                new RuntimeException("Can't get min value from list: < Here is our input" + min));
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: < Here is our input"));
     }
 
     /**
@@ -38,23 +36,12 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        OptionalDouble average = numbers.stream().filter(t -> t % 2 != 0)
-                .mapToDouble(t -> (double) t)
+        OptionalDouble average = IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(t -> t % 2 != 0)
+                .mapToDouble(t -> t)
                 .average();
-        Supplier<NoSuchElementException> supplier = new Supplier<NoSuchElementException>() {
-            @Override
-            public NoSuchElementException get() {
-                return new NoSuchElementException();
-            }
-        };
-        double asDouble = average.orElseThrow(supplier);
-        return asDouble;
+        return average.orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -85,13 +72,11 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        List<Person> collect = peopleList.stream()
+        return peopleList.stream()
                 .filter(t -> t.getAge() >= fromAge && (t.getAge() <= maleToAge
                         && t.getSex().equals(Person.Sex.MAN)
                         || (t.getAge() <= femaleToAge && t.getSex().equals(Person.Sex.WOMAN))))
                 .collect(Collectors.toList());
-
-        return collect;
     }
 
     /**

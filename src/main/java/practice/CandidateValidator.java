@@ -11,7 +11,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] split = candidate.getPeriodsInUkr().split("-");
-        final int different = Integer.parseInt(split[1]) - Integer.parseInt(split[0]);
+        final int split1 = Integer.parseInt(split[1]);
+        final int split2 = Integer.parseInt(split[0]);
+        final int different = split1 - split2;
         if (candidate.getAge() >= MIN_OLD_YEARS
                 && candidate.getNationality().equalsIgnoreCase(NATIONALS)
                 && different >= MIN_PERIOD) {
