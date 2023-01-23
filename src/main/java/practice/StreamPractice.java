@@ -37,9 +37,9 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(num -> num % 2 == 1
                         ? numbers.get(num) - 1 : numbers.get(num))
-                .filter(odd -> odd % 2 == 1)
+                .filter(odd -> odd % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There is no such element"));
     }
 
     /**
