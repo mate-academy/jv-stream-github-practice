@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,7 +26,9 @@ public class StreamPractice {
                     .filter(n -> n % 2 == 0)
                     .min()
                     .getAsInt();
-        } else throw new RuntimeException("Can't get min value from list: " + numbers);
+        } else {
+            throw new RuntimeException("Can't get min value from list: " + numbers);
+        }
     }
 
     /**
@@ -38,8 +39,9 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0,numbers.size())
                 .peek(n -> {
-                    if (n % 2 != 0)
+                    if (n % 2 != 0) {
                         numbers.set(n, numbers.get(n) - 1);
+                    }
                 })
                 .filter(n -> numbers.get(n) % 2 != 0)
                 .map(numbers::get)
