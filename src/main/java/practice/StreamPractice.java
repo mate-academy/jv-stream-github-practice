@@ -11,6 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String CHAR_FOR_SPLIT = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,12 +22,13 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
+                .map(n -> n.split(CHAR_FOR_SPLIT))
                 .map(Arrays::asList)
                 .flatMap(Collection::stream)
-                .map(Integer::valueOf)
+                .map(Integer::parseInt)
+                .mapToInt(i -> i)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: method_input_list"));
     }
