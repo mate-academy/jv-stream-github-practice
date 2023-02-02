@@ -1,17 +1,18 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
     private static final CandidateValidator candidateValidator = new CandidateValidator();
+    private static final String SEPARATOR_FOR_NUMBERS_STRING = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,11 +22,13 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        return Arrays.stream(String.join(",", numbers).split(","))
+        return numbers
+                .stream()
+                .flatMap(s -> Stream.of(s.split(SEPARATOR_FOR_NUMBERS_STRING)))
                 .filter(s -> !Objects.equals(s, ""))
-                .map(Integer::valueOf)
+                .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list " + numbers));
     }
@@ -41,7 +44,7 @@ public class StreamPractice {
                 .mapToDouble(Double::valueOf)
                 .filter(x -> x % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There are no odd numbers!"));
     }
 
     /**
@@ -111,8 +114,8 @@ public class StreamPractice {
      * The requirements are: person should be older than 35 years, should be allowed to vote,
      * have nationality - 'Ukrainian'
      * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * which has the following view: "2002-2015"
+     * We want to reuse our validation in the future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
     public static List<String> validateCandidates(List<Candidate> candidates) {
