@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
 import model.Candidate;
@@ -11,7 +12,10 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SPLITER= ",";
-    private static final int DIVIDER_TO_CHECK_EVEN = 2;
+    private static final int CHECK_EVEN_NUMBER = 2;
+    private static final int SUBTRACT_NUMBER = 1;
+
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -24,7 +28,7 @@ public class StreamPractice {
                 .map(s -> Arrays.asList(s.split(SPLITER)))
                 .flatMap(Collection::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(v -> v % DIVIDER_TO_CHECK_EVEN == 0)
+                .filter(v -> v % CHECK_EVEN_NUMBER == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
@@ -36,7 +40,11 @@ public class StreamPractice {
      * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % CHECK_EVEN_NUMBER == 0 ? numbers.get(i) : numbers.get(i) - SUBTRACT_NUMBER)
+                .filter(n -> n % CHECK_EVEN_NUMBER != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
