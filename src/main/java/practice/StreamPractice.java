@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -73,7 +74,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> workablePeopleValidator = p -> p.getAge() >= fromAge
+                && (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge
+                || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge);
+        return peopleList.stream()
+                .filter(workablePeopleValidator)
+                .collect(Collectors.toList());
     }
 
     /**
