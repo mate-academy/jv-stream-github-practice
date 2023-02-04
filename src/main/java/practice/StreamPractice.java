@@ -1,11 +1,17 @@
 package practice;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLITER= ",";
+    private static final int DIVIDER_TO_CHECK_EVEN = 2;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,13 +20,20 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(s -> Arrays.asList(s.split(SPLITER)))
+                .flatMap(Collection::stream)
+                .mapToInt(Integer::valueOf)
+                .filter(v -> v % DIVIDER_TO_CHECK_EVEN == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
      * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
+     * subtract 1 from each element on an odd position (having the odd index).
+     * Then return the average of all odd numbers or throw NoSuchElementException.
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return 0D;
@@ -31,7 +44,6 @@ public class StreamPractice {
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
      * new Person(«Helen», 42, Sex.WOMAN))`,
      * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
-     * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -44,7 +56,6 @@ public class StreamPractice {
      * new Person(«Helen», 42, Sex.WOMAN))`,
      * select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
      * or to `femaleToAge` (for women) inclusively.
-     * <p>
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
