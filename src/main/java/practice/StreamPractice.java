@@ -1,16 +1,14 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import model.Candidate;
+import model.Cat;
+import model.Person;
 
 public class StreamPractice {
     private final Predicate<Integer> isOdd = num -> num % 2 != 0;
@@ -28,7 +26,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -41,7 +40,7 @@ public class StreamPractice {
                 .map(num -> isOdd.test(num) ? numbers.get(num) - 1 : numbers.get(num))
                 .filter(isOdd::test)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("The average of all odd numbers is: " + numbers));
+                .orElseThrow();
     }
 
     /**
@@ -112,7 +111,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private boolean isWorkablePerson(int fromAge, int femaleToAge,
