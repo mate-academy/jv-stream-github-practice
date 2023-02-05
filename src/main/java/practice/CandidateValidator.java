@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.function.Function;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -12,18 +11,18 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROM_DATE_INDEX = 0;
     private static final int TO_DATE_INDEX = 1;
 
-    private final Function<String, Integer> getPeriod = s -> {
-        String[] separatedDates = s.split(SEPARATOR_SYMBOL);
-        return Integer.parseInt(separatedDates[TO_DATE_INDEX])
-                - Integer.parseInt(separatedDates[FROM_DATE_INDEX]);
-    };
-
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= OLDER_THAN_AGE
                 && candidate.isAllowedToVote()
                 && (candidate.getNationality() != null
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY))
-                && getPeriod.apply(candidate.getPeriodsInUkr()) >= REQUIRED_PERIOD;
+                && getPeriod(candidate.getPeriodsInUkr()) >= REQUIRED_PERIOD;
+    }
+
+    private Integer getPeriod(String dates) {
+        String[] separatedDates = dates.split(SEPARATOR_SYMBOL);
+        return Integer.parseInt(separatedDates[TO_DATE_INDEX])
+                - Integer.parseInt(separatedDates[FROM_DATE_INDEX]);
     }
 }

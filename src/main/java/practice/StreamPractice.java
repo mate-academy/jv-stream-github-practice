@@ -13,15 +13,13 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SPLITER = ",";
-    private static final int CHECK_EVEN_NUMBER = 2;
-    private static final int SUBTRACT_NUMBER = 1;
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(s -> Arrays.asList(s.split(SPLITER)))
                 .flatMap(Collection::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(v -> v % CHECK_EVEN_NUMBER == 0)
+                .filter(v -> v % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
@@ -29,9 +27,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % CHECK_EVEN_NUMBER == 0 ? numbers.get(i) :
-                        numbers.get(i) - SUBTRACT_NUMBER)
-                .filter(n -> n % CHECK_EVEN_NUMBER != 0)
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
+                .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
