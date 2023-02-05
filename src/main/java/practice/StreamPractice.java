@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -11,8 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final Predicate<Integer> isOdd = num -> num % 2 != 0;
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -36,6 +33,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        final Predicate<Integer> isOdd = num -> num % 2 != 0;
+
         return IntStream.range(0, numbers.size())
                 .map(num -> isOdd.test(num) ? numbers.get(num) - 1 : numbers.get(num))
                 .filter(isOdd::test)
@@ -74,8 +73,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isWorkablePerson = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
+                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
+
         return peopleList.stream()
-                .filter(person -> isWorkablePerson(fromAge, femaleToAge, maleToAge, person))
+                .filter(isWorkablePerson)
                 .collect(Collectors.toList());
     }
 
@@ -92,8 +95,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(isCatOwnerFemale)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -116,20 +118,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private boolean isWorkablePerson(int fromAge, int femaleToAge,
-                                     int maleToAge, Person person) {
-        int age = person.getAge();
-        if (age < fromAge) {
-            return false;
-        }
-        if (person.getSex() == Person.Sex.MAN && age <= maleToAge) {
-            return true;
-        }
-        if (person.getSex() == Person.Sex.WOMAN && age <= femaleToAge) {
-            return true;
-        }
-        return false;
     }
 }
