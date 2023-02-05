@@ -111,6 +111,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(c -> candidateValidator.test(c))
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
