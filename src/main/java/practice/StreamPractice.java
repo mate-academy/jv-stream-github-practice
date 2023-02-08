@@ -2,7 +2,6 @@ package practice;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -25,8 +24,7 @@ public class StreamPractice {
         return numbers
                 .stream()
                 .flatMap(s -> Stream.of(s.split(SEPARATOR_FOR_NUMBERS_STRING)))
-                .filter(s -> !Objects.equals(s, ""))
-                .mapToInt(Integer::valueOf)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() ->
@@ -41,7 +39,6 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
-                .mapToDouble(Double::valueOf)
                 .filter(x -> x % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("There are no odd numbers!"));
@@ -118,7 +115,7 @@ public class StreamPractice {
      * We want to reuse our validation in the future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
-    public static List<String> validateCandidates(List<Candidate> candidates) {
+    public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates
                 .stream()
                 .filter(candidateValidator)
