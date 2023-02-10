@@ -12,9 +12,9 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(stringNumbers -> Arrays.stream(stringNumbers.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -25,7 +25,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get average value from list: " + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
