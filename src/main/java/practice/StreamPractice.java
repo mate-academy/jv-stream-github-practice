@@ -26,7 +26,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("Can't get average value from list: " + numbers));
+                        new NoSuchElementException("Can't get average value from list: "
+                                + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
