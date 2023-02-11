@@ -1,17 +1,17 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import model.Candidate;
+import model.Cat;
+import model.Person;
 
 public class StreamPractice {
     private static final String DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -36,8 +36,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .filter(n -> n % 2 == 1)
+                .mapToDouble(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
+                .filter(number -> number % 2 == 1)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
     }
