@@ -1,12 +1,14 @@
 package practice;
 
+import model.Candidate;
+import model.Cat;
+import model.Person;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import model.Candidate;
-import model.Person;
 
 public class StreamPractice {
     private static final String DELIMITER = ",";
@@ -37,7 +39,7 @@ public class StreamPractice {
                 .mapToDouble(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(() -> new RuntimeException("Can't get average value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
     }
 
     /**
@@ -82,7 +84,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
-                .map(cat -> cat.getName())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 

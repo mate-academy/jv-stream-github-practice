@@ -1,7 +1,7 @@
 package practice;
 
-import model.Person;
 import java.util.function.Predicate;
+import model.Person;
 
 class PersonFilter implements Predicate<Person> {
     private final int fromAge;
