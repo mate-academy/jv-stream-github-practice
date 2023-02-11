@@ -9,6 +9,7 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String DELIMITER = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,9 +19,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(m -> Arrays.stream(m.split(",")))
-                .mapToInt(s -> Integer.parseInt(s))
-                .filter(i -> i % 2 == 0)
+                .flatMap(stringNumbers -> Arrays.stream(stringNumbers.split(DELIMITER)))
+                .mapToInt(Integer::parseInt)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -36,7 +37,7 @@ public class StreamPractice {
                 .mapToDouble(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
+                .orElseThrow(() -> new RuntimeException("Can't get average value from list: " + numbers));
     }
 
     /**
@@ -67,12 +68,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)
-                        || (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge))
+                .filter(new PersonFilter(fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
