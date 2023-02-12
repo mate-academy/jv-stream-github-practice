@@ -12,8 +12,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int PARITY_CHECK = 2;
-    private static final String TEXT_EXCEPTION = "Can't get min value from list: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -25,12 +23,12 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(e -> e % PARITY_CHECK == 0)
+                .filter(e -> e % 2 == 0)
                 .min()
-                .orElseThrow(() -> new NoSuchElementException(TEXT_EXCEPTION + numbers));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,8 +39,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .map(i -> (i % PARITY_CHECK != 0) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % PARITY_CHECK != 0)
+                .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 != 0)
                 .mapToDouble(n -> n)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("None such elements"));
