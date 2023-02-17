@@ -12,9 +12,9 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(t -> Arrays.stream(t.split(",")))
+                .flatMap(e -> Arrays.stream(e.split(",")))
                 .mapToInt(p -> Integer.parseInt(String.valueOf(p)))
-                .filter(e -> e % 2 == 0)
+                .filter(element -> element % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list " + numbers));
@@ -24,7 +24,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? (numbers.get(index) - 1) : numbers.get(index))
-                .filter(y -> y % 2 != 0)
+                .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("The list is empty,"
@@ -33,7 +33,7 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() > fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
