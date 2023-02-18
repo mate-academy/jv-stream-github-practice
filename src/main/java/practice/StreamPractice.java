@@ -109,6 +109,7 @@ public class StreamPractice {
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
+                .sorted()
                 .collect(Collectors.toList());
     }
 }

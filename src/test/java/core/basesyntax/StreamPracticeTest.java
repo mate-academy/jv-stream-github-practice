@@ -255,6 +255,6 @@ public class StreamPracticeTest {
         ron.setName("Ron");
         Candidate phil = new Candidate(52, "Ukrainian", true, "1980-2013");
         phil.setName("Philip");
-        return List.of(john, fred, casey, rick, morty, ron, phil);
+        return List.of(john, fred, rick, morty, casey, ron, phil);
     }
 }
