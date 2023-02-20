@@ -1,16 +1,18 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,16 +21,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt result = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
-                .mapToInt(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
-                .min();
-        if (result.isPresent()) {
-            return result.getAsInt();
-        }
-        throw new RuntimeException("Can't get min value from list: " + numbers);
+        return numbers.stream()
+               .flatMap(stringNumbers -> Arrays.stream(stringNumbers.split(DELIMITER)))
+               .mapToInt(Integer::parseInt)
+               .filter(i -> i % 2 == 0)
+               .min()
+               .orElseThrow(()
+                       -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -37,16 +36,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble result = IntStream.range(0, numbers.size() - 1)
-                .map(i -> numbers.get(i) - (i % 2 == 0 ? 0 : 1))
-                .filter(i -> i % 2 == 1)
-                .distinct()
-                .average();
-        if (result.isPresent()) {
-            return result.getAsDouble();
-        }
-        throw new NoSuchElementException("The list " + numbers
-                + "does not contain odd numbers!");
+        return IntStream.range(0, numbers.size() - 1)
+               .map(i -> numbers.get(i) - (i % 2 == 0 ? 0 : 1))
+               .filter(i -> i % 2 == 1)
+               .distinct()
+               .average()
+               .orElseThrow(() -> new NoSuchElementException("The list "
+                        + numbers + "does not contain odd numbers!"));
     }
 
     /**
@@ -59,8 +55,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -77,9 +73,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
-                        || p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge))
+                .filter(person -> person.getAge() >= fromAge
+                        && (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
+                        || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -90,10 +86,12 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(l -> l.stream())
-                .map(c -> c.getName())
+                .filter(person
+                        -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
