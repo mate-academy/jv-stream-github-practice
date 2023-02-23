@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,10 +20,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
 
         return numbers.stream()
-                .map(t -> t.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::valueOf)
-                .filter(t -> t % 2 == 0)
+                .filter(n -> n % 2 == 0)
                 .mapToInt(Integer::intValue)
                 .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -38,8 +36,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
 
         return IntStream.range(0,numbers.size())
-                .map(t -> t % 2 != 0 ? numbers.get(t) - 1 : numbers.get(t))
-                .filter(t -> t % 2 != 0)
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i)) // i - index
+                .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -54,8 +52,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(t -> t.getAge() >= fromAge && t.getAge() <= toAge
-                        && t.getSex() == Person.Sex.MAN)
+                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge
+                        && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -88,8 +86,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(t -> t.getSex() == Person.Sex.WOMAN && t.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
