@@ -19,8 +19,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(stringNum -> (stringNum.split(",")))
-                .flatMap(stringStream -> (Arrays.stream(stringStream)))
+                .flatMap(stringNum -> Arrays.stream(stringNum.split(",")))
                 .map(intNum -> Integer.valueOf(intNum))
                 .filter(evenNum -> evenNum % 2 == 0)
                 .min(Integer::compare)
@@ -35,13 +34,9 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream
+        return IntStream
                 .range(0, numbers.size())
-                .filter(index -> index % 2 != 0)
-                .map(index -> numbers.set(index, numbers.get(index) - 1))
-                .sum();
-        return numbers.stream()
-                .mapToInt(n -> n)
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
@@ -112,10 +107,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates
                 .stream()
-                .filter(cand -> candidateValidator.test(cand))
+                .filter(new CandidateValidator())
                 .map(candNames -> candNames.getName())
                 .sorted()
                 .collect(Collectors.toList());
