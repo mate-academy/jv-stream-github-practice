@@ -1,17 +1,19 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBERS_DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,16 +22,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(n -> Arrays.stream(n))
-                .map(n -> Integer.parseInt(n))
+        return numbers.stream()
+                .map(n -> n.split(NUMBERS_DELIMITER))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min((x, y) -> x - y);
-        if (min.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return min.get();
+                .min(Comparator.comparingInt(x -> x))
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -38,14 +38,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(i -> (i % 2 == 0) ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 == 1)
-                .average();
-        if (average.isEmpty()) {
-            throw new NoSuchElementException("Can't find average of odd numbers");
-        }
-        return average.getAsDouble();
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't find average of odd numbers "
+                        + "from list" + numbers));
     }
 
     /**
@@ -78,10 +76,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN && p.getAge()
-                        >= fromAge && p.getAge() <= femaleToAge))
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -95,7 +92,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
-                .map(c -> c.getName())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -114,9 +111,9 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
-                .sorted((x, y) -> x.getName().compareTo(y.getName()))
+                .sorted(Comparator.comparing(Candidate::getName))
                 .filter(predicate)
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .collect(Collectors.toList());
     }
 }
