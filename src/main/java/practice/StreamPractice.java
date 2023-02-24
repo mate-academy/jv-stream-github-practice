@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
@@ -41,6 +42,8 @@ public class StreamPractice {
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
     }
+
+
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -90,7 +93,7 @@ public class StreamPractice {
                 .filter(persons -> persons.getSex() == Person.Sex.WOMAN
                         && persons.getAge() >= femaleAge)
                 .flatMap(cats -> cats.getCats().stream())
-                .map(catNames -> catNames.getName())
+                .map(cats -> cats.getName())
                 .collect(Collectors.toList());
     }
 
@@ -110,7 +113,7 @@ public class StreamPractice {
         return candidates
                 .stream()
                 .filter(new CandidateValidator())
-                .map(candNames -> candNames.getName())
+                .map(c -> c.getName())
                 .sorted()
                 .collect(Collectors.toList());
     }
