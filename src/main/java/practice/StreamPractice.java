@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Person;
 
@@ -42,8 +41,6 @@ public class StreamPractice {
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
     }
-
-
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
