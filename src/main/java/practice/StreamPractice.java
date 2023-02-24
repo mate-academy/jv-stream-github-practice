@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,7 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public static final String FIRST_TASK_SPLIT_SEPARATOR = ",";
 
     /**
@@ -25,22 +23,24 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.split(FIRST_TASK_SPLIT_SEPARATOR))
                 .flatMap(Arrays::stream)
-                .mapToInt(Integer::valueOf)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
+
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
-                .average().orElseThrow(() -> new NoSuchElementException("No such elements"));
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -84,7 +84,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -105,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator<Candidate>())
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
