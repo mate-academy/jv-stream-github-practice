@@ -22,9 +22,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(NUMBERS_SEPARATOR)))
+                .flatMap(stringNumbers -> Arrays.stream(stringNumbers.split(NUMBERS_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
@@ -39,7 +39,7 @@ public class StreamPractice {
         Function<Integer, Integer> oddIndexValueChanger = new OddIndexChanger();
         return numbers.stream()
                 .mapToInt(oddIndexValueChanger::apply)
-                .filter(i -> i % 2 != 0)
+                .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "There are no elements to get calculation from: " + numbers
@@ -89,7 +89,7 @@ public class StreamPractice {
         Predicate<Person> female = new PersonFilter(femaleAge, Person.Sex.WOMAN);
         return peopleList.stream()
                 .filter(female)
-                .flatMap(p -> p.getCats().stream())
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -107,7 +107,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
