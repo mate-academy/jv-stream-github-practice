@@ -13,10 +13,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate c) {
-        int firstDate
-                = Integer.valueOf(c.getPeriodsInUkr().split(DATE_SEPARATOR)[FIRST_DATE_INDEX]);
-        int secondDate
-                = Integer.valueOf(c.getPeriodsInUkr().split(DATE_SEPARATOR)[SECOND_DATE_INDEX]);
+        String[] dates = c.getPeriodsInUkr().split(DATE_SEPARATOR);
+        int firstDate = Integer.parseInt(dates[FIRST_DATE_INDEX]);
+        int secondDate = Integer.parseInt(dates[SECOND_DATE_INDEX]);
         return c.getAge() >= AGE_FROM
                 && c.isAllowedToVote()
                 && c.getNationality().equals(VALID_NATIONALITY)
