@@ -2,10 +2,10 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,11 +22,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> Arrays.stream(s.split(NUMBERS_SEPARATOR)))
-                .flatMap(Stream::sequential)
-                .map(Integer::parseInt)
+                .flatMap(s -> Arrays.stream(s.split(NUMBERS_SEPARATOR)))
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
     }
@@ -42,7 +41,9 @@ public class StreamPractice {
                 .mapToInt(oddIndexValueChanger::apply)
                 .filter(i -> i % 2 != 0)
                 .average()
-                .getAsDouble();
+                .orElseThrow(() -> new NoSuchElementException(
+                        "There are no elements to get calculation from: " + numbers
+                ));
     }
 
     /**
@@ -88,8 +89,7 @@ public class StreamPractice {
         Predicate<Person> female = new PersonFilter(femaleAge, Person.Sex.WOMAN);
         return peopleList.stream()
                 .filter(female)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
