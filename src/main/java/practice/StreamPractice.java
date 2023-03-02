@@ -1,13 +1,11 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
-import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -84,10 +82,8 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(person -> person.getCats().stream()
-                        .map(Cat::getName)
-                        .collect(Collectors.toList()))
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
+                .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
 
@@ -106,7 +102,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator::test)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
