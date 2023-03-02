@@ -19,6 +19,4 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && (Integer.parseInt(years[END_PERIOD])
                 - Integer.parseInt(years[START_PERIOD])) > YEARS;
     }
-    //write your code here
-
 }

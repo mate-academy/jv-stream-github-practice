@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -40,7 +39,7 @@ public class StreamPractice {
                 .map(i -> (i % 2 == 0) ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -71,10 +70,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() <= maleToAge && p.getAge() >= fromAge
-                        && p.getSex().equals(Person.Sex.MAN))
-                        || (p.getAge() <= femaleToAge && p.getAge() >= fromAge
-                        && p.getSex().equals(Person.Sex.WOMAN)))
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))
+                        || (p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN))))
                 .collect(Collectors.toList());
     }
 
@@ -85,8 +83,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge)
-                .filter(p -> p.getSex() == Person.Sex.WOMAN)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(i -> i.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
