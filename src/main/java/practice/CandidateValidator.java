@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int MIN_COUNTRY_LIVE_PERIOD = 10;
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
+    private static final String DIVIDER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -19,7 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     public boolean inCountryTimeEnough(Candidate candidate) {
-        return Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        return Arrays.stream(candidate.getPeriodsInUkr().split(DIVIDER))
                 .mapToInt(Integer::parseInt)
                 .reduce((start, end) -> end - start)
                 .orElse(0) >= MIN_COUNTRY_LIVE_PERIOD;
