@@ -39,7 +39,7 @@ public class StreamPractice {
                 });
         List<Integer> listOfOddNumbers = numbers.stream()
                 .filter(i -> i % 2 == 1)
-                .toList();
+                .collect(Collectors.toList());
         double sum = listOfOddNumbers.stream()
                 .mapToInt(i -> i)
                 .sum();
