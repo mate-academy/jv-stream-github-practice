@@ -10,6 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEAR = 10;
     private static final String NATIONALITY = "Ukrainian";
     private static final String REGEX_SPLIT = "-";
+
     @Override
     public boolean test(Candidate candidate) {
         String [] years = candidate.getPeriodsInUkr().split(REGEX_SPLIT);
