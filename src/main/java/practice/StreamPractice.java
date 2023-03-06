@@ -32,21 +32,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .forEach(i -> {
-                    int value = i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i);
-                    numbers.set(i,value);
-                });
-        List<Integer> listOfOddNumbers = numbers.stream()
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
-                .collect(Collectors.toList());
-        double sum = listOfOddNumbers.stream()
-                .mapToInt(i -> i)
-                .sum();
-        if (listOfOddNumbers.size() == 0) {
-            throw new NoSuchElementException("There are no elements");
-        }
-        return sum / listOfOddNumbers.size();
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("There are no elements"));
     }
 
     /**
@@ -77,12 +67,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
+                .filter(i -> i.getAge() >= fromAge)
                 .filter(i -> i.getSex() == Person.Sex.MAN
-                        ? i.getAge() >= fromAge
-                        && i.getAge() <= maleToAge
+                        ? i.getAge() <= maleToAge
                         && i.getSex() == Person.Sex.MAN
-                        : i.getAge() >= fromAge
-                        && i.getAge() <= femaleToAge
+                        : i.getAge() <= femaleToAge
                         && i.getSex() == Person.Sex.WOMAN)
                 .collect(Collectors.toList());
     }
