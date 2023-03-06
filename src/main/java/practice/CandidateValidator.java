@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_YEARS_LIVING_IN_UKR = 10;
     public static final int START_INDEX = 0;
     public static final int END_INDEX = 1;
+    public static final String SPLIT_PATTERN = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -22,9 +23,9 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
         int startLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[START_INDEX]);
+                .split(SPLIT_PATTERN)[START_INDEX]);
         int endLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[END_INDEX]);
+                .split(SPLIT_PATTERN)[END_INDEX]);
         if (endLivingInUkr - startLivingInUkr < MIN_YEARS_LIVING_IN_UKR) {
             return false;
         }
