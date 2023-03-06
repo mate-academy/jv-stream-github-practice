@@ -2,10 +2,8 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -16,14 +14,13 @@ public class StreamPractice {
     private static final String COMA = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
+        return numbers.stream()
                 .map(i -> i.split(COMA))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Comparator.naturalOrder());
-        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                + "method_input_list"));
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + "method_input_list"));
     }
 
     /**
@@ -70,9 +67,7 @@ public class StreamPractice {
                 .filter(i -> i.getAge() >= fromAge)
                 .filter(i -> i.getSex() == Person.Sex.MAN
                         ? i.getAge() <= maleToAge
-                        && i.getSex() == Person.Sex.MAN
-                        : i.getAge() <= femaleToAge
-                        && i.getSex() == Person.Sex.WOMAN)
+                        : i.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
