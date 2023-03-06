@@ -5,8 +5,10 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
-    public static final String NATIONALITY_UKRAINIAN = "Ukrainian";
+    public static final String NATIONALITY = "Ukrainian";
     public static final int MIN_YEARS_LIVING_IN_UKR = 10;
+    public static final int START_INDEX = 0;
+    public static final int END_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -16,11 +18,13 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (candidate.getAge() < MIN_AGE) {
             return false;
         }
-        if (!candidate.getNationality().equals(NATIONALITY_UKRAINIAN)) {
+        if (!candidate.getNationality().equals(NATIONALITY)) {
             return false;
         }
-        int startLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
-        int endLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]);
+        int startLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
+                .split("-")[START_INDEX]);
+        int endLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
+                .split("-")[END_INDEX]);
         if (endLivingInUkr - startLivingInUkr < MIN_YEARS_LIVING_IN_UKR) {
             return false;
         }
