@@ -29,19 +29,18 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        MenByAgeValidator validator = new MenByAgeValidator(fromAge, toAge);
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(validator)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        WorkablePeopleValidator validator = new WorkablePeopleValidator(fromAge,
+                femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && (person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
-                        : person.getAge() <= femaleToAge))
+                .filter(validator)
                 .collect(Collectors.toList());
     }
 
