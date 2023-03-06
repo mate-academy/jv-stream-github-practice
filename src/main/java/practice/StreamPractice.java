@@ -9,9 +9,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final String SPLIT_PATTERN = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(str -> Arrays.stream(str.split(",")))
+                .flatMap(str -> Arrays.stream(str.split(SPLIT_PATTERN)))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
