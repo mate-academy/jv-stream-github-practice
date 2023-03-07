@@ -3,12 +3,16 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR_NUMBERS = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +22,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(SEPARATOR_NUMBERS)))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -31,9 +35,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        final int[] index = {0};
+        AtomicInteger index = new AtomicInteger();
         return numbers.stream()
-                .mapToInt(n -> index[0]++ % 2 != 0 ? n - 1 : n)
+                .mapToInt(n -> index.getAndIncrement() % 2 != 0 ? n - 1 : n)
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);

@@ -5,7 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final int MIN_PERIODS_IN_UKR = 10;
+    private static final int MIN_PERIODS_IN_UKRAINE = 10;
     private static final String NATIONALITY = "Ukrainian";
     private static final String SEPARATOR_IN_PERIOD = "-";
 
@@ -22,17 +22,17 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && NATIONALITY.equals(candidate.getNationality())
-                && isValidPeriodsInUkr(candidate.getPeriodsInUkr());
+                && isValidPeriodsInUkraine(candidate.getPeriodsInUkr());
     }
 
-    private boolean isValidPeriodsInUkr(String periodInUkr) {
+    private boolean isValidPeriodsInUkraine(String periodInUkr) {
         if (periodInUkr == null) {
             return false;
         }
         String[] range = periodInUkr.split(SEPARATOR_IN_PERIOD);
         try {
             return Integer.parseInt(range[1])
-                    - Integer.parseInt(range[0]) + 1 >= MIN_PERIODS_IN_UKR;
+                    - Integer.parseInt(range[0]) + 1 >= MIN_PERIODS_IN_UKRAINE;
         } catch (NumberFormatException e) {
             return false;
         }
