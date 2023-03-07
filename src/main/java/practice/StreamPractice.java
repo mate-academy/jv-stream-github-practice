@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -58,7 +59,8 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .sorted(Comparator.comparing(Candidate::getName))
-                .map(Candidate::getName).collect(Collectors.toList());
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
