@@ -16,9 +16,9 @@ public class StreamPractice {
         return numbers.stream()
                 .map(str -> List.of(str.split(DATA_SEPARATOR_TASK_1)))
                 .flatMap(List::stream)
-                .map(Integer::valueOf)
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() -> new RuntimeException(
                  "Can't get min value from list" + numbers));
     }
