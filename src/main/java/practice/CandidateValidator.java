@@ -12,7 +12,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        preValidate(candidate);
+        if (!checkForSafety(candidate)) {
+            return false;
+        }
         String[] citizenYears = candidate.getPeriodsInUkr().split(DATA_SEPARATOR);
         return candidate.getAge() >= MINIMUM_AGE
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
@@ -21,12 +23,10 @@ public class CandidateValidator implements Predicate<Candidate> {
                 - Integer.parseInt(citizenYears[0])) >= MINIMUM_PERIOD;
     }
 
-    private void preValidate(Candidate candidate) {
-        if (candidate == null
-                || candidate.getNationality() == null
-                || candidate.getPeriodsInUkr() == null
-                || !candidate.getPeriodsInUkr().matches(PERIOD_MATCHER_REGEX)) {
-            throw new RuntimeException("Invalid candidate data occurred for: " + candidate);
-        }
+    private boolean checkForSafety(Candidate candidate) {
+        return candidate != null
+                && candidate.getNationality() != null
+                && candidate.getPeriodsInUkr() != null
+                && candidate.getPeriodsInUkr().matches(PERIOD_MATCHER_REGEX);
     }
 }
