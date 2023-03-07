@@ -13,22 +13,13 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        if (candidate.getAge() < MIN_AGE) {
-            return false;
-        }
-        if (!candidate.getNationality().equals(NATIONALITY)) {
-            return false;
-        }
         int startLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
                 .split(SPLIT_PATTERN)[START_INDEX]);
         int endLivingInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
                 .split(SPLIT_PATTERN)[END_INDEX]);
-        if (endLivingInUkr - startLivingInUkr < MIN_YEARS_LIVING_IN_UKR) {
-            return false;
-        }
-        return true;
+        return (endLivingInUkr - startLivingInUkr >= MIN_YEARS_LIVING_IN_UKR)
+                && candidate.getNationality().equals(NATIONALITY)
+                && candidate.getAge() >= MIN_AGE
+                && candidate.isAllowedToVote();
     }
 }
