@@ -21,12 +21,7 @@ public class WorkablePeopleValidator implements Predicate<Person> {
         if (age < fromAge) {
             return false;
         }
-        if (sex == Person.Sex.MAN && age > maleToAge) {
-            return false;
-        }
-        if (sex == Person.Sex.WOMAN && age > femaleToAge) {
-            return false;
-        }
-        return true;
+        return (sex == Person.Sex.MAN && age <= maleToAge)
+                || (sex == Person.Sex.WOMAN && age <= femaleToAge);
     }
 }
