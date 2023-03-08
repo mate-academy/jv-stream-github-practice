@@ -26,12 +26,12 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private static boolean isValidPeriodsInUkraine(String periodInUkr) {
-        try {
+        if (periodInUkr != null
+                && periodInUkr.matches("\\d+" + SEPARATOR_IN_PERIOD + "\\d+")) {
             String[] range = periodInUkr.split(SEPARATOR_IN_PERIOD);
             return Integer.parseInt(range[1])
                     - Integer.parseInt(range[0]) + 1 >= MIN_PERIODS_IN_UKRAINE;
-        } catch (RuntimeException e) {
-            return false;
         }
+        return false;
     }
 }
