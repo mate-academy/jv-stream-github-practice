@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final String SEPARATOR = "-";
     private static final int MIN_CANDIDATE_AGE = 35;
     private static final String CANDIDATE_NATIONALITY = "Ukrainian";
     private static final int FIRST_YEAR_INDEX = 0;
@@ -12,8 +13,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int firstYear = Integer.valueOf(candidate.getPeriodsInUkr().split("-")[FIRST_YEAR_INDEX]);
-        int lastYear = Integer.valueOf(candidate.getPeriodsInUkr().split("-")[LAST_YEAR_INDEX]);
+        int firstYear = Integer.valueOf(candidate.getPeriodsInUkr()
+                .split(SEPARATOR)[FIRST_YEAR_INDEX]);
+        int lastYear = Integer.valueOf(candidate.getPeriodsInUkr()
+                .split(SEPARATOR)[LAST_YEAR_INDEX]);
 
         return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
