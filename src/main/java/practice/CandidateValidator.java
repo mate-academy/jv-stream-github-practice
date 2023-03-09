@@ -5,6 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String YEAR_SPLITTER = "-";
+    private static final String VALID_NATIONALITY = "Ukrainian";
     private static final int FIRST_ARRAY_ELEMENT = 0;
     private static final int SECOND_ARRAY_ELEMENT = 1;
     private static final int MINIMUM_AGE = 35;
@@ -17,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                                             - Integer.parseInt(year[FIRST_ARRAY_ELEMENT]);
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= MINIMUM_AGE
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(VALID_NATIONALITY)
                 && yearInUkr >= MINIMUM_YEAR_IN_UKR;
     }
 }
