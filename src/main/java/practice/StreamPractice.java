@@ -1,13 +1,10 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,15 +18,16 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Stream.of(s.split(SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(this::isEven)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
-
 
     /**
      * Given a List of Integer numbers,
@@ -63,7 +61,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -94,7 +91,6 @@ public class StreamPractice {
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Your help with a election is needed. Given list of candidates, where each element
