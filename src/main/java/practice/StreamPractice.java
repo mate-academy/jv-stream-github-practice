@@ -10,7 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public static final String REGEX_MIN_EVEN_NUMBER = ",";
 
     /**
