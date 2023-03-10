@@ -10,6 +10,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,7 +18,6 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
@@ -38,7 +38,7 @@ public class StreamPractice {
                 .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     /**
@@ -70,9 +70,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && ((p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))
-                        || (p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN))))
+                .filter(p -> p.getAge() >= fromAge)
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                ? p.getAge() <= maleToAge
+                : p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
