@@ -83,8 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
             .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
-            .map(Person::getCats)
-            .flatMap(Collection::stream)
+            .flatMap(p -> p.getCats().stream())
             .map(Cat::getName)
             .collect(Collectors.toList());
     }
