@@ -9,6 +9,9 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+
+    public static final String REGEX = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,14 +21,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
-                .map(Integer::valueOf)
-                .mapToInt(i -> i)
+                .flatMap(s -> Arrays.stream(s.split(REGEX)))
+                .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
-                .orElseThrow(() -> new
-                        RuntimeException("Can't get min value from list:" + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list:" + numbers));
     }
 
     /**
