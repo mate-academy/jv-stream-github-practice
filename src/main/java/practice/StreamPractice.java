@@ -16,7 +16,6 @@ public class StreamPractice {
     private final Predicate<Candidate> candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(SPLITTER)))
                 .mapToInt(Integer::parseInt)
@@ -47,13 +46,11 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
-                        && (((p.getSex().equals(Person.Sex.MAN)) && p.getAge() <= maleToAge)
-                        || ((p.getSex().equals(Person.Sex.WOMAN)) && p.getAge() <= femaleToAge)))
+                        && p.getAge() <= (p.getSex() == Person.Sex.MAN ? maleToAge : femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge)
@@ -63,8 +60,7 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates
-                .stream()
+        return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
