@@ -84,7 +84,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(c -> c.getCats().stream())
-                .map(Cat:: getName)
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -103,7 +103,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .map(Candidate:: getName)
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
