@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,7 +18,6 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(num -> Arrays.stream(num.split(SEPARATOR)))
@@ -40,7 +38,7 @@ public class StreamPractice {
                 .map(num -> isEven(num) ? numbers.get(num) : numbers.get(num) - 1)
                 .filter(num -> !isEven(num))
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No such element."));
+                .getAsDouble();
     }
 
     /**
