@@ -38,7 +38,8 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("Data doesn`t contain any odd numbers"));
     }
 
     /**
@@ -70,17 +71,21 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        ? p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        : p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(p -> workablePeopleFilter(p, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
+    private boolean workablePeopleFilter(Person p, int fromAge, int maleToAge, int femaleToAge) {
+        return p.getSex().equals(Person.Sex.MAN)
+                ? p.getAge() >= fromAge && p.getAge() <= maleToAge
+                : p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+    }
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
