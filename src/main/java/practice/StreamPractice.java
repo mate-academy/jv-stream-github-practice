@@ -1,9 +1,7 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -40,8 +38,7 @@ public class StreamPractice {
                 .map(i -> i = i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get avg from list: "
-                        + numbers));
+                .getAsDouble();
     }
 
     /**
@@ -76,13 +73,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean isValidAge(Person p, int fromAge, int femaleToAge,
-                               int maleToAge) {
-        return p.getAge() >= fromAge
-                && (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
-                || p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge);
-    }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
@@ -91,8 +81,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -111,9 +100,16 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isValidAge(Person p, int fromAge, int femaleToAge,
+                               int maleToAge) {
+        return p.getAge() >= fromAge
+                && (p.getSex() == Person.Sex.WOMAN
+                ? p.getAge() <= femaleToAge : p.getAge() <= maleToAge);
     }
 }
