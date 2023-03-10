@@ -6,14 +6,18 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
-    public static final int REQUIRED_MIN_AGE = 35;
-    public static final String REQUIRED_NATIONALITY = "Ukrainian";
-    public static final int REQUIRED_MIN_PERIOD = 10;
+    private static final int REQUIRED_MIN_AGE = 35;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int REQUIRED_MIN_PERIOD = 10;
+    private static final String SEPARATOR_HYPHEN = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        final int[] parsedPeriod = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .mapToInt(Integer::valueOf).toArray();
+        final int[] parsedPeriod = Arrays.stream(candidate
+                        .getPeriodsInUkr()
+                        .split(SEPARATOR_HYPHEN))
+                .mapToInt(Integer::valueOf)
+                .toArray();
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= REQUIRED_MIN_AGE
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)

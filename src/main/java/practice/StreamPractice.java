@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,6 +9,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
+    private static final String SEPARATOR_COMMA = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,7 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(ns -> Arrays.stream(ns.split(",")))
+                .flatMap(ns -> Arrays.stream(ns.split(SEPARATOR_COMMA)))
                 .map(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compareTo)
@@ -38,8 +40,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(() ->
-                        new NoSuchElementException("Data doesn`t contain any odd numbers"));
+                .getAsDouble();
     }
 
     /**
