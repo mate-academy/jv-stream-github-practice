@@ -10,6 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBER_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,8 +18,9 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream().flatMap(x -> Arrays.stream(x.split(",")))
+        return numbers.stream().flatMap(x -> Arrays.stream(x.split(NUMBER_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(v -> v % 2 == 0)
                 .min()
@@ -50,7 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(v -> v.getSex().equals(Person.Sex.MAN)
+                .filter(v -> v.getSex() == Person.Sex.MAN
                         && (v.getAge() >= fromAge && v.getAge() <= toAge))
                 .collect(Collectors.toList());
     }
@@ -81,7 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(v -> v.getAge() >= femaleAge
-                        && v.getSex().equals(Person.Sex.WOMAN))
+                        && v.getSex() == Person.Sex.WOMAN)
                 .flatMap(v -> v.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
