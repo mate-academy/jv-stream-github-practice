@@ -9,10 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int LIVE_IN_UKRAINE = 10;
     private static final int PERIOD_TIME_FROM = 0;
     private static final int PERIOD_TIME_TO = 1;
+    private static final String PERIODS_INUKRAINE_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] periodTime = candidate.getPeriodsInUkr().split("-");
+        String[] periodTime = candidate.getPeriodsInUkr().split(PERIODS_INUKRAINE_SEPARATOR);
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= VALID_AGE
                 && candidate.getNationality().equals(VALID_NATIONALITY)

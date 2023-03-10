@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +20,8 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream().flatMap(x -> Arrays.stream(x.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(v -> v % 2 == 0).min()
+                .filter(v -> v % 2 == 0)
+                .min()
                 .orElseThrow(() -> {
                     throw new RuntimeException("Can't get min value from list: " + numbers);
                 });
@@ -36,7 +36,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(v -> v % 2 != 0)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -82,7 +83,8 @@ public class StreamPractice {
                 .filter(v -> v.getAge() >= femaleAge
                         && v.getSex().equals(Person.Sex.WOMAN))
                 .flatMap(v -> v.getCats().stream())
-                .map(Cat::getName).collect(Collectors.toList());
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -99,7 +101,10 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> validator = new CandidateValidator();
-        return candidates.stream().filter(validator)
-                .map(Candidate::getName).sorted().collect(Collectors.toList());
+        return candidates.stream()
+                .filter(validator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
