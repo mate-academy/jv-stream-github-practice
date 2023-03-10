@@ -10,6 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,8 +20,7 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-
-        return Arrays.stream(numbers.stream().map(s -> s.split(","))
+        return Arrays.stream(numbers.stream().map(s -> s.split(COMA))
                 .flatMapToInt(arr -> Arrays.stream(arr).mapToInt(Integer::parseInt))
                 .toArray())
                 .filter(n -> n % 2 == 0)
