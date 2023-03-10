@@ -11,7 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String COMMA = ",";
+    private static final String REGEX = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
@@ -23,8 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(COMMA))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(REGEX)))
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
@@ -39,10 +38,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(idx -> idx % 2 == 1 ? numbers.get(idx) - 1 : numbers.get(idx))
-                .filter(n -> n % 2 == 1)
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     /**
@@ -76,13 +75,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workablePersons = p ->
-                p.getSex() == Person.Sex.WOMAN
-                ? (p.getAge() >= fromAge && p.getAge() <= femaleToAge)
-                : (p.getAge() >= fromAge && p.getAge() <= maleToAge);
+        Predicate<Person> workablePerson = p ->
+                p.getAge() >= fromAge && (p.getSex() == Person.Sex.WOMAN
+                ? p.getAge() <= femaleToAge
+                : p.getAge() <= maleToAge);
 
         return peopleList.stream()
-                .filter(workablePersons)
+                .filter(workablePerson)
                 .collect(Collectors.toList());
     }
 
