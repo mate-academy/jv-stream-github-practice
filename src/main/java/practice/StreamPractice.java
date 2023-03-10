@@ -70,8 +70,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream().filter(v -> v.getAge() >= fromAge
-                && (v.getSex().equals(Person.Sex.MAN) && v.getAge() <= maleToAge
-                || v.getSex().equals(Person.Sex.WOMAN) && v.getAge() <= femaleToAge))
+                && (v.getSex() == Person.Sex.MAN && v.getAge() <= maleToAge
+                || v.getSex() == Person.Sex.WOMAN && v.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
