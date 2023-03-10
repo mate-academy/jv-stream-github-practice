@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -26,7 +25,7 @@ public class StreamPractice {
                 .filter(s -> s % 2 == 0)
                 .min()
                 .orElseThrow(() -> {
-                    throw new RuntimeException("Can't get min value from list");
+                    throw new RuntimeException("Can't get min value from list " + numbers);
                 });
     }
 
@@ -40,7 +39,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -53,7 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(people -> people.getSex().equals(Person.Sex.MAN)
+                .filter(people -> people.getSex() == Person.Sex.MAN
                         && people.getAge() >= fromAge && people.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -71,9 +70,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(people -> people.getSex().equals(Person.Sex.MAN)
+                .filter(people -> people.getSex() == Person.Sex.MAN
                         && people.getAge() >= fromAge && people.getAge() <= maleToAge
-                        || people.getSex().equals(Person.Sex.WOMAN)
+                        || people.getSex() == Person.Sex.WOMAN
                         && people.getAge() >= fromAge && people.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
