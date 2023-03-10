@@ -11,10 +11,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate c) {
+        String[] splitPeriod = c.getPeriodsInUkr().split(PERIOD_SPLITTER);
         return c.getAge() >= MIN_AGE
                 && c.isAllowedToVote()
                 && c.getNationality().equals(REQUIRED_NATIONALITY)
-                && Integer.parseInt(c.getPeriodsInUkr().split(PERIOD_SPLITTER)[1])
-                - Integer.parseInt(c.getPeriodsInUkr().split(PERIOD_SPLITTER)[0]) >= MIN_PERIOD;
+                && Integer.parseInt(splitPeriod[1])
+                - Integer.parseInt(splitPeriod[0]) >= MIN_PERIOD;
     }
 }
