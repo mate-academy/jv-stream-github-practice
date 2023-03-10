@@ -16,6 +16,7 @@ import model.Candidate;
  * parametrized with Candidate in CandidateValidator.
  */
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final String SEPARATOR = "-";
     private static final int MIN_AGE = 35;
     private static final String REQURIED_NATIONALITY = "Ukrainian";
     private static final int UKRAINE_LIVING_PERIOD_YEARS = 10;
@@ -24,18 +25,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < MIN_AGE) {
-            return false;
-        }
-        if (candidate.getNationality() != REQURIED_NATIONALITY) {
-            return false;
-        }
-        String[] period = candidate.getPeriodsInUkr().split("-");
-        if (Integer.valueOf(period[UPPER_PERIOD_INDEX])
-                - Integer.valueOf(period[LOWER_PERIOD_INDEX])
-                < UKRAINE_LIVING_PERIOD_YEARS) {
-            return false;
-        }
-        return candidate.isAllowedToVote();
+        String[] splitedPeriod = candidate.getPeriodsInUkr().split(SEPARATOR);
+        int period = Integer.valueOf(splitedPeriod[UPPER_PERIOD_INDEX])
+                - Integer.valueOf(splitedPeriod[LOWER_PERIOD_INDEX]);
+        return period >= UKRAINE_LIVING_PERIOD_YEARS
+                && candidate.getAge() >= MIN_AGE
+                && candidate.getNationality() == REQURIED_NATIONALITY
+                && candidate.isAllowedToVote();
     }
 }
