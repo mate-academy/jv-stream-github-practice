@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -40,7 +39,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers in modified list: "
+                        + numbers));
     }
 
     /**
@@ -89,9 +89,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getCats().size() != 0
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
-                .map(Cat::getName)
+                .flatMap(p -> p.getCats().stream().map(Cat::getName))
                 .collect(Collectors.toList());
     }
 
@@ -109,8 +107,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .sorted(Comparator.comparing(Candidate::getName))
                 .filter(new CandidateValidator())
+                .sorted(Comparator.comparing(Candidate::getName))
                 .map(Candidate::getName)
                 .collect(Collectors.toList());
     }
