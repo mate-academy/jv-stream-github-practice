@@ -5,7 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final String DElIMiTER = "-";
+    private static final String DElIMITER = "-";
     private static final String DESIRED_NATIONALITY = "Ukrainian";
     private static final int YEAR_INDEX_FROM = 0;
     private static final int YEAR_INDEX_TO = 1;
@@ -13,7 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] periods = candidate.getPeriodsInUkr().split(DElIMiTER);
+        String[] periods = candidate.getPeriodsInUkr().split(DElIMITER);
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(DESIRED_NATIONALITY)
