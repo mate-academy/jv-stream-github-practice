@@ -51,7 +51,6 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-
         return peopleList.stream()
                 .filter(p -> (p.getAge() >= fromAge && p.getAge() <= toAge)
                         && p.getSex().equals(Person.Sex.MAN))
@@ -71,11 +70,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> workablePeopleFilter(p, fromAge, maleToAge, femaleToAge))
+                .filter(p -> isWorkable(p, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
-    private boolean workablePeopleFilter(Person p, int fromAge, int maleToAge, int femaleToAge) {
+    private boolean isWorkable(Person p, int fromAge, int maleToAge, int femaleToAge) {
         return p.getSex().equals(Person.Sex.MAN)
                 ? p.getAge() >= fromAge && p.getAge() <= maleToAge
                 : p.getAge() >= fromAge && p.getAge() <= femaleToAge;
