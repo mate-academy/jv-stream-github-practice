@@ -15,8 +15,7 @@ import model.Person;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt first = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min();
@@ -56,7 +55,8 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
-        return candidates.stream().filter(validator)
+        return candidates.stream()
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
