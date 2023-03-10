@@ -13,10 +13,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int firstYear = Integer.valueOf(candidate.getPeriodsInUkr()
-                .split(SEPARATOR)[FIRST_YEAR_INDEX]);
-        int lastYear = Integer.valueOf(candidate.getPeriodsInUkr()
-                .split(SEPARATOR)[LAST_YEAR_INDEX]);
+        String[] candidateYearsInCountry = candidate.getPeriodsInUkr().split(SEPARATOR);
+        int firstYear = Integer.valueOf(candidateYearsInCountry[FIRST_YEAR_INDEX]);
+        int lastYear = Integer.valueOf(candidateYearsInCountry[LAST_YEAR_INDEX]);
 
         return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
