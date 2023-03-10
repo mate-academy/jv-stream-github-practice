@@ -9,8 +9,7 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
-
-    public static final String REGEX = ",";
+    private static final String REGEX = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -86,8 +85,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(l -> l.stream())
+                .flatMap(p -> p.getCats().stream())
                 .map(c -> c.getName())
                 .collect(Collectors.toList());
     }
