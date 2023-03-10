@@ -9,7 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String comaSeparator = ",";
+    private static final String COMA_SEPARATOR = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -20,7 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-            .flatMap(s -> Arrays.stream(s.split(comaSeparator)))
+            .flatMap(s -> Arrays.stream(s.split(COMA_SEPARATOR)))
             .mapToInt(Integer::parseInt)
             .filter(i -> i % 2 == 0)
             .min()
