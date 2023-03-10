@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -11,6 +10,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +18,6 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Stream.of(s.split(SEPARATOR)))
@@ -34,15 +33,12 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-
     public double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> isEven(i) ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> !isEven(n))
                 .average()
-                .orElseThrow(() ->
-                        new NoSuchElementException("Can't find average of odd numbers from list "
-                                + numbers));
+                .getAsDouble();
     }
 
     /**
@@ -86,8 +82,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> isFemaleAge(person, femaleAge))
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(i -> i.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
