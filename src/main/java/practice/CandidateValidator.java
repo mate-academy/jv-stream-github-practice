@@ -12,10 +12,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return isEligible(candidate);
-    }
-
-    private boolean isEligible(Candidate candidate) {
         int period = Arrays.stream(candidate.getPeriodsInUkr().split(DATE_SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .reduce((start, end) -> end - start)
