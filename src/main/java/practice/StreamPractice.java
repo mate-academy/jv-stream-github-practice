@@ -10,9 +10,12 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final String DIVIDER = ",";
+    public static final int SUBTRAHEND = 1;
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(s -> s.split(DIVIDER))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
@@ -23,7 +26,7 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - SUBTRAHEND)
                 .filter((n -> n % 2 != 0))
                 .average()
                 .getAsDouble();
