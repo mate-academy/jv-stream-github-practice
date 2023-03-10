@@ -15,12 +15,14 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int firstDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[INDEX_FOR_FIRST_DATE]);
-        int secondDate = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[INDEX_FOR_SECOND_DATE]);
+        String theBeginningOfPeriodInUkr = candidate.getPeriodsInUkr()
+                .split("-")[INDEX_FOR_FIRST_DATE];
+        String theEndOfPeriodInUrk = candidate.getPeriodsInUkr()
+                .split("-")[INDEX_FOR_SECOND_DATE];
+        int firstDate = Integer.parseInt(theBeginningOfPeriodInUkr);
+        int secondDate = Integer.parseInt(theEndOfPeriodInUrk);
         return candidate.isAllowedToVote() && candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY_FOR_ELECTION)
-                && (secondDate - firstDate) >= MIN_NUMBER_OF_LIVING_IN_UKR;
+                && secondDate - firstDate >= MIN_NUMBER_OF_LIVING_IN_UKR;
     }
 }
