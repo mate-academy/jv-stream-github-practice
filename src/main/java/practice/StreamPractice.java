@@ -10,6 +10,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,7 +18,6 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
@@ -33,7 +33,6 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
@@ -70,9 +69,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN ? p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge : p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= (p.getSex() == Person.Sex.MAN ? maleToAge : femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -83,8 +81,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.WOMAN)
-                .filter(i -> i.getAge() >= femaleAge)
+                .filter(i -> i.getSex() == Person.Sex.WOMAN && i.getAge() >= femaleAge)
                 .flatMap(c -> c.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
