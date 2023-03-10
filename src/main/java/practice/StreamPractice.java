@@ -106,7 +106,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public boolean getMaxAgeBySex(Person person, int fromAge, int maleToAge, int femaleToAge) {
+    private static boolean getMaxAgeBySex(Person person, int fromAge, int maleToAge, int femaleToAge) {
         return person.getAge() >= fromAge
                 && (person.getSex() == Person.Sex.MAN
                 ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
