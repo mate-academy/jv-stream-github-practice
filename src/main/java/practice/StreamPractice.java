@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -38,7 +37,8 @@ public class StreamPractice {
                 .map(item -> item % 2 != 0 ? numbers.get(item) - 1 : numbers.get(item))
                 .filter(item -> item % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Not found odd elements"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Not found odd elements, numbers " + numbers));
     }
 
     /**
@@ -84,8 +84,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(item -> item.getSex() == Person.Sex.WOMAN && item.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
