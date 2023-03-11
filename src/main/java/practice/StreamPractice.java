@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,7 +27,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -82,7 +83,7 @@ public class StreamPractice {
     }
 
     /**
-     * Given a List of `Person` i nstances(having `name`, `age`, `sex` and `cats` fields,
+     * Given a List of `Person` instances(having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
@@ -101,8 +102,8 @@ public class StreamPractice {
      * has Candidate.class type.
      * Check which candidates are eligible to apply for president position and return their
      * names sorted alphabetically.
-     * The requirements are: person should be older than 35 years, should be allowed to vote,а
-     * have nationality - 'Ukrainian'
+     * The requirements are: person should be older than 35 years, should be allowed to vote,
+     * а have nationality - 'Ukrainian'
      * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
      * which has following view: "2002-2015"
      * We want to reuse our validation in future, so let's write our own impl of Predicate
