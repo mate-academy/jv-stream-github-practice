@@ -40,7 +40,6 @@ public class StreamPractice {
         };
         try {
             average = numbers.stream()
-                    .filter(i -> i != 0)
                     .map(incOnOddIndex)
                     .filter(i -> i % 2 == 1)
                     .mapToInt(Integer::valueOf)
