@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -16,39 +16,19 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         int min;
-        try {
-            min = numbers.stream()
-                    .flatMapToInt(string -> Arrays.stream(string.split(REGEX_INTEGERS))
-                            .mapToInt(Integer::parseInt))
-                    .filter(i -> i % 2 == 0)
-                    .min()
-                    .getAsInt();
-        } catch (Exception e) {
-            throw new RuntimeException("Can't get min value from list: < Here is our input '"
-                    + numbers + "' >");
-        }
+        min = numbers.stream()
+                .flatMapToInt(string -> Arrays.stream(string.split(REGEX_INTEGERS))
+                        .mapToInt(Integer::parseInt))
+                .filter(i -> i % 2 == 0)
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list"));
         return min;
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Double average;
-        final Integer[] index = {0};
-        Function<Integer, Integer> incOnOddIndex = integer -> {
-            integer = index[0] % 2 == 1 ? integer - 1 : integer;
-            index[0]++;
-            return integer;
-        };
-        try {
-            average = numbers.stream()
-                    .map(incOnOddIndex)
-                    .filter(i -> i % 2 == 1)
-                    .mapToInt(Integer::valueOf)
-                    .average()
-                    .getAsDouble();
-        } catch (Exception e) {
-            throw new NoSuchElementException("Error empty List of numbers");
-        }
-        return average;
+        return IntStream.range(0, numbers.size())
+                .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(i -> i % 2 == 1)
+                .average().orElseThrow(() -> new NoSuchElementException("Can't get average value"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
