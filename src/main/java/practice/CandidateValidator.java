@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int PERIOD_OF_LIFE_IN_COUNTRY = 10;
+    private static final int COUNT_OF_YEARS = 2;
     private static final String SPLIT_SYMBOL = "-";
     private static final int LAST_YEAR = 1;
     private static final int INITIAL_YEAR = 0;
@@ -30,7 +31,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int countYearsInCountry(String text) {
         String[] temp = text.split(SPLIT_SYMBOL);
-        int[] period = new int[2];
+        int[] period = new int[COUNT_OF_YEARS];
         for (int i = 0; i < temp.length; i++) {
             period[i] = Integer.parseInt(temp[i]);
         }
