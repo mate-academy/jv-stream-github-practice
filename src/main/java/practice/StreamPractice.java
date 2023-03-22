@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
 import java.util.Collection;
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,7 +21,7 @@ public class StreamPractice {
                 .mapToInt(i -> i)
                 .min();
         return n.orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                +  "< Here is our input 'numbers' >"));
+                + "< Here is our input 'numbers' >"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
