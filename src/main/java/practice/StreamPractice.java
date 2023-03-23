@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,16 +9,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator candidateValidator = new CandidateValidator();
-
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("2,4");
-        list.add("7,9");
-        list.add("10");
-        findMinEvenNumber(list);
-    }
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -31,7 +20,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(str -> Arrays.stream(str.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + "< Here is our input " + numbers + " >"));
@@ -44,7 +33,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
@@ -78,7 +67,6 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
         return peopleList.stream()
                 .filter(person ->
                         person.getSex().equals(Person.Sex.MAN)
@@ -96,7 +84,6 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-
         return peopleList.stream()
                 .filter(person -> person.getAge()
                         >= femaleAge
@@ -119,7 +106,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidate -> candidateValidator.test(candidate))
                 .map(Candidate::getName)
