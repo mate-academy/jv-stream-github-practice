@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalInt;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -18,17 +19,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
-                .min();
-
-        if (min.isPresent()) {
-            return min.getAsInt();
-        } else {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -37,19 +33,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        try {
-            return numbers.stream()
-                    .mapToInt(n -> {
-                        int index = numbers.indexOf(n);
-                        return (index % 2 == 1) ? n - 1 : n;
-                    })
-                    .filter(n -> n % 2 == 1)
-                    .distinct()
-                    .average()
-                    .orElseThrow(NoSuchElementException::new);
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("There are no odd numbers in the list!");
-        }
+        return numbers.stream()
+                .mapToInt(n -> {
+                    int index = numbers.indexOf(n);
+                    return (index % 2 == 1) ? n - 1 : n;
+                })
+                .filter(n -> n % 2 == 1)
+                .distinct()
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("There are no odd numbers in the list!"));
     }
 
     /**
@@ -101,7 +93,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .map(Person::getCats)
-                .flatMap(l -> l.stream())
+                .flatMap(catList -> catList.stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -119,7 +111,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
