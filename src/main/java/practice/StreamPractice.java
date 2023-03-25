@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
@@ -24,7 +23,8 @@ public class StreamPractice {
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,7 +41,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .distinct()
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("There are no odd numbers in the list!"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("There are no odd numbers in the list!"));
     }
 
     /**
