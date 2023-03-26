@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -118,9 +117,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> pr = new CandidateValidator().candidateValidPredicate;
+        //      Predicate<Candidate> pr = new CandidateValidator().candidateValidPredicate;
         return candidates.stream()
-                .filter(pr)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(toList());
