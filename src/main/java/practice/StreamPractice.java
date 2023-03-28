@@ -1,6 +1,8 @@
 package practice;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -34,7 +36,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(i -> i % 2 == 1)
+                .filter(n -> n % 2 == 1)
                 .average()
                 .orElseThrow();
     }
@@ -48,7 +50,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> predicate = p -> p.getSex().equals(Person.Sex.MAN)
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
+        return peopleList.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 
     /**
