@@ -49,7 +49,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> predicate = p -> p.getSex().equals(Person.Sex.MAN)
+        Predicate<Person> predicate = p -> p.getSex() == Person.Sex.MAN
                 && p.getAge() >= fromAge && p.getAge() <= toAge;
         return peopleList.stream()
                 .filter(predicate)
@@ -86,8 +86,7 @@ public class StreamPractice {
                 && !p.getCats().isEmpty();
         return peopleList.stream()
                 .filter(getWomen)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
