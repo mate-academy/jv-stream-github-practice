@@ -1,9 +1,10 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -25,7 +26,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(
+                        () -> new RuntimeException("Can't get min value from list: " + numbers));
 
     }
 
@@ -54,7 +56,9 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge && p.getSex().equals(Person.Sex.MAN))
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex().equals(Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -73,7 +77,9 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(p -> p.getAge() >= fromAge)
-                .filter(p -> p.getSex().equals(Person.Sex.MAN) ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
+                        ? p.getAge() <= maleToAge
+                        : p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
