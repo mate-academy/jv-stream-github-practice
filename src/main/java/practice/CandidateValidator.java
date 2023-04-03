@@ -1,9 +1,7 @@
 package practice;
 
 import java.util.function.Predicate;
-
 import model.Candidate;
-
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_AGE = 35;
