@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -20,7 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: " + numbers));
@@ -33,10 +34,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
-                .filter(n -> n % 2 != 0)
+                .map(number -> number % 2 != 0 ? numbers.get(number) - 1 : numbers.get(number))
+                .filter(number -> number % 2 != 0)
                 .average()
-                .getAsDouble();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -51,7 +52,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() <= toAge
                         && person.getAge() >= fromAge
-                        && person.getSex().equals(Person.Sex.MAN))
+                        && Person.Sex.MAN.equals(person.getSex()))
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +82,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() > femaleAge
+                .filter(person -> person.getAge() >= femaleAge
                         && person.getCats() != null
                         && person.getSex() == Person.Sex.WOMAN)
                 .flatMap(person -> person.getCats().stream())
