@@ -14,7 +14,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        if (numbers == null) {
+            throw new RuntimeException("Can't get min value from list: method_input_list");
+        }
+        return numbers.stream()
+                .mapToInt(Integer::parseInt)
+                .min()
+                .orElse(Integer.MIN_VALUE);
     }
 
     /**
