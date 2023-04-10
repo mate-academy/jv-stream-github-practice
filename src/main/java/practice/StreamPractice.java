@@ -17,17 +17,20 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers == null) {
-            throw new RuntimeException("Can't get min value from list: method_input_list");
-        }
-        String allNumbers = numbers.stream()
+        String[] allNumbers = numbers.stream()
                 .map(e -> e.concat(","))
-                .collect(Collectors.joining());
-        String[] array = allNumbers.split(",");
-        return Arrays.stream(array)
+                .collect(Collectors.joining())
+                .split(",");
+        int result = Arrays.stream(allNumbers)
                 .mapToInt(Integer::parseInt)
+                .filter(e -> e % 2 == 0)
                 .min()
                 .orElse(Integer.MIN_VALUE);
+        if (result == 0) {
+            throw new RuntimeException("Can't get min value from list: " + Arrays.toString(allNumbers));
+        } else {
+            return result;
+        }
     }
 
     /**
