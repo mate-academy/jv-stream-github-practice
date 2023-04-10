@@ -1,7 +1,10 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import model.Candidate;
 import model.Person;
 
@@ -17,7 +20,11 @@ public class StreamPractice {
         if (numbers == null) {
             throw new RuntimeException("Can't get min value from list: method_input_list");
         }
-        return numbers.stream()
+        String allNumbers = numbers.stream()
+                .map(e -> e.concat(","))
+                .collect(Collectors.joining());
+        String[] array = allNumbers.split(",");
+        return Arrays.stream(array)
                 .mapToInt(Integer::parseInt)
                 .min()
                 .orElse(Integer.MIN_VALUE);
