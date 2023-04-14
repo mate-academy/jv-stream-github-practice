@@ -1,9 +1,8 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import model.Candidate;
 import model.Person;
@@ -42,7 +41,31 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        List<Integer> oddIndex;
+        List<Integer> evenIndex;
+        Map<Integer, Integer> mapNumbers = IntStream.range(0, numbers.size())
+                .boxed()
+                .collect(Collectors.toMap(Integer::intValue, numbers::get));
+        oddIndex = mapNumbers.entrySet().stream()
+                .filter(e -> e.getKey() % 2 == 1)
+                .map(e -> e.getValue() - 1)
+                .collect(Collectors.toList());
+        evenIndex = mapNumbers.entrySet().stream()
+                .filter(e -> e.getKey() % 2 == 0)
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+        oddIndex.addAll(evenIndex);
+        int sum = oddIndex.stream()
+                .filter(e -> e % 2 == 1)
+                .mapToInt(Integer::intValue)
+                .sum();
+        if (sum == 0) {
+            throw new NoSuchElementException("No such element");
+        }
+        long count = oddIndex.stream()
+                .filter(e -> e % 2 == 1)
+                .count();
+        return sum / (double) count;
     }
 
     /**
