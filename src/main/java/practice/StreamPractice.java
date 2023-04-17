@@ -23,8 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(s -> Arrays.stream(s))
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compare)
@@ -55,7 +54,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(MAN) && person.getAge() >= fromAge
+                .filter(person -> person.getSex() == MAN && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -74,8 +73,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex().equals(MAN) && person.getAge() <= maleToAge)
-                        || person.getSex().equals(WOMAN) && person.getAge() <= femaleToAge))
+                        && ((person.getSex() == MAN && person.getAge() <= maleToAge)
+                        || person.getSex() == WOMAN && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +85,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(WOMAN) && person.getAge() >= femaleAge
+                .filter(person -> person.getSex() == WOMAN && person.getAge() >= femaleAge
                         && !person.getCats().isEmpty())
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
