@@ -137,8 +137,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidate = new CandidateValidator();
         return candidates.stream()
-                .filter(c -> candidate.validVote(c) && candidate.validAge(c)
-                        && candidate.validNationality(c) && candidate.validPeriod(c))
+                .filter(candidate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
