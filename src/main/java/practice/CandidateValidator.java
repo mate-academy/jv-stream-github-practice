@@ -3,7 +3,7 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator {
+public class CandidateValidator implements Predicate<Candidate> {
     private Predicate<Candidate> toVote = Candidate::isAllowedToVote;
     private Predicate<Candidate> age = a -> a.getAge() >= 35;
     private Predicate<Candidate> isNationality = c -> c.getNationality().equals("Ukrainian");
@@ -12,19 +12,24 @@ public class CandidateValidator {
         return Integer.parseInt(periodOfYear[1]) - Integer.parseInt(periodOfYear[0]) >= 10;
     };
 
-    public boolean validVote(Candidate candidate) {
-        return toVote.test(candidate);
+    @Override
+    public Predicate<Candidate> and(Predicate<? super Candidate> other) {
+        return null;
     }
 
-    public boolean validAge(Candidate candidate) {
-        return age.test(candidate);
+    @Override
+    public Predicate<Candidate> negate() {
+        return null;
     }
 
-    public boolean validNationality(Candidate candidate) {
-        return isNationality.test(candidate);
+    @Override
+    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
+        return null;
     }
 
-    public boolean validPeriod(Candidate candidate) {
-        return period.test(candidate);
+    @Override
+    public boolean test(Candidate candidate) {
+        return toVote.test(candidate) && age.test(candidate)
+                && isNationality.test(candidate) && period.test(candidate);
     }
 }
