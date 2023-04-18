@@ -24,7 +24,7 @@ public class CandidateValidator {
         return isNationality.test(candidate);
     }
 
-    public  boolean validPeriod(Candidate candidate) {
+    public boolean validPeriod(Candidate candidate) {
         return period.test(candidate);
     }
 }
