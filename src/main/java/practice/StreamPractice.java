@@ -34,7 +34,8 @@ public class StreamPractice {
                 .min()
                 .orElse(Integer.MIN_VALUE);
         if (result == 0) {
-            throw new RuntimeException("Can't get min value from list: " + Arrays.toString(allNumbers));
+            throw new RuntimeException("Can't get min value from list: "
+                    + Arrays.toString(allNumbers));
         } else {
             return result;
         }
