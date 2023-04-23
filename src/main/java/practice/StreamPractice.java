@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,18 +25,18 @@ public class StreamPractice {
         if (numbers.size() == 0) {
             throw new RuntimeException("Can't get min value from list: " + numbers);
         }
-        String[] allNumbers = numbers.stream()
-                .map(e -> e.concat(","))
-                .collect(Collectors.joining())
-                .split(",");
-        int result = Arrays.stream(allNumbers)
-                .mapToInt(Integer::parseInt)
+        int result = numbers.stream()
+                .map(e -> Stream.of(e.split(","))
+                        .mapToInt(Integer::parseInt))
+                .collect(Collectors.toList()).stream()
+                .flatMap(IntStream::boxed)
+                .mapToInt(Integer::intValue)
                 .filter(e -> e % 2 == 0)
                 .min()
                 .orElse(Integer.MIN_VALUE);
         if (result == 0) {
             throw new RuntimeException("Can't get min value from list: "
-                    + Arrays.toString(allNumbers));
+                    + numbers.toString());
         } else {
             return result;
         }
