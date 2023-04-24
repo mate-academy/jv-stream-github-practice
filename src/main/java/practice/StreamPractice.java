@@ -54,13 +54,15 @@ public class StreamPractice {
                     }
                     numbers.set(index, null);
                     return e;
-                }).collect(Collectors.toList());
+                }).collect(Collectors.toList()).stream()
+                .filter(e -> e % 2 == 1)
+                .collect(Collectors.toList());
         if (result.isEmpty()) {
             throw new NoSuchElementException("No such element");
         }
         return result.stream()
-                .mapToInt(Integer::intValue)
-                .sum() / (double) result.size();
+                .mapToDouble(Integer::doubleValue)
+                .sum() / result.size();
     }
 
     /**
