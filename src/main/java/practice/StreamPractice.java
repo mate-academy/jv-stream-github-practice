@@ -46,31 +46,22 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> oddIndex;
-        List<Integer> evenIndex;
-        Map<Integer, Integer> mapNumbers = IntStream.range(0, numbers.size())
-                .boxed()
-                .collect(Collectors.toMap(Integer::intValue, numbers::get));
-        oddIndex = mapNumbers.entrySet().stream()
-                .filter(e -> e.getKey() % 2 == 1)
-                .map(e -> e.getValue() - 1)
-                .collect(Collectors.toList());
-        evenIndex = mapNumbers.entrySet().stream()
-                .filter(e -> e.getKey() % 2 == 0)
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toList());
-        oddIndex.addAll(evenIndex);
-        int sum = oddIndex.stream()
-                .filter(e -> e % 2 == 1)
-                .mapToInt(Integer::intValue)
-                .sum();
-        if (sum == 0) {
+        List<Integer> result = numbers.stream()
+                .map(e -> {
+                    int index = numbers.indexOf(e);
+                    if (index % 2 == 1) {
+                        numbers.set(index, null);
+                        return e - 1;
+                    }
+                    numbers.set(index, null);
+                    return e;
+                }).collect(Collectors.toList());
+        if (result.isEmpty()) {
             throw new NoSuchElementException("No such element");
         }
-        long count = oddIndex.stream()
-                .filter(e -> e % 2 == 1)
-                .count();
-        return sum / (double) count;
+        return result.stream()
+                .mapToDouble(Integer::doubleValue)
+                .sum() / result.size();
     }
 
     /**
