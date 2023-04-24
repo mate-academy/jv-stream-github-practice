@@ -59,8 +59,8 @@ public class StreamPractice {
             throw new NoSuchElementException("No such element");
         }
         return result.stream()
-                .mapToDouble(Integer::doubleValue)
-                .sum() / result.size();
+                .mapToInt(Integer::intValue)
+                .sum() / (double) result.size();
     }
 
     /**
