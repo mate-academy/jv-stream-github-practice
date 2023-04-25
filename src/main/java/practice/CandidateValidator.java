@@ -21,7 +21,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int calculateYearsSpentInUkraine(String period) {
         String[] years = period.split("-");
-
         return Integer.parseInt(years[LAST_YEAR_INDEX]) - Integer.parseInt(years[FIRST_YEAR_INDEX]);
     }
 }
