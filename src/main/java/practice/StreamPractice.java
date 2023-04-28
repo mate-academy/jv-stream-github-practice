@@ -53,13 +53,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> personPredicate = person -> {
-            if (person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge && person.getAge() <= toAge) {
-                return true;
-            }
-            return false;
-        };
+        Predicate<Person> personPredicate = person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
         return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
@@ -77,15 +72,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> {
-            if (person.getAge() >= fromAge
-                    && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                    || person.getSex() == Person.Sex.WOMAN
-                    && person.getAge() <= femaleToAge)) {
-                return true;
-            }
-            return false;
-        };
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                || person.getSex() == Person.Sex.WOMAN
+                && person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(personPredicate)
                 .collect(Collectors.toList());
@@ -97,14 +87,9 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> personPredicate = person -> {
-            if (person.getSex() == Person.Sex.WOMAN
-                    && person.getAge() >= femaleAge
-                    && person.getCats() != null) {
-                return true;
-            }
-            return false;
-        };
+        Predicate<Person> personPredicate = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge
+                && person.getCats() != null;
         return peopleList.stream()
                 .filter(personPredicate)
                 .flatMap(person -> person.getCats().stream())
