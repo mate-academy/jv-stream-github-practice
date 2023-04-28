@@ -17,7 +17,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(VALID_NATIONALITY)
                 && getPeriodInUkraine(candidate) >= REQUIRED_PERIOD_IN;
-
     }
 
     private int getPeriodInUkraine(Candidate candidate) {
