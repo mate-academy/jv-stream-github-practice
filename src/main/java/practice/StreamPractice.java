@@ -1,7 +1,5 @@
 package practice;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -111,15 +109,12 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        List<String> eligibleCandidates = new ArrayList<>();
         CandidateValidator validator = new CandidateValidator();
-        for (Candidate candidate : candidates) {
-            if (validator.test(candidate)) {
-                eligibleCandidates.add(candidate.getName());
-            }
-        }
-        eligibleCandidates.sort(Comparator.naturalOrder());
-        return eligibleCandidates;
+        return candidates.stream()
+                .filter(validator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private boolean isEven(int num) {
