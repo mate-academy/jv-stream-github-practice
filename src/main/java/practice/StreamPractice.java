@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -68,10 +69,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        List<Person> malePersons = selectPersonByAgeAndSex(peopleList, fromAge, maleToAge, Person.Sex.MAN);
-        List<Person> femalePersons = selectPersonByAgeAndSex(peopleList, fromAge, femaleToAge, Person.Sex.WOMAN);
-        malePersons.addAll(femalePersons);
-        return malePersons;
+        Predicate<Person> personChecker = p -> p.getSex().equals(Person.Sex.MAN) ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge;
+        return peopleList.stream()
+               .filter(p -> p.getAge() >= fromAge)
+               .filter(personChecker)
+               .collect(Collectors.toList());
     }
 
     /**
