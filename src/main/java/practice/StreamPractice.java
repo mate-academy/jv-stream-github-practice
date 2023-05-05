@@ -11,6 +11,7 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final int SUBTRACTABLE_NUMBER = 1;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -35,10 +36,12 @@ public class StreamPractice {
         int[] numbersArray = numbers.stream().mapToInt(n -> n).toArray();
         IntStream.range(0, numbers.size())
                 .filter(n -> n % 2 != 0)
-                .peek(i -> numbersArray[i] -= 1)
+                .peek(i -> numbersArray[i] -= SUBTRACTABLE_NUMBER)
                 .toArray();
 
-        return Arrays.stream(numbersArray).filter(n -> n % 2 != 0).average().orElseThrow(NoSuchElementException::new);
+        return Arrays.stream(numbersArray)
+                .filter(n -> n % 2 != 0)
+                .average().orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -50,7 +53,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return selectPersonByAgeAndSex(peopleList, fromAge, toAge, Person.Sex.MAN);
     }
 
     /**
@@ -65,7 +68,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        List<Person> malePersons = selectPersonByAgeAndSex(peopleList, fromAge, maleToAge, Person.Sex.MAN);
+        List<Person> femalePersons = selectPersonByAgeAndSex(peopleList, fromAge, femaleToAge, Person.Sex.WOMAN);
+        malePersons.addAll(femalePersons);
+        return malePersons;
     }
 
     /**
@@ -91,5 +97,11 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return Collections.emptyList();
+    }
+
+    private List<Person> selectPersonByAgeAndSex(List<Person> list, int fromAge, int toAge, Person.Sex sex) {
+        return list.stream()
+                .filter(p -> p.getSex().equals(sex) && p.getAge() <= toAge && p.getAge() >= fromAge)
+                .collect(Collectors.toList());
     }
 }
