@@ -96,6 +96,7 @@ public class StreamPracticeTest {
     public void getOddNumsAverage_twoEven() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);
+
         Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
