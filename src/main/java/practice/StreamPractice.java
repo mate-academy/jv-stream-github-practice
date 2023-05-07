@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -11,22 +12,22 @@ import model.Person;
 public class StreamPractice {
 
     private static final String ERR_MESSAGE = "Can't get min value from list: ";
-    private static int CURRENT_INDEX;
+    private static final String COMMA_SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(str -> Arrays.stream(str.split(",")))
+                .flatMap(str -> Arrays.stream(str.split(COMMA_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> (n % 2) == 0)
+                .filter(n -> (n % 2 == 0))
                 .min()
                 .orElseThrow(() -> new RuntimeException(ERR_MESSAGE + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        CURRENT_INDEX = 0;
-        return numbers.stream()
-                .mapToInt(n -> (current_index(numbers.size()) % 2 == 0) ? n - 1 : n)
-                .filter(n -> n % 2 == 1)
+        return IntStream.range(0, numbers.size())
+                .mapToObj(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
+                .filter(n -> (n % 2 == 1))
+                .mapToInt(Integer::valueOf)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -67,12 +68,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private int current_index(int size) {
-        if (CURRENT_INDEX < size) {
-            CURRENT_INDEX++;
-        }
-        return CURRENT_INDEX;
     }
 }
