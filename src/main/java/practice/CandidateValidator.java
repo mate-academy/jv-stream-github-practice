@@ -11,11 +11,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String peroidInUkr = candidate.getPeriodsInUkr();
+        String periodInUkr = candidate.getPeriodsInUkr();
         int livedInUkrFromYear = Integer.parseInt(
-                peroidInUkr.substring(FIRST_INDEX, peroidInUkr.indexOf('-')));
+                periodInUkr.substring(FIRST_INDEX, periodInUkr.indexOf('-')));
         int livedInUkrToYear = Integer.parseInt(
-                peroidInUkr.substring(peroidInUkr.indexOf('-') + CATCH_LAST_INDEX));
+                periodInUkr.substring(periodInUkr.indexOf('-') + CATCH_LAST_INDEX));
         boolean livesEnoughInUkr =
                 ((livedInUkrToYear - livedInUkrFromYear) >= MIN_YEARS_MUST_LIVE_IN_UKR);
 
