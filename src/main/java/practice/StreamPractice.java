@@ -1,11 +1,21 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int SUBTRACTOR = 1;
+    private static final String DEFAULT_MESSAGE_RE = "Can't get min value from list: ";
+    private static final String DEFAULT_MESSAGE_NSEE = "The list don`t have odd elements";
+    private static final String SYMBOL_FOR_SPLIT = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +24,15 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(n -> n.split(SYMBOL_FOR_SPLIT))
+                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(SYMBOL_FOR_SPLIT)))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException(DEFAULT_MESSAGE_RE + numbers));
     }
 
     /**
@@ -23,7 +41,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - SUBTRACTOR : numbers.get(i))
+                .filter(n -> n % 2 != 0)
+                .average()
+                .orElseThrow(() ->
+                        new NoSuchElementException(DEFAULT_MESSAGE_NSEE));
     }
 
     /**
@@ -35,7 +58,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> filterMenByAge = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
+
+        return peopleList.stream()
+                .filter(filterMenByAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +78,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> filterWorkablePeople = p -> p.getAge() >= fromAge
+                && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge));
+
+        return peopleList.stream()
+                .filter(filterWorkablePeople)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +93,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +114,12 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
+
+
