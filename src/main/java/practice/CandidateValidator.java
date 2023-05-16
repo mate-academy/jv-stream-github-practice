@@ -6,8 +6,8 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int AGE_MIN = 35;
-    private static final int ZERO = 0;
-    private static final int ONE = 1;
+    private static final int INDEX_START_YEAR = 0;
+    private static final int INDEX_END_YEAR = 1;
     private static final int TERM_LIVE_IN_UKRAINE = 10;
     private static final String NATIONALITY_CANDIDATE = "Ukrainian";
 
@@ -18,8 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                     String periodsInUkr = person.getPeriodsInUkr();
                     if (periodsInUkr != null) {
                         String[] years = periodsInUkr.split("-");
-                        int startYear = Integer.parseInt(years[ZERO]);
-                        int endYear = Integer.parseInt(years[ONE]);
+                        int startYear = Integer.parseInt(years[INDEX_START_YEAR]);
+                        int endYear = Integer.parseInt(years[INDEX_END_YEAR]);
                         return ((endYear - startYear) >= TERM_LIVE_IN_UKRAINE);
                     }
                     return false;
