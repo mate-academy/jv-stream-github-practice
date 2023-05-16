@@ -9,6 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA_SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(COMA_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -67,10 +69,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge :
+                        person.getAge() >= fromAge && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 

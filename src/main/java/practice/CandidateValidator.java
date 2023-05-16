@@ -32,8 +32,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int calculatePeriodInCountry(Candidate candidate) {
-        String[] firstAndLastYearsInCountry = candidate.getPeriodsInUkr().split(SEPARATOR);
-        return Integer.parseInt(firstAndLastYearsInCountry[INDEX_OF_LAST_YEAR])
-                - Integer.parseInt(firstAndLastYearsInCountry[INDEX_OF_FIRST_YEAR]);
+        String[] years = candidate.getPeriodsInUkr().split(SEPARATOR);
+        return Integer.parseInt(years[INDEX_OF_LAST_YEAR])
+                - Integer.parseInt(years[INDEX_OF_FIRST_YEAR]);
     }
 }
