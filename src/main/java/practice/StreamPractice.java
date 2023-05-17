@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -31,19 +32,21 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<? super Person> predicate = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<? super Person> predicate = p -> (p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                || p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge;
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
@@ -57,9 +60,10 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(new CandidateValidator<>())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
 }
+

@@ -3,7 +3,7 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator implements Predicate<Candidate> {
+public class CandidateValidator<T extends Candidate> implements Predicate<T> {
     private static final String YEAR_SPLITTER = "-";
     private static final String NATIONALITY = "Ukrainian";
     private static final int INDEX_FROM = 1;
@@ -12,7 +12,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
 
     @Override
-    public boolean test(Candidate candidate) {
+    public boolean test(T candidate) {
         String[] years = candidate.getPeriodsInUkr().split(YEAR_SPLITTER);
         int candidateLivingTerm =
                 Integer.parseInt(years[INDEX_FROM]) - Integer.parseInt(years[INDEX_TO]);
