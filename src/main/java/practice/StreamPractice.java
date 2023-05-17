@@ -3,8 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -13,21 +11,21 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> minValue = numbers.stream()
+        return numbers.stream()
                 .flatMap(number -> Arrays.stream(number.split(",")))
                 .map(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
-                .min(Integer::compareTo);
-        return minValue.orElseThrow(() ->
+                .min(Integer::compareTo)
+                .orElseThrow(() ->
                 new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble averageOfOddNumbers = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 != 0)
-                .average();
-        return averageOfOddNumbers.orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Element`s no found"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
