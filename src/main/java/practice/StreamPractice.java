@@ -1,11 +1,11 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,15 +19,13 @@ public class StreamPractice {
     }
 
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
-                .map(e -> e.split(","))
-                .flatMap(Stream::of)
-                .map(Integer::parseInt)
-                .mapToInt(Integer::intValue)
+        return numbers.stream()
+                .flatMap(e -> Arrays.stream(e.split(",")))
+                .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
-                .min();
-        return min.orElseThrow(
-                () -> new RuntimeException("Can't get min value from list: " + numbers));
+                .min()
+                .orElseThrow(
+                        () -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -35,7 +33,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 != 0)
                 .average()
-                .getAsDouble();
+                .orElseThrow(
+                        () -> new NoSuchElementException("No odd numbers found in the list."));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
