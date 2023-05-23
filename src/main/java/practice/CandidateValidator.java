@@ -4,10 +4,12 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final String PROPER_NATIONALITY = "Ukrainian";
-    public static final String DELIMITER = "-";
-    public static final int MIN_AGE = 35;
-    public static final int MIN_LIVING_PERIOD_IN_UKRAINE = 10;
+    private static final String PROPER_NATIONALITY = "Ukrainian";
+    private static final String DELIMITER = "-";
+    private static final int MIN_AGE = 35;
+    private static final int MIN_LIVING_PERIOD_IN_UKRAINE = 10;
+    private static final int START_YEAR_INDEX = 0;
+    private static final int FINAL_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -20,6 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int calculatePeriodInUkr(String period) {
         String[] firstAndLastYear = period.split(DELIMITER);
-        return Integer.parseInt(firstAndLastYear[1]) - Integer.parseInt(firstAndLastYear[0]);
+        return Integer.parseInt(firstAndLastYear[FINAL_YEAR_INDEX])
+                - Integer.parseInt(firstAndLastYear[START_YEAR_INDEX]);
     }
 }

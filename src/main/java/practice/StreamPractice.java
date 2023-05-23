@@ -11,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String DELIMITER = ",";
     private CandidateValidator candidateValidator;
 
     /**
@@ -22,7 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(DELIMITER)))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -41,7 +42,6 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
-
     }
 
     /**
