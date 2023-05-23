@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
+    private static final String COMMA_SIGN = ",";
     private final CandidateValidator candidateValidator;
 
     public StreamPractice() {
@@ -20,7 +19,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(e -> Arrays.stream(e.split(",")))
+                .flatMap(e -> Arrays.stream(e.split(COMMA_SIGN)))
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
@@ -33,8 +32,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 != 0)
                 .average()
-                .orElseThrow(
-                        () -> new NoSuchElementException("No odd numbers found in the list."));
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
