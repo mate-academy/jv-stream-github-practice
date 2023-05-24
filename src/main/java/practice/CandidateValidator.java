@@ -8,8 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
     public static final String SEPARATOR_HYPHEN = "-";
     public static final int MIN_YEAR_IN_COUNTRY = 10;
-    public static final int START_LIVING_IN_COUNTRY_INDEX = 0;
-    public static final int LIVING_UNTIL_IN_COUNTRY_INDEX = 1;
+    public static final int INDEX_START_LIVING_IN_COUNTRY = 0;
+    public static final int INDEX_LIVING_UNTIL_IN_COUNTRY = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,8 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean checkPeriodInUkraine(String date) {
         String[] dates = date.split(SEPARATOR_HYPHEN);
-        int calculateYear = Integer.parseInt(dates[LIVING_UNTIL_IN_COUNTRY_INDEX])
-                - Integer.parseInt(dates[START_LIVING_IN_COUNTRY_INDEX]);
+        int calculateYear = Integer.parseInt(dates[INDEX_LIVING_UNTIL_IN_COUNTRY])
+                - Integer.parseInt(dates[INDEX_START_LIVING_IN_COUNTRY]);
         return calculateYear > MIN_YEAR_IN_COUNTRY;
     }
 }
