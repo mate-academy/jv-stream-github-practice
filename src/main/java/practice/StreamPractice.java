@@ -43,8 +43,8 @@ public class StreamPractice {
             boolean isMale = person.getSex() == Person.Sex.MAN;
             int age = person.getAge();
 
-            return (isMale && age >= fromAge && age <= maleToAge) ||
-                    (!isMale && age >= fromAge && age <= femaleToAge);
+            return (isMale && age >= fromAge && age <= maleToAge)
+                    || (!isMale && age >= fromAge && age <= femaleToAge);
         };
         return peopleList.stream()
                 .filter(agePredicate)
