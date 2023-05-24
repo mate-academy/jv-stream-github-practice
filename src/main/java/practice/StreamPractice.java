@@ -1,12 +1,9 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -64,7 +61,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -84,8 +83,8 @@ public class StreamPractice {
                 .filter(person -> {
                     int age = person.getAge();
                     Person.Sex sex = person.getSex();
-                    return (sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge) ||
-                            (sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge);
+                    return (sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge)
+                            || (sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge);
                 })
                 .collect(Collectors.toList());
     }
