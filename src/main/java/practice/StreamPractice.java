@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -100,21 +99,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> isLiveInUkraineTenYears = new Predicate<Candidate>() {
-            @Override
-            public boolean test(Candidate candidate) {
-                String period = candidate.getPeriodsInUkr();
-                String[] periods = period.split("-");
-                int startPeriod = Integer.parseInt(periods[0]);
-                int endPeriod = Integer.parseInt(periods[1]);
-                return (endPeriod - startPeriod) > 10;
-            }
-        };
         return candidates.stream()
-                .filter(c -> c.getAge() >= 35
-                        && c.isAllowedToVote()
-                        && c.getNationality().equals("Ukrainian"))
-                .filter(isLiveInUkraineTenYears)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
