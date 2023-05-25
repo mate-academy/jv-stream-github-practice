@@ -2,9 +2,9 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -69,7 +69,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> predicate = p -> p.getAge() >= fromAge
+                && (p.getSex().equals(Person.Sex.WOMAN)
+                ? p.getAge() <= femaleToAge : p.getAge() <= maleToAge);
+        return peopleList.stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
     }
 
     /**
