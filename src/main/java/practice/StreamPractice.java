@@ -1,21 +1,15 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("a");
-        list.add("b");
-        list.add("c");
-        System.out.println(list.stream().filter(new CandidateValidator()).collect(Collectors.toList()));
-    }
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -30,7 +24,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min();
         if (result.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: < Here is our input 'numbers' >");
+            throw new RuntimeException("Can't get min value from list: "
+                    + "< Here is our input 'numbers' >");
         }
         return result.getAsInt();
     }
@@ -57,7 +52,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.MAN && i.getAge() >= fromAge && i.getAge() <= toAge)
+                .filter(i -> i.getSex() == Person.Sex.MAN
+                        && i.getAge() >= fromAge && i.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -106,7 +102,11 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
-//    public List<String> validateCandidates(List<Candidate> candidates) {
-//        return candidates.stream().filter();
-//    }
+    public List<String> validateCandidates(List<Candidate> candidates) {
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }
