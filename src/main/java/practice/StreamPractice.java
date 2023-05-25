@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -71,13 +72,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicate = person -> person.getSex() == Person.Sex.WOMAN
+                ? person.getAge() >= fromAge && person.getAge() <= femaleToAge :
+                person.getAge() >= fromAge && person.getAge() <= maleToAge;
         return peopleList.stream()
-                .filter(person -> {
-                    int age = person.getAge();
-                    Person.Sex sex = person.getSex();
-                    return (sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge)
-                            || (sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge);
-                })
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
@@ -87,10 +86,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> predicate = person -> person.getAge() >= femaleAge
+                && person.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() > femaleAge)
-                .flatMap(person -> person.getCats().stream())
+                .filter(predicate)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
