@@ -33,7 +33,6 @@ public class StreamPractice {
                 .mapToDouble(num -> num % 2 == 0 ? numbers.get(num) : numbers.get(num) - 1)
                 .filter(num -> num % 2 != 0)
                 .average().getAsDouble();
-
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
