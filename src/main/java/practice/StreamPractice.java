@@ -9,14 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator candidateValidator;
-
-    public StreamPractice() {
-        this.candidateValidator = new CandidateValidator();
-    }
 
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .flatMap(number -> Stream.of(number.split(",")))
                 .map(String::trim)
@@ -28,7 +22,6 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-
         return IntStream.range(0, numbers.size())
                 .mapToDouble(num -> num % 2 == 0 ? numbers.get(num) : numbers.get(num) - 1)
                 .filter(num -> num % 2 != 0)
@@ -46,10 +39,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(people -> (people.getSex().equals(Person.Sex.MAN)
+                .filter(people -> (people.getSex() == Person.Sex.MAN
                         && people.getAge() >= fromAge
                         && people.getAge() <= maleToAge)
-                        || (people.getSex().equals(Person.Sex.WOMAN)
+                        || (people.getSex() == Person.Sex.WOMAN
                         && people.getAge() >= fromAge
                         && people.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
@@ -65,7 +58,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
