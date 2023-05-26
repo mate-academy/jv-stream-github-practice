@@ -19,8 +19,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getLivingInUkrTime(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split(DASH);
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
-        return endYear - startYear;
+        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
     }
 }
