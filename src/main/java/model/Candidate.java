@@ -80,6 +80,6 @@ public class Candidate {
 
     @Override
     public String toString() {
-        return getName(); // Return the name of the candidate for string representation
+        return getName();
     }
 }
