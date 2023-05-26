@@ -11,10 +11,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-          .flatMap(s -> Arrays.stream(s.split(",")))
+          .flatMap(s -> Arrays.stream(s.split(COMMA)))
           .mapToInt(Integer::parseInt)
           .filter(i -> i % 2 == 0)
           .boxed()
@@ -33,7 +34,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
           .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge
-                && p.getSex().name().equals("MAN"))
+                && p.getSex() == Person.Sex.MAN)
           .collect(Collectors.toList());
     }
 
@@ -41,8 +42,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
           .filter(p -> p.getAge() >= fromAge
-                && ((p.getSex().name().equals("WOMAN") && p.getAge() <= femaleToAge)
-                        || (p.getSex().name().equals("MAN") && p.getAge() <= maleToAge)))
+                && ((p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)
+                        || (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)))
           .collect(Collectors.toList());
     }
 
