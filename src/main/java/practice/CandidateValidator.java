@@ -24,6 +24,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] periods = period.split(DATE_SEPARATOR);
         int startPeriod = Integer.parseInt(periods[START_PERIOD]);
         int endPeriod = Integer.parseInt(periods[END_PERIOD]);
-        return (endPeriod - startPeriod) > PERIOD_LIVING_IN_UKRAINE;
+        return (endPeriod - startPeriod) >= PERIOD_LIVING_IN_UKRAINE;
     }
 }
