@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,11 +9,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String COMA_SEPARATOR = ",";
+    public static final String COMMA_SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(COMA_SEPARATOR)))
+                .flatMap(s -> Arrays.stream(s.split(COMMA_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
                 .min()
@@ -27,7 +26,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No such element in: " + numbers));
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
