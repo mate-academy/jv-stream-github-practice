@@ -1,9 +1,7 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -18,8 +16,7 @@ public class StreamPractice {
           .flatMap(s -> Arrays.stream(s.split(COMMA)))
           .mapToInt(Integer::parseInt)
           .filter(i -> i % 2 == 0)
-          .boxed()
-          .min(Integer::compare)
+          .min()
           .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
@@ -28,7 +25,7 @@ public class StreamPractice {
           .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
           .filter(i -> i % 2 != 0)
           .average()
-          .orElseThrow(NoSuchElementException::new);
+          .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -49,9 +46,8 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-          .filter(p -> p.getAge() >= femaleAge && p.getSex().name().equals("WOMAN"))
-          .map(Person::getCats)
-          .flatMap(Collection::stream)
+          .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+          .flatMap(person -> person.getCats().stream())
           .map(Cat::getName)
           .collect(Collectors.toList());
     }
