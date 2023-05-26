@@ -9,10 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_AGE = 35;
     private static final int MIN_RESIDENCE_PERIOD = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String DATE_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        int residencePeriod = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        int residencePeriod = Arrays.stream(candidate.getPeriodsInUkr().split(DATE_SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .reduce(0, (a, b) -> a == 0 ? a - b : a + b);
         return candidate.getAge() >= MINIMUM_AGE
