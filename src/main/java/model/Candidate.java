@@ -77,4 +77,9 @@ public class Candidate {
         return Objects.hash(getAge(), getNationality(),
             isAllowedToVote(), getPeriodsInUkr(), getName());
     }
+
+    @Override
+    public String toString() {
+        return getName(); // Return the name of the candidate for string representation
+    }
 }
