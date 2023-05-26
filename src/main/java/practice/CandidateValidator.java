@@ -22,6 +22,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         int[] years = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        return Math.abs(years[1] - years[0]);
+        return years[1] - years[0];
     }
 }
