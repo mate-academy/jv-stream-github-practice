@@ -9,7 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_LIVE_IN_UA = 10;
     private static final int INDEX_FROM_YEAR = 0;
     private static final int INDEX_TO_YEAR = 1;
-    private static final String HYPHEN = "-";
+    private static final String YEAR_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -22,7 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int liveInUkraine(Candidate candidate) {
-        String[] years = candidate.getPeriodsInUkr().split(HYPHEN);
+        String[] years = candidate.getPeriodsInUkr().split(YEAR_SEPARATOR);
         return Integer.parseInt(years[INDEX_TO_YEAR]) - Integer.parseInt(years[INDEX_FROM_YEAR]);
     }
 }
