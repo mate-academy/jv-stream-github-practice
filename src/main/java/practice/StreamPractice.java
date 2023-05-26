@@ -51,10 +51,10 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> Catspredicate = p -> p.getSex() == Person.Sex.WOMAN
+        Predicate<Person> catsPredicate = p -> p.getSex() == Person.Sex.WOMAN
                 && p.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(Catspredicate)
+                .filter(catsPredicate)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
