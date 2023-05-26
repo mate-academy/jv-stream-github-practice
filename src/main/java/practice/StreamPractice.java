@@ -11,10 +11,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         List<Integer> evenNumbers = numbers.stream()
-                .flatMap(s -> Stream.of(s.split(",")))
+                .flatMap(s -> Stream.of(s.split(COMMA)))
                 .map(Integer::valueOf)
                 .filter(num -> num % 2 == 0)
                 .collect(Collectors.toList());
@@ -80,14 +81,7 @@ public class StreamPractice {
         return candidates.stream()
                 .filter(CandidateValidator::isEligibleForPresident)
                 .map(Candidate::getName)
-                .sorted() // Sort the names alphabetically
+                .sorted()
                 .collect(Collectors.toList());
-    }
-
-    static int calculateYearsInUkraine(String period) {
-        String[] years = period.split("-");
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
-        return endYear - startYear + 1;
     }
 }
