@@ -12,9 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_YEARS_IN_UKRAINE = 10;
 
-    public static boolean isEligibleForPresident(Candidate candidate) {
+    @Override
+    public boolean test(Candidate candidate) {
+        return isEligibleForPresident(candidate);
+    }
+
+    private static boolean isEligibleForPresident(Candidate candidate) {
+        CandidateValidator validator = new CandidateValidator();
+
         int totalYearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split(","))
-                .mapToInt(CandidateValidator::calculateYearsInUkraine)
+                .mapToInt(validator::calculateYearsInUkraine)
                 .sum();
 
         return candidate.getAge() >= MIN_AGE
@@ -23,12 +30,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && totalYearsInUkraine >= MIN_YEARS_IN_UKRAINE;
     }
 
-    @Override
-    public boolean test(Candidate candidate) {
-        return isEligibleForPresident(candidate);
-    }
-
-    static int calculateYearsInUkraine(String period) {
+    private int calculateYearsInUkraine(String period) {
         String[] years = period.split(SEPARATOR);
         int startYear = Integer.parseInt(years[START_PERIOD]);
         int endYear = Integer.parseInt(years[END_PERIOD]);
