@@ -13,17 +13,20 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() >= VALID_AGE
+        return candidate.getAge() >= VALID_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(UKRAINIAN_NATIONALITY)
-                && Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(candidate.getPeriodsInUkr()
-                        .indexOf(YEARS_SEPARATOR) + INDEX_OF_LAST_RESIDENCE_YEAR))
-                - Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(INDEX_OF_FIRST_RESIDENCE_YEAR, candidate.getPeriodsInUkr()
-                        .indexOf(YEARS_SEPARATOR))) >= VALID_PERIODS_IN_UKRAINIAN) {
-            return true;
-        }
-        return false;
+                && getLastYearInUkraine(candidate.getPeriodsInUkr())
+                - getFirstYearInUkraine(candidate.getPeriodsInUkr()) >= VALID_PERIODS_IN_UKRAINIAN;
+    }
+
+    private int getFirstYearInUkraine(String beginningInUkraine) {
+        return Integer.parseInt(beginningInUkraine.substring(INDEX_OF_FIRST_RESIDENCE_YEAR,
+                beginningInUkraine.indexOf(YEARS_SEPARATOR)));
+    }
+
+    private int getLastYearInUkraine(String endingInUkraine) {
+        return Integer.parseInt(endingInUkraine.substring(endingInUkraine
+                .indexOf(YEARS_SEPARATOR) + INDEX_OF_LAST_RESIDENCE_YEAR));
     }
 }
