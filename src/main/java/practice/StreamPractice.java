@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,18 +24,11 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
-                .collect(Collectors.toList());
-
-        List<Integer> oddNumbers = modifiedNumbers.stream()
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 == 1)
-                .collect(Collectors.toList());
-
-        return oddNumbers.stream()
-                .mapToDouble(Integer::doubleValue)
                 .average()
-                .getAsDouble();
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found."));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -44,12 +38,14 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
-                                          int maleToAge, List<Person> peopleList) {
-        Predicate<? super Person> workablePredicate = person -> person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge
-                || person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge,
+                                          List<Person> peopleList) {
+        Predicate<? super Person> workablePredicate = person ->
+                person.getSex() == Person.Sex.MAN
+                        ? (person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                        : (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge);
+
         return peopleList.stream()
                 .filter(workablePredicate)
                 .collect(Collectors.toList());

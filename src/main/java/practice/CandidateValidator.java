@@ -6,6 +6,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String SEPARATOR = "-";
+    private static final String WORD_SEPARATOR = ",";
     private static final int START_PERIOD = 0;
     private static final int END_PERIOD = 1;
     private static final int MIN_AGE = 35;
@@ -20,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static boolean isEligibleForPresident(Candidate candidate) {
         CandidateValidator validator = new CandidateValidator();
 
-        int totalYearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split(","))
+        int totalYearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split(WORD_SEPARATOR))
                 .mapToInt(validator::calculateYearsInUkraine)
                 .sum();
 
