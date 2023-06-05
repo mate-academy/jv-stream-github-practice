@@ -1,8 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -22,9 +20,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-              .map(n -> n.split(","))
-              .flatMap(n -> Arrays.stream(n).map(Integer::parseInt).filter(l -> l % 2 == 0))
-              .min(Comparator.naturalOrder())
+              .flatMap(n -> Arrays.stream(n.split(",")))
+              .filter(l -> Integer.parseInt(l) % 2 == 0)
+              .mapToInt(Integer::parseInt)
+              .min()
               .orElseThrow(() ->
                       new NoSuchElementException("Can't get min value from list: " + numbers));
     }
@@ -36,12 +35,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
-                .rangeClosed(0, numbers.size() - 1)
+                .range(0, numbers.size())
                 .mapToObj(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(num -> num % 2 != 0)
                 .mapToInt(num -> num)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There is no elements in list"));
     }
 
     /**
@@ -91,8 +90,7 @@ public class StreamPractice {
                 .filter(female -> female.getSex() == Person.Sex.WOMAN
                         && female.getAge() >= femaleAge
                         && !female.getCats().isEmpty())
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
