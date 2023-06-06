@@ -19,16 +19,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> minEven = numbers.stream()
+        Optional<Integer> minEven = Optional.ofNullable(numbers.stream()
                 .flatMap(numberStr -> Arrays.stream(numberStr.split(",")))
                 .map(String::trim)
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .min(Integer::compare);
+                .min(Integer::compare)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers)));
 
-        if (minEven.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
         return minEven.get();
     }
 
@@ -38,20 +36,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int count = (int) IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 == 1)
-                .peek(i -> numbers.set(i, numbers.get(i) - 1))
-                .mapToObj(numbers::get)
-                .filter(num -> num % 2 == 1)
-                .count();
-
-        double average = numbers.stream()
-                .filter(num -> num % 2 == 1)
-                .mapToInt(Integer::intValue)
+        double count = IntStream.range(0, numbers.size())
+                .map(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
+                .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
 
-        return average;
+        return count;
     }
 
     /**
@@ -83,11 +74,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> (person.getAge() >= fromAge
-                        && person.getSex() == Person.Sex.MAN
-                        && person.getAge() <= maleToAge)
-                        || (person.getAge() >= fromAge
-                        && person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge))
+                        && (person.getSex() == Person.Sex.MAN || person.getSex() == Person.Sex.WOMAN)
+                        && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge))))
                 .collect(Collectors.toList());
     }
 
