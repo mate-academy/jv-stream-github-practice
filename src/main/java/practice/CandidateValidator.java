@@ -5,10 +5,10 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINIAN = "Ukrainian";
-    private static final String SLASH = "-";
+    private static final String SEPARATOR = "-";
     private static final int YEARS_OLD = 35;
-    private static final int START_YEAR = 0;
-    private static final int END_YEAR = 1;
+    private static final int FROM_YEAR_INDEX = 0;
+    private static final int TO_YEAR_INDEX = 1;
     private static final int MORE_THEN_TEN_YEARS = 10;
 
     @Override
@@ -28,10 +28,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     private boolean hasLivedInUkraineFor10Years(String periodsInUkr) {
         int totalYearsInUkraine = 0;
 
-        String[] years = periodsInUkr.split(SLASH);
+        String[] years = periodsInUkr.split(SEPARATOR);
         if (years.length > 1) {
-            int startYear = Integer.parseInt(years[START_YEAR]);
-            int endYear = Integer.parseInt(years[END_YEAR]);
+            int startYear = Integer.parseInt(years[FROM_YEAR_INDEX]);
+            int endYear = Integer.parseInt(years[TO_YEAR_INDEX]);
             totalYearsInUkraine = endYear - startYear;
         }
 

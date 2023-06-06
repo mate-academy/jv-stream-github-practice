@@ -2,7 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -18,15 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> minEven = Optional.ofNullable(numbers.stream()
+        return numbers.stream()
                 .flatMap(numberStr -> Arrays.stream(numberStr.split(",")))
                 .map(numberStr -> Integer.parseInt(numberStr.trim()))
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers)));
-
-        return minEven.get();
+                        + numbers));
     }
 
     /**
@@ -39,7 +37,7 @@ public class StreamPractice {
                 .map(n -> (n % 2 == 0) ? numbers.get(n) : numbers.get(n) - 1)
                 .filter(n -> n % 2 == 1)
                 .average()
-                .getAsDouble();
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
 
     /**
