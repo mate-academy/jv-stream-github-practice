@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -30,7 +28,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .flatMapToInt(IntStream::of)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .min().orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
