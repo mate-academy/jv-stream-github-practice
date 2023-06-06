@@ -1,10 +1,14 @@
 package practice;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
