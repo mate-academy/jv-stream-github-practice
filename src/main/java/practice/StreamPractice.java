@@ -14,6 +14,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,17 +24,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt optional = numbers.stream()
-                .map(s -> s.split(","))
+        return numbers.stream()
+                .map(s -> s.split(SEPARATOR))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .flatMapToInt(IntStream::of)
-                .min();
-        if (optional.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return optional.getAsInt();
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,19 +39,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
-                .mapToObj(index -> {
-                    if (index % 2 == 1) {
-                        return numbers.get(index) - 1;
-                    }
-                    return numbers.get(index);
-                }).filter(i -> i % 2 == 1)
+        return IntStream.range(0, numbers.size())
+                .mapToObj(index -> (index % 2 == 1)
+                        ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(i -> i % 2 == 1)
                 .flatMapToDouble(DoubleStream::of)
-                .average();
-        if (average.isPresent()) {
-            return average.getAsDouble();
-        }
-        throw new NoSuchElementException();
+                .average().orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -121,7 +112,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator::test)
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
