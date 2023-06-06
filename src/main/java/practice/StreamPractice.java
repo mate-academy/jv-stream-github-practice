@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -25,7 +24,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers)));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers)));
 
         return minEven.get();
     }
@@ -74,9 +74,12 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> (person.getAge() >= fromAge
-                        && (person.getSex() == Person.Sex.MAN || person.getSex() == Person.Sex.WOMAN)
-                        && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge))))
+                        && (person.getSex() == Person.Sex.MAN
+                        || person.getSex() == Person.Sex.WOMAN)
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge))))
                 .collect(Collectors.toList());
     }
 

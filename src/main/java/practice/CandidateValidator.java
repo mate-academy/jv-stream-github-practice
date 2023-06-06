@@ -1,6 +1,5 @@
 package practice;
 
-import java.time.Year;
 import java.util.function.Predicate;
 import model.Candidate;
 
