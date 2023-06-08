@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE_FOR_PRESIDENT = 35;
     private static final int fromAge = 0;
     private static final int toAge = 1;
+
     @Override
     public boolean test(Candidate candidate) {
         String[] split = candidate.getPeriodsInUkr().split("-");

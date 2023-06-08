@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -27,7 +26,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: < Here is our input 'numbers' >"));
+                        new RuntimeException("Can't get min value from list:"
+                                + " < Here is our input 'numbers' >"));
     }
 
     /**
@@ -54,7 +54,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN) && (p.getAge() >= fromAge && p.getAge() <= toAge))
+                .filter(p -> p.getSex().equals(Person.Sex.MAN) && (p.getAge() >= fromAge
+                        && p.getAge() <= toAge))
                 .collect(Collectors.toList());
     }
 
@@ -71,8 +72,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() >= fromAge && p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))
-                        || (p.getAge() >= fromAge && p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)))
+                .filter(p -> (p.getAge() >= fromAge && p.getAge() <= maleToAge
+                        && p.getSex().equals(Person.Sex.MAN))
+                        || (p.getAge() >= fromAge && p.getAge() <= femaleToAge
+                        && p.getSex().equals(Person.Sex.WOMAN)))
                 .collect(Collectors.toList());
     }
 
@@ -88,8 +91,6 @@ public class StreamPractice {
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
-
-
     }
 
     /**
