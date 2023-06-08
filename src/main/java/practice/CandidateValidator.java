@@ -12,8 +12,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] split = candidate.getPeriodsInUkr().split("-");
-        int periondInUkr = Integer.parseInt(split[TO_AGE_INDEX]) -
-                Integer.parseInt(split[FROM_AGE_INDEX]);
+        int periondInUkr = Integer.parseInt(split[TO_AGE_INDEX])
+                - Integer.parseInt(split[FROM_AGE_INDEX]);
 
         return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE_FOR_PRESIDENT
                 && candidate.isAllowedToVote()
