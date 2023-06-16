@@ -1,16 +1,20 @@
 package practice;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Person;
+
 
 public class StreamPractice {
     private static final int START_WORK_AGE = 18;
     private static final int AGE_MAX_WORK_WOMEN = 55;
     private static final int AGE_MAX_WORK_MEN = 60;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -69,9 +73,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                .filter(p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
+                        && p.getAge() <= maleToAge
                         && p.getAge() >= START_WORK_AGE && p.getAge() <= AGE_MAX_WORK_MEN
-                        || p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge && p.getAge() <= femaleToAge
+                        || p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
+                        && p.getAge() <= femaleToAge
                         && p.getAge() >= START_WORK_AGE && p.getAge() <= AGE_MAX_WORK_WOMEN)
                 .collect(Collectors.toList());
     }
