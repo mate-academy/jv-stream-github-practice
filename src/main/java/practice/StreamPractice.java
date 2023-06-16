@@ -1,14 +1,13 @@
 package practice;
 
-import java.util.Collection;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
-
 
 public class StreamPractice {
     private static final int START_WORK_AGE = 18;
