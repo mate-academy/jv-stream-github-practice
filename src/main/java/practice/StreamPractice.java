@@ -22,7 +22,6 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-
         return numbers.stream()
                 .map(line -> line.split(SEPARATOR))
                 .flatMap(Arrays::stream)
@@ -39,7 +38,6 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-
         return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(value -> value % 2 != 0)
@@ -87,7 +85,6 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-
         return peopleList.stream().filter(person -> !person.getCats().isEmpty()
                         && person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
                 .map(Person::getCats)
@@ -107,12 +104,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-
         return candidates.stream().filter(candidate -> new CandidateValidator().test(candidate))
                 .map(Candidate::getName)
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());
     }
 }
-
-
