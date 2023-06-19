@@ -38,7 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, (numbers.size()))
-                .mapToDouble(number -> number % 2 != 0 ? numbers.get(number) - 1 : numbers.get(number))
+                .mapToDouble(number -> number % 2 != 0 ? numbers.get(number) - 1
+                        : numbers.get(number))
                 .filter(oddnumber -> oddnumber % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Array is empty"));
@@ -72,7 +73,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= START_WORK_AGE  && (person.getSex() == Person.Sex.MAN
+                .filter(person -> person.getAge() >= START_WORK_AGE
+                        && (person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= maleToAge
                         && person.getAge() <= AGE_MAX_WORK_MEN
@@ -89,7 +91,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                         .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                         .filter(person -> person.getSex() == Person.Sex.WOMAN
+                                 && person.getAge() >= femaleAge)
                          .map(person -> person.getCats())
                          .flatMap(Collection::stream)
                          .map(cat -> cat.getName())
