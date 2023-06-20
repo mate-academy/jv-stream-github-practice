@@ -62,7 +62,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "model.Person{"
+        return "Person{"
             + "name='" + name + '\''
             + ", age=" + age
             + ", sex=" + sex

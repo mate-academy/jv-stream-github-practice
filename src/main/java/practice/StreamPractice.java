@@ -10,6 +10,7 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
     private static final int START_WORK_AGE = 18;
     private static final int AGE_MAX_WORK_WOMEN = 55;
     private static final int AGE_MAX_WORK_MEN = 60;
@@ -23,7 +24,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(number -> number.split(","))
+                .map(number -> number.split(COMMA))
                 .flatMap(number -> Arrays.stream(number))
                 .mapToInt(Integer::valueOf)
                 .filter(num -> num % 2 == 0)
@@ -74,11 +75,11 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= START_WORK_AGE
-                        && (person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
+                        && (person.getSex() == Person.Sex.MAN
                         && person.getAge() <= maleToAge
                         && person.getAge() <= AGE_MAX_WORK_MEN
-                        || person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
+                        || person.getSex() == Person.Sex.WOMAN
                         && person.getAge() <= femaleToAge
                         && person.getAge() <= AGE_MAX_WORK_WOMEN))
                 .collect(Collectors.toList());
