@@ -258,3 +258,4 @@ public class StreamPracticeTest {
         return List.of(john, fred, rick, morty, casey, ron, phil);
     }
 }
+
