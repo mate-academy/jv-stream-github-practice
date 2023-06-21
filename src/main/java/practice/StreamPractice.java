@@ -1,6 +1,6 @@
 package practice;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -11,26 +11,14 @@ import model.Person;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
-                .flatMap(s -> {
-                    String[] numberStrings = s.split(",");
-                    List<Integer> integers = new ArrayList<>();
-                    for (String numberString : numberStrings) {
-                        int number = Integer.parseInt(numberString);
-                        if (number % 2 == 0) {
-                            integers.add(number);
-                        }
-                    }
-                    return integers.stream();
-                })
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(number -> number % 2 == 0)
                 .sorted()
-                .collect(Collectors.toList());
-
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-
-        return evenNumbers.get(0);
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can't get min value" +
+                        " from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -54,12 +42,10 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return age >= fromAge && age <= maleToAge;
-                    } else if (person.getSex() == Person.Sex.WOMAN) {
-                        return age >= fromAge && age <= femaleToAge;
-                    }
-                    return false;
+                    return person.getSex() == Person.Sex.MAN
+                            && age >= fromAge
+                            && age <= maleToAge || person.getSex() == Person.Sex.WOMAN
+                            && age >= fromAge && age <= femaleToAge;
                 })
                 .collect(Collectors.toList());
     }
@@ -74,28 +60,11 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate ->
-                        candidate.getAge() >= 35
-                                && candidate.isAllowedToVote()
-                                && candidate.getNationality().equals("Ukrainian")
-                                && isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr())
-                )
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    private boolean isPeriodInUkraineLongerThanTenYears(String periodsInUkr) {
-        if (periodsInUkr.matches("\\d{4}-\\d{4}")) {
-            String[] years = periodsInUkr.split("-");
-            int startYear = Integer.parseInt(years[0]);
-            int endYear = Integer.parseInt(years[1]);
-            int yearDifference = endYear - startYear;
-
-            return yearDifference >= 10;
-        } else {
-            return false;
-        }
     }
 }
