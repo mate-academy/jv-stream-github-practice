@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -51,8 +52,8 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge
-            , List<Person> peopleList) {
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge,
+                                          List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
@@ -79,11 +80,10 @@ public class StreamPractice {
         List<String> validCandidates = new ArrayList<>();
 
         Predicate<Candidate> eligibilityPredicate = candidate ->
-                candidate.getAge() >= 35 &&
-                        candidate.isAllowedToVote() &&
-                        candidate.getNationality().equals("Ukrainian") &&
-                        isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr());
-
+                candidate.getAge() >= 35
+                        && candidate.isAllowedToVote()
+                        && candidate.getNationality().equals("Ukrainian")
+                        && isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr());
         for (Candidate candidate : candidates) {
             if (eligibilityPredicate.test(candidate)) {
                 validCandidates.add(candidate.getName());

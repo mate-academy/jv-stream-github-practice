@@ -1,7 +1,6 @@
 package practice;
 
 import model.Candidate;
-
 import java.time.LocalDate;
 import java.util.function.Predicate;
 
