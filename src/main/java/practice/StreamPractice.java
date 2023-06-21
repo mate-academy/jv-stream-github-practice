@@ -1,10 +1,8 @@
 package practice;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -76,22 +74,16 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        List<String> validCandidates = new ArrayList<>();
-
-        Predicate<Candidate> eligibilityPredicate = candidate ->
-                candidate.getAge() >= 35
-                        && candidate.isAllowedToVote()
-                        && candidate.getNationality().equals("Ukrainian")
-                        && isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr());
-        for (Candidate candidate : candidates) {
-            if (eligibilityPredicate.test(candidate)) {
-                validCandidates.add(candidate.getName());
-            }
-        }
-
-        validCandidates.sort(Comparator.naturalOrder());
-
-        return validCandidates;
+        return candidates.stream()
+                .filter(candidate ->
+                        candidate.getAge() >= 35 &&
+                                candidate.isAllowedToVote() &&
+                                candidate.getNationality().equals("Ukrainian") &&
+                                isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr())
+                )
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private boolean isPeriodInUkraineLongerThanTenYears(String periodsInUkr) {

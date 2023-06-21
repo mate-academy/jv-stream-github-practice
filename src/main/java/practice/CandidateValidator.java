@@ -1,6 +1,5 @@
 package practice;
 
-import java.time.LocalDate;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -11,27 +10,35 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_RESIDENCY_YEARS = 10;
 
     public boolean test(Candidate candidate) {
-        LocalDate now = LocalDate.now();
-        int candidateAge = candidate.getAge();
-        boolean isAtLeast35YearsOld = candidateAge >= MINIMUM_AGE;
+        // Check if the candidate is at least 35 years old
+        boolean isAtLeast35YearsOld = candidate.getAge() >= MINIMUM_AGE;
+        // Check if the candidate is allowed to vote
         boolean isAllowedToVote = candidate.isAllowedToVote();
+        // Check if the candidate has Ukrainian nationality
         boolean hasUkrainianNationality = NATIONALITY.equalsIgnoreCase(candidate.getNationality());
 
-        if (!isAtLeast35YearsOld || !isAllowedToVote || !hasUkrainianNationality) {
-            return false;
-        }
-
+        // Get the candidate's period of residence in Ukraine
         String periodsInUkr = candidate.getPeriodsInUkr();
-        if (periodsInUkr != null && !periodsInUkr.isEmpty()) {
+        if (isAtLeast35YearsOld
+                && isAllowedToVote
+                && hasUkrainianNationality
+                && periodsInUkr != null
+                && !periodsInUkr.isEmpty()) {
+            // Split the period into start and end years
             String[] years = periodsInUkr.split("-");
             if (years.length == 2) {
+                // Convert the start year to an integer
                 int startYear = Integer.parseInt(years[0]);
+                // Convert the end year to an integer
                 int endYear = Integer.parseInt(years[1]);
-                int residencyYears = now.getYear() - startYear + 1;
-
-                return residencyYears >= MINIMUM_RESIDENCY_YEARS || now.getYear() <= endYear;
+                // Calculate the number of residency years
+                int residencyYears = endYear - startYear;
+                // Return true if the candidate meets all the eligibility criteria
+                return residencyYears >= MINIMUM_RESIDENCY_YEARS;
             }
         }
-        return false;
+        return false;  // Return false if any of the conditions is not met
     }
 }
+
+
