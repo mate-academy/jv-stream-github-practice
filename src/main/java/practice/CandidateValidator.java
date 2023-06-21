@@ -33,7 +33,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 return residencyYears >= MINIMUM_RESIDENCY_YEARS || now.getYear() <= endYear;
             }
         }
-
         return false;
     }
 }
