@@ -37,7 +37,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 return residencyYears >= MINIMUM_RESIDENCY_YEARS;
             }
         }
-        return false;  // Return false if any of the conditions is not met
+        return false; // Return false if any of the conditions is not met
     }
 }
 

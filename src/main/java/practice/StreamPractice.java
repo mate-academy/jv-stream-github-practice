@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -76,10 +77,10 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(candidate ->
-                        candidate.getAge() >= 35 &&
-                                candidate.isAllowedToVote() &&
-                                candidate.getNationality().equals("Ukrainian") &&
-                                isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr())
+                        candidate.getAge() >= 35
+                                && candidate.isAllowedToVote()
+                                && candidate.getNationality().equals("Ukrainian")
+                                && isPeriodInUkraineLongerThanTenYears(candidate.getPeriodsInUkr())
                 )
                 .map(Candidate::getName)
                 .sorted()
