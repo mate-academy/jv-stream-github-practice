@@ -1,7 +1,11 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.Person;
 
@@ -14,7 +18,17 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        try {
+            return Arrays.stream(String.join(",", numbers)
+                            .split(","))
+                    .mapToInt(n -> Integer.parseInt(n))
+                    .filter(n -> n % 2 == 0)
+                    .boxed()
+                    .min(Integer::compareTo)
+                    .get();
+        } catch (Exception e) {
+            throw new RuntimeException("Can't get min value from list: " + numbers);
+        }
     }
 
     /**
@@ -23,7 +37,30 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+
+        Function<Integer, Integer> subs1FromOddIndexNumbers = new Function<>() {
+            private int count = 0;
+
+            @Override
+            public Integer apply(Integer number) {
+                if (count % 2 == 1) {
+                    number -= 1;
+                }
+                count++;
+                return number;
+            }
+        };
+
+        try {
+            return numbers.stream()
+                    .map(n -> subs1FromOddIndexNumbers.apply(n))
+                    .mapToDouble(n -> n)
+                    .filter(n -> n % 2 == 1)
+                    .average()
+                    .getAsDouble();
+        } catch (Exception e) {
+            throw new NoSuchElementException();
+        }
     }
 
     /**
@@ -35,7 +72,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> filterMan = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge && person.getSex() == Person.Sex.MAN;
+
+        return peopleList.stream()
+                .filter(p -> filterMan.test(p))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +92,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+
+        Predicate<Person> filterManAndWoman = person -> person.getAge() >= fromAge
+                && (person.getAge() <= maleToAge && person.getSex() == Person.Sex.MAN
+                || person.getAge() <= femaleToAge && person.getSex() == Person.Sex.WOMAN);
+
+        return peopleList.stream()
+                .filter(p -> filterManAndWoman.test(p))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +108,16 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> filterWoman = person -> person.getAge() >= femaleAge
+                && person.getSex() == Person.Sex.WOMAN;
+
+        return peopleList.stream()
+                .filter(p -> filterWoman.test(p))
+                .map(p -> p.getCats())
+                .flatMap(l -> l.stream())
+                .map(c -> c.getName())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +133,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(c -> candidateValidator.test(c))
+                .map(c -> c.getName())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
