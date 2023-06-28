@@ -1,28 +1,16 @@
 package practice;
 
+import model.Candidate;
+import model.Cat;
+import model.Person;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import model.Candidate;
-import model.Cat;
-import model.Person;
 
 public class StreamPractice {
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 years, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
-    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -102,7 +90,21 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Your help with a election is needed. Given list of candidates, where each element
+     * has Candidate.class type.
+     * Check which candidates are eligible to apply for president position and return their
+     * names sorted alphabetically.
+     * The requirements are: person should be older than 35 years, should be allowed to vote,
+     * have nationality - 'Ukrainian'
+     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
+     * which has following view: "2002-2015"
+     * We want to reuse our validation in future, so let's write our own impl of Predicate
+     * parametrized with Candidate in CandidateValidator.
+     */
+
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
