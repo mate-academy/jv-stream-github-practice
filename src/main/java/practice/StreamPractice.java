@@ -1,8 +1,13 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -23,7 +34,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        AtomicInteger index = new AtomicInteger(0);
+        double result = numbers.stream()
+                .map(i -> index.getAndIncrement() % 2 == 0 ? i : i - 1)
+                .filter(i -> i % 2 != 0)
+                .collect(Collectors.averagingDouble(i -> (double) i));
+        if (result == 0) {
+            throw new NoSuchElementException();
+        }
+        return result;
     }
 
     /**
@@ -35,7 +54,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = person -> person.getSex().equals(Person.Sex.MAN)
+                && (person.getAge() >= fromAge && person.getAge() <= toAge);
+        return peopleList.stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +73,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = person -> {
+            if (person.getSex().equals(Person.Sex.WOMAN)) {
+                return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+            } else {
+                return person.getAge() >= fromAge && person.getAge() <= maleToAge;
+            }
+        };
+        return peopleList.stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +91,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = person -> person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= femaleAge;
+        return peopleList.stream()
+                .filter(personPredicate)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +113,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        final CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
