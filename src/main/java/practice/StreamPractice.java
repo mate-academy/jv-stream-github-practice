@@ -3,9 +3,9 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -20,9 +20,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(string -> Arrays.stream(string.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -34,11 +34,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger index = new AtomicInteger(0);
-        double result = numbers.stream()
-                .map(i -> index.getAndIncrement() % 2 == 0 ? i : i - 1)
-                .filter(i -> i % 2 != 0)
-                .collect(Collectors.averagingDouble(i -> (double) i));
+        double result = IntStream.range(0, numbers.size())
+                .mapToObj(integer -> integer % 2 == 0
+                        ? numbers.get(integer) : numbers.get(integer) - 1)
+                .filter(integer -> integer % 2 != 0)
+                .collect(Collectors.averagingDouble(integer ->
+                        (double) integer));
         if (result == 0) {
             throw new NoSuchElementException();
         }
