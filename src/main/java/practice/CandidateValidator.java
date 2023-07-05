@@ -1,14 +1,14 @@
 package practice;
 
-import model.*;
-
-import java.util.function.*;
+import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
     public static final int MIN_PERIOD = 10;
     public static final String NATIONALITY = "Ukrainian";
     public static final String SPLIT_CHAR = "-";
+
     @Override
     public boolean test(Candidate candidate) {
         final boolean ageValid = candidate.getAge() >= MIN_AGE;
