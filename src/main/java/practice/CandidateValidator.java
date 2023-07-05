@@ -8,30 +8,23 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE_FOR_VOTE = 35;
     public static final String MANDATORY_NATIONALITY = "Ukrainian";
     public static final int MIN_PERIOD_IN_UKR = 10;
+    public static final String DELEMITER = "-";
+    public static final int START_PERIOD_INDEX = 0;
+    public static final int END_PERIOD_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < MIN_AGE_FOR_VOTE) {
-            return false;
-        }
-        if (!candidate.getNationality().equals(MANDATORY_NATIONALITY)) {
-            return false;
-        }
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        return periodLifeInUkr(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
+        return candidate.getAge() >= MIN_AGE_FOR_VOTE
+                && candidate.getNationality().equals(MANDATORY_NATIONALITY)
+                && candidate.isAllowedToVote()
+                && calculationPeriodLifeInUkr(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
     }
 
-    private static int periodLifeInUkr(String period) {
-        if (period == null) {
-            return 0;
-        }
-        String[] split = period.split("-");
-        int startPeriod = Integer.parseInt(split[0]);
-        int endPeriod = Integer.parseInt(split[1]);
+    private static int calculationPeriodLifeInUkr(String period) {
+        String[] split = period.split(DELEMITER);
+        int startPeriod = Integer.parseInt(split[START_PERIOD_INDEX]);
+        int endPeriod = Integer.parseInt(split[END_PERIOD_INDEX]);
         return endPeriod - startPeriod;
 
     }
-    //write your code here
 }
