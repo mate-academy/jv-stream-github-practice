@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -111,7 +110,6 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-//                .filter(c -> new CandidateValidator().test(c))
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted(Comparator.naturalOrder())
