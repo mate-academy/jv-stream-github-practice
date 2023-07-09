@@ -7,6 +7,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
     public static final int MIN_AGE_FOR_PRESIDENT_POSITION = 35;
     public static final int MIN_LIVING_YEARS_FOR_PRESIDENT_POSITION = 10;
+    public static final int INDEX_OF_START_LIVING = 0;
+    public static final int INDEX_OF_END_LIVING = 1;
     public static final String PRESIDENT_NATIONALITY = "Ukrainian";
 
     @Override
@@ -19,6 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getLivingYearsInUkraine(Candidate candidate) {
         String[] stringYears = candidate.getPeriodsInUkr().split("-");
-        return Integer.parseInt(stringYears[1]) - Integer.parseInt(stringYears[0]);
+        return Integer.parseInt(stringYears[INDEX_OF_END_LIVING])
+                - Integer.parseInt(stringYears[INDEX_OF_START_LIVING]);
     }
 }

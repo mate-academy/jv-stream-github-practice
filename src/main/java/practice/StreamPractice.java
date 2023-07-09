@@ -4,9 +4,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -26,10 +26,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min();
-        if (minNumber.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return minNumber.getAsInt();
+        return minNumber.orElseThrow(()
+                -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -38,23 +36,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Function<Integer, Integer> subtractionOddElements = new Function<Integer, Integer>() {
-            private int index = 0;
-            @Override
-            public Integer apply(Integer integer) {
-                if (index % 2 == 1) {
-                    integer -= 1;
-                }
-                index++;
-                return integer;
-            }
-        };
-        return numbers.stream()
-                .map(subtractionOddElements)
-                .mapToInt(number -> number)
-                .filter(number -> number % 2 == 1)
-                .average()
-                .getAsDouble();
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 != 0 ? (numbers.get(index) - 1) : numbers.get(index))
+                .filter(number -> number % 2 != 0)
+                .average().getAsDouble();
     }
 
     /**
