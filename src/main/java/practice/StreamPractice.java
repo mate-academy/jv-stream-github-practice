@@ -41,7 +41,9 @@ public class StreamPractice {
                 .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(num -> num % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "There are no matching elements in list: " + numbers
+                ));
     }
 
     /**
