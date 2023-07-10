@@ -9,7 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_PERIOD_FROM = 0;
     private static final int INDEX_PERIOD_TO = 1;
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
-    private static final String LINE_SPLITERATOR = "-";
+    private static final String DASH = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int periodInUkr(Candidate candidate) {
         String periodInUkr = candidate.getPeriodsInUkr();
-        String[] periodFromTo = periodInUkr.split(LINE_SPLITERATOR);
+        String[] periodFromTo = periodInUkr.split(DASH);
         Integer yearFromInUkr = Integer.parseInt(periodFromTo[INDEX_PERIOD_FROM]);
         Integer yearToInUkr = Integer.parseInt(periodFromTo[INDEX_PERIOD_TO]);
         return yearToInUkr - yearFromInUkr;
