@@ -1,10 +1,8 @@
 package filter;
 
-import model.Person;
-
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import model.Person;
 
 public class GetWorkablePeopleFilter implements Predicate<Map<String, Object>> {
     @Override

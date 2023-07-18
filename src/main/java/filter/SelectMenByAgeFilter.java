@@ -1,9 +1,8 @@
 package filter;
 
-import model.Person;
-
 import java.util.Map;
 import java.util.function.Predicate;
+import model.Person;
 
 public class SelectMenByAgeFilter implements Predicate<Map<String, Object>> {
     @Override
