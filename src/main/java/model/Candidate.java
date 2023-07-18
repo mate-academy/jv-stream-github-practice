@@ -56,7 +56,7 @@ public class Candidate {
         this.name = name;
     }
 
-    public int getNumberOfYears() {
+    public int getPeriodInUkrDuration() {
         int separatorYears = periodsInUkr.indexOf("-");
         int endYear = Integer.parseInt(periodsInUkr.substring(separatorYears + 1));
         return endYear - Integer.parseInt(periodsInUkr.substring(0,separatorYears)) + 1;

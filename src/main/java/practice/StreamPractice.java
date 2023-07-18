@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -12,8 +11,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String MESS_ERROR = "Can't get min value from list: ";
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,14 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> minInt = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
-                .mapToInt(Integer::valueOf)
-                .boxed()
+        return numbers.stream()
+                .flatMap(n -> Arrays.stream(n.split(",")))
+                .map(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
-                .min(Comparator.naturalOrder());
-        return minInt.orElseThrow(() -> new RuntimeException(MESS_ERROR + numbers));
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
