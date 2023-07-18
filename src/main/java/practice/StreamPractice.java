@@ -1,18 +1,31 @@
 package practice;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+import filter.GetWorkablePeopleFilter;
+import filter.SelectMenByAgeFilter;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final GetWorkablePeopleFilter getWorkablePeopleFilter =
+            new GetWorkablePeopleFilter();
+    public static final SelectMenByAgeFilter selectMenByAgeFilter =
+            new SelectMenByAgeFilter();
     private static final CandidateValidator candidateValidator = new CandidateValidator();
+
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,8 +35,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -37,18 +49,16 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0){
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        IntStream.range(0, numbers.size())
-                .filter() // TODO replase the loop with stream
+        List<Integer> collect = IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 != 0)
+                .map(i -> numbers.set(i, numbers.get(i) - 1))
+                .boxed()
+                .collect(Collectors.toList());
         return numbers.stream()
                 .filter(i -> i % 2 != 0)
                 .mapToDouble(s -> s)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -61,8 +71,10 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN) && p.getAge() >= fromAge
-                        && p.getAge() <= toAge)
+                .filter(person -> selectMenByAgeFilter.test(
+                        Map.of("fromAge", fromAge,
+                                "toAge", toAge,
+                                "person" , person)))
                 .collect(Collectors.toList());
     }
 
@@ -79,10 +91,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        || p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                .filter(person -> getWorkablePeopleFilter.test(
+                        Map.of("fromAge", fromAge,
+                        "femaleToAge", femaleToAge,
+                        "maleToAge", maleToAge,
+                        "person" , person)))
                 .collect(Collectors.toList());
     }
 
@@ -95,8 +108,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
