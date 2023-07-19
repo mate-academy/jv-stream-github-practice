@@ -11,9 +11,7 @@ public class GetWorkablePeopleFilter implements Predicate<Map<String, Object>> {
         int fromAge = (int) stringObjectMap.get("fromAge");
         int maleToAge = (int) stringObjectMap.get("maleToAge");
         int femaleToAge = (int) stringObjectMap.get("femaleToAge");
-        return person.getSex().equals(Person.Sex.MAN)
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge
-                || person.getSex().equals(Person.Sex.WOMAN) && person.getAge() >= fromAge
-                && person.getAge() <= femaleToAge;
+        return person.getAge() >= fromAge && (person.getSex().equals(Person.Sex.MAN)
+                ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
     }
 }

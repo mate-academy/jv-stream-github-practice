@@ -10,7 +10,7 @@ public class SelectMenByAgeFilter implements Predicate<Map<String, Object>> {
         Person person = (Person) stringObjectMap.get("person");
         int fromAge = (int) stringObjectMap.get("fromAge");
         int toAge = (int) stringObjectMap.get("toAge");
-        return person.getSex().equals(Person.Sex.MAN) && person.getAge() >= fromAge
+        return (person.getSex().equals(Person.Sex.MAN)) && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
     }
 }

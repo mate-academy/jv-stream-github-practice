@@ -29,14 +29,9 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> collect = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
-                .map(i -> numbers.set(i, numbers.get(i) - 1))
-                .boxed()
-                .collect(Collectors.toList());
-        return numbers.stream()
-                .filter(i -> i % 2 != 0)
-                .mapToDouble(s -> s)
                 .average()
                 .getAsDouble();
     }
