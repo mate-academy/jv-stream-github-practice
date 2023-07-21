@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int VALID_YEARS_IN_UKRAINE = 10;
     private static final int TO_YEAR_INDEX = 1;
     private static final int FROM_YEAR_INDEX = 0;
+    private static final String DASH = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean hasLivedFor10Years(Candidate candidate) {
-        String[] period = candidate.getPeriodsInUkr().split("-");
+        String[] period = candidate.getPeriodsInUkr().split(DASH);
         return Integer.parseInt(period[TO_YEAR_INDEX]) - Integer.parseInt(period[FROM_YEAR_INDEX])
                 >= VALID_YEARS_IN_UKRAINE;
     }

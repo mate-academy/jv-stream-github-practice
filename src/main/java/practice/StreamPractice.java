@@ -5,9 +5,12 @@ import filter.SelectMenByAgeFilter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import filter.SelectWomanByAgeFilter;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -53,8 +56,9 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= femaleAge)
+                .filter(person -> new SelectWomanByAgeFilter().test(
+                        Map.of("femaleAge", femaleAge,
+                                "person", person)))
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
