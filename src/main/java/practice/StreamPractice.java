@@ -2,15 +2,12 @@ package practice;
 
 import filter.GetWorkablePeopleFilter;
 import filter.SelectMenByAgeFilter;
+import filter.SelectWomanByAgeFilter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import filter.SelectWomanByAgeFilter;
 import model.Candidate;
 import model.Cat;
 import model.Person;
