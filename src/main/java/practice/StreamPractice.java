@@ -40,7 +40,7 @@ public class StreamPractice {
                 .filter(integer -> integer % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("there is no element as " + numbers));
+                        new NoSuchElementException("Can't get average value from list " + numbers));
     }
 
     /**
