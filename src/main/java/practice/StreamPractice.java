@@ -1,12 +1,14 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -87,9 +89,9 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .map(person -> person.getCats())
-                .flatMap(list -> list.stream())
-                .map(cat -> cat.getName())
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -108,8 +110,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
-                .map(candidate -> candidate.getName())
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
                 .sorted(String::compareTo)
                 .collect(Collectors.toList());
     }
