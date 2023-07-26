@@ -17,7 +17,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::parseInt)
-                .filter(number -> isEvenNumber(number))
+                .filter(number -> !isOddNumber(number))
                 .min(Integer::compare)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -42,13 +42,13 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(people -> workable(people, fromAge, maleToAge, femaleToAge))
+                .filter(people -> isWorkable(people, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> isValidWomenToHaveCat(person, femaleAge))
+                .filter(person -> isValidWomen(person, femaleAge))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -68,22 +68,18 @@ public class StreamPractice {
                 && person.getAge() <= toAge;
     }
 
-    private boolean workable(Person person, int fromAge, int maleToAge, int femaleToAge) {
+    private boolean isWorkable(Person person, int fromAge, int maleToAge, int femaleToAge) {
         return person.getAge() >= fromAge
                 && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
                 || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
     }
 
-    private boolean isValidWomenToHaveCat(Person person, int femaleAge) {
+    private boolean isValidWomen(Person person, int femaleAge) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge;
     }
 
     private boolean isOddNumber(int number) {
-        return number % 2 == 1;
-    }
-
-    private boolean isEvenNumber(int number) {
-        return number % 2 == 0;
+        return Math.abs(number) % 2 == 1;
     }
 }
