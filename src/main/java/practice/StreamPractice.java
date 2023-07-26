@@ -25,15 +25,17 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(iterator -> iterator % 2 != 0 ? numbers.get(iterator) - 1 : numbers.get(iterator))
+                .map(iterator -> iterator % 2 != 0 ? numbers.get(iterator) - 1
+                        : numbers.get(iterator))
                 .filter(number -> isOddNumber(number))
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Cannot calculate average of oddNumbers"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("Cannot calculate average of oddNumbers"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> manFilter(person, fromAge, toAge))
+                .filter(person -> isValidMan(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +48,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> catsFilter(person, femaleAge))
+                .filter(person -> isValidWomenToHaveCat(person, femaleAge))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -60,7 +62,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean manFilter(Person person, int fromAge, int toAge) {
+    private boolean isValidMan(Person person, int fromAge, int toAge) {
         return person.getSex() == Person.Sex.MAN
                 && person.getAge() > fromAge
                 && person.getAge() <= toAge;
@@ -72,7 +74,7 @@ public class StreamPractice {
                 || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
     }
 
-    private boolean catsFilter(Person person, int femaleAge) {
+    private boolean isValidWomenToHaveCat(Person person, int femaleAge) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge;
     }
