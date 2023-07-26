@@ -35,7 +35,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(number -> isOdd(number) ? numbers.get(number) - 1 : numbers.get(number))
-                .filter(StreamPractice::isOdd)
+                .filter(this::isOdd)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("Can't get average value from list " + numbers));
@@ -112,19 +112,19 @@ public class StreamPractice {
                 && person.getSex() == Person.Sex.MAN;
     }
 
-    private static boolean isWorkablePerson(int fromAge, int femaleToAge,
+    private boolean isWorkablePerson(int fromAge, int femaleToAge,
                                             int maleToAge, Person person) {
         return person.getSex() == Person.Sex.MAN
                 ? person.getAge() >= fromAge && person.getAge() <= maleToAge
                 : person.getAge() >= fromAge && person.getAge() <= femaleToAge;
     }
 
-    private static boolean isValidWomen(int femaleAge, Person person) {
+    private boolean isValidWomen(int femaleAge, Person person) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge;
     }
 
-    private static boolean isOdd(int number) {
+    private boolean isOdd(int number) {
         return number % 2 != 0;
     }
 }

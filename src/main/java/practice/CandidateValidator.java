@@ -20,7 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && hasLivedRequiredYearsInUkraine(candidate);
     }
 
-    private static boolean hasLivedRequiredYearsInUkraine(Candidate candidate) {
+    private boolean hasLivedRequiredYearsInUkraine(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split(DASH);
         return Integer.parseInt(years[INDEX_OF_LAST_YEAR_IN_UKRAINE])
                 - Integer.parseInt(years[INDEX_OF_FIRST_YEAR_IN_UKRAINE]) >= 10;
