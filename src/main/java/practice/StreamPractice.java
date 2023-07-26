@@ -21,7 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::valueOf)
-                .filter(number -> !isEven(number))
+                .filter(number -> !isOdd(number))
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list " + numbers));
@@ -34,8 +34,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(number -> isEven(number) ? numbers.get(number) - 1 : numbers.get(number))
-                .filter(StreamPractice::isEven)
+                .map(number -> isOdd(number) ? numbers.get(number) - 1 : numbers.get(number))
+                .filter(StreamPractice::isOdd)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("Can't get average value from list " + numbers));
@@ -124,7 +124,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge;
     }
 
-    private static boolean isEven(int number) {
+    private static boolean isOdd(int number) {
         return number % 2 != 0;
     }
 }
