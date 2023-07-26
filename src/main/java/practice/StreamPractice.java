@@ -15,9 +15,9 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
+                .filter(number -> isEvenNumber(number))
                 .min(Integer::compare)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -25,10 +25,10 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(num -> num % 2 == 1)
+                .map(iterator -> iterator % 2 != 0 ? numbers.get(iterator) - 1 : numbers.get(iterator))
+                .filter(number -> isOddNumber(number))
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Cannot calculate average of oddNumbers"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -75,5 +75,13 @@ public class StreamPractice {
     private boolean catsFilter(Person person, int femaleAge) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge;
+    }
+
+    private boolean isOddNumber(int number) {
+        return number % 2 == 1;
+    }
+
+    private boolean isEvenNumber(int number) {
+        return number % 2 == 0;
     }
 }
