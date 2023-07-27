@@ -18,7 +18,7 @@ public class WorkableAgeFilter implements Predicate<Map<String, Object>> {
         int maleToAge = (int) personAndAges.get(MALE_TO_AGE_KEY);
         int femaleToAge = (int) personAndAges.get(FEMALE_TO_AGE_KEY);
         return personAge >= fromAge
-                && (person.getSex().equals(Person.Sex.MAN) ? personAge <= maleToAge
+                && (person.getSex() == Person.Sex.MAN ? personAge <= maleToAge
                 : personAge <= femaleToAge);
     }
 }

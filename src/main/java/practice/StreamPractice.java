@@ -17,7 +17,7 @@ public class StreamPractice {
     private static final String MALE_TO_AGE_KEY = "maleToAge";
     private static final String FEMALE_TO_AGE_KEY = "femaleToAge";
     private static final String PERSON_KEY = "person";
-    private static final String COMMA_REGEX = "person";
+    private static final String COMMA_REGEX = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
