@@ -10,6 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA_REGEX = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,7 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
+                .map(n -> n.split(COMA_REGEX))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
