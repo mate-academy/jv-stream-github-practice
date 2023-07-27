@@ -29,6 +29,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .map(Integer::parseInt)
                 .reduce((a, b) -> b - a)
                 .orElse(0);
-        return duration > MIN_DURATION_IN_UKRAINE;
+        return duration >= MIN_DURATION_IN_UKRAINE;
     }
 }
