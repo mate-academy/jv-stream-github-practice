@@ -50,7 +50,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -69,10 +69,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() <= femaleToAge)
-                        || (person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() <= maleToAge)))
+                        && ((person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -106,11 +104,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> candidate.isAllowedToVote()
-                        && candidate.getAge() >= 35
-                        && candidate.getNationality().equals("Ukrainian")
-                        && (Integer.parseInt(candidate.getPeriodsInUkr().substring(5, 9))
-                        - Integer.parseInt(candidate.getPeriodsInUkr().substring(0,4)) > 10))
+                .filter(candidate -> new CandidateValidator().test(candidate))
                 .map(candidate -> candidate.getName())
                 .sorted()
                 .collect(Collectors.toList());
