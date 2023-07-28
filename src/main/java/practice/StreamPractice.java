@@ -51,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> getManWithRequiredAge(fromAge, toAge, person))
+                .filter(person -> isManWithRequiredAge(fromAge, toAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -68,7 +68,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> getPersonsWithValidAge(fromAge, femaleToAge, maleToAge, person))
+                .filter(person -> isPersonWithRequiredAge(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +79,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> getWomanByAge(femaleAge, person))
+                .filter(person -> isWomanWithRequiredAge(femaleAge, person))
                 .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -105,21 +105,21 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean getManWithRequiredAge(int fromAge, int toAge, Person person) {
+    private boolean isManWithRequiredAge(int fromAge, int toAge, Person person) {
         return person.getAge() >= fromAge
                 && person.getAge() <= toAge
                 && person.getSex() == Person.Sex.MAN;
     }
 
-    private boolean getPersonsWithValidAge(int fromAge, int femaleToAge,
-                                           int maleToAge, Person person) {
+    private boolean isPersonWithRequiredAge(int fromAge, int femaleToAge,
+                                            int maleToAge, Person person) {
         return person.getAge() >= fromAge
                 && (person.getSex() == Person.Sex.MAN
                 ? person.getAge() <= maleToAge
                 : person.getAge() <= femaleToAge);
     }
 
-    private boolean getWomanByAge(int femaleAge, Person person) {
+    private boolean isWomanWithRequiredAge(int femaleAge, Person person) {
         return person.getAge() >= femaleAge
                 && person.getSex() == Person.Sex.WOMAN;
     }
