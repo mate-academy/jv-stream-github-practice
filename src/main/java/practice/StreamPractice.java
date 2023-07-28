@@ -16,7 +16,7 @@ public class StreamPractice {
     private static final int NUMBER_TO_SUBTRACT = 1;
     private static final int DIVISOR_CHECK_ODD_NUMBERS = 2;
     private static final int REMAINDER_CHECK_ODD_NUMBERS = 0;
-    private static final String REGEX_SPLIT = ",";
+    private static final String SPLIT_SYMBOL = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -27,7 +27,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(REGEX_SPLIT))
+                .map(string -> string.split(SPLIT_SYMBOL))
                 .flatMap(Stream::of)
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % DIVISOR_CHECK_ODD_NUMBERS == REMAINDER_CHECK_ODD_NUMBERS)
