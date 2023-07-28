@@ -47,9 +47,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && person.getAge() <= toAge
-                        && person.getSex() == Person.Sex.MAN)
+                .filter(person -> validateMan(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -65,10 +63,8 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> peopleValidator = (person) ->
-                person.getAge() >= fromAge
-                        && (person.getSex() == Person.Sex.WOMAN ? person.getAge() <= femaleToAge
-                                : person.getAge() <= maleToAge);
+        Predicate<Person> peopleValidator = (person) -> validateWorkablePeople(person, fromAge,
+                femaleToAge, maleToAge);
         return peopleList.stream()
                 .filter(peopleValidator)
                 .collect(Collectors.toList());
@@ -81,9 +77,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge
-                        && !person.getCats().isEmpty())
+                .filter(person -> validateCatOwner(person, femaleAge))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -109,6 +103,25 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean validateWorkablePeople(Person person, int fromAge,
+                                           int femaleToAge, int maleToAge) {
+        return person.getSex() == Person.Sex.MAN ? validateMan(person, fromAge, maleToAge)
+                : person.getAge() <= femaleToAge
+                && person.getAge() >= fromAge;
+    }
+
+    private boolean validateMan(Person person, int maleFromAge, int maleToAge) {
+        return person.getAge() >= maleFromAge
+                && person.getAge() <= maleToAge
+                && person.getSex() == Person.Sex.MAN;
+    }
+
+    private boolean validateCatOwner(Person person, int femaleAge) {
+        return person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge
+                && !person.getCats().isEmpty();
     }
 
     private boolean isOdd(int num) {

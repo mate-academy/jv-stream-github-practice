@@ -12,18 +12,18 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START_YEAR_INDEX = 0;
     private static final int END_YEAR_INDEX = 1;
 
-    private int getYearsInUaOfCandidate(String periodInUkraine) {
-        int[] years = Arrays.stream(periodInUkraine.split(YEARS_SEPARATOR))
-                .mapToInt(Integer::parseInt)
-                .toArray();
-        return years[END_YEAR_INDEX] - years[START_YEAR_INDEX];
-    }
-
     @Override
     public boolean test(Candidate candidate) {
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= MIN_ALLOWED_AGE
                 && candidate.getNationality().equals(ALLOWED_NATIONALITY)
-                && getYearsInUaOfCandidate(candidate.getPeriodsInUkr()) >= MIN_YEARS_IN_UA;
+                && calculateYearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_YEARS_IN_UA;
+    }
+
+    private int calculateYearsInUkraine(String periodInUkraine) {
+        int[] years = Arrays.stream(periodInUkraine.split(YEARS_SEPARATOR))
+                .mapToInt(Integer::parseInt)
+                .toArray();
+        return years[END_YEAR_INDEX] - years[START_YEAR_INDEX];
     }
 }
