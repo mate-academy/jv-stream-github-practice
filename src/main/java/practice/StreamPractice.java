@@ -10,6 +10,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int ZERO_NUM = 0;
+    private static final int MOD_NUM_CHECK = 2;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,7 +24,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMapToInt(s -> Arrays.stream(s.split(","))
                                                 .mapToInt(Integer::parseInt))
-                .filter(num -> num % 2 == 0)
+                .filter(num -> num % MOD_NUM_CHECK == ZERO_NUM)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -36,7 +39,7 @@ public class StreamPractice {
         List<Integer> oddIndexNumbers = IntStream.range(0, numbers.size())
                 .mapToObj(i -> {
                     int num = numbers.get(i);
-                    if (i % 2 == 1) {
+                    if (i % MOD_NUM_CHECK != ZERO_NUM) {
                         num -= 1;
                     }
                     return num;
@@ -44,7 +47,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
 
         List<Integer> oddNumbers = oddIndexNumbers.stream()
-                .filter(num -> num % 2 != 0)
+                .filter(num -> num % MOD_NUM_CHECK != ZERO_NUM)
                 .collect(Collectors.toList());
 
         if (oddNumbers.isEmpty()) {
@@ -72,7 +75,6 @@ public class StreamPractice {
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
-
     }
 
     /**
