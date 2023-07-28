@@ -15,15 +15,12 @@ public class StreamPractice {
     private static final int SUBTRACT = 1;
 
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt integer = numbers.stream()
-                .flatMap(number -> Arrays.stream(number.split(COMA_REGAX)))
-                .map(Integer::parseInt)
+        return numbers.stream()
+                .flatMapToInt(number -> Arrays.stream(number.split(COMA_REGAX))
+                        .mapToInt(Integer::parseInt))
                 .filter(number -> number % 2 == 0)
-                .mapToInt(Integer::intValue)
-                .min();
-
-        return integer.orElseThrow(() ->
-                new RuntimeException("Can't get min value from list: " + numbers));
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -31,7 +28,7 @@ public class StreamPractice {
                  .map(index -> isEven(index) ? numbers.get(index) : numbers.get(index) - SUBTRACT)
                  .filter(number -> !isEven(number))
                  .average()
-                 .orElseThrow();
+                 .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
