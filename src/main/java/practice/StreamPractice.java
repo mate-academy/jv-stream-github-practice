@@ -35,11 +35,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .map(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> !isEven(number))
-                .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There is no elements in list"));
     }
 
     /**
@@ -52,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
+                .filter(person -> isEnoughAgePerson(fromAge, person)
                         && person.getAge() <= toAge
                         && person.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
@@ -71,7 +70,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
+                .filter(person -> isEnoughAgePerson(fromAge, person)
                         && (person.getSex() == Person.Sex.MAN
                         ? person.getAge() <= maleToAge
                         : person.getAge() <= femaleToAge))
@@ -85,7 +84,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= femaleAge
+                .filter(person -> isEnoughAgePerson(femaleAge, person)
                         && person.getSex() == Person.Sex.WOMAN)
                 .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
@@ -114,5 +113,9 @@ public class StreamPractice {
 
     private boolean isEven(int number) {
         return number % 2 == 0;
+    }
+
+    private boolean isEnoughAgePerson(int fromAge, Person person) {
+        return person.getAge() >= fromAge;
     }
 }
