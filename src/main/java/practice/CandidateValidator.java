@@ -17,10 +17,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-                && isValidPeriodOfLivingInUkr(candidate.getPeriodsInUkr());
+                && isValidPeriod(candidate.getPeriodsInUkr());
     }
 
-    private boolean isValidPeriodOfLivingInUkr(String period) {
+    private boolean isValidPeriod(String period) {
         String[] years = period.split(PERIOD_DATA_SEPARATOR);
         int firstYear = Integer.parseInt(years[INDEX_OF_FROM_YEAR]);
         int lastYear = Integer.parseInt(years[INDEX_OF_TO_YEAR]);
