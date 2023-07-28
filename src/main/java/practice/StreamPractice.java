@@ -21,7 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(numberList -> Arrays.stream(numberList.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number % 2 == 0)
+                .filter(number -> isEven(number))
                 .min()
                 .orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: " + numbers));
@@ -35,8 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 != 0)
+                .mapToObj(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> !isEven(number))
                 .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -72,10 +72,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
-                        && ((person.getAge() <= femaleToAge
-                        && person.getSex() == Person.Sex.WOMAN)
-                        || person.getAge() <= maleToAge
-                        && person.getSex() == Person.Sex.MAN))
+                        && (person.getSex() == Person.Sex.MAN
+                        ? person.getAge() <= maleToAge
+                        : person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -111,5 +110,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
