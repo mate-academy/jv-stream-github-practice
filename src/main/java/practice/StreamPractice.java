@@ -27,8 +27,9 @@ public class StreamPractice {
                 .map(stringRepOfNumbers -> stringRepOfNumbers.split(NUM_SEPARATOR))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .filter(this::isEvenNumber)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                                                                 + numbers));
     }
 
@@ -48,8 +49,9 @@ public class StreamPractice {
                 .mapToObj(processingOddNumberAndIndexesFunction)
                 .filter(Objects::nonNull)
                 .mapToInt(Integer::intValue)
-                .filter(num -> num % 2 != 0)
-                .average().orElseThrow();
+                .filter(num -> !isEvenNumber(num))
+                .average()
+                .orElseThrow();
     }
 
     /**
@@ -80,15 +82,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> ifPersonHasSuitableData = person -> {
-            if (person.getSex() == Person.Sex.MAN
-                                && person.getAge() >= fromAge
-                                && person.getAge() <= maleToAge) {
-                return true;
-            }
-            return person.getAge() >= fromAge
-                    && person.getAge() <= femaleToAge;
-        };
+        Predicate<Person> ifPersonHasSuitableData = person ->
+                (person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(ifPersonHasSuitableData)
                 .collect(Collectors.toList());
@@ -127,5 +127,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEvenNumber(int number) {
+        return number % 2 == 0;
     }
 }
