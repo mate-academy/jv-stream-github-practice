@@ -29,7 +29,6 @@ public class StreamPractice {
                     if (counter.getAndIncrement() % 2 == 1) {
                         return n - 1;
                     }
-                    System.out.println(n);
                     return n;
                 })
                 .filter(i -> i % 2 == 1)
