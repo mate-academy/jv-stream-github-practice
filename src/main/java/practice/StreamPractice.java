@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -69,12 +70,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = person -> {
+            return person.getAge() >= fromAge && (person.getSex().equals(Person.Sex.MAN)
+                    ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
+        };
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getAge() <= femaleToAge
-                        && person.getSex() == Person.Sex.WOMAN)
-                        || person.getAge() <= maleToAge
-                        && person.getSex() == Person.Sex.MAN))
+                .filter(personPredicate)
                 .collect(Collectors.toList());
     }
 
@@ -85,8 +86,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN))
-                .filter(person -> person.getAge() >= femaleAge)
+                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= femaleAge)
                 .map(person -> person.getCats())
                 .flatMap(Collection::stream)
                 .map(cat -> cat.getName())
