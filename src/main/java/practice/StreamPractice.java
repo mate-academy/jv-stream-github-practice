@@ -10,6 +10,7 @@ import model.Person;
 
 public class StreamPractice {
     public static final String COMMA_SEPARATOR = ",";
+    public static final int FIRST_ARRAY_INDEX = 0;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -23,7 +24,7 @@ public class StreamPractice {
                 .map(str -> str.split(COMMA_SEPARATOR))
                 .flatMap(num -> Arrays.stream(num)
                         .map(Integer::parseInt))
-                .filter(isEvenNumber -> isEvenNumber % 2 == 0)
+                .filter(this::isEvenNumber)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
@@ -35,9 +36,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return getModifiedNumbers(numbers).stream()
-                .filter(isOddNumber -> isOddNumber % 2 != 0)
-                .mapToInt(oddNumberToDouble -> oddNumberToDouble)
+        List<Integer> modifiedNumbers = IntStream.range(FIRST_ARRAY_INDEX, numbers.size())
+                .mapToObj(index -> !isEvenNumber(index)
+                        ? numbers.get(index) - 1
+                        : numbers.get(index))
+                .collect(Collectors.toList());
+
+        return modifiedNumbers.stream()
+                .filter(number -> !isEvenNumber(number))
+                .mapToDouble(oddNumberToDouble -> oddNumberToDouble)
                 .average()
                 .getAsDouble();
     }
@@ -113,9 +120,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private List<Integer> getModifiedNumbers(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .mapToObj(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .collect(Collectors.toList());
+    private boolean isEvenNumber(int number) {
+        return number % 2 == 0;
     }
 }
