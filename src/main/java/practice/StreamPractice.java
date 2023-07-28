@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -15,9 +14,8 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::valueOf)
-                .mapToInt(number -> number)
-                .filter(number -> number % 2 == 0)
-                .min()
+                .filter(number -> !isOdd(number))
+                .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: < Here is our input 'numbers' >"
                 ));
@@ -32,29 +30,27 @@ public class StreamPractice {
     }
 
     private boolean isOdd(Integer number) {
-        return number % 2 == 1;
+        return number % 2 != 0;
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> personIs(person, Person.Sex.MAN, fromAge, toAge))
+                .filter(person -> isValidAge(person, Person.Sex.MAN, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workAbleFilter = person ->
-                personIs(person, Person.Sex.MAN, fromAge, maleToAge)
-                || personIs(person, Person.Sex.WOMAN, fromAge, femaleToAge);
         return peopleList.stream()
-                .filter(workAbleFilter)
+                .filter(person -> isValidAge(person, Person.Sex.MAN, fromAge, maleToAge)
+                                || isValidAge(person, Person.Sex.WOMAN, fromAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person ->
-                        (personIs(person, Person.Sex.WOMAN, femaleAge, Integer.MAX_VALUE)))
+                        (isValidAge(person, Person.Sex.WOMAN, femaleAge, Integer.MAX_VALUE)))
                 .flatMap(woman -> woman.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -68,7 +64,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean personIs(Person person, Person.Sex sex, int fromAge, int toAge) {
+    private boolean isValidAge(Person person, Person.Sex sex, int fromAge, int toAge) {
         return person.getSex() == sex
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
