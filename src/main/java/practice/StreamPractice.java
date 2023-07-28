@@ -23,9 +23,10 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0
-                        ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(num -> num % 2 != 0)
+                .map(index ->
+                        isOdd(index) ? numbers.get(index) - 1
+                                : numbers.get(index))
+                .filter(this::isOdd)
                 .average()
                 .getAsDouble();
     }
@@ -72,5 +73,9 @@ public class StreamPractice {
 
     private boolean isEven(int num) {
         return num % 2 == 0;
+    }
+
+    private boolean isOdd(int index) {
+        return index % 2 != 0;
     }
 }
