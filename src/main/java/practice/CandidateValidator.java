@@ -4,12 +4,12 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final String NATIONALITY_UKRAINIAN = "Ukrainian";
-    public static final int MIN_BOUNDARY_AGE = 35;
-    public static final String HYPHEN_SEPARATOR = "-";
-    public static final int MIN_PERIOD_IN_UKRAINE_INDEX = 0;
-    public static final int MAX_PERIOD_IN_UKRAINE_INDEX = 1;
-    public static final int MIN_BOUNDARY_PERIOD_IN_UKRAINE = 10;
+    private static final String NATIONALITY_UKRAINIAN = "Ukrainian";
+    private static final int MIN_BOUNDARY_AGE = 35;
+    private static final String HYPHEN_SEPARATOR = "-";
+    private static final int MIN_PERIOD_IN_UKRAINE_INDEX = 0;
+    private static final int MAX_PERIOD_IN_UKRAINE_INDEX = 1;
+    private static final int MIN_BOUNDARY_PERIOD_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {

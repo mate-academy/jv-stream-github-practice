@@ -9,8 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String COMMA_SEPARATOR = ",";
-    public static final int FIRST_ARRAY_INDEX = 0;
+    private static final String COMMA_SEPARATOR = ",";
+    private static final int FIRST_ARRAY_INDEX = 0;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -22,8 +22,8 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(str -> str.split(COMMA_SEPARATOR))
-                .flatMap(num -> Arrays.stream(num)
-                        .map(Integer::parseInt))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
                 .filter(this::isEvenNumber)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException(
@@ -36,13 +36,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(FIRST_ARRAY_INDEX, numbers.size())
-                .mapToObj(index -> !isEvenNumber(index)
+        return IntStream.range(FIRST_ARRAY_INDEX, numbers.size())
+                .map(index -> !isEvenNumber(index)
                         ? numbers.get(index) - 1
                         : numbers.get(index))
-                .collect(Collectors.toList());
-
-        return modifiedNumbers.stream()
                 .filter(number -> !isEvenNumber(number))
                 .mapToDouble(oddNumberToDouble -> oddNumberToDouble)
                 .average()
@@ -60,8 +57,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                        && isPersonDataValid(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -79,8 +75,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
-                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge
-                        : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                        ? isPersonDataValid(person, fromAge, maleToAge)
+                        : isPersonDataValid(person, fromAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -91,10 +87,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person ->
-                        person.getSex() == Person.Sex.WOMAN
-                                && person.getAge() >= femaleAge
-                                && !person.getCats().isEmpty())
+                .filter(womanData -> isWomanDataValid(womanData, femaleAge))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -122,5 +115,15 @@ public class StreamPractice {
 
     private boolean isEvenNumber(int number) {
         return number % 2 == 0;
+    }
+
+    private boolean isWomanDataValid(Person person, int toAge) {
+        return person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= toAge
+                && !person.getCats().isEmpty();
+    }
+
+    private boolean isPersonDataValid(Person person, int fromAge, int toAge) {
+        return person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 }
