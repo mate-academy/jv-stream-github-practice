@@ -51,9 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> isEnoughAgePerson(fromAge, person)
-                        && person.getAge() <= toAge
-                        && person.getSex() == Person.Sex.MAN)
+                .filter(person -> getManWithRequiredAge(fromAge, toAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -70,10 +68,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> isEnoughAgePerson(fromAge, person)
-                        && (person.getSex() == Person.Sex.MAN
-                        ? person.getAge() <= maleToAge
-                        : person.getAge() <= femaleToAge))
+                .filter(person -> getPersonsWithValidAge(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -84,8 +79,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> isEnoughAgePerson(femaleAge, person)
-                        && person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> getWomanByAge(femaleAge, person))
                 .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -111,11 +105,26 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean isEven(int number) {
-        return number % 2 == 0;
+    private boolean getManWithRequiredAge(int fromAge, int toAge, Person person) {
+        return person.getAge() >= fromAge
+                && person.getAge() <= toAge
+                && person.getSex() == Person.Sex.MAN;
     }
 
-    private boolean isEnoughAgePerson(int fromAge, Person person) {
-        return person.getAge() >= fromAge;
+    private boolean getPersonsWithValidAge(int fromAge, int femaleToAge,
+                                           int maleToAge, Person person) {
+        return person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN
+                ? person.getAge() <= maleToAge
+                : person.getAge() <= femaleToAge);
+    }
+
+    private boolean getWomanByAge(int femaleAge, Person person) {
+        return person.getAge() >= femaleAge
+                && person.getSex() == Person.Sex.WOMAN;
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
