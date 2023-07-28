@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PRESIDENT_AGE = 35;
     private static final int MIN_PERIOD_IN_UKRAINE = 10;
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
+    private static final String PERIOD_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -22,7 +23,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (!candidate.isAllowedToVote()) {
             return false;
         }
-        String[] stringPeriod = candidate.getPeriodsInUkr().split("-");
+        String[] stringPeriod = candidate.getPeriodsInUkr().split(PERIOD_SEPARATOR);
         int intPeriod = Integer.parseInt(stringPeriod[1]) - Integer.parseInt(stringPeriod[0]);
         return intPeriod >= MIN_PERIOD_IN_UKRAINE;
     }

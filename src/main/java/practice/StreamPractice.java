@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -16,7 +17,8 @@ public class StreamPractice {
                 .map(Integer::valueOf)
                 .mapToInt(i -> i)
                 .filter(i -> i % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException(
+                .min()
+                .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: < Here is our input 'numbers' >"
                 ));
     }
@@ -32,7 +34,8 @@ public class StreamPractice {
                     return n;
                 })
                 .filter(i -> i % 2 == 1)
-                .average().orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -44,12 +47,13 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> workAbleFilter = p -> (p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                || p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge
+        );
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
-                )
+                .filter(workAbleFilter)
                 .collect(Collectors.toList());
     }
 
