@@ -1,11 +1,8 @@
 package practice;
 
-import filter.FemaleAgeFilter;
-import filter.MaleAgeFilter;
-import filter.WorkableAgeFilter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -13,10 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String FROM_AGE_KEY = "fromAge";
-    private static final String MALE_TO_AGE_KEY = "maleToAge";
-    private static final String FEMALE_TO_AGE_KEY = "femaleToAge";
-    private static final String PERSON_KEY = "person";
     private static final String COMMA_REGEX = ",";
 
     /**
@@ -46,7 +39,7 @@ public class StreamPractice {
                 .map(index -> isEven(index) ? numbers.get(index) : numbers.get(index) - 1)
                 .filter(number -> !isEven(number))
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     /**
@@ -58,12 +51,14 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> maleAgePredicate = person -> {
+            int personAge = person.getAge();
+            return person.getSex() == Person.Sex.MAN
+                    && personAge >= fromAge
+                    && personAge <= toAge;
+        };
         return peopleList.stream()
-                .filter(person -> new MaleAgeFilter().test(
-                        Map.of(
-                                PERSON_KEY, person,
-                                FROM_AGE_KEY, fromAge,
-                                MALE_TO_AGE_KEY, toAge)))
+                .filter(maleAgePredicate)
                 .collect(Collectors.toList());
     }
 
@@ -79,14 +74,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
+        Predicate<Person> workableAgePredicate = person -> {
+            int personAge = person.getAge();
+            return personAge >= fromAge
+                    && (person.getSex() == Person.Sex.MAN ? personAge <= maleToAge
+                    : personAge <= femaleToAge);
+        };
         return peopleList.stream()
-                .filter(person -> new WorkableAgeFilter().test(
-                        Map.of(
-                                PERSON_KEY, person,
-                                FROM_AGE_KEY, fromAge,
-                                MALE_TO_AGE_KEY, maleToAge,
-                                FEMALE_TO_AGE_KEY, femaleToAge)))
+                .filter(workableAgePredicate)
                 .collect(Collectors.toList());
     }
 
@@ -96,13 +91,11 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> femaleAgePredicate = person ->
+                person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
         return peopleList.stream()
-                .filter(person -> new FemaleAgeFilter().test(
-                        Map.of(
-                                FROM_AGE_KEY, femaleAge,
-                                PERSON_KEY, person
-                        )
-                ))
+                .filter(femaleAgePredicate)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
