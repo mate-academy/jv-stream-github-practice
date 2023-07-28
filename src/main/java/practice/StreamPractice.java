@@ -1,11 +1,12 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,10 +28,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(SPLIT_SYMBOL))
-                .flatMap(Stream::of)
+                .flatMap(string -> Arrays.stream(string.split(SPLIT_SYMBOL)))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number % DIVISOR_CHECK_ODD_NUMBERS == REMAINDER_CHECK_ODD_NUMBERS)
+                .filter(number -> !checkOddNumbers(number))
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -43,10 +43,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(START_POSITION, numbers.size())
-                .map(index -> index % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS
+                .map(index -> checkOddNumbers(index)
                         ? numbers.get(index) - NUMBER_TO_SUBTRACT
                         : numbers.get(index))
-                .filter(value -> value % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS)
+                .filter(StreamPractice::checkOddNumbers)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -61,9 +61,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(checkIsMenAndAge(fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -80,10 +78,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
+                .filter(person -> checkIsMenAndAge(fromAge, maleToAge).test(person)
+                        || (checkIsWomanAndAge(fromAge, person)) && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -94,8 +90,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex()
-                        == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> checkIsWomanAndAge(femaleAge, person))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -121,5 +116,20 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private static boolean checkOddNumbers(int index) {
+        return index % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS;
+    }
+
+    private static Predicate<Person> checkIsMenAndAge(int fromAge, int toAge) {
+        return person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+    }
+
+    private static boolean checkIsWomanAndAge(int femaleAge, Person person) {
+        return person.getSex()
+                == Person.Sex.WOMAN && person.getAge() >= femaleAge;
     }
 }
