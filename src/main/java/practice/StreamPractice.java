@@ -15,7 +15,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(numStr -> Arrays.stream(numStr.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -27,7 +27,7 @@ public class StreamPractice {
                         ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow();
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -68,5 +68,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEven(int num) {
+        return num % 2 == 0;
     }
 }
