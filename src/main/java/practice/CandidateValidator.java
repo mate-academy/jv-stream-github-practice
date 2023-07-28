@@ -6,6 +6,8 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int CANDIDATE_MIN_AGE = 35;
     private static final int MIN_YEARS_IN_UKRAINE = 10;
+    private static final int TO_YEAR_IN_UKRAINE_INDEX = 1;
+    private static final int FROM_YEAR_IN_UKRAINE_INDEX = 0;
     private static final String UKRAINIAN_NATIONALITY = "Ukrainian";
     private static final String PERIODS_SEPARATOR = "-";
 
@@ -19,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getYearsInUkraine(String periodsInUkr) {
         String[] periodSeparated = periodsInUkr.split(PERIODS_SEPARATOR);
-        return Integer.parseInt(
-                periodSeparated[1]) - Integer.parseInt(periodSeparated[0]);
+        return Integer.parseInt(periodSeparated[TO_YEAR_IN_UKRAINE_INDEX])
+                - Integer.parseInt(periodSeparated[FROM_YEAR_IN_UKRAINE_INDEX]);
     }
 }
