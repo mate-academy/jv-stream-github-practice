@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-
     private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int MIN_PERIOD = 10;
@@ -14,12 +13,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] periodsInUkr = candidate.getPeriodsInUkr().split(SEPARATOR);
-        int period = Integer.parseInt(periodsInUkr[LAST_INDEX])
-                - Integer.parseInt(periodsInUkr[FIRST_INDEX]);
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
-                && period >= MIN_PERIOD;
+                && isEnoughTime(candidate);
+    }
+
+    private boolean isEnoughTime(Candidate candidate) {
+        String[] periodsInUkr = candidate.getPeriodsInUkr().split(SEPARATOR);
+        int period = Integer.parseInt(periodsInUkr[LAST_INDEX])
+                - Integer.parseInt(periodsInUkr[FIRST_INDEX]);
+        return period >= MIN_PERIOD;
     }
 }
