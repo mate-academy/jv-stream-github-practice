@@ -35,11 +35,7 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .collect(Collectors.toList());
-
-        return modifiedNumbers.stream()
+        return getModifiedNumbers(numbers).stream()
                 .filter(isOddNumber -> isOddNumber % 2 != 0)
                 .mapToInt(oddNumberToDouble -> oddNumberToDouble)
                 .average()
@@ -76,11 +72,10 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> {
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
-                    } else {
-                        return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
-                    }
+                    int personAge = person.getAge();
+                    return person.getSex() == Person.Sex.MAN
+                            ? personAge >= fromAge && person.getAge() <= maleToAge
+                            : personAge >= fromAge && person.getAge() <= femaleToAge;
                 })
                 .collect(Collectors.toList());
     }
@@ -118,6 +113,12 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> getModifiedNumbers(List<Integer> numbers) {
+        return IntStream.range(0, numbers.size())
+                .mapToObj(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .collect(Collectors.toList());
     }
 }
