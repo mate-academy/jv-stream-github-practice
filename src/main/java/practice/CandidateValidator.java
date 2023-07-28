@@ -8,6 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String YEAR_SPLIT_REGEX = "-";
     private static final int ALLOWED_AGE = 35;
     private static final int MIN_UKR_LIVING_YEARS = 10;
+    private static final int INDEX_FROM_YEAR = 0;
+    private static final int INDEX_TO_YEAR = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,10 +20,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int getPeriodDifference(String periodsInUkr) {
-        int fromYear = Integer.parseInt(
-                periodsInUkr.substring(0, periodsInUkr.indexOf(YEAR_SPLIT_REGEX)));
-        int tillYear = Integer.parseInt(
-                periodsInUkr.substring(periodsInUkr.indexOf(YEAR_SPLIT_REGEX) + 1));
-        return tillYear - fromYear;
+        String[] years = periodsInUkr.split(YEAR_SPLIT_REGEX);
+        return Integer.parseInt(years[INDEX_TO_YEAR])
+                - Integer.parseInt(years[INDEX_FROM_YEAR]);
     }
 }

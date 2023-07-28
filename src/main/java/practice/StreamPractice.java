@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,21 +13,22 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                // turn each string in the list into an Stream array of strings
+                // turn each string in the list, into an Stream array of strings
                 .flatMap(numStr -> Arrays.stream(numStr.split(",")))
                 .map(Integer::parseInt)
-                .filter(numInteger -> numInteger % 2 == 0)
+                .filter(this::isEven)
                 .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
-                .filter(number -> number % 2 != 0)
+                .map(index -> isEven(index) ? numbers.get(index) : numbers.get(index) - 1)
+                .boxed()
+                .filter(this::isOdd)
+                .mapToInt(integer -> integer)
                 .average()
-                .orElseThrow(() ->
-                        new NoSuchElementException("Nothing from what can be extracted average"));
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -65,12 +65,19 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    // константи!
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isOdd(int n) {
+        return n % 2 != 0;
+    }
+
+    private boolean isEven(int n) {
+        return n % 2 == 0;
     }
 }
