@@ -26,9 +26,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean validateDuration(Candidate candidate) {
         int duration = Arrays.stream(candidate.getPeriodsInUkr().split(PERIOD_SPLIT_REGEX))
-                .map(Integer::parseInt)
-                .reduce((a, b) -> b - a)
-                .orElse(0);
+                .mapToInt(Integer::parseInt)
+                .reduce(0, (a, b) -> b - a);
         return duration >= MIN_DURATION_IN_UKRAINE;
     }
 }

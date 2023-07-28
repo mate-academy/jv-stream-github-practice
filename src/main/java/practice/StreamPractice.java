@@ -17,7 +17,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMapToInt(number -> Arrays.stream(number.split(COMA_REGAX))
                         .mapToInt(Integer::parseInt))
-                .filter(number -> number % 2 == 0)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -32,8 +32,7 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> predicate = person -> person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= toAge;
+        Predicate<Person> predicate = createAgePredicate(fromAge, toAge);
 
         return peopleList.stream()
                 .filter(predicate)
@@ -42,10 +41,7 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> predicate = person -> {
-            int genderAge = person.getSex() == Person.Sex.MAN ? maleToAge : femaleToAge;
-            return person.getAge() >= fromAge && person.getAge() <= genderAge;
-        };
+        Predicate<Person> predicate = createAgeAndGenderPredicate(fromAge, maleToAge, femaleToAge);
 
         return peopleList.stream()
                 .filter(predicate)
@@ -53,8 +49,7 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> womanPredicate = person -> person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= femaleAge;
+        Predicate<Person> womanPredicate = createWomanPredicate(femaleAge);
 
         return peopleList.stream()
                 .filter(womanPredicate)
@@ -69,6 +64,23 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public Predicate<Person> createWomanPredicate(int femaleAge) {
+        return person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge;
+    }
+
+    private Predicate<Person> createAgeAndGenderPredicate(
+            int fromAge, int maleToAge, int femaleToAge) {
+        return person -> {
+            int genderAge = person.getSex() == Person.Sex.MAN ? maleToAge : femaleToAge;
+            return person.getAge() >= fromAge && person.getAge() <= genderAge;
+        };
+    }
+
+    private Predicate<Person> createAgePredicate(int fromAge, int toAge) {
+        return person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 
     private boolean isEven(int number) {
