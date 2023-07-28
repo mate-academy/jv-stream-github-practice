@@ -18,7 +18,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(NUMBER_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(integer -> integer % 2 == 0)
+                .filter(this::isOdd)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -31,8 +31,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(num -> num % 2 == 0 ? numbers.get(num) : numbers.get(num) - 1)
-                .filter(num -> num % 2 != 0)
+                .map(num -> isOdd(num) ? numbers.get(num) : numbers.get(num) - 1)
+                .filter(num -> !isOdd(num))
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -66,12 +66,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> peopleValidator = (person) ->
-                (person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge
-                && person.getAge() <= maleToAge)
-                || (person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= fromAge
-                && person.getAge() <= femaleToAge);
+                person.getAge() >= fromAge
+                        ? (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                        : false;
         return peopleList.stream()
                 .filter(peopleValidator)
                 .collect(Collectors.toList());
@@ -112,5 +110,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isOdd(int num) {
+        return num % 2 == 0;
     }
 }
