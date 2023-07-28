@@ -89,8 +89,7 @@ public class StreamPractice {
                 && (person.getCats() != null || !person.getCats().isEmpty());
         return peopleList.stream()
                 .filter(predicate)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .distinct()
                 .collect(Collectors.toList());
