@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -61,7 +60,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(checkIsMenAndAge(fromAge, toAge))
+                .filter(person -> checkIsMenAndAge(fromAge, toAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +77,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> checkIsMenAndAge(fromAge, maleToAge).test(person)
+                .filter(person -> checkIsMenAndAge(fromAge, maleToAge, person)
                         || (checkIsWomanAndAge(fromAge, person)) && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
@@ -122,8 +121,8 @@ public class StreamPractice {
         return index % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS;
     }
 
-    private static Predicate<Person> checkIsMenAndAge(int fromAge, int toAge) {
-        return person -> person.getSex() == Person.Sex.MAN
+    private static boolean checkIsMenAndAge(int fromAge, int toAge, Person person) {
+        return person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
     }
