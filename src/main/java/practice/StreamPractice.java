@@ -4,11 +4,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
+    private static final String SEPARATOR = ",";
+    private static final int DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM = 2;
+    private static final int PARITY_RESULT = 0;
+    private static final int ODD_RESULT = 1;
+    private static final int SUBTRACT = 1;
+    private static final int START_RANGE = 0;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,9 +27,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(string -> Arrays.stream(string.split(",")))
+                .flatMap(string -> Arrays.stream(string.split(SEPARATOR)))
                 .map(Integer::parseInt)
-                .filter(validNum -> validNum % 2 == 0)
+                .filter(validNum -> validNum % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM
+                        == PARITY_RESULT)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -32,11 +42,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 1; i < numbers.size(); i += 2) {
-            numbers.set(i, numbers.get(i) - 1);
-        }
-        return numbers.stream()
-                .filter(num -> num % 2 != 0)
+        List<Integer> updatedNumbers = IntStream.range(START_RANGE, numbers.size())
+                .mapToObj(i -> i % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM == ODD_RESULT
+                        ? numbers.get(i) - SUBTRACT
+                        : numbers.get(i))
+                .collect(Collectors.toList());
+        return updatedNumbers.stream()
+                .filter(num -> num % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM != PARITY_RESULT)
                 .mapToDouble(Integer::doubleValue)
                 .average()
                 .orElseThrow(() ->
