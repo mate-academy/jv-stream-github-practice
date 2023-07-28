@@ -13,6 +13,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUM_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,7 +21,6 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    private static final String NUM_SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
@@ -86,8 +86,7 @@ public class StreamPractice {
                                 && person.getAge() <= maleToAge) {
                 return true;
             }
-            return person.getSex() == Person.Sex.WOMAN
-                    && person.getAge() >= fromAge
+            return person.getAge() >= fromAge
                     && person.getAge() <= femaleToAge;
         };
         return peopleList.stream()
