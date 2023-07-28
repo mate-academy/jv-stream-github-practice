@@ -28,10 +28,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(SEPARATOR)))
-                .map(Integer::parseInt)
-                .filter(validNum -> validNum % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM
-                        == PARITY_RESULT)
-                .min(Integer::compareTo)
+                .mapToInt(Integer::parseInt)
+                .filter(this::isParity)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -42,14 +41,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> updatedNumbers = IntStream.range(START_RANGE, numbers.size())
-                .mapToObj(i -> i % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM == ODD_RESULT
-                        ? numbers.get(i) - SUBTRACT
-                        : numbers.get(i))
-                .collect(Collectors.toList());
-        return updatedNumbers.stream()
-                .filter(num -> num % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM != PARITY_RESULT)
-                .mapToDouble(Integer::doubleValue)
+        double [] updatedNumbers = IntStream.range(START_RANGE, numbers.size())
+                .mapToDouble(num -> isOdd(num) ? numbers.get(num) - SUBTRACT : numbers.get(num))
+                .toArray();
+        return Arrays.stream(updatedNumbers)
+                .filter(num -> isOdd((int)num))
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("There are no odd numbers in the list."));
@@ -65,8 +61,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)
-                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> personValidator(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -84,7 +79,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getSex() == Person.Sex.WOMAN
                         && person.getAge() <= femaleToAge
                         || person.getSex() == Person.Sex.MAN
                         && person.getAge() <= maleToAge)
@@ -124,5 +120,19 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean personValidator(Person person, int fromAge, int toAge) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+    }
+
+    private boolean isOdd(int num) {
+        return num % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM == ODD_RESULT;
+    }
+
+    private boolean isParity(int num) {
+        return num % DIVISOR_TO_DETERMINE_OF_EVENNESS_OF_NUM == PARITY_RESULT;
     }
 }
