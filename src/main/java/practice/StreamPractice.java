@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -40,8 +39,7 @@ public class StreamPractice {
                 .map(index -> oddChecker(index) ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(this::oddChecker)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No such element in list "
-                        + numbers));
+                .getAsDouble();
     }
 
     /**
