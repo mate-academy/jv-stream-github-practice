@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -29,7 +28,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(SPLIT_SYMBOL)))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> !checkOddNumbers(number))
+                .filter(number -> !checkOddNumber(number))
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -42,10 +41,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(START_POSITION, numbers.size())
-                .map(index -> checkOddNumbers(index)
+                .map(index -> checkOddNumber(index)
                         ? numbers.get(index) - NUMBER_TO_SUBTRACT
                         : numbers.get(index))
-                .filter(StreamPractice::checkOddNumbers)
+                .filter(this::checkOddNumber)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -90,8 +89,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> checkIsWomanAndAge(femaleAge, person))
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -117,17 +115,17 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private static boolean checkOddNumbers(int index) {
-        return index % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS;
+    private boolean checkOddNumber(int number) {
+        return number % DIVISOR_CHECK_ODD_NUMBERS != REMAINDER_CHECK_ODD_NUMBERS;
     }
 
-    private static boolean checkIsMenAndAge(int fromAge, int toAge, Person person) {
+    private boolean checkIsMenAndAge(int fromAge, int toAge, Person person) {
         return person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
     }
 
-    private static boolean checkIsWomanAndAge(int femaleAge, Person person) {
+    private boolean checkIsWomanAndAge(int femaleAge, Person person) {
         return person.getSex()
                 == Person.Sex.WOMAN && person.getAge() >= femaleAge;
     }
