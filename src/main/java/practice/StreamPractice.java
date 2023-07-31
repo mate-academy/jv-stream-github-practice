@@ -17,7 +17,7 @@ public class StreamPractice {
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(i -> i % 2 == 0)
+                .filter(i -> isEvenElement(i))
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -32,7 +32,7 @@ public class StreamPractice {
                     }
                     return number;
                 })
-                .filter(n -> n % 2 != 0)
+                .filter(n -> !isEvenElement(n))
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -70,5 +70,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEvenElement(int i) {
+        return i % 2 == 0;
     }
 }

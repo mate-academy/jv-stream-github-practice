@@ -17,7 +17,6 @@ import org.junit.rules.ExpectedException;
 import practice.CandidateValidator;
 import practice.StreamPractice;
 
-
 public class StreamPracticeTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();

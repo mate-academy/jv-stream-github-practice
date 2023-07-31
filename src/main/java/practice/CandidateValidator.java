@@ -11,6 +11,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         return c.getAge() >= 35 && c.isAllowedToVote() && c.getNationality().equals("Ukrainian")
                 && difference >= 10;
     }
-    //write your code here
-
 }
