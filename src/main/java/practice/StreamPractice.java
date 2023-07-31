@@ -39,25 +39,21 @@ public class StreamPractice {
         List<Integer> oddIndexNumbers = IntStream.range(0, numbers.size())
                 .mapToObj(i -> {
                     int num = numbers.get(i);
-                    if (i % MOD_NUM_CHECK != ZERO_NUM) {
+                    if (isOddNumber(i)) {
                         num -= 1;
                     }
                     return num;
                 })
                 .collect(Collectors.toList());
-
         List<Integer> oddNumbers = oddIndexNumbers.stream()
-                .filter(num -> num % MOD_NUM_CHECK != ZERO_NUM)
+                .filter(num -> isOddNumber(num))
                 .collect(Collectors.toList());
-
         if (oddNumbers.isEmpty()) {
             throw new NoSuchElementException("No odd numbers in the list.");
         }
-
         double sumOfOddNumbers = oddNumbers.stream()
                 .mapToDouble(Integer::doubleValue)
                 .sum();
-
         return sumOfOddNumbers / oddNumbers.size();
     }
 
@@ -127,5 +123,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isOddNumber(int num) {
+        return num % MOD_NUM_CHECK != ZERO_NUM;
     }
 }
