@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -20,7 +19,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(stringNumbers -> Stream.of(stringNumbers.split(",")))
-                .mapToInt(Integer::parseInt).filter(number -> isEven(number)).min()
+                .mapToInt(Integer::parseInt)
+                .filter(number -> isEven(number))
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -35,8 +36,7 @@ public class StreamPractice {
                 .map(i -> !isEven(i) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> !isEven(number))
                 .average()
-                .orElseThrow(() ->
-                        new NoSuchElementException("No such elements in list " + numbers));
+                .getAsDouble();
     }
 
     /**
@@ -77,7 +77,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                        .filter(person -> catsChecker(person, femaleAge))
+                .filter(person -> catsChecker(person, femaleAge))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -97,8 +97,11 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
-        return candidates.stream().filter(candidateValidator)
-                .map(Candidate::getName).sorted().collect(Collectors.toList());
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private boolean isEven(int number) {
