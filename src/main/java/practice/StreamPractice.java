@@ -34,11 +34,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 == 1)
-                .average();
-        return average.orElseThrow(NoSuchElementException::new);
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("There is no odd numbers in your list"));
     }
 
     /**
@@ -85,8 +85,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge
                         && !p.getCats().isEmpty())
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
