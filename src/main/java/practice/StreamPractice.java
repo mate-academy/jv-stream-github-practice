@@ -3,9 +3,9 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -36,22 +36,18 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> numbersCopy = numbers;
-        return numbers.stream()
-                .map(number -> {
-                    int index = numbersCopy.indexOf(number);
-                    Random random = new Random();
-                    if (index % 2 != 0) {
-                        numbersCopy.set(index,random.nextInt());
-                        return number - 1;
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> {
+                    int number = numbers.get(i);
+                    if (i % 2 == 1) {
+                        number -= 1;
                     }
-                    numbersCopy.set(index,random.nextInt());
                     return number;
                 })
                 .filter(number -> number % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException());
     }
 
     /**
