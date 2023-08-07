@@ -37,17 +37,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> {
-                    int number = numbers.get(i);
-                    if (i % 2 == 1) {
-                        number -= 1;
-                    }
-                    return number;
-                })
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
-                .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElseThrow(() -> new NoSuchElementException("There are"
+                        + " no numbers that "
+                        + "satisfy the conditions"));
     }
 
     /**
@@ -116,7 +111,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> validator = new CandidateValidator();
-        return candidates.stream().filter(validator)
+        return candidates.stream()
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
