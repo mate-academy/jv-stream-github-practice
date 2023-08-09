@@ -36,19 +36,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .collect(Collectors.toList());
-
-        List<Integer> oddNumbers = modifiedNumbers.stream()
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(num -> num % 2 != 0)
-                .collect(Collectors.toList());
-
-        if (oddNumbers.isEmpty()) {
-            throw new NoSuchElementException("No odd numbers in the list.");
-        }
-
-        return oddNumbers.stream().mapToInt(Integer::intValue).average().orElseThrow();
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list."));
     }
 
     /**
