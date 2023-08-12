@@ -15,10 +15,10 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(string -> string.split(","))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(integer -> integer % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                 + numbers));
@@ -32,9 +32,9 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         AtomicInteger index = new AtomicInteger();
         return numbers.stream()
-                .map(str -> index.getAndIncrement() % 2 == 0 ? str : str - 1)
-                .filter(n -> n % 2 != 0)
-                .mapToInt((s) -> Integer.parseInt(String.valueOf(s))).average()
+                .map(integer -> index.getAndIncrement() % 2 == 0 ? integer : integer - 1)
+                .filter(integer -> integer % 2 != 0)
+                .mapToInt((integer) -> Integer.parseInt(String.valueOf(integer))).average()
                 .orElseThrow(NoSuchElementException::new);
     }
 
@@ -48,9 +48,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getAge() <= toAge
-                        && p.getSex().equals(Person.Sex.MAN))
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex().equals(Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +67,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> sortedMaleOrFemale(fromAge, femaleToAge, maleToAge, p))
+                .filter(person -> sortedMaleOrFemale(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
     }
 
