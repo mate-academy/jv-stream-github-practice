@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String DASH = "-";
@@ -12,10 +11,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= MIN_AGE &&
-                candidate.isAllowedToVote() &&
-                NATIONALITY_REQUIRED.equals(candidate.getNationality()) &&
-                yearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
+        return candidate.getAge() >= MIN_AGE
+                && candidate.isAllowedToVote()
+                && NATIONALITY_REQUIRED.equals(candidate.getNationality())
+                && yearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
     }
 
     private int yearsInUkraine(String periodsInUkr) {
