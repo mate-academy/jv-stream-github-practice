@@ -1,13 +1,13 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import model.Candidate;
+import model.Cat;
+import model.Person;
 
 public class StreamPractice {
     private static final String COMA = ",";
@@ -22,8 +22,8 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream().flatMap(numberString -> Stream.of(numberString.split(COMA)))
                 .mapToInt(Integer::parseInt).filter(num -> num % 2 == 0).min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
-
+                .orElseThrow(() -> new RuntimeException
+                        ("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -70,10 +70,12 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
-        return peopleList.stream().filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge) || (person.getSex()
-                        == Person.Sex.WOMAN && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
+                                          int maleToAge, List<Person> peopleList) {
+        return peopleList.stream()
+                .filter(person -> (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge &&
+                        person.getAge() <= maleToAge) || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
