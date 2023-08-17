@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -11,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -87,8 +86,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -107,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(p -> candidateValidator.test(p))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
