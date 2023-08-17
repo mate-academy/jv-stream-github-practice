@@ -11,7 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static CandidateValidator candidateValidator = new CandidateValidator();
+    private CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
