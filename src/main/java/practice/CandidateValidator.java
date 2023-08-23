@@ -5,12 +5,16 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
+    private static final int MINIMAL_AGE = 35;
+    private static final int MINIMAL_PERIOD_UKRAINE_RESIDENCE = 10;
+    private static final int START_YEAR = 0;
+    private static final int END_YEAR = 1;
 
     private int calculateAgeDifference(String periodsInUkraine) {
         String[] years = periodsInUkraine.split("-");
         if (years.length == 2) {
-            int startYear = Integer.parseInt(years[0]);
-            int endYear = Integer.parseInt(years[1]);
+            int startYear = Integer.parseInt(years[START_YEAR]);
+            int endYear = Integer.parseInt(years[END_YEAR]);
             return endYear - startYear;
         }
         return 0;
@@ -19,11 +23,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         return candidate.isAllowedToVote()
-                && candidate.getAge() >= 35
+                && candidate.getAge() >= MINIMAL_AGE
                 && candidate.getNationality().equals(NATIONALITY)
-                && calculateAgeDifference(candidate.getPeriodsInUkr()) > 10;
+                && calculateAgeDifference(candidate.getPeriodsInUkr())
+                > MINIMAL_PERIOD_UKRAINE_RESIDENCE;
     }
 }
-
-
-

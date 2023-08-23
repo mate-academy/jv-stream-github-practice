@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -16,15 +17,15 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream()
-                .flatMap(words -> Stream.of(words.split(","))
+        Optional<Integer> minEven =
+                numbers.stream().flatMap(words -> Stream.of(words.split(","))
                         .map(Integer::parseInt)
-                        .filter(c -> c % 2 == 0)
-                        .map(c -> (Integer) c))
-                .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value"
-                        + " from list: method_input_list"));
+                        .filter(c -> c % 2 == 0))
+                        .min(Integer::compareTo);
+        return minEven.orElseThrow(()
+                -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
