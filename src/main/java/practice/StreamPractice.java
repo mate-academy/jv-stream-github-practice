@@ -9,7 +9,8 @@ import model.Person;
 
 public class StreamPractice {
     public static final String CAN_T_GET_MIN_VALUE_FROM_LIST = "Can't get min value from list:";
-
+    public static final String SPLIT_BY_COMA = ",";
+    
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,13 +21,12 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .flatMap(n -> Stream.of(n.split(",")))
+                .flatMap(number -> Stream.of(number.split(SPLIT_BY_COMA)))
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(CAN_T_GET_MIN_VALUE_FROM_LIST + numbers));
     }
-
 
     /**
      * Given a List of Integer numbers,
@@ -36,13 +36,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         Double sum = IntStream
                 .range(0, numbers.size())
-                .map(i -> {
-                    if (i % 2 != 0) {
-                        return numbers.get(i) - 1;
-                    }
-                    return numbers.get(i);
-                })
-                .filter(num -> num % 2 != 0)
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> number % 2 != 0)
                 .average().getAsDouble();
         return sum;
     }
@@ -57,9 +52,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(e -> e.getAge() > fromAge
-                        && e.getAge() <= toAge
-                        && e.getSex().equals(Person.Sex.MAN))
+                .filter(person -> person.getAge() > fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex().equals(Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -76,13 +71,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> {
-                    if (p.getSex().equals(Person.Sex.MAN)) {
-                        return p.getAge() > fromAge && p.getAge() <= maleToAge;
-                    } else {
-                        return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
-                    }
-                })
+                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                        ? person.getAge() > fromAge && person.getAge() <= maleToAge
+                        : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -93,9 +84,10 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex().equals(Person.Sex.WOMAN))
-                .flatMap(p -> p.getCats().stream())
-                .map(p -> p.getName())
+                .filter(person -> person.getAge() >= femaleAge
+                        && person.getSex().equals(Person.Sex.WOMAN))
+                .flatMap(person -> person.getCats().stream())
+                .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
 
@@ -113,8 +105,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(p -> new CandidateValidator().test(p))
-                .map(p -> p.getName())
+                .filter(candidate -> new CandidateValidator().test(candidate))
+                .map(candidate -> candidate.getName())
                 .sorted()
                 .collect(Collectors.toList());
     }
