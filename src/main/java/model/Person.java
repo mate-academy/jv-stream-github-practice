@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Person {
-    private String name;
-    private int age;
-    private Sex sex;
-    private List<Cat> cats;
+    private final String name;
+    private final int age;
+    private final Sex sex;
+    private final List<Cat> cats;
 
     public Person(String name, int age, Sex sex) {
         this.name = name;
