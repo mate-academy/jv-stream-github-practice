@@ -8,32 +8,19 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String YEARS_DELIMITER = "-";
     private static final int LOWER_AGE_LIMIT = 35;
     private static final int MIN_RESIDENCY_YEARS = 10;
-    private static final int FROM_YEAR = 0;
-    private static final int TO_YEAR = 1;
+    private static final int FROM_YEAR_INDEX = 0;
+    private static final int TO_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
         String[] residencyRange = candidate.getPeriodsInUkr().split(YEARS_DELIMITER);
-        int residencyYears = Integer.parseInt(residencyRange[TO_YEAR])
-                - Integer.parseInt(residencyRange[FROM_YEAR]);
+        int residencyYears = Integer.parseInt(residencyRange[TO_YEAR_INDEX])
+                - Integer.parseInt(residencyRange[FROM_YEAR_INDEX]);
 
-        if (residencyYears < MIN_RESIDENCY_YEARS) {
-            return false;
-        }
-
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-
-        if (!NATIONALITY.equals(candidate.getNationality())) {
-            return false;
-        }
-
-        if (candidate.getAge() < LOWER_AGE_LIMIT) {
-            return false;
-        }
-
-        return true;
+        return (residencyYears >= MIN_RESIDENCY_YEARS)
+                && (candidate.isAllowedToVote())
+                && (NATIONALITY.equals(candidate.getNationality()))
+                && (candidate.getAge() >= LOWER_AGE_LIMIT);
     }
     //write your code here
 }
