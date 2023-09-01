@@ -28,9 +28,8 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .mapToInt(n -> n)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
