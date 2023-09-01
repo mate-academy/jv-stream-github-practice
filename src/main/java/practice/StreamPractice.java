@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,6 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
+
     private CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -21,8 +24,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(e -> Arrays.stream(e.split(COMMA)))
                 .map(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min(Comparator.comparingInt(x -> x))
@@ -37,11 +39,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(e -> e % 2 != 0)
-                .flatMapToInt(IntStream::of)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new NoSuchElementException("There are no numbers in the list "
+                               + "meeting the requirements"));
     }
 
     /**
