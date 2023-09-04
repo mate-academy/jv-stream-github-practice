@@ -43,7 +43,9 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average value from list: " + numbers)
+                );
     }
 
     /**
@@ -55,11 +57,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> menPredicate = p -> p.getSex() == Person.Sex.MAN;
-        Predicate<Person> intervalAgePredicate = p -> p.getAge() >= fromAge && p.getAge() <= toAge;
+        Predicate<Person> menInIntervalAgePredicate = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= toAge;
         return peopleList
                 .stream()
-                .filter(menPredicate.and(intervalAgePredicate))
+                .filter(menInIntervalAgePredicate)
                 .collect(Collectors.toList());
     }
 
