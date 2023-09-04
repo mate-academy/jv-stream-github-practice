@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -57,12 +56,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> menByAgePredicate = person -> person.getAge() >= fromAge
-                && person.getAge() <= toAge
-                && person.getSex() == Person.Sex.MAN;
         return peopleList.stream()
-                .filter(menByAgePredicate)
-                .collect(Collectors.toList());
+                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
+                .toList();
     }
 
     /**
@@ -84,7 +81,7 @@ public class StreamPractice {
                 && person.getAge() <= femaleToAge));
         return peopleList.stream()
                 .filter(personByYearAndSexPredicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -98,7 +95,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -118,6 +115,6 @@ public class StreamPractice {
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
