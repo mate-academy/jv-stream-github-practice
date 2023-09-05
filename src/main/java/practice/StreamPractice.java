@@ -1,11 +1,10 @@
 package practice;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 import java.util.NoSuchElementException;
-
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -50,14 +49,17 @@ public class StreamPractice {
         List<Person> selectedMen = new ArrayList<>();
 
         for (Person person : peopleList) {
-            if (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= toAge) {
+            if (person.getSex() == Person.Sex.MAN
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= toAge) {
                 selectedMen.add(person);
             }
         }
         return selectedMen;
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
+                                          int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
