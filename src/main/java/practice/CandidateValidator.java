@@ -6,6 +6,14 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
+    public int getMaxAge() {
+        return 35;
+    }
+
+    public int getYearsInUkraine() {
+        return 10;
+    }
+
     public boolean test(Candidate candidate) {
         int[] yearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr()
                         .split("-"))
@@ -16,13 +24,5 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getNationality().equals("Ukrainian")
                 && years >= getYearsInUkraine()
                 && candidate.isAllowedToVote();
-    }
-
-    public int getMaxAge() {
-        return 35;
-    }
-
-    public int getYearsInUkraine() {
-        return 10;
     }
 }
