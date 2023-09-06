@@ -6,17 +6,8 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
-    static int maxAge = 35;
-
-    static int getMaxAge() {
-        return maxAge;
-    }
-
-    static int yearsInUkraine = 10;
-
-    static int getYearsInUkraine() {
-        return yearsInUkraine;
-    }
+    private static final int MAX_AGE = 35;
+    private static final int YEARS_IN_UKRAINE = 10;
 
     public boolean test(Candidate candidate) {
         int[] yearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr()
@@ -24,9 +15,9 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .mapToInt(Integer::parseInt)
                 .toArray();
         int years = yearsInUkraine[1] - yearsInUkraine[0];
-        return candidate.getAge() >= getMaxAge()
+        return candidate.getAge() >= MAX_AGE
                 && candidate.getNationality().equals("Ukrainian")
-                && years >= getYearsInUkraine()
+                && years >= YEARS_IN_UKRAINE
                 && candidate.isAllowedToVote();
     }
 }
