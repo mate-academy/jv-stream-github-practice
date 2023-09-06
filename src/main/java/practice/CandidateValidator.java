@@ -8,21 +8,13 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     static int maxAge = 35;
 
-    public static void setMaxAge(int maxAge) {
-        CandidateValidator.maxAge = maxAge;
-    }
-
-    public int getMaxAge() {
+    static int getMaxAge() {
         return maxAge;
     }
 
     static int yearsInUkraine = 10;
 
-    public static void setYearsInUkraine(int yearsInUkraine) {
-        CandidateValidator.yearsInUkraine = yearsInUkraine;
-    }
-
-    public int getYearsInUkraine() {
+    static int getYearsInUkraine() {
         return yearsInUkraine;
     }
 
