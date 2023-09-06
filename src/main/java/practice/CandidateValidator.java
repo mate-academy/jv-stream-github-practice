@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    int CANDIDATE_MAX_AGE = 35;
-    int LIVED_YEARS_IN_UKRAINE = 10;
+    int MAX_AGE = 35;
+    int YEARS_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -15,9 +15,9 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .mapToInt(Integer::parseInt)
                 .toArray();
         int years = yearsInUkraine[1] - yearsInUkraine[0];
-        return candidate.getAge() >= CANDIDATE_MAX_AGE
+        return candidate.getAge() >= MAX_AGE
                 && candidate.getNationality().equals("Ukrainian")
-                && years >= LIVED_YEARS_IN_UKRAINE
+                && years >= YEARS_IN_UKRAINE
                 && candidate.isAllowedToVote();
     }
 }
