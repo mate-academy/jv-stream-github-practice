@@ -6,12 +6,16 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
+    static int maxAge = 35;
+
     public int getMaxAge() {
-        return 35;
+        return maxAge;
     }
 
+    static int yearsInUkraine = 10;
+
     public int getYearsInUkraine() {
-        return 10;
+        return yearsInUkraine;
     }
 
     public boolean test(Candidate candidate) {
