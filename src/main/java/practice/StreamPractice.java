@@ -1,10 +1,11 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 import java.util.stream.Collectors;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -12,33 +13,41 @@ import model.Person;
 public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
-        }
-        List<List<String>> lists = numbers.stream()
-                .map(x -> Arrays.stream(x.split(",")).toList()).toList();
-        List<String> strings = lists.stream().flatMap(List::stream).toList();
-        return strings.stream()
+        return numbers.stream()
+                .flatMap(x -> Arrays.stream(x.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(x -> x % 2 == 0)
                 .min()
-                .orElseThrow(RuntimeException::new);
-
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int sumOfOddNumbers = 0;
-        int countOfOddNumbers = 0;
-        for (int i = 0; i < numbers.size(); i++) {
-            int num = numbers.get(i);
-            if (i % 2 == 1) {
-                num -= 1;
+        class OddNumbersStats {
+            final int sum;
+            final int count;
+
+            OddNumbersStats(int sum, int count) {
+                this.sum = sum;
+                this.count = count;
             }
-            if (num % 2 != 0) {
-                sumOfOddNumbers += num;
-                countOfOddNumbers++;
+
+            OddNumbersStats combine(OddNumbersStats other) {
+                return new OddNumbersStats(this.sum + other.sum, this.count + other.count);
             }
         }
+        OddNumbersStats stats = IntStream.range(0, numbers.size())
+                .mapToObj(i -> {
+                    int num = numbers.get(i);
+                    if (i % 2 == 1) {
+                        num -= 1;
+                    }
+                    return num;
+                })
+                .filter(num -> num % 2 != 0)
+                .map(num -> new OddNumbersStats(num, 1))
+                .reduce(new OddNumbersStats(0, 0), OddNumbersStats::combine);
+        int sumOfOddNumbers = stats.sum;
+        int countOfOddNumbers = stats.count;
         if (countOfOddNumbers == 0) {
             throw new NoSuchElementException("No odd numbers in the list");
         }
@@ -46,16 +55,11 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        List<Person> selectedMen = new ArrayList<>();
-
-        for (Person person : peopleList) {
-            if (person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge
-                    && person.getAge() <= toAge) {
-                selectedMen.add(person);
-            }
-        }
-        return selectedMen;
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -73,16 +77,11 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        List<String> catNames = new ArrayList<>();
-
-        for (Person person : peopleList) {
-            if (person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge) {
-                for (Cat cat : person.getCats()) {
-                    catNames.add(cat.getName());
-                }
-            }
-        }
-        return catNames;
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {

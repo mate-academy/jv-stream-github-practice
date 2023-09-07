@@ -9,7 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MAX_AGE = 35;
     private static final int YEARS_IN_UKRAINE = 10;
 
-    public boolean test(Candidate candidate) {
+        public boolean test(Candidate candidate) {
         int[] yearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr()
                         .split("-"))
                 .mapToInt(Integer::parseInt)
