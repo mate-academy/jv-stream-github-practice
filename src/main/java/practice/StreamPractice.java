@@ -3,9 +3,8 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
 import java.util.stream.Collectors;
-
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,8 +22,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         class OddNumbersStats {
-            final int sum;
-            final int count;
+            private final int sum;
+            private final int count;
 
             OddNumbersStats(int sum, int count) {
                 this.sum = sum;
@@ -35,6 +34,7 @@ public class StreamPractice {
                 return new OddNumbersStats(this.sum + other.sum, this.count + other.count);
             }
         }
+
         OddNumbersStats stats = IntStream.range(0, numbers.size())
                 .mapToObj(i -> {
                     int num = numbers.get(i);
@@ -78,7 +78,9 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person
+                        .Sex.WOMAN && person
+                        .getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
