@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,21 +23,7 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        class OddNumbersStats {
-            private final int sum;
-            private final int count;
-
-            OddNumbersStats(int sum, int count) {
-                this.sum = sum;
-                this.count = count;
-            }
-
-            OddNumbersStats combine(OddNumbersStats other) {
-                return new OddNumbersStats(this.sum + other.sum, this.count + other.count);
-            }
-        }
-
-        OddNumbersStats stats = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> {
                     int num = numbers.get(i);
                     if (i % 2 == 1) {
@@ -45,14 +32,9 @@ public class StreamPractice {
                     return num;
                 })
                 .filter(num -> num % 2 != 0)
-                .map(num -> new OddNumbersStats(num, 1))
-                .reduce(new OddNumbersStats(0, 0), OddNumbersStats::combine);
-        int sumOfOddNumbers = stats.sum;
-        int countOfOddNumbers = stats.count;
-        if (countOfOddNumbers == 0) {
-            throw new NoSuchElementException("No odd numbers in the list");
-        }
-        return (double) sumOfOddNumbers / countOfOddNumbers;
+                .mapToDouble(i -> i)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
