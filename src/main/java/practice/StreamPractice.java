@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -50,10 +51,13 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> personPredicate = (person) ->
+                person.getSex().equals(Person.Sex.MAN)
+                && fromAge <= person.getAge()
+                && person.getAge() <= toAge;
+
         return peopleList.stream()
-                .filter(x -> x.getSex().equals(Person.Sex.MAN)
-                        && fromAge <= x.getAge()
-                        && x.getAge() <= toAge)
+                .filter(personPredicate)
                 .toList();
     }
 
@@ -69,10 +73,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = person ->
+                fromAge <= person.getAge()
+                        && (person.getSex().equals(Person.Sex.MAN)
+                        ? (person.getAge() <= maleToAge) : (person.getAge() <= femaleToAge));
+
         return peopleList.stream()
-                .filter(x -> fromAge <= x.getAge()
-                        && (x.getSex().equals(Person.Sex.MAN)
-                        ? (x.getAge() <= maleToAge) : (x.getAge() <= femaleToAge)))
+                .filter(personPredicate)
                 .toList();
     }
 
@@ -82,9 +89,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> personPredicate = (person) ->
+                person.getSex().equals(Person.Sex.WOMAN)
+                && femaleAge < person.getAge();
+
         return peopleList.stream()
-                .filter(x -> x.getSex().equals(Person.Sex.WOMAN)
-                        && femaleAge < x.getAge())
+                .filter(personPredicate)
                 .flatMap(x -> x.getCats().stream().map(Cat::getName))
                 .toList();
     }
