@@ -6,11 +6,11 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
-    private static final int MAX_AGE = 35;
-    private static final int MIN_YEARS_IN_UKRAINE = 10;
-    private static final String UKRAINIAN_NATIONALITY = "Ukrainian";
-    private static final int START_YEAR_INDEX = 0;
-    private static final int END_YEAR_INDEX = 1;
+    final int MAX_AGE = 35;
+    final int MIN_YEARS_IN_UKRAINE = 10;
+    final String UKRAINIAN_NATIONALITY = "Ukrainian";
+    final int START_YEAR_INDEX = 0;
+    final int END_YEAR_INDEX = 1;
 
     public boolean test(Candidate candidate) {
         int[] yearsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
