@@ -17,7 +17,5 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
                 && yearsInUkraine >= MIN_YEARS_IN_UKRAINE;
-
     }
-
 }
