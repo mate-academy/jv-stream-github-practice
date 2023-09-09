@@ -8,18 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (validCandidateAge(candidate) && validNationality(candidate)
-                && validPeriodInUkr(candidate) && candidate.isAllowedToVote()) {
-            return true;
-        }
-        return false;
-    }
-
-    public static void main(String[] args) {
-        Candidate fred = new Candidate(39, "German", true, "2000-2019");
-        fred.setName("Fred");
-        CandidateValidator candidateValidator = new CandidateValidator();
-        System.out.println(candidateValidator.test(fred));
+        return validCandidateAge(candidate) && validNationality(candidate)
+                && validPeriodInUkr(candidate) && candidate.isAllowedToVote();
     }
 
     private boolean validCandidateAge(Candidate candidate) {
@@ -35,9 +25,6 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .split(slashSeparator)[1]);
         int startYearInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
                 .split(slashSeparator)[0]);
-        if (lastTimeInUkr - startYearInUkr > 10) {
-            return true;
-        }
-        return false;
+        return lastTimeInUkr - startYearInUkr > 10;
     }
 }
