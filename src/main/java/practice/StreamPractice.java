@@ -10,6 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,7 +24,6 @@ public class StreamPractice {
                 .map(string -> string.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .boxed()
                 .filter(integer -> integer % 2 == 0)
                 .sorted()
                 .findFirst()
@@ -70,12 +71,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> {
-                    if (person.getSex().equals(Person.Sex.MAN)) {
-                        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
-                    }
-                    return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
-                })
+                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                            ? person.getAge() >= fromAge && person.getAge() <= maleToAge
+                            : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
                 .toList();
     }
 
@@ -108,14 +106,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> candidate.getAge() >= 35)
-                .filter(candidate -> candidate.getNationality().equals("Ukrainian"))
-                .filter(Candidate::isAllowedToVote)
-                .filter(candidate -> {
-                    String[] periodString = candidate.getPeriodsInUkr().split("-");
-                    return Integer.parseInt(periodString[1])
-                            - Integer.parseInt(periodString[0]) >= 10;
-                })
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
