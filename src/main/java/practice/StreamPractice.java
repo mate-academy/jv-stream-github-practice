@@ -19,6 +19,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(string -> string.split(NUMBER_SEPARATOR))
