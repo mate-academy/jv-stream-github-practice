@@ -20,7 +20,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMapToInt(x -> Arrays.stream(x.split(","))
-                        .mapToInt(Integer::valueOf))
+                .mapToInt(Integer::valueOf))
                 .filter(x -> x % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
