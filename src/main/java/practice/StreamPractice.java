@@ -11,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBER_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,7 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(","))
+                .map(string -> string.split(NUMBER_SEPARATOR))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
