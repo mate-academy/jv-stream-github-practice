@@ -25,7 +25,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + "< Here is our input 'numbers' >"));
+                        + numbers));
     }
 
     /**
@@ -108,12 +108,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates
                 .stream()
-                .filter(c -> c.getAge() >= 35 && c.isAllowedToVote()
-                        && c.getNationality().equals("Ukrainian")
-                        && Integer.parseInt(c.getPeriodsInUkr().split("-")[1])
-                        - Integer.parseInt(c.getPeriodsInUkr().split("-")[0]) >= 10)
+                .filter(candidateValidator)
                 .map(c -> c.getName())
                 .sorted()
                 .collect(Collectors.toList());
