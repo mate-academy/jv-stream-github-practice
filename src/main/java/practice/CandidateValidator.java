@@ -4,7 +4,10 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final String slashSeparator = "-";
+    private static final String SLASH_SEPARATOR = "-";
+    private static final int MINIMAL_CANDIDATE_AGE = 35;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int MINIMAL_PERIOD_IN_UKR = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -13,18 +16,18 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean validCandidateAge(Candidate candidate) {
-        return candidate.getAge() >= 35;
+        return candidate.getAge() >= MINIMAL_CANDIDATE_AGE;
     }
 
     private boolean validNationality(Candidate candidate) {
-        return candidate.getNationality().equals("Ukrainian");
+        return candidate.getNationality().equals(NATIONALITY);
     }
 
     private boolean validPeriodInUkr(Candidate candidate) {
-        int lastTimeInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(slashSeparator)[1]);
-        int startYearInUkr = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(slashSeparator)[0]);
-        return lastTimeInUkr - startYearInUkr > 10;
+        String[] periodParts = candidate.getPeriodsInUkr().split(SLASH_SEPARATOR);
+        int startYearInUkraine = Integer.parseInt(periodParts[0]);
+        int lastYearInUkraine = Integer.parseInt(periodParts[1]);
+        return lastYearInUkraine - startYearInUkraine >= MINIMAL_PERIOD_IN_UKR;
+
     }
 }
