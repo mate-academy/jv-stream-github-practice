@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -21,8 +20,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(NUMBER_SEPARATOR))
-                .flatMap(Arrays::stream)
+                .flatMap(string -> Arrays.stream(string.split(NUMBER_SEPARATOR)))
                 .map(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .mapToInt(i -> i)
@@ -104,7 +102,7 @@ public class StreamPractice {
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
-                .sorted(Comparator.naturalOrder())
+                .sorted()
                 .toList();
     }
 
