@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -39,7 +40,6 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
-                .sorted()
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "Can't get average value from list: " + numbers
@@ -55,10 +55,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> manFromAgeToAge = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge
+                && p.getAge() <= toAge;
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= toAge)
+                .filter(manFromAgeToAge)
                 .toList();
     }
 
@@ -74,12 +75,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
+        Predicate<Person> workablePeople = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                || (p.getSex().equals(Person.Sex.WOMAN)
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        || (p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
+                .filter(workablePeople)
                 .toList();
     }
 
