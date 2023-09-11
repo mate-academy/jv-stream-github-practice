@@ -35,12 +35,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    if (i % 2 == 1) {
-                        return numbers.get(i) - 1;
-                    }
-                    return numbers.get(i);
-                })
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
                 .orElseThrow();
@@ -75,13 +70,13 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> isWorkable = i -> {
             if (i.getSex() == Person.Sex.MAN) {
-                return i.getAge() <= maleToAge;
+                return i.getAge() >= fromAge && i.getAge() <= maleToAge;
             } else {
-                return i.getAge() <= femaleToAge;
+                return i.getAge() >= fromAge && i.getAge() <= femaleToAge;
             }
         };
+
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge)
                 .filter(isWorkable)
                 .toList();
     }
@@ -97,7 +92,6 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .distinct()
                 .toList();
     }
 
@@ -115,7 +109,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(i -> new CandidateValidator().test(i))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
