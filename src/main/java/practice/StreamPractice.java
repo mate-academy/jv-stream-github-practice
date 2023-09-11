@@ -25,7 +25,7 @@ public class StreamPractice {
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"
-                        + ": method_input_list"));
+                        + ":" + numbers));
     }
 
     /**
