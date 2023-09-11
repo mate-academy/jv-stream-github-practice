@@ -1,11 +1,13 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -20,7 +22,7 @@ public class StreamPractice {
         return numbers
                 .stream()
                 .map(n -> n.split(","))
-                .flatMap(n -> Arrays.stream(n))
+                .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -39,8 +41,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Can't get average value from list"));
+                .getAsDouble();
     }
 
     /**
@@ -56,7 +57,7 @@ public class StreamPractice {
                 .stream()
                 .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();//collect(Collectors.toList());
     }
 
     /**
@@ -71,13 +72,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> predicate = p -> (p.getSex().equals(Person.Sex.MAN)
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                || (p.getSex().equals(Person.Sex.WOMAN)
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge);
         return peopleList
                 .stream()
-                .filter(p -> (p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
-                .collect(Collectors.toList());
+                .filter(predicate)
+                .toList();
     }
 
     /**
@@ -89,9 +91,9 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(p -> p.stream())
-                .map(p -> p.getName())
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -112,7 +114,7 @@ public class StreamPractice {
         return candidates
                 .stream()
                 .filter(candidateValidator)
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
