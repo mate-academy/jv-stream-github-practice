@@ -28,7 +28,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 == 0)
                 .min(Comparator.naturalOrder()).orElseThrow(()
                         -> new RuntimeException("Can't get min value from list: "
-                        + "< Here is our input 'numbers' >"));
+                        + numbers));
     }
 
     /**
