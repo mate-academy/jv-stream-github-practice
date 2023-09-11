@@ -35,8 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(number -> numbers.get(number) - number % 2)
-                .filter(num -> num % 2 != 0)
+                .map(n -> numbers.get(n) - n % 2)
+                .filter(n -> n % 2 != 0)
                 .average()
                 .getAsDouble();
     }
@@ -51,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> isPersonApplicableToArmy = (person) ->
-                person.getSex().equals(Person.Sex.MAN)
+                person.getSex() == Person.Sex.MAN
                 && fromAge <= person.getAge()
                 && person.getAge() <= toAge;
 
@@ -72,13 +72,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> isPersonCanWork = person ->
+        Predicate<Person> personCanWork = person ->
                 fromAge <= person.getAge()
                         && (person.getSex().equals(Person.Sex.MAN)
-                        ? (person.getAge() <= maleToAge) : (person.getAge() <= femaleToAge));
+                        ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
 
         return peopleList.stream()
-                .filter(isPersonCanWork)
+                .filter(personCanWork)
                 .toList();
     }
 
@@ -94,8 +94,8 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(isItWomanWithCats)
-                .flatMap(x -> x.getCats().stream()
-                        .map(Cat::getName))
+                .flatMap(x -> x.getCats().stream())
+                .map(Cat::getName)
                 .toList();
     }
 
