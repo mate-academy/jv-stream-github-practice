@@ -114,7 +114,8 @@ public class StreamPractice {
                 && person.getSex() == Person.Sex.MAN;
     }
 
-    private static Predicate<Person> getPersonPredicate(int fromAge, int femaleToAge, int maleToAge) {
+    private static Predicate<Person> getPersonPredicate(int fromAge,
+                                                        int femaleToAge, int maleToAge) {
         return person -> person.getSex() == Person.Sex.MAN
                 ? person.getAge() >= fromAge && person.getAge() <= maleToAge
                 : person.getAge() >= fromAge && person.getAge() <= femaleToAge;
