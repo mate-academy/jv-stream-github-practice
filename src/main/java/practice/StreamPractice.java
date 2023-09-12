@@ -16,8 +16,7 @@ public class StreamPractice {
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: < Here is our input "
-                                + numbers + " >\""));
+                        "Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -30,31 +29,31 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
                         ? p.getAge() >= fromAge && p.getAge() <= femaleToAge
                         : p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
