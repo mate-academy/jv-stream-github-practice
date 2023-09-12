@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -25,7 +24,8 @@ public class StreamPractice {
                 .filter(e -> e % 2 == 0)
                 .min()
                 .orElseThrow(
-                        () -> canNotGetValueFromListException(numbers));
+                        () -> new RuntimeException("Can't get min value from list: " + numbers)
+                );
     }
 
     /**
@@ -58,7 +58,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(validPerson)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -80,7 +80,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(validPerson)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -93,7 +93,7 @@ public class StreamPractice {
                 .filter(e -> e.getAge() >= femaleAge && e.getSex() == Person.Sex.WOMAN)
                 .flatMap(e -> e.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -109,16 +109,12 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator<Candidate> candidateValidator = new CandidateValidator<>();
+        CandidateValidator candidateValidator = new CandidateValidator();
 
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
-    }
-
-    private RuntimeException canNotGetValueFromListException(List<String> list) {
-        return new RuntimeException("Can't get min value from list: method_input_list: " + list);
+                .toList();
     }
 }
