@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -39,7 +40,7 @@ public class StreamPractice {
                         .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                         .filter(number -> number % 2 != 0)
                         .average()
-                        .orElseThrow(() -> new NoSuchElementException());
+                        .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -87,8 +88,8 @@ public class StreamPractice {
                         && people.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(cat -> cat.stream())
-                .map(cat -> cat.getName())
-                .collect(toList());
+                .map(Cat::getName)
+                .toList();
     }
 
     /**
