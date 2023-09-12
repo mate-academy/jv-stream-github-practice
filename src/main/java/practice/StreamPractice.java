@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final CandidateValidator validator = new CandidateValidator();
-    private final String regexStringNumbers = ",";
+    private static final CandidateValidator VALIDATOR = new CandidateValidator();
+    private static final String REGEX_STRING_NUMBERS = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,11 +23,12 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(regexStringNumbers))
+                .map(s -> s.split(REGEX_STRING_NUMBERS))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException(
+                .min()
+                .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: < Here is our input 'numbers' >"));
     }
 
@@ -37,14 +38,11 @@ public class StreamPractice {
       But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(1, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-
-        return numbers.stream()
-                .filter(i -> i % 2 != 0)
-                .mapToDouble(i -> i)
-                .average().orElseThrow(NoSuchElementException::new);
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(number -> number % 2 != 0)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("No numbers in list."));
     }
 
     /**
@@ -59,7 +57,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN)
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -74,11 +72,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> checkSex = person -> person.getSex() == Person.Sex.MAN
+                ? (person.getAge() <= maleToAge) : (person.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN ? (p.getAge() <= maleToAge)
-                        : (p.getAge() <= femaleToAge))
+                .filter(checkSex)
                 .filter(p -> p.getAge() >= fromAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -92,9 +91,9 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN)
                 .filter(p -> p.getAge() >= femaleAge)
                 .map(Person::getCats)
-                 .flatMap(Collection::stream)
-                 .map(Cat::getName)
-                 .collect(Collectors.toList());
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .toList();
     }
 
     /**
@@ -111,9 +110,9 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(p -> validator.test(p))
+                .filter(VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
