@@ -1,8 +1,8 @@
 package practice;
 
-import model.Candidate;
 import java.util.Arrays;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {

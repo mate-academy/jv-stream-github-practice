@@ -1,13 +1,11 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Person;
 
@@ -44,7 +42,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't find average from: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Can't find average from: "
+                        + numbers));
     }
 
     /**
