@@ -1,7 +1,7 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
@@ -21,6 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean checkTimeLivingInCountry(Candidate candidate) {
         String[] dates = candidate.getPeriodsInUkr().split(SEPARATOR);
-        return Integer.parseInt(dates[END_INDEX]) - Integer.parseInt(dates[BEGIN_INDEX]) >= PERIOD_IN_UKR;
+        return Integer.parseInt(dates[END_INDEX])
+                - Integer.parseInt(dates[BEGIN_INDEX]) >= PERIOD_IN_UKR;
     }
 }
