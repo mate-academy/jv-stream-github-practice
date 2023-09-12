@@ -4,14 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int SUBTRACT1 = 1;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -38,9 +36,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(oddNumber -> oddNumber % 2 != 0 ? numbers.get(oddNumber) - SUBTRACT1
-                        : numbers.get(oddNumber))
-                .filter(oddIndex -> oddIndex % 2 != 0)
+                .mapToDouble(n -> n % 2 != 0 ? numbers.get(n) - 1
+                        : numbers.get(n))
+                .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get average of odds from "
                         + numbers));
@@ -56,9 +54,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .filter(person -> person.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .toList();
     }
 
     /**
@@ -79,7 +77,7 @@ public class StreamPractice {
                 && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
         return peopleList.stream()
                 .filter(menPredicate.or(womenPredicate))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -93,7 +91,7 @@ public class StreamPractice {
                 && person.getAge() >= femaleAge && !person.getCats().isEmpty())
                 .flatMap(catsArray -> catsArray.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
 
     }
 
@@ -114,7 +112,7 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
     }
 }
