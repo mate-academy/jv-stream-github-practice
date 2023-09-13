@@ -16,9 +16,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] periodsInUkraine = candidate.getPeriodsInUkr().split(LIVING_PERIOD_SEPARATOR);
         int livingPeriodStart = Integer.parseInt(periodsInUkraine[LIVING_PERIOD_START_INDEX]);
         int livingPeriodEnd = Integer.parseInt(periodsInUkraine[LIVING_PERIOD_END_INDEX]);
-        int resultOfSubtraction = livingPeriodEnd - livingPeriodStart;
+        int yearsInUkraine = livingPeriodEnd - livingPeriodStart;
         return candidate.getAge() >= REQUIRED_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && (resultOfSubtraction) > YEARS_TO_LIVE_IN_UKRAINE;
+                && (yearsInUkraine) > YEARS_TO_LIVE_IN_UKRAINE;
     }
 }
