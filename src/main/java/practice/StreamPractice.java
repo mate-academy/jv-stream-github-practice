@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -30,13 +29,13 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> menAgePredicate  = person ->
+        Predicate<Person> menAgePredicate = person ->
                 person.getSex() == Person.Sex.MAN
                         && person.getAge() > fromAge
                         && person.getAge() <= toAge;
 
         return peopleList.stream()
-                .filter(menAgePredicate )
+                .filter(menAgePredicate)
                 .toList();
     }
 
