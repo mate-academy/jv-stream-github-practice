@@ -12,14 +12,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START_DATE_INDEX = 0;
 
     @Override
-    public boolean test(Candidate o) {
-        Candidate candidate = o;
+    public boolean test(Candidate candidate) {
         String[] livingPeriod = candidate.getPeriodsInUkr().split(DATE_SEPARATOR);
-        int periodInUkr = Integer.parseInt(livingPeriod[END_DATE_INDEX])
-                - Integer.parseInt(livingPeriod[START_DATE_INDEX]);
-        return (candidate.getAge() >= MIN_VALID_AGE_FOR_PRESIDENT
+        int startOfLivingPeriodInUkr = Integer.parseInt(livingPeriod[START_DATE_INDEX]);
+        int endOfLivingPeriodInUkr = Integer.parseInt(livingPeriod[END_DATE_INDEX]);
+        int periodInUkr = endOfLivingPeriodInUkr - startOfLivingPeriodInUkr;
+        return candidate.getAge() >= MIN_VALID_AGE_FOR_PRESIDENT
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
-                && periodInUkr >= MIN_LIVING_PERIOD);
+                && periodInUkr >= MIN_LIVING_PERIOD;
     }
 }
