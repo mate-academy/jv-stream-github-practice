@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -21,15 +22,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        int result = numbers.stream()
-                .map(n -> n.split(DELIMITER))
+        return numbers.stream()
+                .map(number -> number.split(DELIMITER))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .reduce(Integer.MAX_VALUE, (a,b) -> b < a && pairingCheck(b) ? b : a);
-        if (result == Integer.MAX_VALUE) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return result;
+                .filter(this::isEvenNumber)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -39,10 +39,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> !pairingCheck(index) ? numbers.get(index) - SUBTRACTION_VALUE
+                .map(index -> isOddNumber(index)
+                        ? numbers.get(index) - SUBTRACTION_VALUE
                         : numbers.get(index))
-                .mapToInt(number -> number)
-                .filter(number -> !pairingCheck(number))
+                .filter(this::isOddNumber)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "The average of odd numbers cannot be calculated"));
@@ -58,9 +58,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= toAge)
+                .filter(people -> people.getSex() == Person.Sex.MAN
+                        && people.getAge() >= fromAge
+                        && people.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -77,9 +77,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getAge() <= (p.getSex() == Person.Sex.MAN
-                            ? maleToAge : femaleToAge))
+                .filter(people -> people.getAge() >= fromAge
+                        && people.getAge() <= (people.getSex() == Person.Sex.MAN
+                            ? maleToAge
+                            : femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -118,7 +119,11 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean pairingCheck(int number) {
+    private boolean isEvenNumber(int number) {
         return number % 2 == 0;
+    }
+
+    private boolean isOddNumber(int number) {
+        return number % 2 != 0;
     }
 }
