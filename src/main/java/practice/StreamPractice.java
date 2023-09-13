@@ -30,13 +30,13 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> personPredicate = person ->
+        Predicate<Person> menAgePredicate  = person ->
                 person.getSex() == Person.Sex.MAN
                         && person.getAge() > fromAge
                         && person.getAge() <= toAge;
 
         return peopleList.stream()
-                .filter(personPredicate)
+                .filter(menAgePredicate )
                 .toList();
     }
 
@@ -52,7 +52,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(workingMenPredicate.or(workingWomenPredicate))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
