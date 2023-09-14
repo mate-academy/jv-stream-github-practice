@@ -1,13 +1,13 @@
 package core.basesyntax.model.practice;
 
+import core.basesyntax.model.Candidate;
+import core.basesyntax.model.Cat;
+import core.basesyntax.model.Person;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import core.basesyntax.model.Candidate;
-import core.basesyntax.model.Cat;
-import core.basesyntax.model.Person;
 
 public class StreamPractice {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
@@ -25,7 +25,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list:" + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                        + numbers));
     }
 
     /**
@@ -70,7 +71,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(people -> people.getSex().equals(Person.Sex.MAN) ? people.getAge() >= fromAge
+                .filter(people -> people.getSex().equals(Person.Sex.MAN)
+                        ? people.getAge() >= fromAge
                         && people.getAge() <= maleToAge : people.getAge() >= fromAge
                         && people.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
