@@ -21,7 +21,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .mapToInt(i -> i)
                 .filter(number -> number % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
 
     }
 
@@ -32,8 +33,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(number -> number % 2 == 1 ? numbers.get(number) - 1 : numbers.get(number))
-                .filter(number -> number % 2 == 1)
+                .map(n -> n % 2 == 1 ? numbers.get(n) - 1 : numbers.get(n))
+                .filter(n -> n % 2 == 1)
                 .average()
                 .getAsDouble();
 
@@ -51,7 +52,8 @@ public class StreamPractice {
         Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
                 && person.getAge() <= toAge && person.getSex() == Person.Sex.MAN;
 
-        return peopleList.stream().filter(personPredicate)
+        return peopleList.stream()
+                .filter(personPredicate)
                 .toList();
     }
 
@@ -67,9 +69,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
-                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
-                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
+        Predicate<Person> personPredicate = p -> p.getAge() >= fromAge
+                && (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge
+                || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge);
 
         return peopleList.stream()
                  .filter(personPredicate)
