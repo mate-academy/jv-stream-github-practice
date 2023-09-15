@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -47,8 +48,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList.stream().filter(person -> person.getSex() == Person.Sex.MAN
-                && person.getAge() <= toAge && person.getAge() >= fromAge)
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge && person.getSex() == Person.Sex.MAN;
+
+        return peopleList.stream().filter(personPredicate)
                 .toList();
     }
 
@@ -64,11 +67,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> personPredicate = person -> person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
+                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
 
         return peopleList.stream()
-                 .filter(person -> person.getSex() == Person.Sex.MAN
-                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge
-                        : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                 .filter(personPredicate)
                  .toList();
     }
 
