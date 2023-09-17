@@ -1,7 +1,7 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
@@ -11,6 +11,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String SEPARATOR = "-";
     private static final int FROM_YEAR_INDEX = 0;
     private static final int TO_YEAR_INDEX = 1;
+
     @Override
     public boolean test(Candidate candidate) {
         String[] periodInUkr = candidate.getPeriodsInUkr().split(SEPARATOR);
