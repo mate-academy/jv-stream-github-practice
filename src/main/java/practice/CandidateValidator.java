@@ -19,15 +19,3 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote() && candidate.getNationality().equals(NATIONALITY);
     }
 }
-
-/*
-private Predicate<Candidate> predicate = c ->
-            Integer.parseInt(c.getPeriodsInUkr().split("-")[1])
-            - Integer.parseInt(c.getPeriodsInUkr().split("-")[0]) >= 10 && c.getAge() >= 35
-            && c.isAllowedToVote() == true && c.getNationality().equals("Ukrainian");
-
-    @Override
-    public boolean test(Object o) {
-        return false;
-    }
- */
