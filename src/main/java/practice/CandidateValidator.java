@@ -17,9 +17,3 @@ public class CandidateValidator implements Predicate<Candidate> {
         return age >= 35 && isUkrainian && hasVotingRights && hasLivedInUkraineFor10Years;
     }
 }
-
-
-
-
-
-
