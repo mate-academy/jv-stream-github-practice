@@ -1,9 +1,7 @@
 package practice;
 
-import model.Candidate;
-
-import java.util.List;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
@@ -12,9 +10,13 @@ public class CandidateValidator implements Predicate<Candidate> {
         int age = candidate.getAge();
         boolean allowedToVote = candidate.isAllowedToVote();
         String nationality = candidate.getNationality();
-        boolean livedInUkraineFor10Years = calculateTotalYearsInUkraine(candidate.getPeriodsInUkr()) >= 10;
+        boolean livedInUkraineFor10Years =
+                calculateTotalYearsInUkraine(candidate.getPeriodsInUkr()) >= 10;
 
-        return age >= 35 && allowedToVote && nationality.equals("Ukrainian") && livedInUkraineFor10Years;
+        return age >= 35
+                && allowedToVote
+                && nationality.equals("Ukrainian")
+                && livedInUkraineFor10Years;
     }
 
     private int calculateTotalYearsInUkraine(String periodsInUkraine) {
