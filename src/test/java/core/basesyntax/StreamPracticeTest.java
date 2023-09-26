@@ -160,7 +160,7 @@ public class StreamPracticeTest {
         expected.add(new Person("Roman", 25, Person.Sex.MAN));
         expected.add(new Person("Carlos", 60, Person.Sex.MAN));
         List<Person> result = solution.getWorkablePeople(18, 55, 60, peopleList);
-        Assert.assertEquals(expected, result);
+        Assert.  assertEquals(expected, result);
     }
 
     @Test
