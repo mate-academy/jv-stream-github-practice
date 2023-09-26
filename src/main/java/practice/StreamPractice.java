@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -31,7 +30,8 @@ public class StreamPractice {
         }
         return evenNumbers.stream()
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException ("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -105,7 +105,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge()
+                        >= femaleAge)
                 .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
                 .toList();
@@ -125,10 +126,10 @@ public class StreamPractice {
      */
     public static Predicate<Candidate> isEligibleForPresident() {
         return candidate ->
-                candidate.getAge() > 35 &&
-                        candidate.isAllowedToVote() &&
-                        "Ukrainian".equals(candidate.getNationality()) &&
-                        hasLivedInUkraineForTenYears(candidate.getPeriodsInUkr());
+                candidate.getAge() > 35
+                        && candidate.isAllowedToVote()
+                        && "Ukrainian".equals(candidate.getNationality())
+                        && hasLivedInUkraineForTenYears(candidate.getPeriodsInUkr());
     }
 
     private static boolean hasLivedInUkraineForTenYears(String periodsInUkr) {
