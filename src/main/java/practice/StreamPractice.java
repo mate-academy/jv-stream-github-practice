@@ -124,28 +124,11 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
-    public static Predicate<Candidate> isEligibleForPresident() {
-        return candidate ->
-                candidate.getAge() > 35
-                        && candidate.isAllowedToVote()
-                        && "Ukrainian".equals(candidate.getNationality())
-                        && hasLivedInUkraineForTenYears(candidate.getPeriodsInUkr());
-    }
-
-    private static boolean hasLivedInUkraineForTenYears(String periodsInUkr) {
-        String[] years = periodsInUkr.split("-");
-        if (years.length != 2) {
-            return false;
-        }
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
-        int totalYears = endYear - startYear + 1;
-        return totalYears >= 10;
-    }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(isEligibleForPresident())
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());
