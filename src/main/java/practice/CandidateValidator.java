@@ -4,6 +4,8 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_PERIOD_IN_UKR = 10;
+    private static final int MIN_AGE = 35;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -11,9 +13,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         boolean allowedToVote = candidate.isAllowedToVote();
         String nationality = candidate.getNationality();
         boolean livedInUkraineFor10Years =
-                calculateTotalYearsInUkraine(candidate.getPeriodsInUkr()) >= 10;
+                calculateTotalYearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
 
-        return age >= 35
+        return age >= MIN_AGE
                 && allowedToVote
                 && nationality.equals("Ukrainian")
                 && livedInUkraineFor10Years;
