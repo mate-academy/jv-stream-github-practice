@@ -7,6 +7,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
     public static final String NATIONALITY_UKRAINIAN = "Ukrainian";
     public static final int MIN_YEARS_IN_UKRAINE = 10;
+    private static final int START_YEAR_INDEX = 0;
+    private static final int END_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,8 +23,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (years.length != 2) {
             return false;
         }
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
+        int startYear = Integer.parseInt(years[START_YEAR_INDEX]);
+        int endYear = Integer.parseInt(years[END_YEAR_INDEX]);
         int totalYears = endYear - startYear + 1;
         return totalYears >= MIN_YEARS_IN_UKRAINE;
     }
