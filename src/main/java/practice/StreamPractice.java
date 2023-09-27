@@ -19,18 +19,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Stream.of(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .toList();
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return evenNumbers.stream()
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -39,22 +33,18 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        if (numbers.isEmpty()) {
-            throw new NoSuchElementException("List is empty.");
-        }
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
-                .toList();
-        List<Integer> oddNumbers = modifiedNumbers.stream()
                 .filter(num -> num % 2 != 0)
-                .toList();
-        if (oddNumbers.isEmpty()) {
-            throw new NoSuchElementException("No odd numbers found.");
-        }
-        double sum = oddNumbers.stream()
                 .mapToInt(Integer::intValue)
-                .sum();
-        return (double) sum / oddNumbers.size();
+                .average()
+                .orElseThrow(() -> {
+                    if (numbers.isEmpty()) {
+                        return new NoSuchElementException("List is empty.");
+                    } else {
+                        return new NoSuchElementException("No odd numbers found.");
+                    }
+                });
     }
 
     /**
