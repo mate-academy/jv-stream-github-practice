@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator candidateValidator = new CandidateValidator();
+    private static final Predicate<Candidate> CUSTOM_VALIDATOR = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -73,8 +74,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge
-                        || p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
+                        || p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -105,8 +106,8 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> candidateValidator.test(c))
-                .map(c -> c.getName())
+                .filter(CUSTOM_VALIDATOR)
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
