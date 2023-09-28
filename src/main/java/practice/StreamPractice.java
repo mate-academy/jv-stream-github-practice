@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -33,8 +32,7 @@ public class StreamPractice {
                 .sorted()
                 .findFirst()
                 .orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list: method_input_list: "
-                        + numbers));
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -73,7 +71,6 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> pred = p -> p.getSex().equals(Person.Sex.MAN);
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         ? p.getAge() >= fromAge && p.getAge() <= maleToAge
