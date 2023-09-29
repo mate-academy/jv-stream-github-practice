@@ -2,7 +2,9 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.PrimitiveIterator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,8 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(word -> word.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(word -> Arrays.stream(word.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(number -> number % 2 == 0)
                 .min()
@@ -33,13 +34,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int[] positionHolder = new int[1];
+        final IntStream range = IntStream.range(0, numbers.size());
+        final PrimitiveIterator.OfInt iteratorByIndex = range.iterator();
         return numbers.stream()
-                .mapToInt(number -> {
-                    final int checkedNumber = positionHolder[0] % 2 != 0 ? number - 1 : number;
-                    positionHolder[0]++;
-                    return checkedNumber;
-                })
+                .mapToInt(number -> iteratorByIndex.nextInt() % 2 != 0 ? number - 1 : number)
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow();
