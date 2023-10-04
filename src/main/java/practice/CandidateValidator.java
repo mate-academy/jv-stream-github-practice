@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
 
@@ -17,7 +16,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split(YEARS_REGEX_SPLIT);
         int yearsCount = Integer.parseInt(years[YEARS_INDEX_END]) - Integer.parseInt(years[YEARS_INDEX_START]);
-        if (candidate.isAllowedToVote() && candidate.getAge() >= AGE_MIN_VALID
+        if (candidate.isAllowedToVote()
+                && candidate.getAge() >= AGE_MIN_VALID
                 && candidate.getNationality().equals(NATIONALITY_VALID)
                 && yearsCount >= YEARS_MIN_VALID) {
             return true;
