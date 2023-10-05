@@ -42,7 +42,8 @@ public class StreamPractice {
                 .mapToInt(number -> number)
                 .filter(intNumber -> intNumber % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list: "
+                        + numbers));
     }
 
     /**
