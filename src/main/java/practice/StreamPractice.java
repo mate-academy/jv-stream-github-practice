@@ -8,8 +8,15 @@ import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
+import practice.converter.IntegerConverter;
+import practice.validators.CandidateValidator;
+import practice.validators.ManValidator;
+import practice.validators.WomanWithCatsValidator;
+import practice.validators.WorkablePersonValidator;
 
 public class StreamPractice {
+    private static final String DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,13 +26,13 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(number -> number.split(","))
+                .map(number -> number.split(DELIMITER))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -34,13 +41,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        IntegerConverter integerConverter = new IntegerConverter(numbers);
         return numbers.stream()
-                .map(number -> {
-                    int index = numbers.indexOf(number);
-                    int num = index % 2 != 0 ? --number : number;
-                    numbers.set(index, null);
-                    return num;
-                })
+                .map(integerConverter)
                 .filter(number -> number % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
@@ -56,9 +59,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        ManValidator manValidator = new ManValidator(fromAge, toAge);
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(manValidator)
                 .collect(Collectors.toList());
     }
 
@@ -74,15 +77,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        WorkablePersonValidator workablePersonValidator = new WorkablePersonValidator(fromAge,
+                femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(person -> {
-                    int age = person.getAge();
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return age >= fromAge && age <= maleToAge;
-                    } else {
-                        return age >= fromAge && age <= femaleToAge;
-                    }
-                })
+                .filter(workablePersonValidator)
                 .collect(Collectors.toList());
     }
 
@@ -92,9 +90,9 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        WomanWithCatsValidator womanWithCatsValidator = new WomanWithCatsValidator(femaleAge);
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge && !person.getCats().isEmpty())
+                .filter(womanWithCatsValidator)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName).collect(Collectors.toList());
