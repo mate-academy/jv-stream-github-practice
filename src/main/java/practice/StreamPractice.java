@@ -30,7 +30,7 @@ public class StreamPractice {
         }
         return evenNumbers.stream()
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     /**
