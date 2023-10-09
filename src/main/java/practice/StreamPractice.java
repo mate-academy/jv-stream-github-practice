@@ -19,8 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(str -> Arrays.stream(str.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -34,8 +33,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(n -> (n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n)))
-                .mapToInt(n -> n)
+                .flatMap(n -> IntStream.of((n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
