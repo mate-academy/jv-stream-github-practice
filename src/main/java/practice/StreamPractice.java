@@ -45,9 +45,9 @@ public class StreamPractice {
                         numberByIndex -= ONE;
                     }
                     return numberByIndex % TWO != ZERO;
-                }).mapToDouble(index -> {
-                    return index % TWO == ZERO ? numbers.get(index) : numbers.get(index) - ONE;
-                })
+                }).mapToDouble(index -> index % TWO == ZERO
+                        ? numbers.get(index)
+                        : numbers.get(index) - ONE)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("Can't get average value from list " + numbers));
