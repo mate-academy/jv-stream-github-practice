@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int ZERO = 0;
     private static final int ONE = 1;
     private static final int MIN_AGE = 35;
+    private static final String UKRAINIAN = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -16,7 +17,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         Integer endLivingInUkraine = Integer.parseInt(interval[ONE]);
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(UKRAINIAN)
                 && endLivingInUkraine - startLivingInUkraine >= TEN_YEARS;
     }
 
