@@ -10,12 +10,13 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int FIRST_YEAR_INDEX = 0;
     private static final int SECOND_YEAR_INDEX = 1;
     private static final String NATIONALITY = "Ukrainian";
+    private static final String DELIMITER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
         int[] yearsLived = Arrays.stream(candidate
                         .getPeriodsInUkr()
-                        .split("-"))
+                        .split(DELIMITER))
                 .mapToInt(Integer::valueOf)
                 .toArray();
         boolean hasLivedTenYears = (yearsLived[SECOND_YEAR_INDEX] - yearsLived[FIRST_YEAR_INDEX])

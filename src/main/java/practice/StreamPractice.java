@@ -9,6 +9,8 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -22,7 +24,7 @@ public class StreamPractice {
         }
         return numbers
                 .stream()
-                .map(string -> string.split(","))
+                .map(lineNumbers -> lineNumbers.split(SEPARATOR))
                 .flatMap(array -> Arrays.stream(array))
                 .mapToInt(Integer::valueOf)
                 .filter(number -> number % 2 == 0)
@@ -38,8 +40,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .filter(i -> i % 2 != 0)
+                .map(index -> index % 2 == 0 ? numbers.get(index) : numbers.get(index) - 1)
+                .filter(index -> index % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
