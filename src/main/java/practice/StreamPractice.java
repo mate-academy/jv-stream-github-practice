@@ -1,11 +1,18 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLIT_CHARACTER = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -13,8 +20,21 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        try {
+            return numbers.stream()
+                    .map(i -> i.split(SPLIT_CHARACTER))
+                    .map(s -> Arrays.stream(s)
+                            .mapToInt(Integer::parseInt)
+                            .min()
+                            .getAsInt())
+                    .filter(n -> n % 2 == 0)
+                    .min(Integer::compareTo)
+                    .get();
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Can't get min value from list: " + numbers);
+        }
     }
 
     /**
@@ -23,7 +43,25 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
+                .toList();
+
+        int sumOfOddElements = modifiedNumbers.stream()
+                .filter(n -> n % 2 != 0)
+                .mapToInt(n -> n)
+                .sum();
+
+        long numOfOddElements = modifiedNumbers.stream()
+                .filter(n -> n % 2 != 0)
+                .mapToInt(n -> n)
+                .count();
+
+        if (numOfOddElements == 0) {
+            throw new NoSuchElementException("Unexpected numbers");
+        }
+
+        return (double) sumOfOddElements / numOfOddElements;
     }
 
     /**
@@ -35,7 +73,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +91,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> testPerson = p -> (p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge);
+
+        return peopleList.stream()
+                .filter(testPerson)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +107,16 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> testPerson = p -> !p.getCats().isEmpty()
+                && p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= femaleAge;
+
+        return peopleList.stream()
+                .filter(testPerson)
+                .map(p -> p.getCats())
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +132,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator test = new CandidateValidator();
+        return candidates.stream()
+                .filter(test)
+                .map(c -> c.getName())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
