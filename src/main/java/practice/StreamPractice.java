@@ -22,19 +22,16 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(i -> i.split(SPLIT_CHARACTER))
-                    .map(s -> Arrays.stream(s)
-                            .mapToInt(Integer::parseInt)
-                            .min()
-                            .getAsInt())
-                    .filter(n -> n % 2 == 0)
-                    .min(Integer::compareTo)
-                    .get();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+        return numbers.stream()
+                .map(i -> i.split(SPLIT_CHARACTER))
+                .map(s -> Arrays.stream(s)
+                        .mapToInt(Integer::parseInt)
+                        .min()
+                        .getAsInt())
+                .filter(n -> n % 2 == 0)
+                .min(Integer::compareTo)
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -43,18 +40,14 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .toList();
-
-        int sumOfOddElements = modifiedNumbers.stream()
+        int sumOfOddElements = IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
-                .mapToInt(n -> n)
                 .sum();
 
-        long numOfOddElements = modifiedNumbers.stream()
+        long numOfOddElements = IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
-                .mapToInt(n -> n)
                 .count();
 
         if (numOfOddElements == 0) {
@@ -113,7 +106,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(testPerson)
-                .map(p -> p.getCats())
+                .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -135,7 +128,7 @@ public class StreamPractice {
         CandidateValidator test = new CandidateValidator();
         return candidates.stream()
                 .filter(test)
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
