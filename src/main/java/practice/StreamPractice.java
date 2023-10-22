@@ -1,6 +1,7 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,10 +22,11 @@ public class StreamPractice {
     private static final int TWO = 2;
     private static final int ONE = 1;
     private static final int ZERO = 0;
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(string -> Arrays.stream(string.split(",")))
+                .flatMap(string -> Arrays.stream(string.split(COMA)))
                 .map(Integer::parseInt)
                 .filter(number -> number % TWO == ZERO)
                 .min(Integer::compareTo)
@@ -38,8 +41,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(ZERO, numbers.size())
-                .map(i -> i % TWO == 0 ? numbers.get(i) : numbers.get(i) - 1)
-                .filter(n -> n % TWO != 0)
+                .map(i -> i % TWO == ZERO ? numbers.get(i) : numbers.get(i) - ONE)
+                .filter(n -> n % TWO != ZERO)
                 .mapToDouble(Double::valueOf)
                 .average()
                 .orElseThrow(() ->
@@ -88,7 +91,7 @@ public class StreamPractice {
         return peopleList.stream().filter(p -> p.getAge() >= femaleAge
                         && p.getSex().equals(Person.Sex.WOMAN))
                 .map(Person::getCats)
-                .flatMap(list -> list.stream())
+                .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -113,7 +116,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates.stream().filter(new CandidateValidator())
+        return candidates.stream().filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
