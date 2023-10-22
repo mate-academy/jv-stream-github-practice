@@ -79,7 +79,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> correctFilter(p, fromAge, femaleToAge, maleToAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -93,7 +93,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private boolean correctFilter(Person person,int fromAge,
@@ -119,6 +119,6 @@ public class StreamPractice {
         return candidates.stream().filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
