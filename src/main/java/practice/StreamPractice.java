@@ -1,11 +1,12 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.LongSummaryStatistics;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,7 +20,8 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public int findMinEvenNumber(List<String> numbers) {
+
+    public int findMinEvenNumber(List<String> numbers) { // <- paragraph because of mvn
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(SPLIT_CHARACTER)))
                 .mapToInt(Integer::parseInt)
@@ -37,8 +39,10 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         LongSummaryStatistics statistics = IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 !=0)
-                .collect(LongSummaryStatistics::new, LongSummaryStatistics::accept ,LongSummaryStatistics::combine);
+                .filter(n -> n % 2 != 0)
+                .collect(LongSummaryStatistics::new,
+                         LongSummaryStatistics::accept,
+                         LongSummaryStatistics::combine);
 
         long sumOfOddNumbers = statistics.getSum();
         long countOfOddNumbers = statistics.getCount();
