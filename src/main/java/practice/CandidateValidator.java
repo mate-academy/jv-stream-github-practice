@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    public static final String COMMA = ",";
     private static final int MIN_AGE = 35;
     private static final int BEGINNING_INDEX = 0;
     private static final int END_INDEX = 1;

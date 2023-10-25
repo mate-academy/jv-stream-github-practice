@@ -9,7 +9,7 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-public class StreamPractice {
+public class StreamPractice extends CandidateValidator {
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,9 +18,8 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        final String comma = ",";
         return numbers.stream()
-                .flatMap(number -> Arrays.stream(number.split(comma)))
+                .flatMap(number -> Arrays.stream(number.split(COMMA)))
                 .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
