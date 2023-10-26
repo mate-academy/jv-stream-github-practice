@@ -1,11 +1,9 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -13,6 +11,7 @@ import model.Person;
 public class StreamPractice {
     private static final String CANT_FIND_MASSAGE = "Can't get min value from list: ";
     private static final String SPLITTER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -26,7 +25,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(CANT_FIND_MASSAGE + numbers.toString()));
+                .orElseThrow(() -> new RuntimeException(CANT_FIND_MASSAGE + numbers));
     }
 
     /**
@@ -53,7 +52,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge && p.getSex().equals(Person.Sex.MAN))
+                .filter(p -> p.getAge() >= fromAge
+                        && p.getAge() <= toAge
+                        && p.getSex().equals(Person.Sex.MAN))
                 .toList();
     }
 
@@ -72,7 +73,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
                 .filter(p -> (Person.Sex.MAN.equals(p.getSex()) && p.getAge() <= maleToAge)
-                        ||(Person.Sex.WOMAN.equals(p.getSex()) && p.getAge() <= femaleToAge))
+                        || (Person.Sex.WOMAN.equals(p.getSex()) && p.getAge() <= femaleToAge))
                 .toList();
     }
 
@@ -102,6 +103,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(c -> new CandidateValidator().test(c))
+                .map(Candidate::getName)
+                .sorted()
+                .toList();
     }
 }
