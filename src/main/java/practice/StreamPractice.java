@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,6 +10,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String EXCEPTION_MIN_VALUE_MESSAGE = "Can't get min value from list: ";
+    private static final String TARGET = " ";
+    private static final String REPLACEMENT = "";
+    private static final String REGEX = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,12 +24,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         if (numbers.size() == 0) {
-            throw new RuntimeException("Can't get min value from list:" + numbers);
+            throw new RuntimeException(EXCEPTION_MIN_VALUE_MESSAGE + numbers);
         }
         return numbers.stream()
-                .map(s -> List.of(s.replace(" ", "").split(",")))
-                .flatMapToInt(l -> l.stream().mapToInt(Integer::parseInt))
-                .filter(n -> n % 2 == 0)
+                .map(string -> List.of(string.replace(TARGET, REPLACEMENT).split(REGEX)))
+                .flatMapToInt(listString -> listString.stream().mapToInt(Integer::parseInt))
+                .filter(number -> !isOddNumber(number))
                 .min()
                 .getAsInt();
     }
@@ -35,12 +41,14 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .boxed()
-                .filter(n -> n % 2 != 0)
-                .mapToDouble(n -> n)
+                .map(index -> isOddNumber(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(StreamPractice::isOddNumber)
                 .average()
                 .getAsDouble();
+    }
+
+    private static boolean isOddNumber(int number) {
+        return number % 2 != 0;
     }
 
     /**
@@ -70,11 +78,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isAgeInRange = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
+
+            return (sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge)
+                    || (sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge);
+        };
+
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge))
+                .filter(isAgeInRange)
                 .collect(Collectors.toList());
     }
 
