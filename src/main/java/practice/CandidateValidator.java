@@ -12,10 +12,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int TO_YEAR_INDEX = 1;
 
     @Override
-    public boolean test(Candidate c) {
-        if (c.getAge() >= MIN_YEARS_OLD && c.isAllowedToVote()
-                && c.getNationality().equals(VALID_NATIONALITY)) {
-            String[] years = c.getPeriodsInUkr().split(REGEX);
+    public boolean test(Candidate candidate) {
+        if (candidate.getAge() >= MIN_YEARS_OLD && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(VALID_NATIONALITY)) {
+            String[] years = candidate.getPeriodsInUkr().split(REGEX);
 
             int totalDuration = Integer.parseInt(years[TO_YEAR_INDEX])
                     - Integer.parseInt(years[SINCE_YEAR_INDEX]);
