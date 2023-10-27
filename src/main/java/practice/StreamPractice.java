@@ -3,7 +3,6 @@ package practice;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -84,7 +83,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(isAgeInRange)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -98,7 +97,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -119,6 +118,6 @@ public class StreamPractice {
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
