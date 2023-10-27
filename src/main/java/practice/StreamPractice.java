@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -12,6 +11,7 @@ import model.Person;
 public class StreamPractice {
     private static final String COMA = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,10 +19,9 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(COMA))
+                .map(strings -> strings.split(COMA))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
@@ -38,11 +37,15 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 == 1)
+                .map(index -> isOddNumber(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(StreamPractice::isOddNumber)
                 .mapToDouble(Double::valueOf)
                 .average()
                 .orElseThrow();
+    }
+
+    private static boolean isOddNumber(int number) {
+        return number % 2 == 1;
     }
 
     /**
@@ -55,8 +58,11 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(person -> {
+                    int age = person.getAge();
+                    return age >= fromAge && age <= toAge
+                            && Person.Sex.MAN.equals(person.getSex());
+                })
                 .toList();
     }
 
@@ -72,13 +78,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> personPredicate = person -> (person.getAge() >= fromAge
-                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
-                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge));
-
+        Predicate<Person> filterPredicate = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
+            return (age >= fromAge) && (
+                    (Person.Sex.MAN.equals(sex) && age <= maleToAge)
+                            || (Person.Sex.WOMAN.equals(sex) && age <= femaleToAge));
+        };
         return peopleList.stream()
-                .filter(personPredicate)
-                .collect(Collectors.toList());
+                .filter(filterPredicate)
+                .toList();
     }
 
     /**
@@ -88,7 +97,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(w -> w.getSex() == Person.Sex.WOMAN && w.getAge() >= femaleAge)
+                .filter(person -> Person.Sex.WOMAN.equals(person.getSex())
+                        && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
@@ -111,6 +121,6 @@ public class StreamPractice {
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
