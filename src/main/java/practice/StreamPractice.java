@@ -33,17 +33,16 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-    public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream
-                .range(0, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-        return numbers
-                .stream()
-                .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
+    public static Double getOddNumsAverage(List<Integer> numbers) {
+        return IntStream.range(0, numbers.size())
+                .map(index -> isOddNumber(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(StreamPractice::isOddNumber)
                 .average()
                 .getAsDouble();
+    }
+
+    private static boolean isOddNumber(int number) {
+        return number % 2 != 0;
     }
 
     /**
