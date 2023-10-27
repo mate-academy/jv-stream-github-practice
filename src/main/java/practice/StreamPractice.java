@@ -9,6 +9,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
+    private static final String REGEX = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,15 +20,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.size() == 0) {
-            throw new RuntimeException("Can't get min value from list:" + numbers);
-        }
         return numbers.stream()
-                .map(s -> List.of(s.replace(" ", "").split(",")))
-                .flatMapToInt(l -> l.stream().mapToInt(Integer::parseInt))
+                .map(s -> List.of(s.split(REGEX)))
+                .flatMap(Collection::stream)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .getAsInt();
+                .orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE + numbers));
     }
 
     /**
@@ -55,7 +56,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> fromAge <= p.getAge() && p.getAge() <= toAge
                         && p.getSex() == Person.Sex.MAN)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
