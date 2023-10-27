@@ -10,6 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NO_MIN_VALUE_EXCEPTION_MESSAGE = "Can't get min value from list: ";
+    private static final String EMPTY_LIST_EXCEPTION_MESSAGE = "Empty List provided";
     private final Predicate<Candidate> isAbleToRunForPresident = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
@@ -20,7 +22,7 @@ public class StreamPractice {
             .filter(e -> e % 2 == 0)
             .sorted()
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+            .orElseThrow(() -> new RuntimeException(NO_MIN_VALUE_EXCEPTION_MESSAGE + numbers));
     }
     
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -33,7 +35,7 @@ public class StreamPractice {
             })
             .filter(number -> number % 2 != 0)
             .average()
-            .orElseThrow(() -> new NoSuchElementException("Empty List provided"));
+            .orElseThrow(() -> new NoSuchElementException(EMPTY_LIST_EXCEPTION_MESSAGE));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
