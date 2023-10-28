@@ -20,11 +20,10 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers
-                .stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(STRING_SPLITTER)))
                 .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(n -> !isOddNumber(n))
                 .mapToInt(Integer::intValue)
                 .min()
                 .orElseThrow(() ->
@@ -57,8 +56,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(person -> Person.Sex.MAN.equals(person.getSex())
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
@@ -77,8 +75,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
                     Person.Sex sex = person.getSex();
@@ -95,8 +92,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList
-                .stream()
+        return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
                 .map(Person::getCats)
@@ -119,8 +115,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
-        return candidates
-                .stream()
+        return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
