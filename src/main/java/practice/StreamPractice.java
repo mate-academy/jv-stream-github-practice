@@ -38,10 +38,11 @@ public class StreamPractice {
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> predicate = person -> person.getAge() >= fromAge
+                && person.getAge() <= toAge
+                && person.getSex() == Person.Sex.MAN;
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && person.getAge() <= toAge
-                        && person.getSex() == Person.Sex.MAN)
+                .filter(predicate)
                 .toList();
     }
 
@@ -72,9 +73,8 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
