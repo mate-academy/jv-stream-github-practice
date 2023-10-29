@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -13,8 +14,8 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMapToInt(s -> Arrays.stream(s.split(","))
-                        .mapToInt(Integer::parseInt)
-                        .filter(num -> num % 2 == 0))
+                .mapToInt(Integer::parseInt)
+                .filter(num -> num % 2 == 0))
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list " + numbers));
@@ -24,33 +25,35 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
-                .boxed()
-                .toList().stream()
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("List is empty"));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        Predicate<Person> isManBetweenAges = PersonValidator
+                .isManBetweenAges(fromAge, toAge);
+
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= toAge)
+                .filter(isManBetweenAges)
                 .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> workablePersonPredicate = PersonValidator
+                .selectPeopleByAge(fromAge, maleToAge, femaleToAge);
+
         return peopleList.stream()
-                .filter(p -> {
-                    int ageLimit = (p.getSex() == Person.Sex.MAN) ? maleToAge : femaleToAge;
-                    return p.getAge() >= fromAge && p.getAge() <= ageLimit;
-                }).toList();
+                .filter(workablePersonPredicate)
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> elderlyWomanPredicate = PersonValidator
+                .isElderlyWoman(femaleAge);
+
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .filter(elderlyWomanPredicate)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .toList();
