@@ -7,6 +7,8 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String SEPARATION_MARK = "-";
     private static final String NATIONALITY = "Ukrainian";
+    private static final int MIN_AGE = 35;
+    private static final int MIN_YEARS_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -16,9 +18,9 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .map(Integer::parseInt)
                 .reduce((a, b) -> b - a)
                 .orElse(0);
-        return candidate.getAge() >= 35
+        return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && yearsInUkr >= 10;
+                && yearsInUkr >= MIN_YEARS_IN_UKRAINE;
     }
 }
