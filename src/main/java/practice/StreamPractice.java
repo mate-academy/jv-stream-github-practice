@@ -13,6 +13,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String REGEX_COMMA = ",";
+    private static final String MESSAGE_EXCEPTION = "Can't get min value from list: %s";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -27,8 +28,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers.toString()));
+                .orElseThrow(() -> new RuntimeException(String.format(
+                        MESSAGE_EXCEPTION, numbers.toString())));
     }
 
     /**
