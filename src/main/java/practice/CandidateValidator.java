@@ -8,21 +8,23 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final String SPLIT_REGEX = "-";
     private static final int MIN_PERIOD_OF_LIVING = 10;
+    private static final int LIVE_FROM = 0;
+    private static final int LIVE_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
         boolean isAgeAllowed = candidate.getAge() >= MIN_AGE;
         boolean isAllowedToVote = candidate.isAllowedToVote();
         boolean isNationalityAllowed = candidate.getNationality().equals(REQUIRED_NATIONALITY);
-        boolean isLivingTenYearsInUkraine
-                = hasTenYearsPeriodOfLivingInUkraine(candidate.getPeriodsInUkr());
+        boolean hasTenYearsInUkraine = getYearsInUkraine(candidate.getPeriodsInUkr());
 
-        return isAgeAllowed && isNationalityAllowed && isAllowedToVote && isLivingTenYearsInUkraine;
+        return isAgeAllowed && isNationalityAllowed && isAllowedToVote && hasTenYearsInUkraine;
     }
 
-    private boolean hasTenYearsPeriodOfLivingInUkraine(String period) {
+    private boolean getYearsInUkraine(String period) {
         String[] periodLength = period.split(SPLIT_REGEX);
-        return Integer.parseInt(periodLength[1])
-                - Integer.parseInt(periodLength[0]) >= MIN_PERIOD_OF_LIVING;
+        int yearsInUkraine = Integer.parseInt(periodLength[LIVE_TO])
+                - Integer.parseInt(periodLength[LIVE_FROM]);
+        return yearsInUkraine >= MIN_PERIOD_OF_LIVING;
     }
 }
