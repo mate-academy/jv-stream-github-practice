@@ -9,8 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public static final String STRING_SPLITTER = ",";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -21,9 +21,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(STRING_SPLITTER)))
+                .flatMap(string -> Arrays.stream(string.split(STRING_SPLITTER)))
                 .map(Integer::parseInt)
-                .filter(n -> !isOddNumber(n))
+                .filter(number -> !isOddNumber(number))
                 .mapToInt(Integer::intValue)
                 .min()
                 .orElseThrow(() ->
@@ -57,10 +57,14 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> Person.Sex.MAN.equals(person.getSex())
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(person -> {
+                    int age = person.getAge();
+                    return Person.Sex.MAN.equals(person.getSex())
+                                    && age >= fromAge
+                                    && age <= toAge;
+                })
                 .toList();
+
     }
 
     /**
@@ -93,7 +97,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> Person.Sex.WOMAN.equals(person.getSex())
                         && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
@@ -114,7 +118,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
