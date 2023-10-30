@@ -12,6 +12,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String REGEX_COMMA = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,9 +23,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(line -> Stream.of(line.split(",")))
-                .mapToInt(n -> Integer.parseInt(n))
-                .filter(n -> Integer.valueOf(n) % 2 == 0)
+                .flatMap(line -> Stream.of(line.split(REGEX_COMMA)))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers.toString()));
@@ -38,12 +40,12 @@ public class StreamPractice {
         Stream<Integer> oddNumbersStream = IntStream
                 .range(0, numbers.size())
                 .filter(index -> index % 2 == 1)
-                .mapToObj(index -> numbers.get(index))
+                .mapToObj(numbers::get)
                 .map(n -> n - 1);
         Stream<Integer> everNumbersStream = IntStream
                 .range(0, numbers.size())
                 .filter(index -> index % 2 == 0)
-                .mapToObj(index -> numbers.get(index));
+                .mapToObj(numbers::get);
         return Stream.concat(oddNumbersStream, everNumbersStream)
                 .filter(n -> n % 2 == 1)
                 .mapToDouble(n -> n)
