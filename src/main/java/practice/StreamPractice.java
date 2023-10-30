@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
@@ -30,7 +31,7 @@ public class StreamPractice {
                 .getAsDouble();
     }
 
-    public static boolean isOdd(int number) {
+    private static boolean isOdd(int number) {
         return number % 2 != 0;
     }
 
@@ -44,14 +45,16 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+
+        Predicate<Person> personCheck = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
+            return age >= fromAge
+                    && (Person.Sex.MAN.equals(sex) && age <= maleToAge
+                    || Person.Sex.WOMAN.equals(sex) && age <= femaleToAge);
+        };
         return peopleList.stream()
-                .filter(person -> {
-                    int age = person.getAge();
-                    Person.Sex sex = person.getSex();
-                    return age >= fromAge
-                            && (Person.Sex.MAN.equals(sex) && age <= maleToAge
-                            || Person.Sex.WOMAN.equals(sex) && age <= femaleToAge);
-                })
+                .filter(personCheck)
                 .toList();
     }
 
