@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -32,9 +33,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        Predicate<Integer> numOddPredicator = new Predicate<Integer>() {
+            @Override
+            public boolean test(Integer num) {
+                return num % 2 != 0;
+            }
+        };
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(num -> num % 2 != 0)
+                .mapToObj(i -> (numOddPredicator.test(i)) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(numOddPredicator::test)
                 .mapToDouble(Integer::doubleValue)
                 .average()
                 .orElseThrow();
@@ -53,7 +60,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -68,13 +75,19 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
+        Predicate<Person> predicateAge = new Predicate<Person>() {
+            @Override
+            public boolean test(Person person) {
+                return person.getAge() >= fromAge
                         && ((person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() <= femaleToAge)))
-                .collect(Collectors.toList());
+                        && person.getAge() <= femaleToAge));
+            }
+        };
+        return peopleList.stream()
+                .filter(predicateAge::test)
+                .toList();
     }
 
     /**
@@ -104,11 +117,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(candidateValidator::test)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
-
 }
