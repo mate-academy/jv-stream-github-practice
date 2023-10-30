@@ -12,15 +12,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] splitCandidate = candidate.getPeriodsInUkr().split(SEPARATION_MARK);
-        int yearsInUkr = Arrays.stream(splitCandidate)
-                .map(String::trim)
-                .map(Integer::parseInt)
-                .reduce((a, b) -> b - a)
-                .orElse(0);
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(NATIONALITY)
-                && yearsInUkr >= MIN_YEARS_IN_UKRAINE;
+                && NATIONALITY.equals(candidate.getNationality())
+                && Arrays.stream(candidate.getPeriodsInUkr().split(SEPARATION_MARK))
+                .mapToInt(s -> Integer.parseInt(s.trim()))
+                .reduce((a, b) -> b - a)
+                .orElse(0) >= MIN_YEARS_IN_UKRAINE;
     }
 }
