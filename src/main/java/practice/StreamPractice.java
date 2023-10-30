@@ -21,7 +21,7 @@ public class StreamPractice {
             .map(stringNumber -> stringNumber.split(SPLIT_REGEX_COMA))
             .flatMap(Arrays::stream)
             .map(Integer::parseInt)
-            .filter(number -> number % 2 == 0)
+            .filter(number -> !isOddNumber(number))
             .sorted()
             .findFirst()
             .orElseThrow(() -> new RuntimeException(NO_MIN_VALUE_EXCEPTION_MESSAGE + numbers));
@@ -31,9 +31,9 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
             .map(index -> {
                 Integer numByIndex = numbers.get(index);
-                return index % 2 != 0 ? numByIndex - 1 : numByIndex;
+                return isOddNumber(index) ? numByIndex - 1 : numByIndex;
             })
-            .filter(number -> number % 2 != 0)
+            .filter(number -> isOddNumber(number))
             .average()
             .orElseThrow(() -> new NoSuchElementException(EMPTY_LIST_EXCEPTION_MESSAGE));
     }
@@ -42,19 +42,18 @@ public class StreamPractice {
         return peopleList.stream()
             .filter(person -> {
                 int personAge = person.getAge();
-                ;
                 return personAge >= fromAge
                     && personAge <= toAge
-                    && person.getSex().equals(Sex.MAN);
+                    && Sex.MAN.equals(person.getSex());
             })
             .toList();
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
-            int maleToAge, List<Person> peopleList) {
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge,
+                                                                        List<Person> peopleList) {
         Predicate<Person> isWorkable = person -> {
             int personAge = person.getAge();
-            if (person.getSex().equals(Sex.MAN)) {
+            if (Sex.MAN.equals(person.getSex())) {
                 return personAge >= fromAge
                     && personAge <= maleToAge;
             }
@@ -67,7 +66,7 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> isNeededCatOwner = person -> person.getSex().equals(Sex.WOMAN)
+        Predicate<Person> isNeededCatOwner = person -> Sex.WOMAN.equals(person.getSex())
                 && person.getAge() >= femaleAge;
         return peopleList.stream()
             .filter(isNeededCatOwner)
@@ -82,5 +81,9 @@ public class StreamPractice {
             .map(Candidate::getName)
             .sorted()
             .toList();
+    }
+
+    private boolean isOddNumber(int number) {
+        return number % 2 != 0;
     }
 }
