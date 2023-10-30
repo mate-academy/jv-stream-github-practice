@@ -69,7 +69,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> match = new Predicate<Person>() {
+        Predicate<Person> isWorkablePersons = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
                 return (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
@@ -79,7 +79,7 @@ public class StreamPractice {
             }
         };
         return  peopleList.stream()
-                .filter(match)
+                .filter(isWorkablePersons)
                 .collect(Collectors.toList());
     }
 
@@ -110,6 +110,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
