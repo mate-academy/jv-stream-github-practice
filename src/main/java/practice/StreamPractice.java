@@ -2,17 +2,17 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String NUMBERS_DIVIDER = ",";
+    private static final String NUMBERS_DIVIDER = "[,]";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         Supplier<RuntimeException> exceptionSupplier = () ->
@@ -20,18 +20,16 @@ public class StreamPractice {
         return numbers.stream()
                 .map(string -> string.split(NUMBERS_DIVIDER))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .filter(number -> number % 2 == 0)
-                .min(Comparator.naturalOrder())
+                .mapToInt(Integer::parseInt)
+                .filter(this::isEven)
+                .min()
                 .orElseThrow(exceptionSupplier);
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return Stream.iterate(0, integer -> integer + 1).limit(numbers.size())
-                .peek(System.out::println)
-                .map(number -> (number % 2 != 0) ? numbers.get(number) - 1 : numbers.get(number))
+        return IntStream.range(0, numbers.size())
+                .map(number -> (!isEven(number)) ? numbers.get(number) - 1 : numbers.get(number))
                 .filter(number -> number % 2 == 1)
-                .mapToInt(number -> number)
                 .average()
                 .orElseThrow();
     }
@@ -68,11 +66,14 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }

@@ -6,10 +6,10 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PERIOD_LIVE_IN_COUNTRY = 10;
     private static final int MIN_VALID_AGE = 35;
-    private static final int START_SUBSTRING_INDEX = 0;
-    private static final int SLIDER_TO_START_SUBSTRING_INDEX = 1;
+    private static final int FROM_YEAR_INDEX = 0;
+    private static final int UP_TO_YEAR_INDEX = 1;
     private static final String VALID_NATIONALITY = "Ukrainian";
-    private static final char DIVIDER_IN_LIVE_PERIOD = '-';
+    private static final String DIVIDER_DASH = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,12 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int yearsLiveInUkraine(Candidate candidate) {
         String liveInUkraine = candidate.getPeriodsInUkr();
-        int fromYear = Integer.parseInt(
-                liveInUkraine.substring(START_SUBSTRING_INDEX,
-                        liveInUkraine.indexOf(DIVIDER_IN_LIVE_PERIOD)));
-        int upToYear = Integer.parseInt(
-                liveInUkraine.substring(liveInUkraine.indexOf(DIVIDER_IN_LIVE_PERIOD)
-                        + SLIDER_TO_START_SUBSTRING_INDEX));
+        int fromYear = Integer.parseInt(liveInUkraine.split(DIVIDER_DASH)[FROM_YEAR_INDEX]);
+        int upToYear = Integer.parseInt(liveInUkraine.split(DIVIDER_DASH)[UP_TO_YEAR_INDEX]);
         return upToYear - fromYear;
     }
 }
