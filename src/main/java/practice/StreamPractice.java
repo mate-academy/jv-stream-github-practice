@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -13,6 +12,7 @@ import model.Person;
 public class StreamPractice {
     private static final String NO_MIN_VALUE_MESSAGE = "Can't get min value from list: ";
     private static final String COMMA = ",";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,10 +23,10 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(string -> Arrays.stream(string.split(COMMA))
-                        .map(Integer::parseInt))
-                .filter(integer -> integer % 2 == 0)
-                .min(Comparator.comparing(integer -> integer))
+                .flatMap(string -> Arrays.stream(string.split(COMMA)))
+                .mapToInt(Integer::parseInt)
+                .filter(this::isEven)
+                .min()
                 .orElseThrow(() -> new RuntimeException(NO_MIN_VALUE_MESSAGE
                         + numbers));
     }
@@ -38,8 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 != 0)
+                .map(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> !isEven(number))
                 .average()
                 .orElseThrow();
     }
@@ -54,7 +54,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN))
+                .filter(person -> Person.Sex.MAN.equals(person.getSex()))
                 .filter(man -> man.getAge() >= fromAge && man.getAge() <= toAge)
                 .toList();
     }
@@ -71,9 +71,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workingAgePredicate = person -> (person.getSex().equals(Person.Sex.MAN)
+        Predicate<Person> workingAgePredicate = person -> (Person.Sex.MAN.equals(person.getSex())
                 && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                || (person.getSex().equals(Person.Sex.WOMAN)
+                || (Person.Sex.WOMAN.equals(person.getSex())
                 && person.getAge() >= fromAge && person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(workingAgePredicate)
@@ -87,7 +87,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> Person.Sex.WOMAN.equals(person.getSex())
                         && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
@@ -109,9 +109,13 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(candidateValidator::test)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isEven(Integer number) {
+        return number % 2 == 0;
     }
 }
