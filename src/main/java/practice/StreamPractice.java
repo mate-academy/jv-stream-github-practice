@@ -11,9 +11,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int START_INDEX = 0;
+    private static final String NUMBER_SEPARATOR = ",";
     private static final String RUNTIME_EXCEPTION_MESSAGE = "Can't get min value from list: ";
     private static final String NO_SUCH_ELEMENT_EXCEPTION_MESSAGE = "No odd numbers in the list: ";
+    private Predicate<Candidate> candidatePredicate = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -24,9 +25,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(NUMBER_SEPARATOR)))
                 .map(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(i -> isEven(i))
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException(
                         RUNTIME_EXCEPTION_MESSAGE + numbers));
@@ -38,13 +39,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(START_INDEX, numbers.size())
-                .filter(index -> index % 2 == 1)
-                .peek(index -> numbers.set(index, numbers.get(index) - 1))
-                .count();
-        return numbers.stream()
-                .filter(index -> index % 2 == 1)
-                .mapToDouble(Integer::intValue)
+        return IntStream.range(0, numbers.size())
+                .map(i -> !isEven(i) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> !isEven(n))
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         NO_SUCH_ELEMENT_EXCEPTION_MESSAGE + numbers));
@@ -114,11 +111,14 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
                 .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
