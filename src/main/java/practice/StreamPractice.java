@@ -38,7 +38,6 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> !isEven(number))
-                .mapToDouble(number -> number)
                 .average()
                 .getAsDouble();
     }
