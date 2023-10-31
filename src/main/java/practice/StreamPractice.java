@@ -11,8 +11,6 @@ import model.Person;
 public class StreamPractice {
     private static final String NUMBER_ROW_COL_SEPARATOR_REGEX = ",";
     private static final int NUMBERS_INDEX_RANGE_START = 0;
-    private static final Person.Sex MALE_GENDER = Person.Sex.MAN;
-    private static final Person.Sex FEMALE_GENDER = Person.Sex.WOMAN;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -54,7 +52,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter((person) -> person.getSex() == MALE_GENDER
+                .filter((person) -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
@@ -75,7 +73,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter((person) -> person.getAge() >= fromAge
                         && person.getAge() <= (
-                                person.getSex() == MALE_GENDER
+                                person.getSex() == Person.Sex.MAN
                                 ? maleToAge
                                 : femaleToAge
                         )
@@ -90,7 +88,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter((person) -> person.getSex() == FEMALE_GENDER
+                .filter((person) -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
                 .flatMap((person) -> person.getCats().stream())
                 .map(Cat::getName)
