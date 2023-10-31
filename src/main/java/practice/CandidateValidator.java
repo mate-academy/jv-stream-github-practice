@@ -22,7 +22,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private int yearsLiveInUkraine(Candidate candidate) {
         String liveInUkraine = candidate.getPeriodsInUkr();
         int fromYear = Integer.parseInt(
-                liveInUkraine.substring(START_SUBSTRING_INDEX,liveInUkraine.indexOf(DIVIDER_IN_LIVE_PERIOD)));
+                liveInUkraine.substring(START_SUBSTRING_INDEX,
+                        liveInUkraine.indexOf(DIVIDER_IN_LIVE_PERIOD)));
         int upToYear = Integer.parseInt(
                 liveInUkraine.substring(liveInUkraine.indexOf(DIVIDER_IN_LIVE_PERIOD)
                         + SLIDER_TO_START_SUBSTRING_INDEX));
