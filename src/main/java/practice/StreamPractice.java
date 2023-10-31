@@ -36,7 +36,6 @@ public class StreamPractice {
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .mapToDouble(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
@@ -59,6 +58,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
+
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -69,7 +69,6 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
-
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> isWorkablePersons = new Predicate<Person>() {
