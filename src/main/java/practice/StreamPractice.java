@@ -3,13 +3,21 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final Person.Sex MALE = Person.Sex.MAN;
+    private static final Person.Sex FEMALE = Person.Sex.WOMAN;
+
+    private final Predicate<Integer> numOddPredicator = new Predicate<Integer>() {
+        @Override
+        public boolean test(Integer num) {
+            return num % 2 != 0;
+        }
+    };
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,10 +25,11 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
-                .filter(num -> Integer.parseInt(num) % 2 == 0)
+                .filter(num -> !numOddPredicator.test(Integer.parseInt(num)))
                 .mapToInt(Integer::parseInt)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -33,12 +42,6 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Predicate<Integer> numOddPredicator = new Predicate<Integer>() {
-            @Override
-            public boolean test(Integer num) {
-                return num % 2 != 0;
-            }
-        };
         return IntStream.range(0, numbers.size())
                 .mapToObj(i -> (numOddPredicator.test(i)) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(numOddPredicator::test)
@@ -57,7 +60,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> MALE.equals(person.getSex())
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .toList();
@@ -79,9 +82,9 @@ public class StreamPractice {
             @Override
             public boolean test(Person person) {
                 return person.getAge() >= fromAge
-                        && ((person.getSex().equals(Person.Sex.MAN)
+                        && ((MALE.equals(person.getSex())
                         && person.getAge() <= maleToAge)
-                        || (person.getSex().equals(Person.Sex.WOMAN)
+                        || (FEMALE.equals(person.getSex())
                         && person.getAge() <= femaleToAge));
             }
         };
@@ -97,11 +100,11 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> FEMALE.equals(person.getSex())
                         && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
