@@ -12,6 +12,8 @@ import model.Person;
 
 public class StreamPractice {
     private static final int START_INDEX = 0;
+    private static final String RUNTIME_EXCEPTION_MESSAGE = "Can't get min value from list: ";
+    private static final String NO_SUCH_ELEMENT_EXCEPTION_MESSAGE = "No odd numbers in the list: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -27,7 +29,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: " + numbers));
+                        RUNTIME_EXCEPTION_MESSAGE + numbers));
     }
 
     /**
@@ -44,7 +46,8 @@ public class StreamPractice {
                 .filter(index -> index % 2 == 1)
                 .mapToDouble(Integer::intValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
+                .orElseThrow(() -> new NoSuchElementException(
+                        NO_SUCH_ELEMENT_EXCEPTION_MESSAGE + numbers));
     }
 
     /**
