@@ -11,6 +11,11 @@ import model.Person;
 
 public class StreamPractice {
     private static final String COMA = ",";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
+    }
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,9 +28,8 @@ public class StreamPractice {
         return numbers.stream()
                 .map(str -> str.split(COMA))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .mapToInt(i -> i)
-                .filter(i -> i % 2 == 0)
+                .mapToInt(Integer::parseInt)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value"
                         + " from list: " + numbers));
@@ -38,7 +42,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
+                .mapToDouble(index -> !isEven(index) ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(numb -> numb % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -115,7 +119,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
