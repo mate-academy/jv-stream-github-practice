@@ -1,11 +1,16 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMA = ",";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -13,8 +18,15 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(str -> Arrays.stream(str.split(COMA)))
+                .map(Integer::parseInt)
+                .filter(this::isEvenNumber)
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                + numbers));
     }
 
     /**
@@ -23,7 +35,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> isOddNumber(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(this::isOddNumber)
+                .mapToDouble(Double::valueOf)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,7 +52,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .toList();
     }
 
     /**
@@ -50,7 +70,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge
+                        && (person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
+                        : person.getAge() <= femaleToAge))
+                .toList();
     }
 
     /**
@@ -59,10 +83,16 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge
+                        && person.getCats() != null)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .toList();
     }
 
-    /**
+    /**x
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
      * Check which candidates are eligible to apply for president position and return their
@@ -75,6 +105,18 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .toList();
+    }
+
+    private boolean isEvenNumber(int number) {
+        return number % 2 == 0;
+    }
+
+    private boolean isOddNumber(int number) {
+        return number % 2 == 1;
     }
 }
