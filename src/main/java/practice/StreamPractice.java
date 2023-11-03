@@ -9,7 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String COMA = ",";
+    private static final String COMMA = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -21,7 +21,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(str -> Arrays.stream(str.split(COMA)))
+                .flatMap(str -> Arrays.stream(str.split(COMMA)))
                 .map(Integer::parseInt)
                 .filter(this::isEvenNumber)
                 .min(Integer::compareTo)
@@ -72,16 +72,17 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
-                        && (person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
-                        : person.getAge() <= femaleToAge))
+                        && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                            || (person.getSex() == Person.Sex.WOMAN
+                                && person.getAge() <= femaleToAge)))
                 .toList();
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
