@@ -12,7 +12,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         if (candidate.isAllowedToVote() && candidate.getAge() >= AGE_OF_CANDIDACY
-            && candidate.getNationality().equals(NATIONALITY)) {
+                && candidate.getNationality().equals(NATIONALITY)) {
             String[] livingYears = candidate.getPeriodsInUkr().split("-");
             int termOfLiving = Integer.parseInt(livingYears[1]) - Integer.parseInt( livingYears[0]);
             return termOfLiving > MINIMUM_YEARS_LIVING;
