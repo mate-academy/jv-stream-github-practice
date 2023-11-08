@@ -25,9 +25,8 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
             .map(i -> isOddNumber(i) ? numbers.get(i) - 1 : numbers.get(i))
             .filter(this::isOddNumber)
-            .mapToDouble(Double::valueOf)
             .average()
-            .orElseThrow();
+            .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -53,8 +52,7 @@ public class StreamPractice {
             .filter(person -> person.getAge() >= femaleAge && !person.getName().isEmpty()
                 && person.getSex() == Person.Sex.WOMAN
                 && !person.getCats().isEmpty())
-            .map(Person::getCats)
-            .flatMap(Collection::stream)
+            .flatMap(person -> person.getCats().stream())
             .map(Cat::getName)
             .toList();
     }

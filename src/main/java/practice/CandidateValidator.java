@@ -7,11 +7,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int AGE_OF_CANDIDACY = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int MINIMUM_YEARS_LIVING = 10;
-    private static final String REGEX = "-";
+    private static final String YEARS_SPLIT_SYMBOL = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] livingYears = candidate.getPeriodsInUkr().split(REGEX);
+        String[] livingYears = candidate.getPeriodsInUkr().split(YEARS_SPLIT_SYMBOL);
         int termOfLiving = Integer.parseInt(livingYears[1]) - Integer.parseInt(livingYears[0]);
         return candidate.isAllowedToVote()
             && candidate.getAge() >= AGE_OF_CANDIDACY
