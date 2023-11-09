@@ -1,9 +1,12 @@
 package practice;
 
-import java.util.Collections;
-import java.util.List;
 import model.Candidate;
 import model.Person;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 
 public class StreamPractice {
     /**
@@ -23,7 +26,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> number % 2 == 1)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,6 +42,8 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        peopleList.stream()
+                .filter()
         return Collections.emptyList();
     }
 
