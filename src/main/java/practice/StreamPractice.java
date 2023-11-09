@@ -1,12 +1,11 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -19,17 +18,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> result = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::valueOf)
                 .filter(num -> num % 2 == 0)
-                .min(Integer::compareTo);
+                .min(Integer::compareTo)
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
 
-        if (result.isPresent()) {
-            return result.get();
-        } else {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
     }
 
     /**
@@ -38,23 +34,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedList = new ArrayList<>(numbers);
-        for (int i = 1; i < modifiedList.size(); i += 2) {
-            modifiedList.set(i, modifiedList.get(i) - 1);
-        }
-
-        List<Integer> oddNumbers = modifiedList.stream()
+        double oddAverage = IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 == 1)
-                .collect(Collectors.toList());
-
-        if (oddNumbers.isEmpty()) {
-            throw new NoSuchElementException("No odd numbers in the list");
-        }
-
-        return oddNumbers.stream()
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Unable to calculate average"));
+                .orElseThrow(()
+                        -> new NoSuchElementException("No odd numbers in the list or unable to calculate average"));
+
+        return oddAverage;
     }
 
     /**
