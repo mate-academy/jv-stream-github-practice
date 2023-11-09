@@ -1,11 +1,13 @@
 package practice;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-
-import java.util.*;
-import java.util.stream.IntStream;
 
 public class StreamPractice {
     /**
@@ -17,10 +19,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
+                .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(i -> i % 2 == 0)
+                .filter(this::isNumberEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -33,8 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 == 1)
+                .map(index -> !isNumberEven(index) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(i -> !isNumberEven(i))
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -107,5 +109,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isNumberEven(int number) {
+        return number % 2 == 0;
     }
 }
