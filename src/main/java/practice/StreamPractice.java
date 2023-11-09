@@ -4,11 +4,7 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.Predicate;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class StreamPractice {
@@ -20,7 +16,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(n -> n.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(i -> i % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
