@@ -15,10 +15,6 @@ public class Cat {
         return name;
     }
 
-    public int getAge() {
-        return age;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

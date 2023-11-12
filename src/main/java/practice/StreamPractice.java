@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -75,12 +76,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
+                .filter(person -> person.getAge() >= fromAge
+                        && (person.getSex() == Person.Sex.MAN
                         && person.getAge() <= maleToAge
                         || person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)
+                        && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -92,11 +92,9 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge
-                        && !person.getCats().isEmpty())
+                        && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
-                .filter(cat -> cat.getName() != null && cat.getAge() >= 0)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -114,9 +112,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
+        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(predicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
