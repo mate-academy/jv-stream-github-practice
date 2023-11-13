@@ -3,49 +3,33 @@ package model;
 import java.util.Objects;
 
 public class Candidate {
-    private int age;
-    private String nationality;
-    private boolean allowedToVote;
-    private String periodsInUkr;
+    private static int age;
+    private static String nationality;
+    private static boolean allowedToVote;
+    private static String periodsInUkr;
     private String name;
 
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
-        this.age = age;
-        this.nationality = nationality;
-        this.allowedToVote = allowedToVote;
-        this.periodsInUkr = periodsInUkr;
+        Candidate.age = age;
+        Candidate.nationality = nationality;
+        Candidate.allowedToVote = allowedToVote;
+        Candidate.periodsInUkr = periodsInUkr;
     }
 
-    public int getAge() {
+    public static int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getNationality() {
+    public static String getNationality() {
         return nationality;
     }
 
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public boolean isAllowedToVote() {
+    public static boolean isAllowedToVote() {
         return allowedToVote;
     }
 
-    public void setAllowedToVote(boolean allowedToVote) {
-        this.allowedToVote = allowedToVote;
-    }
-
-    public String getPeriodsInUkr() {
+    public static String getPeriodsInUkr() {
         return periodsInUkr;
-    }
-
-    public void setPeriodsInUkr(String periodsInUkr) {
-        this.periodsInUkr = periodsInUkr;
     }
 
     public String getName() {
@@ -65,10 +49,10 @@ public class Candidate {
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return age == candidate.age
-            && allowedToVote == candidate.allowedToVote
-            && Objects.equals(nationality, candidate.nationality)
-            && Objects.equals(periodsInUkr, candidate.periodsInUkr)
+        return age == age
+            && allowedToVote == allowedToVote
+            && Objects.equals(nationality, nationality)
+            && Objects.equals(periodsInUkr, periodsInUkr)
             && Objects.equals(name, candidate.name);
     }
 
