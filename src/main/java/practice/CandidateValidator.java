@@ -9,6 +9,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int PERIOD_IN_COUNTRY = 10;
     private static final String DELIMITER_DASH = "-";
 
+    private static final int INDEX_LAST_YEAR = 1;
+    private static final int INDEX_FIRST_YEAR = 0;
+
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE_FOR_ELECTION
@@ -22,7 +25,7 @@ public class CandidateValidator implements Predicate<Candidate> {
             return 0;
         }
         String[] years = periodsInUkr.split(DELIMITER_DASH);
-        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
+        return Integer.parseInt(years[INDEX_LAST_YEAR]) - Integer.parseInt(years[INDEX_FIRST_YEAR]);
     }
 
 }

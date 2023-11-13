@@ -15,12 +15,6 @@ public class StreamPractice {
 
     private static final String DELIMITER_COMMA = ",";
 
-    private final CandidateValidator validator;
-
-    public StreamPractice() {
-        validator = new CandidateValidator();
-    }
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -31,11 +25,11 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
 
         return numbers.stream()
-                .map(str -> str.split(DELIMITER_COMMA))
-                .flatMap(str -> Arrays.stream(str).map(Integer::parseInt))
+                .flatMap(str -> Arrays.stream(str.split(DELIMITER_COMMA)))
+                .map(Integer::parseInt)
                 .filter(number -> (number % 2) == 0)
-                .mapToInt(n -> n)
-                .min().orElseThrow(() ->
+                .min(Integer::compareTo)
+                .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: method_input_list"));
     }
 
@@ -46,11 +40,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
 
-        List<Integer> modifiedList = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .collect(Collectors.toList());
-
-        return modifiedList.stream()
+                .toList().stream()
                 .filter(num -> num % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
@@ -126,6 +118,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator validator = new CandidateValidator();
 
         return candidates.stream()
                 .filter(validator::test)
