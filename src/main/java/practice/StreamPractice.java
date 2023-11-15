@@ -25,7 +25,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -35,13 +35,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .peek(n -> {
-                    if (n % 2 != 0) {
-                        numbers.set(n, numbers.get(n) - 1);
-                    }
-                })
-                .filter(n -> numbers.get(n) % 2 != 0)
-                .mapToDouble(n -> numbers.get(n).doubleValue())
+                .mapToObj(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
+                .filter(n -> n % 2 != 0)
+                .mapToDouble(Double::valueOf)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("There are no odd numbers in the list"));
