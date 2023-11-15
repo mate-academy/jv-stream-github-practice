@@ -25,11 +25,7 @@ public class StreamPractice {
                 .filter(x -> x % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException(getMassageFindMinEvenNumberExeption()));
-    }
-
-    private String getMassageFindMinEvenNumberExeption() {
-        return "Can't get min value from list: < Here is our input 'numbers' >";
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -57,7 +53,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> manByAgePredicate = person -> person.getAge() >= fromAge
                     && person.getAge() <= toAge
-                    && person.getSex().equals(Person.Sex.MAN);
+                    && person.getSex() == Person.Sex.MAN;
         return peopleList.stream()
                 .filter(manByAgePredicate)
                 .collect(Collectors.toList());
@@ -76,8 +72,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> workablePeoplePredicate = person -> person.getAge() >= fromAge
-                && ((person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge)
-                || (person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge));
+                && (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge
+                || person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(workablePeoplePredicate)
                 .collect(Collectors.toList());
@@ -90,7 +86,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(x -> x.getSex().equals(Person.Sex.WOMAN) && x.getAge() >= femaleAge)
+                .filter(x -> x.getSex() == Person.Sex.WOMAN && x.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
