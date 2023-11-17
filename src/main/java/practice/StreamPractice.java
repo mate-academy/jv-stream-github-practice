@@ -30,7 +30,7 @@ public class StreamPractice {
 
     /**
      * Given a List of Integer numbers,
-     * return the averag+e of all odd numbers from the list or throw NoSuchElementException.
+     * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
