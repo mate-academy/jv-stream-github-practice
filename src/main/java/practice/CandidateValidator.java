@@ -14,7 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] period = candidate.getPeriodsInUkr().split("-");
 
         Integer periodsInUkr = Arrays.stream(period)
-                .map(s -> Integer.parseInt(s))
+                .map(string -> Integer.parseInt(string))
                 .reduce(0, (x, y) -> Math.abs(x - y));
 
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()

@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -21,14 +20,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(a -> Arrays.stream(a))
-                .map(s -> Integer.parseInt(s))
+        return numbers.stream()
+                .map(string -> string.split(","))
+                .flatMap(strings -> Arrays.stream(strings))
+                .map(string -> Integer.parseInt(string))
                 .filter(integer -> integer % 2 == 0 && integer != 1)
-                .min(Comparator.naturalOrder());
-        return min.orElseThrow(() ->
-                new RuntimeException("Can't get min value from list:" + numbers));
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
+                        + numbers));
     }
 
     /**
@@ -39,8 +38,8 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
-                .mapToDouble(n -> n)
+                .filter(number -> number % 2 != 0)
+                .mapToDouble(number -> number)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException());
     }
@@ -91,7 +90,7 @@ public class StreamPractice {
                 .filter(person -> person.getAge() >= femaleAge
                         && person.getSex().equals(Person.Sex.WOMAN))
                 .map(person -> person.getCats())
-                .flatMap(l -> l.stream())
+                .flatMap(list -> list.stream())
                 .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
@@ -110,7 +109,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> candidateValidator.test(c))
+                .filter(candidate -> candidateValidator.test(candidate))
                 .map(candidate -> candidate.getName())
                 .sorted()
                 .collect(Collectors.toList());
