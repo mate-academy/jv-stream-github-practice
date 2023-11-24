@@ -40,9 +40,6 @@ public class StreamPractice {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    private boolean isNumberEven(int number) {
-        return number % 2 == 0;
-    }
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -110,5 +107,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isNumberEven(int number) {
+        return number % 2 == 0;
     }
 }
