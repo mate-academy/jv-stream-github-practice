@@ -13,7 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         int[] years = Arrays.stream(candidate.getPeriodsInUkr().split(SPACE_SEPARATOR))
-                .mapToInt(y -> Integer.parseInt(y))
+                .mapToInt(year -> Integer.parseInt(year))
                 .toArray();
         int periodsInUkr = years[1] - years[0];
         return candidate.getAge() >= MIN_AGE
