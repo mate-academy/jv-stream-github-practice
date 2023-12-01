@@ -8,10 +8,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
     public static final String REQUIRED_NATIONALITY = "Ukrainian";
     public static final int REQUIRED_PERIOD = 10;
+    public static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        int periodInUkr = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        int periodInUkr = Arrays.stream(candidate.getPeriodsInUkr().split(SEPARATOR))
                 .mapToInt(Integer::parseInt)
                 .reduce((x, y) -> y - x)
                 .getAsInt();

@@ -1,15 +1,15 @@
 package practice;
 
+import model.Candidate;
+import model.Cat;
+import model.Person;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalInt;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import model.Candidate;
-import model.Cat;
-import model.Person;
 
 public class StreamPractice {
     /**
@@ -21,16 +21,13 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt min = numbers.stream()
-                .map(s -> s.split(","))
+                .map(stringNumber -> stringNumber.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min();
 
-        if (min.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return min.getAsInt();
+        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,7 +38,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         double average = IntStream.range(0, numbers.size())
                 .mapToObj(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(value -> value % 2 != 0)
+                .filter(element -> element % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -77,21 +74,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workablePeoplePredicate = new Predicate<Person>() {
-            @Override
-            public boolean test(Person person) {
-                if (person.getAge() >= fromAge) {
-                    if (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge) {
-                        return true;
-                    }
-                    return person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge;
-                }
-                return false;
-            }
-        };
 
         List<Person> workablePeople = peopleList.stream()
-                .filter(workablePeoplePredicate)
+                .filter(person -> person.getAge() >= fromAge &&
+                        ((person.getSex() == Person.Sex.MAN
+                                && person.getAge() <= maleToAge) ||
+                                (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
         return workablePeople;
     }
