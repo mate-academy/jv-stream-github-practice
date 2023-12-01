@@ -1,15 +1,14 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import model.Candidate;
+import model.Cat;
+import model.Person;
 
 public class StreamPractice {
     /**
@@ -27,7 +26,8 @@ public class StreamPractice {
                 .filter(number -> number % 2 == 0)
                 .min();
 
-        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                + numbers));
     }
 
     /**
@@ -76,10 +76,11 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
 
         List<Person> workablePeople = peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge &&
-                        ((person.getSex() == Person.Sex.MAN
-                                && person.getAge() <= maleToAge) ||
-                                (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)))
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
         return workablePeople;
     }
