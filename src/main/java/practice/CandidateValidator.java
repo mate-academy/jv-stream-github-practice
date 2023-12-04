@@ -1,5 +1,29 @@
 package practice;
 
+
+import model.Candidate;
+
 public class CandidateValidator {
-    //write your code here
+    public static boolean validate(Candidate candidate) {
+        return candidate.getAge() >= 35 &&
+                candidate.isAllowedToVote() &&
+                candidate.getNationality().equals("Ukrainian") &&
+                candidate.getPeriodsInUkr().equals("2002-2015");
+    }
 }
+
+
+//
+//
+//Given the list of strings where each element contains 1+ numbers: input = {"5,30,100", "0, 22, 7", ...} return a min integer value. One more thing - we're interested in even numbers. If there is no needed data throw RuntimeException with the message "Can't get min value from list: method_input_list".
+//
+//        Given a List of Integer numbers, subtract 1 from each element on an odd position (having the odd index). Then return the average of all odd numbers or throw NoSuchElementException.
+//
+//        Given a List of People instances (having name, age, and sex fields), for example, Arrays.asList( new People(«Victor», 16, Sex.MAN), new People(«Helen», 42, Sex.WOMEN)), select from the List only men whose age is from fromAge to toAge inclusively. Example: select men who can be recruited to the army (from 18 to 27 years old inclusively).
+//
+//        Given a List of People instances (having name, age, and sex fields), for example, Arrays.asList( new People(«Victor», 16, Sex.MAN), new People(«Helen», 42, Sex.WOMEN)), select from the List only people whose age is from fromAge and to maleToAge (for men) or to femaleToAge (for women) inclusively. Example: select people of working age (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
+//
+//        Given a List of People instances (having name, age, sex and List<Cat> cats fields, and each Cat having a name and age), return the names of all cats whose owners are women from femaleAge years old inclusively.
+//
+//        Your help with an election is needed. Given a list of candidates, where each element has Candidate.class type. Check which candidates are eligible to apply for the president position and return their names sorted alphabetically. The requirements are: person should be at least 35 years old, should be allowed to vote, have nationality - 'Ukrainian' and lived in Ukraine for 10 years. For the last requirement use the field periodsInUkr, which has the following view: "2002-2015" For now we don't care if that was the last 10 or not. We want to reuse our validation in the future, so let's write our own implementation of Predicate in CandidateValidator.
+//write your code here
