@@ -18,19 +18,11 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
-                .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
-                .toList();
-
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-
-        return evenNumbers.stream()
-                .min(Integer::compareTo)
-                .orElseThrow();
+        return numbers.stream()
+              .flatMapToInt(n -> Arrays.stream(n.split(",")).mapToInt(Integer::parseInt))
+              .filter(n -> n % 2 == 0)
+              .min()
+              .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -58,7 +50,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
-                        && p.getSex().equals(Person.Sex.MAN))
+                        && p.getSex() == Person.Sex.MAN)
                 .toList();
     }
 
