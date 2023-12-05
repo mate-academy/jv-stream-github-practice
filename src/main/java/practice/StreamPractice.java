@@ -12,6 +12,9 @@ import java.util.stream.IntStream;
 
 public class StreamPractice {
 
+    private static final int MIN_AGE = 35;
+    private static final String NATIONALITY = "Ukrainian";
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMapToInt(s -> {
@@ -64,9 +67,9 @@ public class StreamPractice {
                 .filter(candidate ->
                         Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]) -
                                 Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]) >= 10)
-                .filter(candidate -> candidate.getAge() >= 35)
+                .filter(candidate -> candidate.getAge() >= MIN_AGE)
                 .filter(Candidate::isAllowedToVote)
-                .filter(candidate -> "Ukrainian".equals(candidate.getNationality()))
+                .filter(candidate -> NATIONALITY.equals(candidate.getNationality()))
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
