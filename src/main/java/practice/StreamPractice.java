@@ -109,4 +109,5 @@ public class StreamPractice {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
 }
