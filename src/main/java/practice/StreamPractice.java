@@ -4,12 +4,11 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 public class StreamPractice {
 
@@ -27,11 +26,7 @@ public class StreamPractice {
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
     }
-    /**
-     * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
-     */
+
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
@@ -62,28 +57,18 @@ public class StreamPractice {
                 .flatMap(person -> person.getCats().stream().map(Cat::getName))
                 .collect(Collectors.toList());
     }
-    /**
-     * Your help with an election is needed. Given a list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for the president position and return their
-     * names sorted alphabetically.
-     * The requirements are: a person should be older than 35 years, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has the following view: "2002-2015"
-     * We want to reuse our validation in the future, so let's write our implementation of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
-//    "Your CandidateValidator should "
-//            + "implement functional interface Predicate, "
-//            + "so it can be easily reused in the code",
+
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CandidateValidator::validate)
+                .filter(new CandidateValidator())
+                .filter(candidate ->
+                        Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]) -
+                                Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]) >= 10)
+                .filter(candidate -> candidate.getAge() >= 35)
+                .filter(Candidate::isAllowedToVote)
+                .filter(candidate -> "Ukrainian".equals(candidate.getNationality()))
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-
-
     }
 }
