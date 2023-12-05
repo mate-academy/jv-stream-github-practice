@@ -6,6 +6,8 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_TO_VOTE = 35;
     private static final int MIN_YEARS_IN_UKRAINE = 10;
+    private static final int INDEX_PERIOD_FROM = 0;
+    private static final int INDEX_PERIOD_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -22,8 +24,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
 
         try {
-            int startYear = Integer.parseInt(years[0]);
-            int endYear = Integer.parseInt(years[1]);
+            int startYear = Integer.parseInt(years[INDEX_PERIOD_FROM]);
+            int endYear = Integer.parseInt(years[INDEX_PERIOD_TO]);
             return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
         } catch (NumberFormatException e) {
             return false;
