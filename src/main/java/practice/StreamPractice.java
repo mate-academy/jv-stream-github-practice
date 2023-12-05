@@ -1,17 +1,14 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
+import model.Candidate;
+import model.Cat;
+import model.Person;
 
 public class StreamPractice {
-
     private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
 
