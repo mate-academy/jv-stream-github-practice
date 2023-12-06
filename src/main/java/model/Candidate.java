@@ -75,6 +75,6 @@ public class Candidate {
     @Override
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
-                isAllowedToVote(), getPeriodsInUkr(), getName());
+            isAllowedToVote(), getPeriodsInUkr(), getName());
     }
 }
