@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator validator = new CandidateValidator();
-    private double sumOfAllNumbers;
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,9 +20,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(w -> Integer.parseInt(w))
+                .mapToInt(s -> Integer.parseInt(s))
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
     }
@@ -34,15 +33,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int[] ints = new int[numbers.size()];
-        for (int a = 0; a < ints.length; a++) {
-            ints[a] = a;
-        }
-        return Arrays.stream(ints)
-                .boxed()
-                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
-                .mapToInt(Integer::valueOf)
+                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
@@ -75,9 +69,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge)
-                .filter(p -> (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge)
-                || (p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge))
+                .filter(new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -90,9 +82,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge && p.getCats() != null)
-                .map(Person::getCats)
-                .flatMap(l -> l.stream())
-                .map(n -> n.getName())
+                .flatMap(l -> l.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -110,7 +101,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
