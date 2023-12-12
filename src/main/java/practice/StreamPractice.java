@@ -39,7 +39,7 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .average();
-        return average.orElseThrow(() -> new NoSuchElementException());
+        return average.orElseThrow(() -> new NoSuchElementException("There is no such element!"));
     }
 
     /**
