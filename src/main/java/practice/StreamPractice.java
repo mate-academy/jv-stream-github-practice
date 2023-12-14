@@ -23,8 +23,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .map(string -> string.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(string -> Arrays.stream(string.split(",")))
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compare)
@@ -39,10 +38,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> index % 2 == 1
-                        ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(num -> num % 2 != 0)
-                .mapToDouble(Integer::doubleValue)
+                .mapToDouble(index -> index % 2 != 0 ? numbers.get(index) - 1
+                                                    : numbers.get(index))
+                .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -93,8 +91,7 @@ public class StreamPractice {
                 .stream()
                 .filter(p -> p.getAge() >= femaleAge
                                 && p.getSex() == WOMAN)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
