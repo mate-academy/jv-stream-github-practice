@@ -9,6 +9,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final String CHAR_FOR_SPLIT = "-";
     private static final int PERIOD_IN_UKRAINE = 10;
+    private static final int INDEX_OF_YEAR_WORK_TO = 1;
+    private static final int INDEX_OF_YEAR_WORK_FROM = 0;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -16,8 +18,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)) {
             String[] splitedPeriod = candidate.getPeriodsInUkr().split(CHAR_FOR_SPLIT);
-            int period = Integer.parseInt(splitedPeriod[1])
-                    - Integer.parseInt(splitedPeriod[0]);
+            int period = Integer.parseInt(splitedPeriod[INDEX_OF_YEAR_WORK_TO])
+                    - Integer.parseInt(splitedPeriod[INDEX_OF_YEAR_WORK_FROM]);
             return period >= PERIOD_IN_UKRAINE;
         }
         return false;

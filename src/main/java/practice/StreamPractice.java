@@ -1,5 +1,8 @@
 package practice;
 
+import static model.Person.Sex.MAN;
+import static model.Person.Sex.WOMAN;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -9,8 +12,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final Person.Sex MAN = Person.Sex.MAN;
-    private static final Person.Sex WOMAN = Person.Sex.WOMAN;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -22,10 +23,10 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .flatMap(string -> Arrays.stream(string.split(",")))
-                .map(Integer::parseInt)
+                .flatMapToInt(s -> Arrays.stream(s.split(","))
+                        .mapToInt(Integer::parseInt))
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
