@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -23,9 +22,9 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
+                .mapToDouble(i -> i)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -42,18 +41,17 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> {
-                    int ageLimit = (person.getSex().toString()
-                            .equals("MAN") ? maleToAge : femaleToAge);
-                    return person.getAge() >= fromAge && person.getAge() <= ageLimit;
+                    return person.getSex() == Person.Sex.MAN
+                            ? fromAge <= person.getAge() && person.getAge() <= maleToAge
+                            : fromAge <= person.getAge() && person.getAge() <= femaleToAge;
                 })
                 .collect(Collectors.toList());
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().toString().equals("WOMAN") && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
