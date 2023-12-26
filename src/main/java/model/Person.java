@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Person {
-    private String name;
-    private int age;
-    private Sex sex;
-    private List<Cat> cats;
+    private final String name;
+    private final int age;
+    private final Sex sex;
+    private final List<Cat> cats;
 
     public Person(String name, int age, Sex sex) {
         this.name = name;
@@ -50,9 +50,9 @@ public class Person {
         }
         Person person = (Person) o;
         return age == person.age
-            && Objects.equals(name, person.name)
-            && sex == person.sex
-            && Objects.equals(cats, person.cats);
+                && Objects.equals(name, person.name)
+                && sex == person.sex
+                && Objects.equals(cats, person.cats);
     }
 
     @Override
@@ -62,12 +62,10 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{"
-            + "name='" + name + '\''
-            + ", age=" + age
-            + ", sex=" + sex
-            + ", catList=" + cats
-            + '}';
+        return "Person{" + "name='" + name
+                + '\'' + ", age=" + age
+                + ", sex=" + sex
+                + ", catList=" + cats + '}';
     }
 
     public enum Sex {
