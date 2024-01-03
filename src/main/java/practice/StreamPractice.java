@@ -46,22 +46,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .toList();
-
-        List<Integer> oddNumbers = modifiedNumbers.stream()
                 .filter(num -> num % 2 == 1)
-                .toList();
-
-        if (oddNumbers.isEmpty()) {
-            throw new NoSuchElementException("No odd numbers found in the list.");
-        }
-
-        return oddNumbers.stream()
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found in the list."));
     }
 
     /**
@@ -95,13 +85,12 @@ public class StreamPractice {
             @Override
             public boolean test(Person person) {
                 int personAge = person.getAge();
-                if (person.getSex().equals(Person.Sex.MAN) && personAge >= MINIMUM_WORKING_AGE
+                if (person.getSex() == Person.Sex.MAN && personAge >= MINIMUM_WORKING_AGE
                         && personAge <= MAXIMUM_WORKING_AGE_FOR_MEN) {
                     return personAge >= fromAge && personAge <= maleToAge;
-                } else {
+                }
                     return personAge <= femaleToAge && personAge >= MINIMUM_WORKING_AGE
                             && personAge <= MAXIMUM_WORKING_AGE_FOR_WOMEN;
-                }
             }
         };
         return peopleList.stream()
