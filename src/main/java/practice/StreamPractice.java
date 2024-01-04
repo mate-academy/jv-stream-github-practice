@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -20,8 +21,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-            .flatMap(n -> Arrays.stream(n.split(",")))
-            .mapToInt(n -> Integer.parseInt(n))
+            .flatMapToInt(n -> Arrays.stream(n.split(","))
+                .mapToInt(Integer::parseInt))
             .filter(n -> n % 2 == 0)
             .min()
             .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
@@ -34,9 +35,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-            .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-            .filter(n -> n % 2 != 0)
-            .mapToInt(Integer::intValue)
+            .boxed()
+            .flatMapToDouble(i -> {
+                int c = i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i);
+                return c % 2 != 0 ? DoubleStream.of(c) : DoubleStream.empty();
+            })
             .average()
             .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
@@ -104,8 +107,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator isCandidateOk = new CandidateValidator();
         return candidates.stream()
-            .filter(new CandidateValidator())
+            .filter(isCandidateOk)
             .map(Candidate::getName)
             .sorted()
             .collect(Collectors.toList());
