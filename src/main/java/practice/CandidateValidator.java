@@ -5,8 +5,8 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String DIVIDE_STRING_YEARS = "-";
-    private static final int COEFFICIENT_YEARS_FROM = 0;
-    private static final int COEFFICIENT_YEARS_TO = 1;
+    private static final int INDEX_YEARS_FROM = 0;
+    private static final int INDEX_YEARS_TO = 1;
     private static final int MINIMUM_YEARS_IN_THE_COUNTRY = 10;
     private static final int MINIMUM_VOTING_AGE = 35;
     private static final String CITIZEN_OF_UKRAINE = "Ukrainian";
@@ -20,8 +20,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     public boolean validCandidateAgeInCountry(Candidate candidate) {
         String[] arrayPeriodsInUkr = candidate.getPeriodsInUkr().split(DIVIDE_STRING_YEARS);
-        int periodsInUkrFrom = Integer.parseInt(arrayPeriodsInUkr[COEFFICIENT_YEARS_FROM]);
-        int periodsInUkrTo = Integer.parseInt(arrayPeriodsInUkr[COEFFICIENT_YEARS_TO]);
+        int periodsInUkrFrom = Integer.parseInt(arrayPeriodsInUkr[INDEX_YEARS_FROM]);
+        int periodsInUkrTo = Integer.parseInt(arrayPeriodsInUkr[INDEX_YEARS_TO]);
         return (periodsInUkrTo - periodsInUkrFrom) >= MINIMUM_YEARS_IN_THE_COUNTRY;
     }
 }
