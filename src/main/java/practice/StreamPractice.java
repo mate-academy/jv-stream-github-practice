@@ -24,8 +24,7 @@ public class StreamPractice {
             .mapToInt(n -> Integer.parseInt(n))
             .filter(n -> n % 2 == 0)
             .min()
-            .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                   + "< Here is our input 'numbers' >"));
+            .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -52,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-            .filter(p -> p.getSex().equals(Sex.MAN))
+            .filter(p -> Sex.MAN.equals(p.getSex()))
             .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
             .collect(Collectors.toList());
     }
@@ -86,7 +85,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-            .filter(p -> p.getSex().equals(Sex.WOMAN) && p.getAge() >= femaleAge)
+            .filter(p -> Sex.WOMAN.equals(p.getSex()) && p.getAge() >= femaleAge)
             .flatMap(p -> p.getCats().stream())
             .map(Cat::getName)
             .collect(Collectors.toList());
@@ -106,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-            .filter(c -> new CandidateValidator().test(c))
+            .filter(new CandidateValidator())
             .map(Candidate::getName)
             .sorted()
             .collect(Collectors.toList());

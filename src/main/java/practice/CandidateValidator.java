@@ -18,8 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean verifyCandidateNationalityIsOk(Candidate candidate) {
-        return candidate.getNationality() != null
-            && candidate.getNationality().equals(NATIONALITY);
+        return NATIONALITY.equals(candidate.getNationality());
     }
 
     private boolean verifyCandidateCountryLivingPeriodIsOk(Candidate candidate) {
