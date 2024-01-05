@@ -6,9 +6,9 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
-    private static int REQUIRED_AGE = 35;
-    private static String REQUIRED_NATIONALITY = "Ukrainian";
-    private static int requiredResidencyYears = 10;
+    private static final int REQUIRED_AGE = 35;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int REQUIRED_RESIDENCE_YEARS = 10;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -16,9 +16,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .filter(s -> Character.isDigit(s.charAt(0)))
                 .mapToInt(Integer::valueOf)
                 .reduce((x, y) -> y - x)
-                .orElse(0) >= requiredResidencyYears;
+                .orElse(0) >= REQUIRED_RESIDENCE_YEARS;
     }
 }
