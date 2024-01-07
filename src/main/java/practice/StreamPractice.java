@@ -13,17 +13,12 @@ public class StreamPractice {
     private final String runTimeException = "Can't get min value from list: ";
 
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .sorted()
-                .boxed()
-                .toList();
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException(runTimeException + numbers);
-        }
-        return evenNumbers.get(0);
+                .min()
+                .orElseThrow(() -> new RuntimeException(runTimeException + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -45,11 +40,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge)
+                .filter(person -> (person.getAge() >= fromAge)
+                        && (person.getSex() == Person.Sex.MAN
+                        ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
-
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
