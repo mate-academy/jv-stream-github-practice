@@ -19,7 +19,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMapToInt(s -> Arrays.stream(s.split(",")).mapToInt(Integer::parseInt))
+                .flatMapToInt(string -> Arrays.stream(string.split(","))
+                        .mapToInt(Integer::parseInt))
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
