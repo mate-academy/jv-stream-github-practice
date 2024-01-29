@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -28,6 +27,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .reduce(Integer::min)
                 .orElseThrow();
+
+
     }
 
     /**
@@ -112,6 +113,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator::test)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
