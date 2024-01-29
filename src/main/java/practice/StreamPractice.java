@@ -21,9 +21,6 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
 
-//    Arrays::stream -- Stream<Obj []> TO Stream<Obj>
-//    Collection::stream -- Stream<List<Obj>> TO Stream<Obj>
-
     public int findMinEvenNumber(List<String> numbers) {
         Optional<Integer> min = numbers
                 .stream()
