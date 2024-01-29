@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -19,13 +20,17 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
-                .mapToInt(Integer::valueOf)
-                .filter(n -> n % 2 == 0)
-                .reduce(Integer::min)
-                .orElseThrow();
+        try {
+            return numbers.stream()
+                    .map(s -> s.split(","))
+                    .flatMap(Arrays::stream)
+                    .mapToInt(Integer::valueOf)
+                    .filter(n -> n % 2 == 0)
+                    .reduce(Integer::min)
+                    .getAsInt();
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("Can't get min value from list");
+        }
     }
 
     /**
