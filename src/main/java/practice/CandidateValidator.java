@@ -4,14 +4,18 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int MIN_AGE = 35;
-    private static final int MIN_PERIODS_IN_UKR = 10;
+    private static final String SEPARATOR = "-";
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int MINIMUM_AGE = 35;
+    private static final int YEARS_IN_UKRAINE = 10;
+    private static final int END_DATE = 1;
+    private static final int START_DATE = 0;
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && calculatePeriodsInUkr(candidate.getPeriodsInUkr()) >= MIN_PERIODS_IN_UKR) {
+        if (candidate.getAge() >= MINIMUM_AGE && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(NATIONALITY)
+                && calculatePeriodsInUkr(candidate.getPeriodsInUkr()) >= YEARS_IN_UKRAINE) {
             return true;
         } else {
             return false;
@@ -19,9 +23,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int calculatePeriodsInUkr(String fromTo) {
-        String[] years = fromTo.split("-");
-        int fromYear = Integer.parseInt(years[0]);
-        int toYear = Integer.parseInt(years[1]);
+        String[] years = fromTo.split(SEPARATOR);
+        int fromYear = Integer.parseInt(years[START_DATE]);
+        int toYear = Integer.parseInt(years[END_DATE]);
         return toYear - fromYear;
     }
 }
