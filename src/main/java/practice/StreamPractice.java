@@ -3,12 +3,12 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
-import java.util.NoSuchElementException;
 import model.Cat;
 import model.Person;
 
@@ -32,7 +32,7 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo);
-        return  min.orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -47,7 +47,6 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .average();
         return average.orElseThrow(NoSuchElementException::new);
-//        return null;
     }
 
     /**
@@ -62,7 +61,7 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN)
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <=toAge)
+                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
