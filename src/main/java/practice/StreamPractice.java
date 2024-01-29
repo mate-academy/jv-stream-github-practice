@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(s -> s.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::valueOf)
+                .filter(n -> n % 2 == 0)
+                .reduce(Integer::min)
+                .orElseThrow();
     }
 
     /**
@@ -27,20 +34,20 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        Stream<Integer> listOdd = IntStream.range(0, numbers.size())
+        Stream<Integer> streamOdd = IntStream.range(0, numbers.size())
                 .filter(i -> i % 2 != 0)
                 .mapToObj(numbers::get)
                 .map(n -> n - 1);
 
-        Stream<Integer> listEven = IntStream.range(0, numbers.size())
+        Stream<Integer> streamEven = IntStream.range(0, numbers.size())
                 .filter(i -> i % 2 == 0)
                 .mapToObj(numbers::get);
 
-        return Stream.concat( listEven, listOdd)
+        return Stream.concat( streamEven, streamOdd)
                 .filter(n -> n % 2 != 0)
                 .mapToDouble( n -> n)
                 .average()
-                .getAsDouble();
+                .orElseThrow();
 
     }
 
