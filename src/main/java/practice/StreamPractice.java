@@ -3,6 +3,8 @@ package practice;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import model.Candidate;
 import model.Person;
@@ -25,7 +27,21 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        Stream<Integer> listOdd = IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 != 0)
+                .mapToObj(numbers::get)
+                .map(n -> n - 1);
+
+        Stream<Integer> listEven = IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 == 0)
+                .mapToObj(numbers::get);
+
+        return Stream.concat( listEven, listOdd)
+                .filter(n -> n % 2 != 0)
+                .mapToDouble( n -> n)
+                .average()
+                .getAsDouble();
+
     }
 
     /**
@@ -55,8 +71,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() >= fromAge && p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)
-                        || (p.getAge() >= fromAge && p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))))
+                .filter(p -> p.getAge() >= fromAge && (p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)
+                        || (p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))))
                 .collect(Collectors.toList());
     }
 
