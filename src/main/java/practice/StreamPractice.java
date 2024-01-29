@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,8 +26,6 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .reduce(Integer::min)
                 .orElseThrow();
-
-
     }
 
     /**
@@ -46,9 +43,9 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .mapToObj(numbers::get);
 
-        return Stream.concat( streamEven, streamOdd)
+        return Stream.concat(streamEven, streamOdd)
                 .filter(n -> n % 2 != 0)
-                .mapToDouble( n -> n)
+                .mapToDouble(n -> n)
                 .average()
                 .orElseThrow();
 
@@ -64,7 +61,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN) && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(p -> p.getSex().equals(Person.Sex.MAN) && p.getAge()
+                        >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -81,7 +79,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && (p.getAge() <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)
+                .filter(p -> p.getAge() >= fromAge && (p.getAge()
+                        <= femaleToAge && p.getSex().equals(Person.Sex.WOMAN)
                         || (p.getAge() <= maleToAge && p.getSex().equals(Person.Sex.MAN))))
                 .collect(Collectors.toList());
     }
