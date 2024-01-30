@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_CANDIDATE_AGE = 35;
     private static final String DEFAULT_NATION_CANDIDATE = "Ukrainian";
     private static final int MIN_LIVING_PERIOD_IN_COUNTRY = 10;
+    private static final String DATE_DELIMITER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int findLivingPeriodForCandidate(Candidate candidate) {
-        return Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        return Arrays.stream(candidate.getPeriodsInUkr().split(DATE_DELIMITER))
                 .map(Integer::parseInt)
                 .mapToInt(i -> i)
                 .reduce((a, b) -> Math.abs(b - a))
