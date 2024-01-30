@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -19,17 +20,17 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(s -> s.split(","))
-                    .flatMap(Arrays::stream)
-                    .mapToInt(Integer::valueOf)
-                    .filter(n -> n % 2 == 0)
-                    .reduce(Integer::min)
-                    .getAsInt();
-        } catch (NoSuchElementException e) {
+        Supplier<NoSuchElementException> noSuchElementExceptionSupplier = () -> {
             throw new NoSuchElementException("Can't get min value from list");
-        }
+        };
+
+        return numbers.stream()
+                .map(s -> s.split(","))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::valueOf)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(noSuchElementExceptionSupplier);
     }
 
     /**
