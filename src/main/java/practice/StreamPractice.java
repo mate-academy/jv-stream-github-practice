@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -15,23 +14,18 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(el -> el.split(","))
-                .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .filter(el -> el % 2 == 0)
-                .min(Integer::compare)
+                .flatMap(element -> Arrays.stream(element.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(element -> element % 2 == 0)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
                         + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedList = IntStream.range(0,numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .toList();
-
-        return modifiedList.stream()
-                .filter(el -> el % 2 != 0)
-                .mapToInt(Integer::intValue)
+        return IntStream.range(0,numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(element -> element % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -59,8 +53,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= femaleAge
                         && person.getSex() == Person.Sex.WOMAN)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(element -> element.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }

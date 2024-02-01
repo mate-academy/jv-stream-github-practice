@@ -1,5 +1,7 @@
 package practice;
 
+import static java.lang.Integer.parseInt;
+
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -20,6 +22,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     //Only for String type like: "2002-2015"
     private int getIntPeriodInUkr(String periodInUkr) {
         String[] period = periodInUkr.split(DIVIDER_FOR_INPUT_PERIOD);
-        return Integer.parseInt(period[1]) - Integer.parseInt(period[0]);
+        return parseInt(period[1]) - parseInt(period[0]);
     }
 }
