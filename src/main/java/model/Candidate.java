@@ -2,7 +2,7 @@ package model;
 
 import java.util.Objects;
 
-public class Candidate implements Comparable<Candidate> {
+public class Candidate {
     private int age;
     private String nationality;
     private boolean allowedToVote;
@@ -78,8 +78,4 @@ public class Candidate implements Comparable<Candidate> {
             isAllowedToVote(), getPeriodsInUkr(), getName());
     }
 
-    @Override
-    public int compareTo(Candidate other) {
-        return this.getName().compareTo(other.getName());
-    }
 }

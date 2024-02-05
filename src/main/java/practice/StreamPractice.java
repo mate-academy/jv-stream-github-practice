@@ -38,14 +38,10 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedList = IntStream.range(0, numbers.size())
-                .mapToObj(index -> (index % 2 != 0) ? numbers.get(index) - 1
-                        : numbers.get(index))
-                .toList();
-
-        return modifiedList.stream()
+        return IntStream.range(0, numbers.size())
+                .mapToObj(index -> ((index & 1) == 1) ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(num -> (num & 1) == 1)
                 .mapToDouble(Integer::doubleValue)
-                .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -62,7 +58,7 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge
-                        && p.getSex().equals(Person.Sex.MAN))
+                        && p.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +76,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList
                 .stream()
-                .filter(new WorkablePeopleValidator(fromAge,femaleToAge,maleToAge))
+                .filter(new WorkablePeopleValidator(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -92,7 +88,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList
                 .stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
