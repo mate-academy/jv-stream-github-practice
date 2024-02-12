@@ -5,16 +5,18 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-
+    private static final String validNationality = "Ukrainian";
+    private static final int validMinAge = 35;
+    private static final int validMinPeriodsInUkr = 10;
     @Override
     public boolean test(Candidate candidate) {
         int periodsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .mapToInt(Integer::parseInt)
                 .reduce((a, b) -> a - b).orElse(0);
 
-        return candidate.getAge() >= 35
+        return candidate.getAge() >= validMinAge
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && Math.abs(periodsInUkraine) >= 10;
+                && candidate.getNationality().equals(validNationality)
+                && Math.abs(periodsInUkraine) >= validMinPeriodsInUkr;
     }
 }
