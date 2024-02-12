@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String validNationality = "Ukrainian";
     private static final int validMinAge = 35;
     private static final int validMinPeriodsInUkr = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         int periodsInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
