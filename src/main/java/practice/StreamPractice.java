@@ -11,6 +11,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -35,8 +38,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(CandidateValidator.ZERO, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - CandidateValidator.ONE : numbers.get(i))
+        return IntStream.range(ZERO, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - ONE : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -88,8 +91,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= femaleAge)
+                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= femaleAge)
                 .flatMap(x -> x.getCats().stream())
                 .map(Cat::getName)
                 .distinct()
