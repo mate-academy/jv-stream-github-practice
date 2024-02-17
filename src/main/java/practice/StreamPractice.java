@@ -1,11 +1,18 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final int ELIGIBLE_AGE = 35;
+    private static final int YEARS_IN_UKRAINE_NEEDED = 10;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +21,20 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        String numbersList = numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining(" "));
+
+        OptionalInt min = numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(even -> even % 2 == 0)
+                .min();
+
+        return min.orElseThrow(() ->
+                new RuntimeException("Can't get min value from list: " + numbersList));
     }
 
     /**
@@ -23,7 +43,19 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        for (int i = 0; i < numbers.size(); i++) {
+            if (i % 2 == 1) {
+                numbers.set(i, numbers.get(i) - 1);
+            }
+        }
+
+        Optional<Integer> reduce = numbers.stream()
+                .filter(odd -> odd % 2 == 1)
+                .reduce(Integer::sum);
+
+        return (double) reduce.orElseThrow(NoSuchElementException::new) / numbers.stream()
+                .filter(odd -> odd % 2 == 1)
+                .count();
     }
 
     /**
@@ -35,7 +67,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(man -> man.getSex().equals(Person.Sex.MAN)
+                        && man.getAge() >= fromAge && man.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +85,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(h -> h.getAge() >= fromAge
+                        && (h.getSex().equals(Person.Sex.MAN)
+                        ? h.getAge() <= maleToAge : h.getAge() <= femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +98,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(woman -> woman.getSex().equals(Person.Sex.WOMAN)
+                        && woman.getAge() >= femaleAge)
+                .flatMap(cat -> cat.getCats().stream())
+                .map(cat -> cat.getName())
+                .distinct()
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +120,15 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(candidate -> candidate.getAge() >= ELIGIBLE_AGE
+                        && candidate.getNationality().equals("Ukrainian")
+                        && Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
+                        - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0])
+                        >= YEARS_IN_UKRAINE_NEEDED
+                        && candidate.isAllowedToVote())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
