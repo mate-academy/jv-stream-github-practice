@@ -13,6 +13,8 @@ import model.Person;
 public class StreamPractice {
 
     private static final int DIVIDER_ODD_OR_EVEN_NUMBER_FOR = 2;
+    private static final int ONE = 1;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -39,11 +41,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .filter(i -> i % DIVIDER_ODD_OR_EVEN_NUMBER_FOR != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-        return numbers.stream()
-                .mapToDouble(integerToDouble -> integerToDouble)
+
+        return IntStream.range(0, numbers.size())
+                .map(index -> {
+                    if (index % DIVIDER_ODD_OR_EVEN_NUMBER_FOR != 0) {
+                        return numbers.get(index) - ONE;
+                    }
+                    return numbers.get(index);
+                })
+                .mapToDouble(Double::valueOf)
                 .filter(number -> number % DIVIDER_ODD_OR_EVEN_NUMBER_FOR != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -95,7 +101,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= femaleAge)
+                        && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -116,7 +122,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
