@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,7 +22,6 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
 
-                //s -> Sting["5", "30", "100"]
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -54,12 +52,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Stream<Person> personStream = peopleList.stream()
+        return peopleList.stream()
                 .filter(person -> Person.Sex.MAN.equals(person.getSex())
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .map(person -> new Person(person.getName(),
-                        person.getAge(), person.getSex(), person.getCats()));
-        return personStream.toList();
+                .collect(Collectors.toList());
     }
 
     /**
