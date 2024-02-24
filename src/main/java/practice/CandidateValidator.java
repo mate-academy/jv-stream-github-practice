@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROM_YEAR_LIVE = 0;
     private static final int TO_YEAR_LIVE = 1;
     private static final int SUFFICIENT_PERIOD = 10;
+    private static final String COUNTRY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -15,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 calculatorYearsLivedInUkraine(candidate.getPeriodsInUkr()) > SUFFICIENT_PERIOD;
         return candidate.getAge() >= MIN_AGE_TO_CANDIDATE_PRESIDENT
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(COUNTRY)
                 && periodInUkr;
     }
 

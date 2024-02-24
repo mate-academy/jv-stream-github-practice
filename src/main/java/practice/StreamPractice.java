@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -56,9 +55,9 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN)
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .toList();
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -74,9 +73,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> personPredicate = p -> p.getSex() == Person.Sex.MAN
-                && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                || p.getSex() == Person.Sex.WOMAN
-                && p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+                ? p.getAge() >= fromAge && p.getAge() <= maleToAge
+                : p.getAge() >= fromAge && p.getAge() <= femaleToAge;
         return peopleList
                 .stream()
                 .filter(personPredicate)
@@ -94,7 +92,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -112,22 +110,21 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates
                 .stream()
-                .filter((c) -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private List<Integer> searchOddIndexAndSubtractOne(List<Integer> numbers) {
-        IntUnaryOperator intUnaryOperator = i -> {
-            if (i % 2 != 0) {
-                return numbers.get(i) - 1;
-            }
-            return numbers.get(i);
-        };
         return IntStream.range(0, numbers.size())
-                .map(intUnaryOperator)
+                .map(i -> {
+                    if (i % 2 != 0) {
+                        return numbers.get(i) - 1;
+                    }
+                    return numbers.get(i);
+                })
                 .boxed()
-                .toList();
+                .collect(Collectors.toList());
     }
 }
