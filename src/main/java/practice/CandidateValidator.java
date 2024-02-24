@@ -1,5 +1,28 @@
 package practice;
 
-public class CandidateValidator {
-    //write your code here
+import java.util.function.Predicate;
+import model.Candidate;
+
+public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_AGE_TO_CANDIDATE_PRESIDENT = 35;
+    private static final int FROM_YEAR_LIVE = 0;
+    private static final int TO_YEAR_LIVE = 1;
+    private static final int SUFFICIENT_PERIOD = 10;
+
+    @Override
+    public boolean test(Candidate candidate) {
+        boolean periodInUkr =
+                calculatorYearsLivedInUkraine(candidate.getPeriodsInUkr()) > SUFFICIENT_PERIOD;
+        return candidate.getAge() >= MIN_AGE_TO_CANDIDATE_PRESIDENT
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals("Ukrainian")
+                && periodInUkr;
+    }
+
+    private int calculatorYearsLivedInUkraine(String string) {
+        String[] splitString = string.split("-");
+        int from = Integer.parseInt(splitString[FROM_YEAR_LIVE]);
+        int to = Integer.parseInt(splitString[TO_YEAR_LIVE]);
+        return to - from;
+    }
 }

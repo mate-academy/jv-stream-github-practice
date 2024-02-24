@@ -1,8 +1,15 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.IntUnaryOperator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +21,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers
+                .stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -23,7 +37,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return searchOddIndexAndSubtractOne(numbers)
+                .stream()
+                .filter(n -> n % 2 != 0)
+                .mapToInt(i -> i)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -35,7 +54,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
+                .toList();
     }
 
     /**
@@ -50,7 +73,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> personPredicate = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                || p.getSex() == Person.Sex.WOMAN
+                && p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+        return peopleList
+                .stream()
+                .filter(personPredicate)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +89,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList
+                .stream()
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
+                .map(Cat::getName)
+                .toList();
     }
 
     /**
@@ -75,6 +110,24 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates
+                .stream()
+                .filter((c) -> new CandidateValidator().test(c))
+                .map(Candidate::getName)
+                .sorted()
+                .toList();
+    }
+
+    private List<Integer> searchOddIndexAndSubtractOne(List<Integer> numbers) {
+        IntUnaryOperator intUnaryOperator = i -> {
+            if (i % 2 != 0) {
+                return numbers.get(i) - 1;
+            }
+            return numbers.get(i);
+        };
+        return IntStream.range(0, numbers.size())
+                .map(intUnaryOperator)
+                .boxed()
+                .toList();
     }
 }
