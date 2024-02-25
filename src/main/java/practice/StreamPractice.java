@@ -26,9 +26,7 @@ public class StreamPractice {
                 .filter(even -> even % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers.stream()
-                        .flatMap(s -> Arrays.stream(s.split(",")))
-                        .collect(Collectors.joining(" "))));
+                        + numbers));
     }
 
     /**
@@ -59,7 +57,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(man -> man.getSex().equals(Person.Sex.MAN)
+                .filter(man -> man.getSex() == Person.Sex.MAN
                         && man.getAge() >= fromAge && man.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
