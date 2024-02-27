@@ -69,14 +69,25 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+
         return peopleList.stream()
-                .filter(person -> {
-                    int age = person.getAge();
-                    Person.Sex sex = person.getSex();
-                    return (sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge)
-                            || (sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge);
-                })
+                .filter(person -> isWithinTheAgeRange(person, fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isWithinTheAgeRange(Person person,
+                                        int fromAge,
+                                        int femaleToAge,
+                                        int maleToAge) {
+        int age = person.getAge();
+        Person.Sex sex = person.getSex();
+
+        if (sex == Person.Sex.WOMAN) {
+            return age >= fromAge && age <= femaleToAge;
+        } else if (sex == Person.Sex.MAN) {
+            return age >= fromAge && age <= maleToAge;
+        }
+        return false;
     }
 
     /**
@@ -110,7 +121,7 @@ public class StreamPractice {
 
         return candidates.stream()
                 .filter(candidateValidator)
-                .map(Candidate:: getName)
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }

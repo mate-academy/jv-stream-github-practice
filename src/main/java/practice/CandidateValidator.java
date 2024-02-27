@@ -8,11 +8,12 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int PERIODS_IN_UKR = 10;
     private static final int START_YEAR_INDEX = 0;
     private static final int END_YEAR_INDEX = 1;
+    private static final String NATIONALITY = "Ukrainian";
 
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && "Ukrainian".equals(candidate.getNationality())
+                && NATIONALITY.equals(candidate.getNationality())
                 && calculateYearsInUkraine(candidate.getPeriodsInUkr()) >= PERIODS_IN_UKR;
     }
 
