@@ -37,17 +37,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    if (i % 2 != 0) {
-                        return numbers.get(i) - 1;
-                    }
-                    return numbers.get(i);
-                })
-                .boxed()
-                .toList()
-                .stream()
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(i -> i)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -121,18 +112,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
-    }
-
-    private List<Integer> searchOddIndexAndSubtractOne(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    if (i % 2 != 0) {
-                        return numbers.get(i) - 1;
-                    }
-                    return numbers.get(i);
-                })
-                .boxed()
                 .collect(Collectors.toList());
     }
 }
