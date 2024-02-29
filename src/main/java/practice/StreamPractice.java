@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -68,9 +69,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(e -> e.getAge() >= fromAge
-                        && ((e.getSex() == Person.Sex.MAN && e.getAge() <= maleToAge)
-                || (e.getSex() == Person.Sex.WOMAN && e.getAge() <= femaleToAge)))
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -81,9 +84,10 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .flatMap(p -> p.getCats().stream())
-                .map(c -> c.getName())
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
@@ -102,7 +106,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
