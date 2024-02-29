@@ -24,7 +24,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
-                .orElseThrow(() -> new IllegalStateException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     /**
@@ -82,12 +82,8 @@ public class StreamPractice {
         int age = person.getAge();
         Person.Sex sex = person.getSex();
 
-        if (sex == Person.Sex.WOMAN) {
-            return age >= fromAge && age <= femaleToAge;
-        } else if (sex == Person.Sex.MAN) {
-            return age >= fromAge && age <= maleToAge;
-        }
-        return false;
+        return sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge
+                || sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge;
     }
 
     /**
