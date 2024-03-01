@@ -70,7 +70,8 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> ageRangePredicate = new AgeRangePredicate(fromAge, femaleToAge, maleToAge);
+        Predicate<Person> ageRangePredicate =
+                new AgeRangePredicate(fromAge, femaleToAge, maleToAge);
         return peopleList.stream()
                 .filter(ageRangePredicate)
                 .collect(Collectors.toList());
