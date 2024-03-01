@@ -1,6 +1,7 @@
 package practice;
 
 import java.time.Year;
+import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -13,18 +14,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (!candidate.getPeriodsInUkr().contains("-")) {
-            throw new RuntimeException("Incorrect periods");
-        }
-        String periods = candidate.getPeriodsInUkr();
-        final int firstYear = Integer.parseInt(periods.substring(0, periods.indexOf("-")));
-        final int lastYear = Integer.parseInt(periods.substring(periods.indexOf("-") + 1));
-        if (firstYear < MIN_YEAR_OF_PERIOD || lastYear > MAX_YEAR_OF_PERIOD
-                || firstYear > lastYear) {
-            throw new RuntimeException("Incorrect periods");
-        }
+        int[] intPeriod = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+                .mapToInt(Integer::parseInt)
+                .toArray();
         return candidate.isAllowedToVote() && candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.getNationality().equals(NATIONALITY)
-                && lastYear - firstYear >= MIN_YEARS_IN_UKRAINE;
+                && intPeriod[1] - intPeriod[0] >= MIN_YEARS_IN_UKRAINE;
     }
 }
