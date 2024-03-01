@@ -62,11 +62,12 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person "
-            + "name: '" + name + '\''
-            + ", age: " + age
-            + ", sex: " + sex
-            + ", cats that " + name + " has: " + cats;
+        return "Person{"
+                + "name='" + name + '\''
+                + ", age=" + age
+                + ", sex=" + sex
+                + ", catList=" + cats
+                + '}';
     }
 
     public enum Sex {

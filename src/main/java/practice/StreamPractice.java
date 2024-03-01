@@ -9,6 +9,7 @@ import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
+import practice.util.AgeRangePredicate;
 
 public class StreamPractice {
     /**
@@ -69,21 +70,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-
+        Predicate<Person> ageRangePredicate = new AgeRangePredicate(fromAge, femaleToAge, maleToAge);
         return peopleList.stream()
-                .filter(person -> isWithinTheAgeRange(person, fromAge, femaleToAge, maleToAge))
+                .filter(ageRangePredicate)
                 .collect(Collectors.toList());
-    }
-
-    private boolean isWithinTheAgeRange(Person person,
-                                        int fromAge,
-                                        int femaleToAge,
-                                        int maleToAge) {
-        int age = person.getAge();
-        Person.Sex sex = person.getSex();
-
-        return sex == Person.Sex.WOMAN && age >= fromAge && age <= femaleToAge
-                || sex == Person.Sex.MAN && age >= fromAge && age <= maleToAge;
     }
 
     /**
