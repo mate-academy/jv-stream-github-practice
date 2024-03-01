@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -20,8 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(e -> e.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min(Integer::compareTo)
@@ -87,9 +85,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge && p.getCats() != null)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
-                .map(Cat::getName)
+                .flatMap(p -> p.getCats().stream().map(Cat::getName))
                 .collect(Collectors.toList());
     }
 
