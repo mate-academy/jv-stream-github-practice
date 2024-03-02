@@ -16,8 +16,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(DELIMETER))
-                .flatMap(Arrays::stream)
+                .flatMap(string -> Arrays.stream(string.split(DELIMETER)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % EVEN_OR_ODD_NUMBER_DIVIDER == 0)
                 .min()
@@ -32,13 +31,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> {
+                .mapToDouble(index -> {
                     if (index % EVEN_OR_ODD_NUMBER_DIVIDER != 0) {
                         return numbers.get(index) - DECREMENT_ONE;
                     }
                     return numbers.get(index);
                 })
-                .mapToDouble(Double::valueOf)
                 .filter(number -> number % EVEN_OR_ODD_NUMBER_DIVIDER != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
