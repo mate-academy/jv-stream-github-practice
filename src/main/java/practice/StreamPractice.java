@@ -9,6 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final String DELIMITER = ",";
     private int index;
 
     /**
@@ -20,7 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(DELIMITER)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -35,10 +36,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         index = 0;
+        int subtract = 1;
         return numbers.stream()
                 .collect(Collectors.toMap(i -> index++, i -> i))
                 .entrySet().stream()
-                .mapToInt(e -> e.getKey() % 2 == 0 ? e.getValue() : e.getValue() - 1)
+                .mapToInt(e -> e.getKey() % 2 == 0 ? e.getValue() : e.getValue() - subtract)
                 .filter(i -> i % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
