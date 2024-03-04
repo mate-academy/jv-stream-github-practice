@@ -9,13 +9,14 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compare)
+                .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -30,28 +31,20 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && person.getAge() <= toAge
-                        && person.getSex() == Person.Sex.MAN)
+                .filter(p -> isValidMan(p, fromAge, toAge))
                 .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex() == Person.Sex.MAN
-                        && person.getAge() <= maleToAge)
-                        || ((person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge))))
+                .filter(p -> isWorkablePerson(p, fromAge, maleToAge, femaleToAge))
                 .toList();
     }
 
-    public List<String> getCatsNames(List<Person> peopleList,
-                                     int femaleAge) {
+    public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= femaleAge
-                        && person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> isValidCatOwner(person, femaleAge))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
@@ -59,9 +52,29 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private static boolean isValidMan(Person person, int fromAge, int toAge) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+    }
+
+    private static boolean isValidCatOwner(Person person, int fromAge) {
+        return person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= fromAge;
+    }
+
+    private static boolean isWorkablePerson(Person person, int fromAge,
+                                                   int maleToAge, int femaleToAge) {
+        return person.getAge() >= fromAge
+                && ((person.getSex() == Person.Sex.MAN
+                && person.getAge() <= maleToAge)
+                || ((person.getSex() == Person.Sex.WOMAN
+                && person.getAge() <= femaleToAge)));
     }
 }
