@@ -3,6 +3,8 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.IntUnaryOperator;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,7 +12,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String COMMA = ",";
+    private static final String COMMA = ",";
     private static final int DIVISOR_FOR_EVEN_CHECK = 2;
 
     /**
@@ -22,10 +24,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(element -> Arrays.stream(element.split(COMMA)))
-                .map(Integer::valueOf)
+                .flatMapToInt(element -> Arrays.stream(element.split(COMMA))
+                        .mapToInt(Integer::valueOf))
                 .filter(number -> number % DIVISOR_FOR_EVEN_CHECK == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
     }
@@ -39,8 +41,7 @@ public class StreamPractice {
         int initialNumber = 0;
         int subtractNumber = 1;
         return IntStream.range(initialNumber, numbers.size())
-                .map(index -> index % DIVISOR_FOR_EVEN_CHECK == 0 ? numbers.get(index)
-                        : numbers.get(index) - subtractNumber)
+                .map(conditionalSubtractOrOriginal(numbers, subtractNumber))
                 .filter(element -> element % DIVISOR_FOR_EVEN_CHECK != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -74,9 +75,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)))
+                .filter(getPersonPredicate(fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -87,8 +86,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge)
+                .filter(getPersonPredicateForWoman(femaleAge))
                 .flatMap(woman -> woman.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -107,10 +105,28 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private IntUnaryOperator conditionalSubtractOrOriginal(List<Integer> numbers,
+                                                           int subtractNumber) {
+        return index -> index % DIVISOR_FOR_EVEN_CHECK == 0 ? numbers.get(index)
+                : numbers.get(index) - subtractNumber;
+    }
+
+    private Predicate<Person> getPersonPredicate(int fromAge, int femaleToAge, int maleToAge) {
+        return person -> person.getAge() >= fromAge
+                && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge));
+    }
+
+    private Predicate<Person> getPersonPredicateForWoman(int femaleAge) {
+        return person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
     }
 }
