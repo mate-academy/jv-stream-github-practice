@@ -4,10 +4,10 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final double MIN_AGE = 35;
-    public static final int MIN_PERIOD_IN_UKR = 10;
-    public static final String NATIONALITY = "Ukrainian";
-    public static final String YEAR_SEPARATOR = "-";
+    private static final double MIN_AGE = 35;
+    private static final int MIN_PERIOD_IN_UKR = 10;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final String YEAR_SEPARATOR = "-";
     private static final int FROM_YEAR = 0;
     private static final int TO_YEAR = 1;
 
