@@ -9,14 +9,15 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(Integer::parseInt)
+                .flatMapToInt(s ->
+                        Arrays.stream(s.split(COMMA)).mapToInt(Integer::parseInt))
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
