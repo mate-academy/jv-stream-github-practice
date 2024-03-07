@@ -16,7 +16,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMapToInt(s ->
                         Arrays.stream(s.split(COMMA)).mapToInt(Integer::parseInt))
-                .filter(n -> n % 2 == 0)
+                .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -25,21 +25,21 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .mapToDouble(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 == 1)
+                .filter(number -> number % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> isValidMan(p, fromAge, toAge))
+                .filter(person -> isValidMan(person, fromAge, toAge))
                 .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> isWorkablePerson(p, fromAge, maleToAge, femaleToAge))
+                .filter(person -> isWorkablePerson(person, fromAge, maleToAge, femaleToAge))
                 .toList();
     }
 
