@@ -10,6 +10,9 @@ public class Candidate {
     private String name;
 
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
+        if (nationality == null || periodsInUkr == null) {
+            throw new IllegalArgumentException();
+        }
         this.age = age;
         this.nationality = nationality;
         this.allowedToVote = allowedToVote;

@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 import java.util.function.Predicate;
@@ -40,11 +39,11 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         OptionalDouble optionalDouble
-                = IntStream.iterate(0, i -> i < numbers.size(), i -> i + 1)
+                = IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 != 0)
                 .average();
-        return optionalDouble.orElseThrow(NoSuchElementException::new);
+        return optionalDouble.getAsDouble();
     }
 
     /**
@@ -117,7 +116,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
