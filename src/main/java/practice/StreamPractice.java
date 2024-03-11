@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -56,8 +55,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> personValidate(person, fromAge, toAge, Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -74,11 +72,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() <= maleToAge
-                        || person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() <= femaleToAge)))
+                .filter(person -> personValidate(person, fromAge, maleToAge, Person.Sex.MAN)
+                        || personValidate(person, fromAge, femaleToAge, Person.Sex.WOMAN))
                 .collect(Collectors.toList());
     }
 
@@ -91,8 +86,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge && !person.getCats().isEmpty())
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -115,5 +109,11 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean personValidate(Person person, int fromAge, int toAge, Person.Sex sex) {
+        return person.getAge() >= fromAge
+                && person.getAge() <= toAge
+                && person.getSex().equals(sex);
     }
 }
