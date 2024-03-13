@@ -9,8 +9,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int DIVIDER = 2;
     private static final String COMA = ",";
+
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -24,7 +25,7 @@ public class StreamPractice {
                 .map(string -> string.split(COMA))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .filter(i -> i % DIVIDER == 0)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -37,8 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return numbers.stream()
-                .mapToInt(i -> (numbers.indexOf(i) % DIVIDER != 0) ? i - 1 : i)
-                .filter(i -> i % DIVIDER != 0)
+                .mapToInt(i -> (numbers.indexOf(i) % 2 != 0) ? i - 1 : i)
+                .filter(i -> !isEven(i))
                 .distinct()
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -105,7 +106,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
@@ -115,5 +116,9 @@ public class StreamPractice {
         return person.getAge() >= fromAge
                 && person.getAge() <= toAge
                 && person.getSex().equals(sex);
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
