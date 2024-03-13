@@ -2,12 +2,13 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
     private final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,18 +18,15 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .map(s -> s.split(","))
-                    .flatMap(s -> Arrays.stream(s))
-                    .map(Integer::valueOf)
-                    .filter(n -> n % 2 == 0)
-                    .mapToInt(Integer::valueOf)
-                    .min()
-                    .getAsInt();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list: method_input_list " + e);
-        }
+        return numbers.stream()
+                .map(s -> s.split(","))
+                .flatMap(s -> Arrays.stream(s))
+                .map(Integer::valueOf)
+                .filter(n -> n % 2 == 0)
+                .mapToInt(Integer::valueOf)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list "
+                        + numbers));
     }
 
     /**
@@ -37,18 +35,18 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        try {
-            for (int i = 1; i < numbers.size(); i += 2) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-            return numbers.stream()
-                    .filter(n -> n % 2 != 0)
-                    .mapToInt(Integer::valueOf)
-                    .average()
-                    .getAsDouble();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Can't find odd number" + e);
-        }
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                            if (i % 2 != 0) {
+                                return numbers.get(i) - 1;
+                            }
+                            return numbers.get(i);
+                        }
+                )
+                .filter(n -> n % 2 != 0)
+                .average()
+                .orElseThrow();
+
     }
 
     /**
