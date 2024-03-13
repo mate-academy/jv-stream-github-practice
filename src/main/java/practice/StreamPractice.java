@@ -40,7 +40,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0 ? numbers.get(index) - SUBTRACTED_NUMBER : numbers.get(index))
+                .map(index -> index % 2 != 0
+                        ? numbers.get(index) - SUBTRACTED_NUMBER
+                        : numbers.get(index))
                 .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
