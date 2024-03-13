@@ -51,7 +51,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> isValidCatOwner(person, femaleAge))
+                .filter(person -> isCatOwnerValid(person, femaleAge))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -82,7 +82,7 @@ public class StreamPractice {
                 || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge));
     }
 
-    private static boolean isValidCatOwner(Person person, int femaleAge) {
+    private static boolean isCatOwnerValid(Person person, int femaleAge) {
         return person.getSex() == Person.Sex.WOMAN
                 && !person.getCats().isEmpty()
                 && person.getAge() >= femaleAge;
