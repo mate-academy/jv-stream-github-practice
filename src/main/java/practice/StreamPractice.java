@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.IntToDoubleFunction;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -21,17 +20,14 @@ public class StreamPractice {
      */
 
     public static int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
+        return numbers.stream()
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .min(Integer::compare);
-        if (min.isPresent()) {
-            return min.get();
-        } else {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+                .min(Integer::compare)
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
