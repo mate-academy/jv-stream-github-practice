@@ -11,6 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final int SUBTRACTED_NUMBER = 1;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -38,7 +40,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .map(index -> index % 2 != 0 ? numbers.get(index) - SUBTRACTED_NUMBER : numbers.get(index))
                 .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
