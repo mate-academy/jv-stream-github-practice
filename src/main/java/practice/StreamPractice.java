@@ -12,6 +12,9 @@ import model.Person;
 
 public class StreamPractice {
     private static final int SUBTRACTED_NUMBER = 1;
+    private static final String SPLIT_REGEXP = ",";
+
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -22,11 +25,11 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(str -> str.split(","))
+                .map(str -> str.split(SPLIT_REGEXP))
                 .flatMap(Stream::of)
                 .mapToInt(Integer::valueOf)
                 .distinct()
-                .filter(number -> number % 2 == 0)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers)
@@ -40,12 +43,14 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0
+                .map(index -> isOdd(index)
                         ? numbers.get(index) - SUBTRACTED_NUMBER
                         : numbers.get(index))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can`t get average value from list: " + numbers)
+                );
     }
 
     /**
@@ -59,8 +64,8 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(person ->
-                        (person.getSex() == Person.Sex.MAN)
-                        && (person.getAge() > fromAge && person.getAge() <= toAge))
+                        checkPersonSex(person, Person.Sex.MAN)
+                                && checkPersonAgeExclusive(person, fromAge, toAge))
                 .toList();
     }
 
@@ -76,13 +81,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> fromAgePredicate = person -> person.getAge() >= fromAge;
-        Predicate<Person> toAgePredicate = person ->
-                (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge);
+        Predicate<Person> personSexAgePredicate = person ->
+                (checkPersonSex(person, Person.Sex.MAN)
+                        && checkPersonAgeInclusive(person, fromAge, maleToAge))
+                || (checkPersonSex(person, Person.Sex.WOMAN)
+                        && checkPersonAgeInclusive(person, fromAge, femaleToAge));
 
         return peopleList.stream()
-                .filter(fromAgePredicate.and(toAgePredicate))
+                .filter(personSexAgePredicate)
                 .toList();
     }
 
@@ -116,9 +122,29 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
+    }
+
+    private boolean isOdd(int number) {
+        return number % 2 != 0;
+    }
+
+    private boolean checkPersonSex(Person person, Person.Sex sex) {
+        return person.getSex() == sex;
+    }
+
+    private boolean checkPersonAgeExclusive(Person person, int fromAge, int toAge) {
+        return person.getAge() > fromAge && person.getAge() <= toAge;
+    }
+
+    private boolean checkPersonAgeInclusive(Person person, int fromAge, int toAge) {
+        return person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 }

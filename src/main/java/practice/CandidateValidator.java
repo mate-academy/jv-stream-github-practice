@@ -5,6 +5,8 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    public static final int CANDIDATE_LIVE_PERIOD_FROM_INDEX = 0;
+    public static final int CANDIDATE_LIVE_PERIOD_TO_INDEX = 1;
     private static final String VALID_NATIONALITY = "Ukrainian";
     private static final int VALID_AGE = 35;
     private static final String SPLIT_REGEXP = "-";
@@ -22,6 +24,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         int[] period = Arrays.stream(candidate.getPeriodsInUkr().split(SPLIT_REGEXP))
                 .mapToInt(Integer::parseInt)
                 .toArray();
-        return period[1] - period[0] >= MIN_PERIOD_IN_UKRAINE;
+        return period[CANDIDATE_LIVE_PERIOD_TO_INDEX]
+                - period[CANDIDATE_LIVE_PERIOD_FROM_INDEX]
+                >= MIN_PERIOD_IN_UKRAINE;
     }
 }
