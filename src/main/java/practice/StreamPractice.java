@@ -10,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String SEPARATOR = ",";
+    private static final String DIVIDER = ",";
 
     private Predicate<Candidate> candidatPredicate = new CandidateValidator();
 
@@ -23,7 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-            .flatMapToInt(string -> Arrays.stream(string.split(SEPARATOR))
+            .flatMapToInt(string -> Arrays.stream(string.split(DIVIDER))
             .mapToInt(Integer::parseInt))
             .filter(this::isEvenNumber)
             .min()
