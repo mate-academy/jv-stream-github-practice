@@ -17,10 +17,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= VALID_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(VALID_NATIONALITY)
-                && calcPeriodInUkraine(candidate);
+                && isCandidatePeriodValid(candidate);
     }
 
-    private boolean calcPeriodInUkraine(Candidate candidate) {
+    private boolean isCandidatePeriodValid(Candidate candidate) {
         int[] period = Arrays.stream(candidate.getPeriodsInUkr().split(SPLIT_REGEXP))
                 .mapToInt(Integer::parseInt)
                 .toArray();
