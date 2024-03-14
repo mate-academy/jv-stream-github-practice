@@ -20,7 +20,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMapToInt(s -> Arrays.stream(s.split(DIVIDER))
+                .flatMapToInt(element -> Arrays.stream(element.split(DIVIDER))
                         .mapToInt(Integer::parseInt))
                 .filter(StreamPractice::isEven)
                 .min()
@@ -97,6 +97,13 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+    public List<String> validateCandidates(List<Candidate> candidates) {
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .toList();
+    }
 
     private static <T extends Number> boolean isEven(T number) {
         return number.doubleValue() % 2 == 0;
@@ -118,13 +125,5 @@ public class StreamPractice {
 
     private static boolean isFemaleAgedAbove(int femaleAge, Person person) {
         return person.getSex().equals(Person.Sex.WOMAN) && person.getAge() >= femaleAge;
-    }
-
-    public List<String> validateCandidates(List<Candidate> candidates) {
-        return candidates.stream()
-                .filter(new CandidateValidator())
-                .map(Candidate::getName)
-                .sorted()
-                .toList();
     }
 }
