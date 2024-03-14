@@ -10,6 +10,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+
+    private Predicate<Candidate> predicate = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,12 +23,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-            .flatMapToInt(s -> Arrays.stream(s.split(","))
+            .flatMapToInt(string -> Arrays.stream(string.split(SEPARATOR))
             .mapToInt(Integer::parseInt))
-            .filter(this::numberEvenCheck)
+            .filter(this::isEvenNumber)
             .min()
-                .orElseThrow(()
-                        -> new RuntimeException("Can't get min value from list: " + numbers));
+            .orElseThrow(()
+                    -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -36,7 +40,7 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> reduceByOddIndex(numbers, index))
                 .mapToDouble(number -> (double) number)
-                .filter(number -> !numberEvenCheck(number))
+                .filter(number -> !isEvenNumber(number))
                 .average()
                 .getAsDouble();
     }
@@ -51,7 +55,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(mans -> filteredByAgeMan(mans, fromAge, toAge))
+                .filter(person -> filteredByAgeMan(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +83,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(woman -> filteredByAgeWomen(woman, femaleAge))
+                .filter(person -> filteredByAgeWomen(person, femaleAge))
                 .flatMap(woman -> woman.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
@@ -98,7 +102,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
                 .filter(predicate)
                 .map(Candidate::getName)
@@ -106,12 +109,12 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean numberEvenCheck(Number number) {
+    private boolean isEvenNumber(Number number) {
         return number.intValue() % 2 == 0;
     }
 
     private int reduceByOddIndex(List<Integer> numbers, int index) {
-        return !numberEvenCheck(index) ? numbers.get(index) - 1 : numbers.get(index);
+        return !isEvenNumber(index) ? numbers.get(index) - 1 : numbers.get(index);
     }
 
     private boolean filteredByAgeMan(Person person, int fromAge, int toAge) {
