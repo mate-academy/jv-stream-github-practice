@@ -139,4 +139,3 @@ public class StreamPractice {
             || filteredByAgeWomen(person,fromAge,femaleToAge);
     }
 }
-
