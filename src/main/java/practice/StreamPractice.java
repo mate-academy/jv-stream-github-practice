@@ -38,7 +38,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> reduceByOddIndex(numbers, index))
+                .map(index -> changeNumberByOddIndex(numbers, index))
                 .mapToDouble(number -> (double) number)
                 .filter(number -> !isEvenNumber(number))
                 .average()
@@ -113,7 +113,7 @@ public class StreamPractice {
         return number.intValue() % 2 == 0;
     }
 
-    private int reduceByOddIndex(List<Integer> numbers, int index) {
+    private int changeNumberByOddIndex(List<Integer> numbers, int index) {
         return !isEvenNumber(index) ? numbers.get(index) - 1 : numbers.get(index);
     }
 
