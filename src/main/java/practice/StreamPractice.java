@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -55,8 +56,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -69,7 +68,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> filteredByAgePeople(person, fromAge, maleToAge , femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -79,7 +80,11 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
 
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(woman -> filteredByAgeWomen(woman, femaleAge))
+                .flatMap(woman -> woman.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -99,11 +104,13 @@ public class StreamPractice {
         return Collections.emptyList();
     }
 
-    private int reduceByOddIndex(List<Integer> numbers, int index) {
-        return !numberEvenCheck(index) ? numbers.get(index) - 1 : numbers.get(index);
-    }
+
     private boolean numberEvenCheck(Number number) {
         return number.intValue() % 2 == 0;
+    }
+
+    private int reduceByOddIndex(List<Integer> numbers, int index) {
+        return !numberEvenCheck(index) ? numbers.get(index) - 1 : numbers.get(index);
     }
 
     private boolean filteredByAgeMan(Person person, int fromAge, int toAge) {
@@ -111,4 +118,22 @@ public class StreamPractice {
             && person.getAge() >= fromAge
             && person.getAge() <= toAge;
     }
+
+    private boolean filteredByAgeWomen(Person person, int fromAge, int toAge) {
+        return (person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge);
+    }
+
+    private boolean filteredByAgeWomen(Person person, int fromAge) {
+        return (person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge);
+    }
+
+    private boolean filteredByAgePeople(Person person, int fromAge, int maleToAge, int femaleToAge) {
+        return filteredByAgeMan(person,fromAge,maleToAge)
+            || filteredByAgeWomen(person,fromAge,femaleToAge);
+    }
+
+
 }
