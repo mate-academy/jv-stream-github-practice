@@ -11,24 +11,21 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final String NATIONALITY_UKRAINIAN = "Ukrainian";
     private static final String DATE_RANGE_SEPARATOR = "-";
 
-    private static boolean isResidentForTenYears(Candidate candidate,
-                                                 boolean isResidentForTenYears) {
-        if (candidate.getPeriodsInUkr() != null) {
-            String[] years = candidate.getPeriodsInUkr().split(DATE_RANGE_SEPARATOR);
-            isResidentForTenYears = (Integer.parseInt(years[END_YEAR_INDEX])
-                    - Integer.parseInt(years[START_YEAR_INDEX]))
-                    >= RESIDENCY_TENURE_THRESHOLD;
-        }
-        return isResidentForTenYears;
-    }
-
     @Override
     public boolean test(Candidate candidate) {
-        boolean isResidentForTenYears = false;
-        isResidentForTenYears = isResidentForTenYears(candidate, isResidentForTenYears);
         return candidate.getAge() >= MINIMUM_ELIGIBLE_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_UKRAINIAN)
-                && isResidentForTenYears;
+                && isResidentForTenYears(candidate);
+    }
+
+    private boolean isResidentForTenYears(Candidate candidate) {
+        if (candidate.getPeriodsInUkr() != null) {
+            String[] years = candidate.getPeriodsInUkr().split(DATE_RANGE_SEPARATOR);
+            return (Integer.parseInt(years[END_YEAR_INDEX])
+                    - Integer.parseInt(years[START_YEAR_INDEX]))
+                    >= RESIDENCY_TENURE_THRESHOLD;
+        }
+        return false;
     }
 }
