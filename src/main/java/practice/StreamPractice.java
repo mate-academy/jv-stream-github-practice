@@ -1,9 +1,7 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -70,7 +68,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> filteredByAgePeople(person, fromAge, maleToAge , femaleToAge))
+                .filter(person -> filteredByAgePeople(person, fromAge, maleToAge, femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +78,6 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-
         return peopleList.stream()
                 .filter(woman -> filteredByAgeWomen(woman, femaleAge))
                 .flatMap(woman -> woman.getCats().stream())
@@ -109,7 +106,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-
     private boolean numberEvenCheck(Number number) {
         return number.intValue() % 2 == 0;
     }
@@ -135,7 +131,10 @@ public class StreamPractice {
                 && person.getAge() >= fromAge);
     }
 
-    private boolean filteredByAgePeople(Person person, int fromAge, int maleToAge, int femaleToAge) {
+    private boolean filteredByAgePeople(Person person,
+                                        int fromAge,
+                                        int maleToAge,
+                                        int femaleToAge) {
         return filteredByAgeMan(person,fromAge,maleToAge)
             || filteredByAgeWomen(person,fromAge,femaleToAge);
     }
