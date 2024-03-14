@@ -1,12 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -37,7 +35,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(index -> isOdd(index) ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(n -> isOdd(n))
+                .filter(this::isOdd)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers at "
                         + "odd positions in the list."));
