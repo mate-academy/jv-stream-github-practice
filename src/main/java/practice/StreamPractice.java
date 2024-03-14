@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
@@ -33,13 +34,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> {
-                    int number = numbers.get(index);
-                    if (index % 2 == 1) {
-                        number -= 1;
-                    }
-                    return number;
-                })
+                .map(index -> reduceByOddIndex(numbers, index))
                 .mapToDouble(number -> (double) number)
                 .filter(number -> !numberEvenCheck(number))
                 .average()
@@ -55,8 +50,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(mans -> filteredByAgeMan(mans, fromAge, toAge))
+                .collect(Collectors.toList());
     }
+
+
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -100,7 +99,16 @@ public class StreamPractice {
         return Collections.emptyList();
     }
 
+    private int reduceByOddIndex(List<Integer> numbers, int index) {
+        return !numberEvenCheck(index) ? numbers.get(index) - 1 : numbers.get(index);
+    }
     private boolean numberEvenCheck(Number number) {
         return number.intValue() % 2 == 0;
+    }
+
+    private boolean filteredByAgeMan(Person person, int fromAge, int toAge) {
+        return person.getSex().equals(Person.Sex.MAN)
+            && person.getAge() >= fromAge
+            && person.getAge() <= toAge;
     }
 }
