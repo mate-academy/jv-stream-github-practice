@@ -1,6 +1,7 @@
 package practice;
 
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 import java.util.Arrays;
@@ -82,7 +83,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= femaleAge
+                        && person.getSex() == Person.Sex.WOMAN && !person.getCats().isEmpty())
+                .map(Person::getCats)
+                .flatMap(List::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
