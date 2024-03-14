@@ -1,7 +1,10 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -14,7 +17,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+            .flatMapToInt(s -> Arrays.stream(s.split(","))
+            .mapToInt(Integer::parseInt))
+            .filter(this::numberEvenCheck)
+            .min()
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -23,7 +32,18 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> {
+                    int number = numbers.get(index);
+                    if (index % 2 == 1) {
+                        number -= 1;
+                    }
+                    return number;
+                })
+                .mapToDouble(number -> (double) number)
+                .filter(number -> !numberEvenCheck(number))
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -59,6 +79,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+
         return Collections.emptyList();
     }
 
@@ -75,6 +96,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+
         return Collections.emptyList();
+    }
+
+    private boolean numberEvenCheck(Number number) {
+        return number.intValue() % 2 == 0;
     }
 }
