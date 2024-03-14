@@ -1,11 +1,19 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String DIVIDER = ",";
+
+    private Predicate<Candidate> candidatPredicate = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +22,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+            .flatMapToInt(string -> Arrays.stream(string.split(DIVIDER))
+            .mapToInt(Integer::parseInt))
+            .filter(this::isEvenNumber)
+            .min()
+            .orElseThrow(()
+                    -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -23,7 +37,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> changeNumberByOddIndex(numbers, index))
+                .mapToDouble(number -> (double) number)
+                .filter(number -> !isEvenNumber(number))
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -35,7 +54,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> filteredByAgeMan(person, fromAge, toAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +71,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> filteredByAgePeople(person, fromAge, maleToAge, femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +82,11 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> filteredByAgeWomen(person, femaleAge))
+                .flatMap(woman -> woman.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +102,43 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(candidatPredicate)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private boolean isEvenNumber(Number number) {
+        return number.intValue() % 2 == 0;
+    }
+
+    private int changeNumberByOddIndex(List<Integer> numbers, int index) {
+        return !isEvenNumber(index) ? numbers.get(index) - 1 : numbers.get(index);
+    }
+
+    private boolean filteredByAgeMan(Person person, int fromAge, int toAge) {
+        return person.getSex().equals(Person.Sex.MAN)
+            && person.getAge() >= fromAge
+            && person.getAge() <= toAge;
+    }
+
+    private boolean filteredByAgeWomen(Person person, int fromAge, int toAge) {
+        return (person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge);
+    }
+
+    private boolean filteredByAgeWomen(Person person, int fromAge) {
+        return (person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge);
+    }
+
+    private boolean filteredByAgePeople(Person person,
+                                        int fromAge,
+                                        int maleToAge,
+                                        int femaleToAge) {
+        return filteredByAgeMan(person,fromAge,maleToAge)
+            || filteredByAgeWomen(person,fromAge,femaleToAge);
     }
 }
