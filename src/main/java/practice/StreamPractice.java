@@ -7,6 +7,7 @@ import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+    private static final String REGEX_FOR_FIND_MIN_EVEN = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
@@ -19,11 +20,9 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(s -> Arrays.stream(s))
-                .map(Integer::valueOf)
+                .flatMap(s -> Arrays.stream(s.split(REGEX_FOR_FIND_MIN_EVEN)))
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .mapToInt(Integer::valueOf)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list "
                         + numbers));
@@ -59,8 +58,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(p -> isMaleWithinAgeRange(p, fromAge,toAge))
                 .toList();
     }
 
@@ -77,10 +75,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
+                .filter(p -> isWorkable(p, fromAge, femaleToAge, maleToAge))
                 .toList();
     }
 
@@ -115,5 +110,18 @@ public class StreamPractice {
                 .map(c -> c.getName())
                 .sorted()
                 .toList();
+    }
+
+    private boolean isMaleWithinAgeRange(Person person, int fromAge, int toAge) {
+        return person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
+    }
+
+    private boolean isWorkable(Person person, int fromAge,
+                               int femaleToAge, int maleToAge) {
+        return (person.getSex().equals(Person.Sex.MAN)
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                || (person.getSex().equals(Person.Sex.WOMAN)
+                && person.getAge() >= fromAge && person.getAge() <= femaleToAge);
     }
 }
