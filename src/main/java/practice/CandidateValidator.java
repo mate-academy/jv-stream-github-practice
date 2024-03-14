@@ -3,7 +3,6 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int LIVE_IN_UKR = 10;
     public static final String NATIONALITY = "Ukrainian";
