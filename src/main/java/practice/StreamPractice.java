@@ -12,7 +12,7 @@ import model.Person;
 public class StreamPractice {
     private static final String SEPARATOR = ",";
 
-    private Predicate<Candidate> predicate = new CandidateValidator();
+    private Predicate<Candidate> candidatPredicate = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -103,7 +103,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(predicate)
+                .filter(candidatPredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
