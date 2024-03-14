@@ -11,6 +11,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA_SEPARATOR = ",";
+    private static final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,8 +24,7 @@ public class StreamPractice {
 
     public static int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(s -> Arrays.stream(s.split(COMMA_SEPARATOR)))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
@@ -73,10 +75,26 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> properAgeBySex = person -> person.getSex() == Person.Sex.MAN
-                && person.getAge() >= fromAge && person.getAge() <= maleToAge
-                || person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+        Predicate<Person> properAgeBySex = new Predicate<>() {
+            @Override
+            public boolean test(Person person) {
+                return isAgeAboveMinimumRequired(person)
+                        && isAgeBelowMaximumRequired(person);
+            }
+
+            private boolean isAgeBelowMaximumRequired(Person person) {
+                return person.getAge() <= (isMan(person) ? maleToAge : femaleToAge);
+            }
+
+            private boolean isAgeAboveMinimumRequired(Person person) {
+                return person.getAge() >= fromAge;
+            }
+
+            private boolean isMan(Person person) {
+                return person.getSex() == Person.Sex.MAN;
+            }
+        };
+
         return peopleList.stream()
                 .filter(properAgeBySex)
                 .toList();
@@ -110,7 +128,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
