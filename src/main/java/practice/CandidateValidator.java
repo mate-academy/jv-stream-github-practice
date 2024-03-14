@@ -7,7 +7,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String CANDIDATE_NATIONALITY = "Ukrainian";
     private static final String DIVIDER = "-";
     private static final int MIN_CANDIDATE_AGE = 35;
-
     private static final int MIN_YEARS_IN_UKRAINE = 10;
     private static final int FIRST_YEAR_INDEX_IN_PERIOD = 0;
     private static final int LAST_YEAR_INDEX_IN_PERIOD = 1;
