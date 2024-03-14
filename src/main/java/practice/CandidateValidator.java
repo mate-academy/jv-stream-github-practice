@@ -16,10 +16,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= ALLOWED_AGE
                 && candidate.getNationality().equals(ALLOWED_NATIONALITY)
-                && getLivingTime(candidate) >= ALLOWED_YEARS_OF_LIVING;
+                && getDurationOfResidence(candidate) >= ALLOWED_YEARS_OF_LIVING;
     }
 
-    private int getLivingTime(Candidate candidate) {
+    private int getDurationOfResidence(Candidate candidate) {
         String[] durationOfResidence = candidate.getPeriodsInUkr().split(DIVIDER);
         return Integer.parseInt(durationOfResidence[END_TERM_INDEX])
                 - Integer.parseInt(durationOfResidence[START_TERM_INDEX]);

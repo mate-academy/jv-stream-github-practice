@@ -10,8 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String NO_ELEMENT_MSG = "No odd numbers in the list or empty list.";
-    public static final String CANT_GET_VAL_MSG = "Can't get min value from list: ";
+    public static final String NO_ELEMENT_MESSAGE = "No odd numbers in the list or empty list.";
+    public static final String CANT_GET_VALUE_MESSAGE = "Can't get min value from list: ";
     private static final String DIVIDER = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
@@ -19,30 +19,30 @@ public class StreamPractice {
                 .map(n -> n.split(DIVIDER))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(f -> f % 2 == 0)
+                .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(CANT_GET_VAL_MSG + numbers));
+                .orElseThrow(() -> new RuntimeException(CANT_GET_VALUE_MESSAGE + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> conditionForOddNumsAverage(numbers, i))
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(f -> f % 2 != 0)
                 .mapToDouble(d -> d)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException(NO_ELEMENT_MSG));
+                .orElseThrow(() -> new NoSuchElementException(NO_ELEMENT_MESSAGE));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> isManByAgeMatch(fromAge, toAge, p))
+                .filter(p -> isManByAgeMatchInclusive(fromAge, toAge, p))
                 .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> conditionForWorkablePeople(fromAge, femaleToAge, maleToAge, p))
+                .filter(p -> personFitsAge(fromAge, femaleToAge, maleToAge, p))
                 .toList();
     }
 
@@ -68,18 +68,14 @@ public class StreamPractice {
         return p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN;
     }
 
-    private int conditionForOddNumsAverage(List<Integer> numbers, int i) {
-        return i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i);
-    }
-
-    private boolean isManByAgeMatch(int fromAge, int toAge, Person p) {
+    private boolean isManByAgeMatchInclusive(int fromAge, int toAge, Person p) {
         return p.getAge() <= toAge
                 && p.getAge() >= fromAge
                 && p.getSex() == Person.Sex.MAN;
     }
 
-    private boolean conditionForWorkablePeople(int fromAge, int femaleToAge,
-                                               int maleToAge, Person p) {
+    private boolean personFitsAge(int fromAge, int femaleToAge,
+                                  int maleToAge, Person p) {
         return p.getAge() <= maleToAge
                 && p.getAge() >= fromAge
                 && p.getSex() == Person.Sex.MAN
