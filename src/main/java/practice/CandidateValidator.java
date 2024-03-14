@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final double MIN_AGE = 35;
@@ -11,6 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String YEAR_SEPARATOR = "-";
     private static final int FROM_YEAR = 0;
     private static final int TO_YEAR = 1;
+
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
