@@ -12,6 +12,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
+    private static final String NUMBERS_SEPARATOR = ",";
+    private final CandidateValidator validator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,7 +25,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
+                .flatMap(n -> Arrays.stream(n.split(NUMBERS_SEPARATOR)))
                 .map(Integer::valueOf)
                 .filter(this::isEven)
                 .min(Comparator.naturalOrder())
@@ -100,7 +104,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
