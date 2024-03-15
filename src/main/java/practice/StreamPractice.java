@@ -12,7 +12,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     private static final String NUMBERS_SEPARATOR = ",";
     private final CandidateValidator validator = new CandidateValidator();
 
