@@ -20,12 +20,12 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean isResidentForTenYears(Candidate candidate) {
-        if (candidate.getPeriodsInUkr() != null) {
-            String[] years = candidate.getPeriodsInUkr().split(DATE_RANGE_SEPARATOR);
-            return (Integer.parseInt(years[END_YEAR_INDEX])
-                    - Integer.parseInt(years[START_YEAR_INDEX]))
-                    >= RESIDENCY_TENURE_THRESHOLD;
+        if (candidate.getPeriodsInUkr() == null) {
+            return false;
         }
-        return false;
+        String[] years = candidate.getPeriodsInUkr().split(DATE_RANGE_SEPARATOR);
+        return (Integer.parseInt(years[END_YEAR_INDEX])
+                - Integer.parseInt(years[START_YEAR_INDEX]))
+                >= RESIDENCY_TENURE_THRESHOLD;
     }
 }
