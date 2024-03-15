@@ -22,7 +22,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(COMMA_SPLITERATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number % 2 == 0)
+                .filter(this::isNumberEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -35,14 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> {
-                    int num = numbers.get(index);
-                    if (index % 2 != 0) {
-                        return num - 1;
-                    }
-                    return num;
-                })
-                .filter(num -> num % 2 != 0)
+                .mapToDouble(index -> getNumber(index, numbers))
+                .filter(num -> !isNumberEven((int) num))
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
@@ -125,5 +119,17 @@ public class StreamPractice {
         return person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
+    }
+
+    private boolean isNumberEven(int number) {
+        return number % 2 == 0;
+    }
+
+    private int getNumber(int index, List<Integer> numbers) {
+        int num = numbers.get(index);
+        if (index % 2 != 0) {
+            return num - 1;
+        }
+        return num;
     }
 }
