@@ -17,6 +17,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(COMMA_SPLITERATOR)))
@@ -112,8 +113,12 @@ public class StreamPractice {
     }
 
     private boolean isWorkablePerson(Person person, int fromAge, int femaleToAge, int maleToAge) {
-        return (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                || (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge && person.getAge() <= femaleToAge);
+        return (person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= femaleToAge);
     }
 
     private boolean validateRookie(Person person, int fromAge, int toAge) {
