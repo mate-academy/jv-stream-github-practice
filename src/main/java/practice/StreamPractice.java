@@ -32,13 +32,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedList = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .collect(Collectors.toList());
-
-        return modifiedList.stream()
-                .mapToInt(num -> num)
                 .filter(num -> num % 2 != 0)
+                .mapToInt(num -> num)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers"));
     }
@@ -71,15 +68,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> {
-                    if ((person.getSex() == Person.Sex.WOMAN
-                            && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
-                            || (person.getSex() == Person.Sex.MAN
-                            && person.getAge() >= fromAge && person.getAge() <= maleToAge)) {
-                        return true;
-                    }
-                    return false;
-                }).collect(Collectors.toList());
+                .filter(person -> workablePeopleCheck(person, fromAge, femaleToAge, maleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -115,5 +105,13 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean workablePeopleCheck(Person person, int fromAge, int femaleToAge,
+                                        int maleToAge) {
+        return (person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                || (person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge);
     }
 }
