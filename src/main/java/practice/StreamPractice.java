@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
@@ -8,6 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA_SPLITERATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,11 +19,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMapToInt(s -> {
-                    String[] parts = s.split(",");
-                    return IntStream.range(0, parts.length)
-                            .map(i -> Integer.parseInt(parts[i].trim()));
-                })
+                .flatMap(s -> Arrays.stream(s.split(COMMA_SPLITERATOR)))
+                .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -57,9 +56,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(person -> validateRookie(person, fromAge, toAge))
                 .toList();
     }
 
@@ -76,12 +73,7 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge))
+                .filter(person -> isWorkablePerson(person, fromAge, femaleToAge, maleToAge))
                 .toList();
     }
 
@@ -117,5 +109,16 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isWorkablePerson(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        return (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge && person.getAge() <= femaleToAge);
+    }
+
+    private boolean validateRookie(Person person, int fromAge, int toAge) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
     }
 }
