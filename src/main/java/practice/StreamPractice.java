@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,12 +21,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(Integer::valueOf)
-                .filter(n -> n % 2 == 0)
+                .filter(this::isEven)
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list"));
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -37,11 +36,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(num -> num % 2 != 0)
-                .mapToDouble(Integer::doubleValue)
+                .mapToDouble(i -> (!isEven(i)) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(num -> !isEven((int) num))
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
+                .getAsDouble();
     }
 
     /**
@@ -83,8 +81,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(isWomanValid(femaleAge))
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -103,7 +100,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator()::test)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
@@ -122,5 +119,9 @@ public class StreamPractice {
         return person.getAge() >= fromAge
                 && ((person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
                 || (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge));
+    }
+
+    private boolean isEven(Integer n) {
+        return n % 2 == 0;
     }
 }
