@@ -17,6 +17,8 @@ import org.junit.rules.ExpectedException;
 import practice.CandidateValidator;
 import practice.StreamPractice;
 
+import static org.junit.Assert.assertEquals;
+
 public class StreamPracticeTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
@@ -63,7 +65,7 @@ public class StreamPracticeTest {
         List<String> basicInput = List.of("12,11,5", "1,22,757", "71", "39,31,55,148",
                 "3,2,2,5", "27,44,89", "12,11,5", "64,22,757");
         int expected = 2;
-        Assert.assertEquals(String.format("Incorrect min value for the input - %s\n",
+        assertEquals(String.format("Incorrect min value for the input - %s\n",
                 basicInput), expected, solution.findMinEvenNumber(basicInput));
     }
 
@@ -72,7 +74,7 @@ public class StreamPracticeTest {
         List<String> basicInput = List.of("8,14,5", "3,-22,800", "-71", "20,98,45,98",
                 "1,49,2,5", "27,12,89", "56,3,5", "12,-22,320");
         int expected = -22;
-        Assert.assertEquals(String.format("Incorrect min value for the input - %s\n",
+        assertEquals(String.format("Incorrect min value for the input - %s\n",
                 basicInput), expected, solution.findMinEvenNumber(basicInput));
     }
 
@@ -89,7 +91,7 @@ public class StreamPracticeTest {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
         Double result = solution.getOddNumsAverage(digits);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -97,7 +99,7 @@ public class StreamPracticeTest {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);
         Double result = solution.getOddNumsAverage(digits);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -105,7 +107,7 @@ public class StreamPracticeTest {
         Double expected = 3.0;
         List<Integer> digits = Arrays.asList(6, 4, 8, 7, 2, 5);
         Double result = solution.getOddNumsAverage(digits);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -113,7 +115,7 @@ public class StreamPracticeTest {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 1, 2, 7, 2, 5);
         Double result = solution.getOddNumsAverage(digits);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -121,7 +123,7 @@ public class StreamPracticeTest {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(6, 5, 7, 7, 1, 9, 10, 11);
         Double result = solution.getOddNumsAverage(digits);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -132,14 +134,14 @@ public class StreamPracticeTest {
         expected.get(1).getCats().add(new Cat("Chloe", 1));
         expected.add(new Person("Roman", 25, Person.Sex.MAN));
         List<Person> result = solution.selectMenByAge(peopleList, 18, 37);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
     public void selectMenByAge_absent() {
         List<Person> expected = new ArrayList<>();
         List<Person> result = solution.selectMenByAge(peopleList, 14, 15);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -160,35 +162,35 @@ public class StreamPracticeTest {
         expected.add(new Person("Roman", 25, Person.Sex.MAN));
         expected.add(new Person("Carlos", 60, Person.Sex.MAN));
         List<Person> result = solution.getWorkablePeople(18, 55, 60, peopleList);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
     public void getWorkablePeople_absent() {
         List<Person> expected = new ArrayList<>();
         List<Person> result = solution.getWorkablePeople(12, 14, 15, peopleList);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
     public void getCatsNames_basicDate() {
         List<String> expected = Arrays.asList("Tom", "Leo", "Sunny", "Kitty", "Fluffy", "Jackie");
         List<String> result = solution.getCatsNames(peopleList, 18);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
     public void getCatsNames_emptyList() {
         List<String> expected = new ArrayList<>();
         List<String> result = solution.getCatsNames(peopleListWithoutCat, 18);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
     public void getCatsNames_absent() {
         List<String> expected = new ArrayList<>();
         List<String> result = solution.getCatsNames(peopleList, 60);
-        Assert.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -203,14 +205,14 @@ public class StreamPracticeTest {
     @Test
     public void validateCandidates_basicData() {
         List<String> expected = List.of("Casey", "Morty", "Philip");
-        Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
+        assertEquals(String.format("Incorrect result list of names for the input - %s\n",
                 candidates), expected, solution.validateCandidates(candidates));
     }
 
     @Test
     public void validateCandidates_invalidData() {
         List<String> expected = Collections.EMPTY_LIST;
-        Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
+        assertEquals(String.format("Incorrect result list of names for the input - %s\n",
                 invalidCandidates), expected, solution.validateCandidates(invalidCandidates));
     }
 
@@ -218,7 +220,7 @@ public class StreamPracticeTest {
     public void validateCandidates_emptyData() {
         List<Candidate> emptyList = Collections.EMPTY_LIST;
         List<String> expected = Collections.EMPTY_LIST;
-        Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
+        assertEquals(String.format("Incorrect result list of names for the input - %s\n",
                 emptyList), expected, solution.validateCandidates(emptyList));
     }
 
