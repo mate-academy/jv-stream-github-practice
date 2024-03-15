@@ -12,7 +12,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String COMMA_SEPARATOR = ",";
-    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -105,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CANDIDATE_VALIDATOR)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
