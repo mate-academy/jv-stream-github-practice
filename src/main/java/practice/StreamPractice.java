@@ -27,7 +27,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(COMMA_SEPARATOR)))
                 .map(Integer::parseInt)
-                .filter(e -> e % 2 == 0)
+                .filter(this::isEven)
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -40,13 +40,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .filter(this::isOdd)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-
-        return numbers.stream()
-                .filter(this::isOdd)
-                .mapToDouble(Integer::doubleValue)
+        return IntStream.range(0, numbers.size())
+                .map(i -> changeNumberByOddIndex(numbers, i))
+                .filter(e -> !isEven(e))
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("List doesn't have odd numbers!"));
     }
@@ -78,11 +74,8 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> sexGetAgeValidator = (p) -> p.getAge() >= fromAge
-                && p.getAge() <= (p.getSex() == Person.Sex.WOMAN ? femaleToAge : maleToAge);
-
         return peopleList.stream()
-                .filter(sexGetAgeValidator)
+                .filter(p -> sexGetAgeValidator(p, fromAge, maleToAge,femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -115,13 +108,21 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(CANDIDATE_VALIDATOR)
-                .sorted(Comparator.comparing(Candidate::getName))
                 .map(Candidate::getName)
+                .sorted()
                 .collect(Collectors.toList());
-
     }
 
-    private boolean isOdd(int number) {
-        return number % 2 == 1;
+    private boolean isEven(int number) {
+        return number % 2 == 0;
+    }
+
+    private int changeNumberByOddIndex(List<Integer> numbers, int index) {
+        return !isEven(index) ? numbers.get(index) - 1 : numbers.get(index);
+    }
+
+    private boolean sexGetAgeValidator(Person person, int fromAge, int maleToAge, int femaleToAge) {
+        return person.getAge() >= fromAge
+                && person.getAge() <= (person.getSex() == Person.Sex.WOMAN ? femaleToAge : maleToAge);
     }
 }
