@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
@@ -53,8 +52,8 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(p -> p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .toList();
     }
 
@@ -73,12 +72,12 @@ public class StreamPractice {
 
         return peopleList
                 .stream()
-                .filter(p -> (p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge)
-                        || (p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge))
+                .filter(person -> (person.getSex().equals(Person.Sex.MAN)
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge))
                 .toList();
     }
 
@@ -90,8 +89,10 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList
                 .stream()
-                .filter(f -> f.getSex().equals(Person.Sex.WOMAN) && f.getAge() >= femaleAge)
-                .map(Person::getCats).flatMap(Collection::stream).map(Cat::getName).toList();
+                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= femaleAge)
+                .flatMap(female -> female.getCats().stream().map(Cat::getName))
+                .toList();
     }
 
     /**
