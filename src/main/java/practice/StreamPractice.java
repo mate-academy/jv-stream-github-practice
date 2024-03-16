@@ -10,6 +10,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLITER_FOR_FILE = ",";
+    private CandidateValidator validator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,12 +22,16 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMapToInt(e -> Arrays.stream(e.split(","))
+                .flatMapToInt(e -> Arrays.stream(e.split(SPLITER_FOR_FILE))
                         .mapToInt(Integer::parseInt))
-                .filter(num -> num % 2 == 0)
+                .filter(this::isNumberEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
+    }
+
+    private boolean isNumberEven(int num) {
+        return num % 2 == 0;
     }
 
     /**
@@ -76,13 +83,18 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
-                    if (person.getSex().equals(Person.Sex.MAN)) {
-                        return age >= fromAge && age <= maleToAge;
-                    } else {
-                        return age >= fromAge && age <= femaleToAge;
-                    }
+                    return filterPeople(person, age, fromAge, femaleToAge, maleToAge);
                 })
                 .collect(Collectors.toList());
+    }
+
+    private boolean filterPeople(Person person, int age,
+                                int fromAge, int femaleToAge, int maleToAge) {
+        if (person.getSex().equals(Person.Sex.MAN)) {
+            return age >= fromAge && age <= maleToAge;
+        } else {
+            return age >= fromAge && age <= femaleToAge;
+        }
     }
 
     /**
@@ -112,7 +124,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)

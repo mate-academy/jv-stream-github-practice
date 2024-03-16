@@ -19,7 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && getYearsInUkr(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKR;
     }
 
-    private static int getYearsInUkr(String candidate) {
+    private int getYearsInUkr(String candidate) {
         String[] years = candidate.split(YEAR_SEPARATOR);
         return Integer.parseInt(years[TO_YEAR]) - Integer.parseInt(years[FROM_YEAR]);
     }
@@ -32,11 +32,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public Predicate<Candidate> negate() {
         return Predicate.super.negate();
-    }
-
-    @Override
-    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
-        return Predicate.super.or(other);
     }
     //write your code here
 }
