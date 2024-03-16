@@ -15,10 +15,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_CANDIDATE_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_FOR_CANDIDATE)
-                && isLived(candidate);
+                && hasLived(candidate);
     }
 
-    private boolean isLived(Candidate candidate) {
+    private boolean hasLived(Candidate candidate) {
         String[] split = candidate.getPeriodsInUkr().split("-");
         return Integer.parseInt(split[END_OF_PERIOD])
                 - Integer.parseInt(split[START_OF_PERIOD]) >= MIN_PERIOD_IN_UKRAINE;
