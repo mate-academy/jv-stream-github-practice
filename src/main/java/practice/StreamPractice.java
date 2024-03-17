@@ -9,21 +9,23 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SPLITERATOR = ",";
+    private static final String CANT_GET_VALUE_MSG = "Can't get min value from list: ";
     private CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(number -> Arrays.stream(number.split(SPLITERATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> isEven(number))
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new RuntimeException(CANT_GET_VALUE_MSG + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(num -> subtractFromOddPosition(numbers, num))
+                .mapToDouble(number -> subtractFromOddPosition(numbers, number))
                 .filter(number -> !isEven(number))
                 .average()
                 .getAsDouble();
@@ -68,7 +70,7 @@ public class StreamPractice {
     }
 
     private boolean isValidMaleUser(Person person, int fromAge, int toAge) {
-        return person.getSex().equals(Person.Sex.MAN)
+        return person.getSex() == Person.Sex.MAN
                 && person.getAge() >= fromAge
                 && person.getAge() <= toAge;
     }
