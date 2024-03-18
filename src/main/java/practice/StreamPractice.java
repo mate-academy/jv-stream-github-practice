@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -13,7 +12,6 @@ import model.Person;
 
 public class StreamPractice {
     private static final String SEPARATOR = ",";
-    private static final int ZEROINDEX = 0;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -28,7 +26,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(this::isEvenNumber)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
                         + numbers));
     }
     /**
@@ -38,9 +36,9 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(ZEROINDEX,numbers.size())
+        return IntStream.range(0,numbers.size())
                 .mapToDouble(index -> oddIndexNumberSubtractOne(numbers, index))
-                .filter(n -> !isEvenNumber((int) n))
+                .filter(n -> !isEvenNumber(n))
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("There is no odd numbers."));
     }
@@ -55,8 +53,8 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(p -> (p.getAge() >= fromAge && p.getAge() <= toAge)
+                        && (p.getSex() == Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
     /**
@@ -85,8 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -112,7 +109,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private boolean isEvenNumber(int number) {
+    private boolean isEvenNumber(double number) {
         return number % 2 == 0;
     }
 
