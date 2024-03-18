@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -14,11 +15,11 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(SPLITTER)))
+                .flatMap(this::getSplitter)
                 .mapToInt(Integer::parseInt)
-                .filter(StreamPractice::isEven)
+                .filter(this::isEven)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -65,7 +66,11 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    private static boolean isEven(Integer n) {
+    private Stream<String> getSplitter(String s) {
+        return Arrays.stream(s.split(SPLITTER));
+    }
+
+    private boolean isEven(Integer n) {
         return n % 2 == 0;
     }
 
@@ -73,21 +78,19 @@ public class StreamPractice {
         return !isEven(n);
     }
 
-    private static boolean isMan(Person person) {
+    private boolean isMan(Person person) {
         return person.getSex() == Person.Sex.MAN;
     }
 
-    private static boolean isWomen(Person person) {
+    private boolean isWomen(Person person) {
         return person.getSex() == Person.Sex.WOMAN;
     }
 
-    private static boolean isToAge(int toAge, Person person) {
+    private boolean isToAge(int toAge, Person person) {
         return person.getAge() <= toAge;
     }
 
-    private static boolean isFromAge(int fromAge, Person person) {
+    private boolean isFromAge(int fromAge, Person person) {
         return person.getAge() >= fromAge;
     }
 }
-
-
