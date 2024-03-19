@@ -22,8 +22,7 @@ public class StreamPractice {
 
         return numbers.stream()
                 .flatMap(num -> Arrays.stream(num.split(",")))
-                .map(Integer::parseInt)
-                .flatMapToInt(IntStream::of)
+                .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
                 .orElseThrow(() ->
@@ -91,8 +90,8 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge
                         && !person.getCats().isEmpty())
-                .flatMap(person -> person.getCats().stream())
-                .map(Cat::getName)
+                .flatMap(person -> person.getCats().stream()
+                        .map(Cat::getName))
                 .collect(Collectors.toList());
     }
 
