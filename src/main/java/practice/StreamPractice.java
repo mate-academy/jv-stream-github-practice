@@ -11,6 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,10 +22,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
+                .map(s -> s.split(DELIMITER))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(i -> i % 2 == 0)
+                .filter(n -> !oddCheck(n))
                 .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -37,7 +39,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
+                .filter(this::oddCheck)
                 .average().orElseThrow(NoSuchElementException::new);
     }
 
@@ -87,8 +89,10 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        Predicate<Person> femaleAgePredicate =
+                p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+                .filter(femaleAgePredicate)
                 .flatMap(c -> c.getCats().stream().map(Cat::getName))
                 .collect(Collectors.toList());
     }
@@ -111,5 +115,9 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean oddCheck(int number) {
+        return number % 2 != 0;
     }
 }
