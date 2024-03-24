@@ -1,12 +1,15 @@
 package practice;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
+
+import java.util.List;
+import java.util.Arrays;
+import java.util.OptionalInt;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class StreamPractice {
     /**
@@ -40,7 +43,7 @@ public class StreamPractice {
         IntStream.range(0,numbers.size())
                 .forEach(i -> {
                     if (i % 2 != 0) {
-                        numbers.set(i, numbers.get(i) -1);
+                        numbers.set(i, numbers.get(i) - 1);
                     }
                 });
         return numbers.stream()
@@ -83,7 +86,7 @@ public class StreamPractice {
                 .filter(p -> (p.getAge() >= fromAge
                         && p.getAge() <= maleToAge
                         && p.getSex() == Person.Sex.MAN)
-                        ||(p.getAge() >= fromAge
+                        || (p.getAge() >= fromAge
                         && p.getAge() <= femaleToAge
                         && p.getSex() == Person.Sex.WOMAN))
                 .collect(Collectors.toList());
