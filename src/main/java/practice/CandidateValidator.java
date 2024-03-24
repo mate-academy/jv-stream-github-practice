@@ -4,19 +4,23 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int AGE_LIMIT = 35;
+    private static final int PERIODS = 10;
+    private static final int START_YEAR = 0;
+    private static final int PRESENT_YEAR = 1;
+
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= 35
+        return candidate.getAge() >= AGE_LIMIT
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
-                && calculateYearsInUkraine(candidate.getPeriodsInUkr()) >= 10;
+                && calculateYearsInUkraine(candidate.getPeriodsInUkr()) >= PERIODS;
     }
 
     private int calculateYearsInUkraine(String periodsInUkr) {
-        // Предполагается, что periodsInUkr имеет формат "XXXX-YYYY"
         String[] years = periodsInUkr.split("-");
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
-        return endYear - startYear + 1;
+        int startYear = Integer.parseInt(years[START_YEAR]);
+        int endYear = Integer.parseInt(years[PRESENT_YEAR]);
+        return endYear - startYear;
     }
 }
