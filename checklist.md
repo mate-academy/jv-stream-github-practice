@@ -1,4 +1,4 @@
-## Common mistakes (jv-stream-github-practice)
+ ## Common mistakes (jv-stream-github-practice)
 
 #### Try to use a minimum amount of stream operations 
  * If you have a long boolean expression you may create your own implementation of Predicate and use it in your filter.
