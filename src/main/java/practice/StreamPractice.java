@@ -1,6 +1,9 @@
 package practice;
 
-import java.util.*;
+import java.util.List;
+import java.util.Arrays;
+import java.util.AbstractMap;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -21,7 +24,8 @@ public class StreamPractice {
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list:" + numbers));
+                .min().orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list:" + numbers));
     }
 
     /**
