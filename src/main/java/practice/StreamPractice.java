@@ -1,9 +1,6 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -20,17 +17,11 @@ public class StreamPractice {
      */
 
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
+        return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min();
-        if (min.isPresent()) {
-            return min.getAsInt();
-        } else {
-            throw new RuntimeException("Can't get min value from list: "
-                    + numbers);
-        }
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list:" + numbers));
     }
 
     /**
@@ -39,17 +30,18 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0,numbers.size())
-                .forEach(i -> {
-                    if (i % 2 != 0) {
-                        numbers.set(i, numbers.get(i) - 1);
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> new AbstractMap.SimpleEntry<>(i, numbers.get(i)))
+                .mapToInt(entry -> {
+                    if (entry.getKey() % 2 != 0) {
+                        return entry.getValue() - 1;
+                    } else {
+                        return entry.getValue();
                     }
-                });
-        return numbers.stream()
+                })
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
-                .average().orElseThrow(() ->
-                        new NoSuchElementException("Was empty array"));
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Was empty array"));
     }
 
     /**
@@ -121,7 +113,7 @@ public class StreamPractice {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
-                .flatMap(p -> Arrays.stream(new String[]{p.getName()}))
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
