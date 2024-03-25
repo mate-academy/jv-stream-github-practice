@@ -6,18 +6,17 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 10;
     private static final int PERIOD = 10;
-    private static final int BEGIN_INDEX = 0;
-    private static final int END_INDEX1 = 4;
-    private static final int BEGIN_INDEX2 = 5;
+    private static final int INDEX = 0;
+    private static final int INDEX2 = 1;
+    private static final String URKAINIAN = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
+        int period = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[INDEX2])
+                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[INDEX]);
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(BEGIN_INDEX2))
-                - Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(BEGIN_INDEX, END_INDEX1)) >= PERIOD;
+                && candidate.getNationality().equals(URKAINIAN)
+                && period >= PERIOD;
     }
 }
