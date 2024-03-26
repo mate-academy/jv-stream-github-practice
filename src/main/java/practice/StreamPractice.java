@@ -22,9 +22,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .mapToDouble(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 == 1)
-                .mapToDouble(n -> n)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -40,11 +39,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> {
-                    if (p.getSex() == Person.Sex.MAN) {
-                        return p.getAge() >= fromAge && p.getAge() <= maleToAge;
-                    } else {
-                        return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
-                    }
+                    int ageLimit = p.getSex() == Person.Sex.MAN ? maleToAge : femaleToAge;
+                    return p.getAge() >= fromAge && p.getAge() <= ageLimit;
                 })
                 .collect(Collectors.toList());
     }
@@ -60,8 +56,8 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> !candidates.isEmpty() && new CandidateValidator().test(c))
-                .map(candidate -> candidate.getName())
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
