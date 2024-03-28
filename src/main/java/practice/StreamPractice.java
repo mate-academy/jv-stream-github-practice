@@ -19,7 +19,7 @@ public class StreamPractice {
                 .filter(num -> num % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list:" + numbers));
+                        "Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
