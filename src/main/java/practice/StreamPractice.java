@@ -12,6 +12,7 @@ import model.ValidPerson;
 
 public class StreamPractice {
     private static final int MAX_TO_AGE = 200;
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(",")))
