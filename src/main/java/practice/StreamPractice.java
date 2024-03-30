@@ -8,36 +8,35 @@ import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import model.PersonAgeAndSexPredicate;
+import model.ValidPerson;
 
 public class StreamPractice {
+    private static final int MAX_TO_AGE = 200;
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(string -> Arrays.stream(string.split(",")))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::valueOf)
                 .filter(num -> num % 2 == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min"
-                        + " value from list:" + numbers));
+                        + " value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> index % 2 == 1 ? numbers.get(index)
+                .map(index -> index % 2 == 1 ? numbers.get(index)
                         - 1 : numbers.get(index))
-                .mapToInt(Integer::intValue)
                 .filter(num -> num % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        PersonAgeAndSexPredicate personAgeAndSexPredicate = new PersonAgeAndSexPredicate(
+        ValidPerson validPerson = new ValidPerson(
                 fromAge, toAge, Person.Sex.MAN
         );
-        return peopleList
-                .stream()
-                .filter(personAgeAndSexPredicate)
+        return peopleList.stream()
+                .filter(validPerson)
                 .collect(Collectors.toList());
     }
 
@@ -47,12 +46,12 @@ public class StreamPractice {
             int maleToAge,
             List<Person> peopleList
     ) {
-        PersonAgeAndSexPredicate menAgePredicate = new PersonAgeAndSexPredicate(
+        ValidPerson menAgePredicate = new ValidPerson(
                 fromAge,
                 maleToAge,
                 Person.Sex.MAN
         );
-        PersonAgeAndSexPredicate womenAgePredicate = new PersonAgeAndSexPredicate(
+        ValidPerson womenAgePredicate = new ValidPerson(
                 fromAge, femaleToAge, Person.Sex.WOMAN
         );
         return peopleList.stream()
@@ -61,20 +60,19 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        PersonAgeAndSexPredicate personAgeAndSexPredicate = new PersonAgeAndSexPredicate(
-                femaleAge, 200, Person.Sex.WOMAN
+        ValidPerson validPerson = new ValidPerson(
+                femaleAge, MAX_TO_AGE, Person.Sex.WOMAN
         );
         return peopleList.stream()
-                .filter(personAgeAndSexPredicate)
+                .filter(validPerson)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

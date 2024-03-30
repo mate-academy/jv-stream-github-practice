@@ -2,12 +2,12 @@ package model;
 
 import java.util.function.Predicate;
 
-public class PersonAgeAndSexPredicate implements Predicate<Person> {
+public class ValidPerson implements Predicate<Person> {
     private final int fromAge;
     private final int toAge;
     private final Person.Sex sex;
 
-    public PersonAgeAndSexPredicate(int fromAge, int toAge, Person.Sex sex) {
+    public ValidPerson(int fromAge, int toAge, Person.Sex sex) {
         this.fromAge = fromAge;
         this.toAge = toAge;
         this.sex = sex;
