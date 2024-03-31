@@ -1,13 +1,10 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -91,9 +88,9 @@ public class StreamPractice {
                 .filter(e -> e.getAge() >= femaleAge
                         && e.getSex() == Person.Sex.WOMAN
                         && !e.getCats().isEmpty())
-                .map(e -> e.getCats())
-                .flatMap(e -> e.stream())
-                .map(e -> e.getName())
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
                 .collect(Collectors.toList());
 
     }
@@ -113,8 +110,8 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(e -> candidateValidator.test(e))
-                .map(e -> e.getName())
+                .filter(candidateValidator)
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
