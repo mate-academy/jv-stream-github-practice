@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -18,13 +17,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return Arrays.stream(numbers.stream()
-                .reduce((string1, string2) -> string1 + "," + string2)
-                .stream().collect(Collectors.joining()).split(","))
+        return numbers.stream()
+                        .flatMap(string -> Arrays.stream(string.split(",")))
                 .filter(string -> !String.valueOf(string).isEmpty()
                         && Integer.parseInt(string) % 2 == 0)
                 .mapToInt(Integer::parseInt).min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(
+                        () -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -33,14 +32,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size() - 1)
+        return IntStream.range(0, numbers.size())
                 .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(number -> number % 2 == 1)
-                .average().stream()
+                .average()
+                .stream()
                 .map(Math::round)
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException(
-                        "List does not contain odd numbers"));
+                        "List " + numbers + " does not contain odd numbers"));
     }
 
     /**
@@ -91,7 +91,8 @@ public class StreamPractice {
                         && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(List::stream)
-                .map(Cat::getName).toList();
+                .map(Cat::getName)
+                .toList();
     }
 
     /**
@@ -109,6 +110,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                .map(Candidate::getName).sorted().toList();
+                .map(Candidate::getName).sorted()
+                .toList();
     }
 }
