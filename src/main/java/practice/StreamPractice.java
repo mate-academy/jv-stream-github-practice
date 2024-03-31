@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -38,15 +37,17 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .filter(i -> i % DIVIDER_2 != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-
-        OptionalDouble averageOddNumbers = numbers.stream()
-                .filter(n -> n % DIVIDER_2 != 0)
-                .mapToDouble(Integer::doubleValue)
-                .average();
-        return averageOddNumbers.orElseThrow(NoSuchElementException::new);
+        return IntStream.range(0, numbers.size())
+                .flatMap(i -> {
+                    int value = numbers.get(i);
+                    if (i % 2 != 0) {
+                        value -= 1;
+                    }
+                    return IntStream.of(value);
+                })
+                .filter(n -> n % 2 != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -114,9 +115,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
