@@ -11,7 +11,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int INDEX_OF_END_DATE = 1;
     private static final String SEPARATOR = "-";
 
-
     @Override
     public boolean test(Candidate candidate) {
         int periodCandidateInUkr = getPeriodCandidate(candidate.getPeriodsInUkr());
@@ -23,9 +22,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getPeriodCandidate(String periods) {
         String [] periodFromTo = periods.split(SEPARATOR);
-         int periodFrom = Integer
+        int periodFrom = Integer
                 .parseInt(periodFromTo[INDEX_OF_START_DATE]);
-         int periodTo = Integer
+        int periodTo = Integer
                 .parseInt(periodFromTo[INDEX_OF_END_DATE]);
         return periodTo - periodFrom;
     }
