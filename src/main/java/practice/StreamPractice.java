@@ -53,7 +53,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         OnlyManAgePredicateImpl predicate = new OnlyManAgePredicateImpl();
-        return peopleList.stream().filter(person -> predicate.test(person, fromAge, toAge))
+        return peopleList.stream()
+                .filter(person -> predicate.test(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -81,9 +82,9 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        WomanWithCatPredicateImpl predicate = new WomanWithCatPredicateImpl();
         return peopleList.stream()
-                .filter(person -> predicate.test(person, femaleAge))
+                .filter((person) -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
