@@ -6,7 +6,6 @@ public class WomanWithCatPredicateImpl implements WomanWithCatPredicate<Person, 
     @Override
     public boolean test(Person person, Integer femaleAge) {
         return person.getSex() == Person.Sex.WOMAN
-                && person.getAge() >= femaleAge
-                && !person.getCats().isEmpty();
+                && person.getAge() >= femaleAge;
     }
 }

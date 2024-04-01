@@ -19,16 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
-                    .flatMap(s -> Arrays.stream(s.split(",")))
-                    .map(Integer::parseInt)
-                    .filter(n -> n % 2 == 0)
-                    .min(Integer::compare)
-                    .get();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Can't get min value from list: " + numbers);
-        }
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min()
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -37,16 +34,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        try {
-            return IntStream.range(0, numbers.size())
-                    .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
-                    .filter(number -> number % 2 != 0)
-                    .average()
-                    .getAsDouble();
-        } catch (NoSuchElementException e) {
-            throw new NoSuchElementException("Can't get average of all odd numbers from the list: "
-                    + numbers);
-        }
+        return IntStream.range(0, numbers.size())
+                .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(number -> number % 2 != 0)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't get average "
+                        + "of all odd numbers from the list: "
+                        + numbers));
     }
 
     /**
@@ -59,7 +53,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         OnlyManAgePredicateImpl predicate = new OnlyManAgePredicateImpl();
-        return peopleList.stream().filter(p -> predicate.test(p, fromAge, toAge))
+        return peopleList.stream().filter(person -> predicate.test(person, fromAge, toAge))
                 .collect(Collectors.toList());
     }
 
@@ -77,7 +71,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         PeopleAgePredicateImpl predicate = new PeopleAgePredicateImpl();
         return peopleList.stream()
-                .filter(p -> predicate.test(fromAge, femaleToAge, maleToAge, p))
+                .filter(person -> predicate.test(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
     }
 
@@ -89,10 +83,11 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         WomanWithCatPredicateImpl predicate = new WomanWithCatPredicateImpl();
         return peopleList.stream()
-                .filter(p -> predicate.test(p, femaleAge))
+                .filter(person -> predicate.test(person, femaleAge))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
-                .map(Cat::getName).collect(Collectors.toList());
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -108,9 +103,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
