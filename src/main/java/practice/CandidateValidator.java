@@ -8,10 +8,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEARS = 35;
     private static final int MIN_PERIOD = 10;
 
+    private static final int START_YEAR_INDEX = 0;
+    private static final int END_YEAR_INDEX = 1;
+
     @Override
     public boolean test(Candidate candidate) {
         String[] years = candidate.getPeriodsInUkr().split("-");
-        int period = Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
+        int period = Integer.parseInt(years[END_YEAR_INDEX])
+                - Integer.parseInt(years[START_YEAR_INDEX]);
         return candidate.getAge() >= MIN_YEARS
                 && candidate.getNationality().equals(NATIONALITY)
                 && period >= MIN_PERIOD
