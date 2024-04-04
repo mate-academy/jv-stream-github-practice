@@ -1,12 +1,11 @@
 package practice;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -20,17 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        String singleNumbersString = String.join(",", numbers);
-        return Arrays.stream(singleNumbersString.split(","))
+        return numbers.stream()
+                .flatMap(num -> Stream.of(num.split(",")))
                 .mapToInt(Integer::valueOf)
                 .filter(v -> v != 0 && v % 2 == 0)
                 .min().orElseThrow(
                         () -> new RuntimeException("Can't get min value from list: " + numbers)
                 );
-
     }
 
     /**
@@ -39,16 +34,15 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> numbersCopy = new ArrayList<>(numbers);
-        return IntStream.range(0, numbersCopy.size())
-                .peek(i -> {
-                    int curNum = numbersCopy.get(i);
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                    int curNum = numbers.get(i);
                     if (i % 2 != 0 && curNum > 0) {
-                        numbersCopy.set(i, curNum - 1);
+                        return curNum - 1;
                     }
+                    return curNum;
                 })
-                .filter(i -> numbersCopy.get(i) % 2 != 0)
-                .mapToDouble(numbersCopy::get)
+                .filter(v -> v % 2 != 0)
                 .average().orElseThrow(() -> new NoSuchElementException("Can't find the element"));
     }
 
