@@ -38,11 +38,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .toList();
 
-        return modifiedNumbers.stream()
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .toList()
+                .stream()
                 .filter(num -> num % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
@@ -97,7 +97,6 @@ public class StreamPractice {
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
-
     }
 
     /**
@@ -113,10 +112,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
 
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());
