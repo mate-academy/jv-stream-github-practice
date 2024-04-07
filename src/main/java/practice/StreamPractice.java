@@ -3,16 +3,16 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final CandidateValidator candidateValidator = new CandidateValidator();
     private static final Predicate<Integer> isEven = n -> n % 2 == 0;
+    private static final Predicate<Integer> isOdd = n -> n % 2 == 1;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -39,13 +39,16 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger indexCounter = new AtomicInteger(0);
-        return numbers.stream()
-                .map(v -> !isEven.test(indexCounter.getAndIncrement()) ? v - 1 : v)
-                .filter(v -> !isEven.test(v))
-                .mapToInt(Integer::intValue)
+        IntStream oddIndexes = IntStream.range(0, numbers.size())
+                .filter(isOdd::test)
+                .map(i -> numbers.get(i) - 1);
+        IntStream evenIndexes = IntStream.range(0, numbers.size())
+                .filter(isEven::test)
+                .map(numbers::get);
+        return IntStream.concat(oddIndexes, evenIndexes)
+                .filter(isOdd::test)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow();
     }
 
     /**
@@ -61,7 +64,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         & p.getAge() >= fromAge
                         & p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -81,7 +84,7 @@ public class StreamPractice {
                         & (p.getSex() == Person.Sex.MAN
                         ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)
                 )
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -95,7 +98,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -111,11 +114,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
