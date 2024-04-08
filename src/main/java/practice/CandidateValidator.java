@@ -17,15 +17,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         int from = Integer.parseInt(separatedPeriods[FROM_PERIOD_INDEX]);
         int to = Integer.parseInt(separatedPeriods[TO_PERIOD_INDEX]);
 
-        if (candidate.getAge() < REQUIRED_AGE) {
-            return false;
-        }
-        if (!candidate.getNationality().equals(REQUIRED_NATIONALITY)) {
-            return false;
-        }
-        if (to - from < REQUIRED_YEARS) {
-            return false;
-        }
-        return candidate.isAllowedToVote();
+        return candidate.getAge() >= REQUIRED_AGE
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && to - from >= REQUIRED_YEARS
+                && candidate.isAllowedToVote();
     }
 }
