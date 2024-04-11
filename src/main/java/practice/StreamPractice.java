@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,9 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final CandidateValidator candidateValidator = new CandidateValidator();
-    private static final Predicate<Integer> isEven = n -> n % 2 == 0;
-    private static final Predicate<Integer> isOdd = n -> n % 2 == 1;
+    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
+    private static final Predicate<Integer> IS_EVEN = n -> n % 2 == 0;
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -26,7 +26,7 @@ public class StreamPractice {
                 .map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
-                .filter(isEven::test)
+                .filter(IS_EVEN::test)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
@@ -39,16 +39,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream oddIndexes = IntStream.range(0, numbers.size())
-                .filter(isOdd::test)
-                .map(i -> numbers.get(i) - 1);
-        IntStream evenIndexes = IntStream.range(0, numbers.size())
-                .filter(isEven::test)
-                .map(numbers::get);
-        return IntStream.concat(oddIndexes, evenIndexes)
-                .filter(isOdd::test)
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(num -> num % 2 == 1)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException(
+                        "There are no matching elements in list: " + numbers
+                ));
     }
 
     /**
@@ -61,9 +58,11 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        && person.getAge() >= fromAge
-                        && person.getAge() <= toAge)
+                .filter(person -> SexAndBetweenAgePredicate.test(
+                        person,
+                        Person.Sex.MAN,
+                        fromAge,
+                        toAge))
                 .toList();
     }
 
@@ -80,10 +79,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        & (person.getSex() == Person.Sex.MAN
-                        ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge)
-                )
+                .filter(person -> BetweenAgeBasedOnSexPredicate.test(
+                        person,
+                        fromAge,
+                        maleToAge,
+                        femaleToAge))
                 .toList();
     }
 
@@ -94,8 +94,10 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge)
+                .filter(person -> SexAndFromAgePredicate.test(
+                        person,
+                        Person.Sex.WOMAN,
+                        femaleAge))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -116,7 +118,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(CANDIDATE_VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
