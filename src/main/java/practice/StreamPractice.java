@@ -57,12 +57,13 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        final Predicate<Person> menByAgePredicate = (Person person) ->
+                person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= toAge;
+
         return peopleList.stream()
-                .filter(person -> SexAndBetweenAgePredicate.test(
-                        person,
-                        Person.Sex.MAN,
-                        fromAge,
-                        toAge))
+                .filter(menByAgePredicate)
                 .toList();
     }
 
@@ -78,12 +79,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        final Predicate<Person> workablePeoplePredicate = (Person person) ->
+                person.getAge() >= fromAge
+                & (person.getSex() == Person.Sex.MAN
+                ? person.getAge() <= maleToAge : person.getAge() <= femaleToAge);
+
         return peopleList.stream()
-                .filter(person -> BetweenAgeBasedOnSexPredicate.test(
-                        person,
-                        fromAge,
-                        maleToAge,
-                        femaleToAge))
+                .filter(workablePeoplePredicate)
                 .toList();
     }
 
@@ -93,11 +95,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        final Predicate<Person> catsNamesPredicate = (Person person) ->
+                person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
+
         return peopleList.stream()
-                .filter(person -> SexAndFromAgePredicate.test(
-                        person,
-                        Person.Sex.WOMAN,
-                        femaleAge))
+                .filter(catsNamesPredicate)
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
