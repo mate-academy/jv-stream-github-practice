@@ -21,8 +21,10 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMapToInt(number -> Arrays.stream(number.split(","))
                         .mapToInt(Integer::parseInt))
-                .filter(number -> number % 2 == 0).min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .filter(number -> number % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list "
+                        + System.lineSeparator() + numbers));
     }
 
     /**
@@ -38,7 +40,8 @@ public class StreamPractice {
                 })
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list "
+                        + numbers));
     }
 
     /**
@@ -71,15 +74,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> {
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() >= fromAge
-                                && person.getAge() <= maleToAge;
-                    } else {
-                        return person.getAge() >= fromAge
-                                && person.getAge() <= femaleToAge;
-                    }
-                })
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
