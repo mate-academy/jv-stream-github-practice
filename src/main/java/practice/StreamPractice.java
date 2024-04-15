@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.OptionalDouble;
-import java.util.OptionalInt;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -21,7 +21,7 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
+        return numbers.stream()
                 .map(p -> p.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(str -> {
@@ -32,8 +32,8 @@ public class StreamPractice {
                     }
                 })
                 .filter(n -> n % 2 == 0)
-                .min();
-        return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min()
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
                 + numbers));
     }
 
@@ -77,11 +77,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> workingAgeWoman = p -> (p.getSex() == Person.Sex.WOMAN && p.getAge()
+                >= fromAge && p.getAge() <= femaleToAge);
+        Predicate<Person> workingAgeMan = p -> (p.getSex() == Person.Sex.MAN && p.getAge()
+                >= fromAge && p.getAge() <= maleToAge);
+
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.WOMAN && p.getAge()
-                        >= fromAge && p.getAge() <= femaleToAge)
-                        || (p.getSex() == Person.Sex.MAN && p.getAge()
-                        >= fromAge && p.getAge() <= maleToAge))
+                .filter(workingAgeWoman.or(workingAgeMan))
                 .collect(Collectors.toList());
     }
 
