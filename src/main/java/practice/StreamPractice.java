@@ -1,10 +1,10 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -33,14 +33,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> adjustedNumbers = new ArrayList<>(numbers.size());
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                adjustedNumbers.add(numbers.get(i) - 1);
-            } else {
-                adjustedNumbers.add(numbers.get(i));
-            }
-        }
+        List<Integer> adjustedNumbers = IntStream.range(0, numbers.size())
+                .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .toList();
 
         return adjustedNumbers.stream()
                 .filter(n -> n % 2 != 0)
@@ -113,9 +108,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
