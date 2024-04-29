@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -19,9 +20,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
-                .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .flatMap(s -> Arrays.stream(s.split(","))
+                        .map(Integer::parseInt))
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(
@@ -35,15 +35,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> {
+                .map(i -> {
                     int value = numbers.get(i);
-                    if (i % 2 != 0) {
-                        value--;
-                    }
-                    return value;
+                    return (i % 2 != 0) ? --value : value;
                 })
                 .filter(i -> i % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(
                         () -> new NoSuchElementException("No odd numbers found in the list."));
@@ -92,9 +88,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
-                .map(p -> p.getCats())
-                .flatMap(list -> list.stream())
-                .map(p -> p.getName())
+                .flatMap(p -> p.getCats().stream()
+                        .map(Cat::getName))
                 .collect(Collectors.toList());
     }
 
@@ -112,7 +107,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(new CandidateValidator())
                 .map(candidate -> candidate.getName())
                 .sorted()
                 .collect(Collectors.toList());
