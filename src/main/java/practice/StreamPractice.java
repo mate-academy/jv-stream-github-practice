@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -9,10 +10,11 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    public static final String SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
         List<Integer> parsedFilteredNumbers = numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .toList();
@@ -33,7 +35,8 @@ public class StreamPractice {
                 .filter(num -> num % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
+                        + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
