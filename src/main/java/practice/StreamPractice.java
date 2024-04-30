@@ -13,25 +13,18 @@ public class StreamPractice {
     public static final String SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> parsedFilteredNumbers = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .toList();
-
-        if (parsedFilteredNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-
-        return parsedFilteredNumbers.stream().min(Integer::compareTo).orElseThrow();
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-
-        return numbers.stream()
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
                 .average()
@@ -51,11 +44,9 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> {
                     int age = person.getAge();
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return age >= fromAge && age <= maleToAge;
-                    } else {
-                        return age >= fromAge && age <= femaleToAge;
-                    }
+                    return person.getSex() == Person.Sex.MAN
+                            ? age >= fromAge && age <= maleToAge
+                            : age >= fromAge && age <= femaleToAge;
                 })
                 .collect(Collectors.toList());
     }
