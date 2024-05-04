@@ -8,6 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINIAN = "Ukrainian";
     private static final int MIN_DURATION = 10;
     private static final String PERIOD_DELIMITER = "-";
+    private static final int INDEX_YEAR_FROM = 0;
+    private static final int INDEX_YEAR_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,6 +20,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getDurationInYears(String periodsInUkr) {
         String[] data = periodsInUkr.split(PERIOD_DELIMITER);
-        return Integer.parseInt(data[1]) - Integer.parseInt(data[0]);
+        return Integer.parseInt(data[INDEX_YEAR_TO]) - Integer.parseInt(data[INDEX_YEAR_FROM]);
     }
 }
