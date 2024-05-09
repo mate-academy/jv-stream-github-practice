@@ -1,20 +1,17 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import predicate.MenWhoCanBeRecruitedIntoTheArmyPredicate;
-import predicate.PeopleOfWorkingAgePredicate;
-import predicate.WomenWithCatsPredicate;
 
 public class StreamPractice {
-    private static final int SUBSTRACT_1_FROM_EACH_ELELEMENT = 1;
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}    ---> {5, 30, 100, 0, 22, 7}
@@ -30,7 +27,7 @@ public class StreamPractice {
                 .min()
                 .orElseThrow(
                         () -> new RuntimeException("Can't get min value from list: "
-                        + numbers));
+                                + numbers));
     }
 
     /**
@@ -39,41 +36,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        checkForNullOrEmptyList(numbers);
-        checkListSizeLessThan2Elements(numbers);
-        var oddIndexOddValuesAfterSubstract = getOddValuesByOddIndecesAfterSubstract(numbers);
-        var evenIndexOddValues = getOddValuesByEvenIndeces(numbers);
-        return IntStream.concat(oddIndexOddValuesAfterSubstract, evenIndexOddValues)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 == 1)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers found."));
-    }
-
-    private static IntStream getOddValuesByEvenIndeces(List<Integer> numbers) {
-        var evenIndexOddValues = IntStream.range(0, numbers.size())
-                .filter(index -> index % 2 == 0)
-                .map(numbers::get)
-                .filter(value -> value % 2 != 0);
-        return evenIndexOddValues;
-    }
-
-    private static IntStream getOddValuesByOddIndecesAfterSubstract(List<Integer> numbers) {
-        var oddIndexOddValuesAfterSubstract = IntStream.range(0, numbers.size())
-                .filter(index -> index % 2 != 0)
-                .map(index -> numbers.get(index) - SUBSTRACT_1_FROM_EACH_ELELEMENT)
-                .filter(value -> value % 2 != 0);
-        return oddIndexOddValuesAfterSubstract;
-    }
-
-    private static void checkListSizeLessThan2Elements(List<Integer> numbers) {
-        if (numbers.size() < 2) {
-            throw new NoSuchElementException("No odd indices found.");
-        }
-    }
-
-    private static void checkForNullOrEmptyList(List<Integer> numbers) {
-        if (numbers == null || numbers.isEmpty()) {
-            throw new NoSuchElementException("Input list is empty or null.");
-        }
     }
 
     /**
@@ -85,11 +52,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        MenWhoCanBeRecruitedIntoTheArmyPredicate armyPredicate =
-                new MenWhoCanBeRecruitedIntoTheArmyPredicate(fromAge, toAge);
         return peopleList.stream()
-                .filter(armyPredicate)
-                .collect(Collectors.toList());
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge
+                        && p.getAge() <= toAge)
+                .toList();
     }
 
     /**
@@ -104,11 +71,15 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        PeopleOfWorkingAgePredicate workingAgePredicate =
-                new PeopleOfWorkingAgePredicate(fromAge, femaleToAge, maleToAge);
+        Predicate<Person> personPredicate =
+                p -> p.getAge() >= fromAge
+                        && (p.getSex() == Person.Sex.MAN
+                        && p.getAge() <= maleToAge
+                        || p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(workingAgePredicate)
-                .collect(Collectors.toList());
+                .filter(personPredicate)
+                .toList();
     }
 
     /**
@@ -117,13 +88,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        WomenWithCatsPredicate womenWithCatsPredicate =
-                new WomenWithCatsPredicate(femaleAge);
         return peopleList.stream()
-                .filter(womenWithCatsPredicate)
-                .flatMap(person -> person.getCats().stream())
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
