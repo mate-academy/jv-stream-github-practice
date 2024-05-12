@@ -1,11 +1,13 @@
 package practice;
 
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
-
+import java.util.NoSuchElementException;
+import java.util.OptionalInt;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,10 +29,10 @@ public class StreamPractice {
         if (minEven.isPresent()) {
             return minEven.getAsInt();
         } else {
-            throw new RuntimeException("Can't get min value from list: < Here is our input 'numbers' >");
+            throw new RuntimeException("Can't get min value from list: < Here "
+                    + "is our input 'numbers' >");
         }
     }
-
 
     /**
      * Given a List of Integer numbers,
@@ -52,6 +54,7 @@ public class StreamPractice {
      * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
+
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN
