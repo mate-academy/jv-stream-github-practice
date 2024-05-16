@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -36,7 +35,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -54,7 +53,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.MAN))
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -70,10 +69,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge) || (p.getSex().equals(Person.Sex.MAN)
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge))
-                .collect(Collectors.toList());
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                        ? p.getAge() >= fromAge && p.getAge() <= femaleToAge
+                        : p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                .toList();
     }
 
     /**
@@ -86,7 +85,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -108,6 +107,6 @@ public class StreamPractice {
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
