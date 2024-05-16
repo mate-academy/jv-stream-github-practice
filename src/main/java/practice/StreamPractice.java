@@ -1,9 +1,6 @@
 package practice;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -42,7 +39,8 @@ public class StreamPractice {
         return (double) IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(i -> i % 2 != 0)
-                .sum();
+                .average()
+                .orElseThrow(() -> new NoSuchElementException());
     }
 
     /**
@@ -106,6 +104,10 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(candidateValidator::test)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
