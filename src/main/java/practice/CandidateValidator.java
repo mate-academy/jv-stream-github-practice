@@ -1,9 +1,7 @@
 package practice;
 
-import model.Candidate;
-import model.Person;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate {
     //write your code here
@@ -21,8 +19,8 @@ public class CandidateValidator implements Predicate {
         int from = 0;
         int to = 1;
         String[] splitPeriods = candidate.getPeriodsInUkr().split("-");
-        int livedInCountry = Integer.parseInt(splitPeriods[1]) -
-                Integer.parseInt(splitPeriods[0]);
+        int livedInCountry = Integer.parseInt(splitPeriods[1])
+                - Integer.parseInt(splitPeriods[0]);
         boolean isHeLivedInCountryEnough = livedInCountry > LIVED_TEN_YEARS;
 
         return isHeHaveEnoughYears && isHeHaveCorrectNationality && isHeLivedInCountryEnough;

@@ -1,10 +1,10 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -24,9 +24,9 @@ public class StreamPractice {
         return intStream
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException
-                        ("Can't get min value from list: " +
-                                "< Here is our input '" + numbers + "' >")
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: "
+                                + "< Here is our input '" + numbers + "' >")
                 );
     }
 
@@ -71,9 +71,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN ?
-                        person.getAge() >= fromAge && person.getAge() <= maleToAge :
-                        person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge
+                        : person.getAge() >= fromAge && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
