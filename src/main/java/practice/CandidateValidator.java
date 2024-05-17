@@ -21,15 +21,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean hasSufficientResidencyInUkr(Candidate candidate) {
         String[] periods = candidate.getPeriodsInUkr().split(SEPARATOR);
-        if (periods.length == 2) {
-            try {
-                int startYear = Integer.parseInt(periods[BEGIN_INDEX]);
-                int endYear = Integer.parseInt(periods[END_INDEX]);
-                return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        return false;
+        int startYear = Integer.parseInt(periods[BEGIN_INDEX]);
+        int endYear = Integer.parseInt(periods[END_INDEX]);
+        return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
     }
 }
