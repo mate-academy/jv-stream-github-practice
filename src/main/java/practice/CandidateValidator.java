@@ -4,30 +4,20 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int REQUIRED_YEARS_IN_UKRAINE = 10;
+    private static final int REQUIRED_AGE = 35;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
-        Predicate<Candidate> olderThan35 = (i) -> i.getAge() >= 35;
-        Predicate<Candidate> allowedVote = Candidate::isAllowedToVote;
-        Predicate<Candidate> nationality = (i) -> i.getNationality().equals("Ukrainian");
-        Predicate<Candidate> livedInUkr = (i) -> {
-            String[] years = i.getPeriodsInUkr().split("-");
-            return Integer.parseInt(years[1]) - Integer.parseInt(years[0]) >= 10;
-        };
-        return olderThan35.and(allowedVote).and(nationality).and(livedInUkr).test(candidate);
+        return candidate.getAge() >= REQUIRED_AGE
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && yearsInUkr(candidate) >= REQUIRED_YEARS_IN_UKRAINE;
     }
 
-    @Override
-    public Predicate<Candidate> and(Predicate<? super Candidate> other) {
-        return Predicate.super.and(other);
-    }
-
-    @Override
-    public Predicate<Candidate> negate() {
-        return Predicate.super.negate();
-    }
-
-    @Override
-    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
-        return Predicate.super.or(other);
+    private int yearsInUkr(Candidate candidate) {
+        String[] years = candidate.getPeriodsInUkr().split("-");
+        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
     }
 }
