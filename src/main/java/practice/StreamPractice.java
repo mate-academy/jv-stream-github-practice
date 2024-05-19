@@ -50,8 +50,7 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Stream<Person> stream = peopleList.stream();
-        return stream.filter(person -> person.getAge() >= fromAge
+        return peopleList.stream().filter(person -> person.getAge() >= fromAge
                         && person.getAge() <= toAge
                         && person.getSex().equals(Person.Sex.MAN))
                 .toList();
@@ -69,8 +68,7 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Stream<Person> stream = peopleList.stream();
-        return stream.filter((person) -> person.getSex().equals(Person.Sex.MAN)
+        return peopleList.stream().filter((person) -> person.getSex().equals(Person.Sex.MAN)
                         ? person.getAge() >= fromAge
                         && person.getAge() <= maleToAge :
                         person.getAge() >= fromAge
@@ -84,8 +82,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Stream<Person> stream = peopleList.stream();
-        return stream.filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+        return peopleList.stream().filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
                 .map((person) -> person.getCats()
                         .stream()
