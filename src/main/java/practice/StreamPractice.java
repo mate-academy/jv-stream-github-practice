@@ -2,9 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -27,8 +25,8 @@ public class StreamPractice {
         }
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(NUMBERS_SEPARATOR)))
-                .filter(n -> Integer.parseInt(n) % 2 == 0)
                 .mapToInt(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow();
     }
@@ -40,8 +38,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> Map.entry(i, numbers.get(i)))
-                .mapToInt(e -> e.getKey() % 2 != 0 ? e.getValue() - 1 : e.getValue())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow();
@@ -60,7 +57,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -81,7 +78,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(personPredicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -94,7 +91,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -114,6 +111,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
