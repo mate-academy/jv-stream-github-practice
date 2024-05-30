@@ -66,10 +66,7 @@ public class StreamPractice {
     private Predicate<Person> isMaleAndFemaleInAgeRange(int fromAge, int femaleToAge,
                                                   int maleToAge) {
         return p -> (p.getSex() == Person.Sex.MAN
-                && p.getAge() >= fromAge
-                && p.getAge() <= maleToAge)
-                || (p.getSex() == Person.Sex.WOMAN
-                && p.getAge() >= fromAge
-                && p.getAge() <= femaleToAge);
+                ? fromAge <= p.getAge() && p.getAge() <= maleToAge
+                : fromAge <= p.getAge() && p.getAge() <= femaleToAge);
     }
 }

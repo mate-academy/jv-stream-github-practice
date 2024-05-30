@@ -9,9 +9,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START_LIVING = 0;
     private static final int CURRENT_LIVING = 1;
 
-    public CandidateValidator() {
-    }
-
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= REQUIRE_MIN_AGE
