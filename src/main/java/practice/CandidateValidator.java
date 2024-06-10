@@ -10,6 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int REQUIRED_YEARS_IN_UKRAINE = 10;
     private static final int POSITION_START_YEAR = 0;
     private static final int POSITION_END_YEAR = 1;
+    private static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -20,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean checkTimeLivingInCountry(Candidate candidate) {
-        String[] periodsInUkr = candidate.getPeriodsInUkr().split("-");
+        String[] periodsInUkr = candidate.getPeriodsInUkr().split(SEPARATOR);
         int startYearInUkraine = Integer.parseInt(periodsInUkr[POSITION_START_YEAR]);
         int endYearInUkraine = Integer.parseInt(periodsInUkr[POSITION_END_YEAR]);
         int yearsInUkraine = endYearInUkraine - startYearInUkraine;
