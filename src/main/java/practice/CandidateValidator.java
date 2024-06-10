@@ -13,14 +13,17 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+        return candidate.getAge() >= ELIGIBILITY_AGE
+                && candidate.isAllowedToVote()
+                && ELIGIBLE_NATIONALITY.equals(candidate.getNationality())
+                && checkTimeLivingInCountry(candidate);
+    }
+
+    private boolean checkTimeLivingInCountry(Candidate candidate) {
         String[] periodsInUkr = candidate.getPeriodsInUkr().split("-");
         int startYearInUkraine = Integer.parseInt(periodsInUkr[POSITION_START_YEAR]);
         int endYearInUkraine = Integer.parseInt(periodsInUkr[POSITION_END_YEAR]);
         int yearsInUkraine = endYearInUkraine - startYearInUkraine;
-
-        return candidate.getAge() >= ELIGIBILITY_AGE
-                && candidate.isAllowedToVote()
-                && ELIGIBLE_NATIONALITY.equals(candidate.getNationality())
-                && yearsInUkraine > REQUIRED_YEARS_IN_UKRAINE;
+        return yearsInUkraine > REQUIRED_YEARS_IN_UKRAINE;
     }
 }

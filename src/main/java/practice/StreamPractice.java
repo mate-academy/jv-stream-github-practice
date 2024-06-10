@@ -1,11 +1,9 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -58,7 +56,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(personPredicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -81,7 +79,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(personPredicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -95,11 +93,9 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(personPredicate)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .distinct()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -119,6 +115,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
