@@ -12,11 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= LOWER_AGE_LIMIT && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(UKRAINIAN_NATIONALITY)
-                && (getNumbetOfYears(candidate.getPeriodsInUkr()) >= YEARS_NUMBER_LIVED_IN_UKRAINE);
+                && (getNumberOfYears(candidate.getPeriodsInUkr()) >= YEARS_NUMBER_LIVED_IN_UKRAINE);
     }
 
-    private int getNumbetOfYears(String string) {
+    private int getNumberOfYears(String string) {
         String[] strings = string.split("-");
-        return Integer.parseInt(strings[1]) - Integer.parseInt(strings[0]);
+        int yearFrom = Integer.parseInt(strings[0]);
+        int yearTo = Integer.parseInt(strings[1]);
+        if (yearTo >= yearFrom) {
+            return yearTo - yearFrom;
+        }
+        throw new RuntimeException("Incorrect period, first year must be less than second");
     }
 }

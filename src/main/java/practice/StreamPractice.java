@@ -2,6 +2,8 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -24,7 +26,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + numbers.toString()));
+                        + numbers));
     }
 
     /**
@@ -37,7 +39,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("No elements present"));
     }
 
     /**
@@ -100,8 +102,9 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(predicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
