@@ -33,7 +33,7 @@ public class StreamPractice {
                 .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
-                        "No odd numbers found in the provided list after adjustment: " + numbers));
+                        "Can't get min value from list: " + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
