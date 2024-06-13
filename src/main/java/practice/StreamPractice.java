@@ -11,6 +11,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private Predicate<Person> ageAndSexFilter;
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -51,9 +53,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+        ageAndSexFilter = p -> p.getAge() >= fromAge && p.getAge() <= toAge
+                && p.getSex() == Person.Sex.MAN;
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge
-                        && p.getSex() == Person.Sex.MAN)
+                .filter(ageAndSexFilter)
                 .collect(Collectors.toList());
     }
 
@@ -69,10 +72,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        ageAndSexFilter = p -> p.getAge() >= fromAge
+                && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge));
         return peopleList.stream()
-                .filter(p -> (p.getAge() >= fromAge)
-                        && (p.getSex() == Person.Sex.MAN
-                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
+                .filter(ageAndSexFilter)
                 .collect(Collectors.toList());
     }
 
@@ -82,8 +86,9 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        ageAndSexFilter = p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
+                .filter(ageAndSexFilter)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
