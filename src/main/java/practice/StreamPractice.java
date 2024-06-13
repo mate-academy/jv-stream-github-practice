@@ -110,10 +110,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
                 .filter(person ->
-                                (person.getSex() == Person.Sex.MAN
-                                        && person.getAge() <= maleToAge)
-                                || (person.getSex() == Person.Sex.WOMAN
-                                        && person.getAge() <= femaleToAge)
+                        isFitMan(maleToAge, person)
+                                || isFitWoman(femaleToAge, person)
                 )
                 .collect(Collectors.toList());
     }
@@ -127,12 +125,10 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN)
                 .filter(person -> person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap((Function<List<Cat>, Stream<?>>) cats -> cats.stream()
-                        .map(Cat::getName))
-                .map(String::valueOf)
-                .collect(Collectors.toList())
-                ;
+                .flatMap((Function<Person, Stream<String>>)
+                        person -> person.getCats().stream()
+                                .map(Cat::getName))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -149,10 +145,20 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(new CandidateValidator()::isValid)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList())
                 ;
+    }
+
+    private static boolean isFitMan(int maleToAge, Person person) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() <= maleToAge;
+    }
+
+    private static boolean isFitWoman(int femaleToAge, Person person) {
+        return person.getSex() == Person.Sex.WOMAN
+                && person.getAge() <= femaleToAge;
     }
 }

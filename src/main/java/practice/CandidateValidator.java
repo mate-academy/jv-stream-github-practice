@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -8,25 +9,22 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int LIVE_REQUIREMENT = 10;
     private static final String NATIONAL_REQUIREMENT = "Ukrainian";
 
+    public boolean isValid(Candidate candidate) {
+        return test(candidate);
+    }
+
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getClass() != Candidate.class) {
-            return false;
-        }
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        if (candidate.getAge() < AGE_REQUIREMENT) {
-            return false;
-        }
-        if (!candidate.getNationality().equals(NATIONAL_REQUIREMENT)) {
+        if (!candidate.isAllowedToVote()
+                || candidate.getAge() < AGE_REQUIREMENT
+                || !candidate.getNationality().equals(NATIONAL_REQUIREMENT)) {
             return false;
         }
         String[] years = candidate.getPeriodsInUkr().split("-");
-        int yearInUkraine = Integer.valueOf(years[1]) - Integer.valueOf(years[0]);
-        if (yearInUkraine < LIVE_REQUIREMENT) {
-            return false;
+        if (years.length != 2) {
+            throw new NoSuchElementException("Parse error for checking candidates leaving period");
         }
-        return true;
+        int yearInUkraine = Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
+        return yearInUkraine >= LIVE_REQUIREMENT;
     }
 }
