@@ -5,13 +5,10 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final String YEAR_SEPARATOR = "-";
     private static final int AGE_REQUIREMENT = 35;
     private static final int LIVE_REQUIREMENT = 10;
     private static final String NATIONAL_REQUIREMENT = "Ukrainian";
-
-    public boolean isValid(Candidate candidate) {
-        return test(candidate);
-    }
 
     @Override
     public boolean test(Candidate candidate) {
@@ -20,7 +17,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 || !candidate.getNationality().equals(NATIONAL_REQUIREMENT)) {
             return false;
         }
-        String[] years = candidate.getPeriodsInUkr().split("-");
+        String[] years = candidate.getPeriodsInUkr().split(YEAR_SEPARATOR);
         if (years.length != 2) {
             throw new NoSuchElementException("Parse error for checking candidates leaving period");
         }

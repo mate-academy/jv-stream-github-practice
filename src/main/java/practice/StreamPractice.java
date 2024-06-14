@@ -1,11 +1,10 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,6 +14,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBERS_SEPARATOR = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,32 +24,18 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt minimum = numbers.stream()
+        return numbers.stream()
                 .mapToInt(value -> {
-                    String[] numbs = value.split(",");
+                    String[] numbs = value.split(NUMBERS_SEPARATOR);
                     Optional<Integer> min = Arrays.stream(numbs)
                             .mapToInt(Integer::valueOf)
                             .boxed()
-                            .min((o1, o2) -> {
-                                if (o1 % 2 == 0 && o2 % 2 == 0) {
-                                    return o1 - o2;
-                                }
-                                if (o1 % 2 == 0) {
-                                    return -1;
-                                }
-                                if (o2 % 2 == 0) {
-                                    return 1;
-                                }
-                                return 0;
-                            });
+                            .min(getMinEvenComparator());
                     return min.get();
                 })
                 .filter(value -> value % 2 == 0)
-                .min();
-        if (minimum.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
-        }
-        return minimum.getAsInt();
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -57,7 +44,7 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .boxed()
                 .collect(Collectors.toMap(
                         k -> k,
@@ -72,11 +59,8 @@ public class StreamPractice {
                     return entry.getValue();
                 })
                 .filter(e -> e % 2 == 1)
-                .average();
-        if (average.isEmpty()) {
-            throw new NoSuchElementException("Can't get avg value from list");
-        }
-        return average.getAsDouble();
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't get avg value from list"));
     }
 
     /**
@@ -89,10 +73,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)
-                .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .filter(person -> isFitMan(fromAge, toAge, person))
+                .toList();
     }
 
     /**
@@ -108,12 +90,11 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge)
                 .filter(person ->
-                        isFitMan(maleToAge, person)
-                                || isFitWoman(femaleToAge, person)
+                        isFitMan(fromAge, maleToAge, person)
+                                || isFitWoman(fromAge, femaleToAge, person)
                 )
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -128,7 +109,7 @@ public class StreamPractice {
                 .flatMap((Function<Person, Stream<String>>)
                         person -> person.getCats().stream()
                                 .map(Cat::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -145,20 +126,33 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator()::isValid)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList())
-                ;
+                .toList();
     }
 
-    private static boolean isFitMan(int maleToAge, Person person) {
+    private static Comparator<Integer> getMinEvenComparator() {
+        return (o1, o2) -> {
+            if (o1 % 2 == 0 && o2 % 2 == 0) {
+                return o1 - o2;
+            }
+            if (o1 % 2 == 0) {
+                return -1;
+            }
+            return 1;
+        };
+    }
+
+    private static boolean isFitMan(int maleFromAge, int maleToAge, Person person) {
         return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= maleFromAge
                 && person.getAge() <= maleToAge;
     }
 
-    private static boolean isFitWoman(int femaleToAge, Person person) {
+    private static boolean isFitWoman(int femaleFromAge,int femaleToAge, Person person) {
         return person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleFromAge
                 && person.getAge() <= femaleToAge;
     }
 }
