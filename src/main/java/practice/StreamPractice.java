@@ -3,9 +3,11 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -25,16 +27,11 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .mapToInt(value -> {
-                    String[] numbs = value.split(NUMBERS_SEPARATOR);
-                    Optional<Integer> min = Arrays.stream(numbs)
-                            .mapToInt(Integer::valueOf)
-                            .boxed()
-                            .min(getMinEvenComparator());
-                    return min.get();
-                })
-                .filter(value -> value % 2 == 0)
-                .min()
+                .flatMap((Function<String, Stream<String>>)
+                        s -> Arrays.stream(s.split(NUMBERS_SEPARATOR)))
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .min(getMinEvenComparator())
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
@@ -52,13 +49,8 @@ public class StreamPractice {
                 ))
                 .entrySet()
                 .stream()
-                .mapToInt(entry -> {
-                    if (entry.getKey() % 2 == 1) {
-                        return entry.getValue() - 1;
-                    }
-                    return entry.getValue();
-                })
-                .filter(e -> e % 2 == 1)
+                .mapToInt(getEntryToIntFunction())
+                .filter(getOdd())
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get avg value from list"));
     }
@@ -142,6 +134,19 @@ public class StreamPractice {
             }
             return 1;
         };
+    }
+
+    private static ToIntFunction<Map.Entry<Integer, Integer>> getEntryToIntFunction() {
+        return entry -> {
+            if (entry.getKey() % 2 == 1) {
+                return entry.getValue() - 1;
+            }
+            return entry.getValue();
+        };
+    }
+
+    private static IntPredicate getOdd() {
+        return e -> e % 2 == 1;
     }
 
     private static boolean isFitMan(int maleFromAge, int maleToAge, Person person) {
