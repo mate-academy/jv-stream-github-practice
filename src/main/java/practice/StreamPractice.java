@@ -33,13 +33,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    int num = numbers.get(i);
-                    if (i % 2 == 1) {
-                        num -= 1;
-                    }
-                    return num;
-                })
+                .map(i -> i % 2 == 1 ? numbers.get(i - 1) : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(() ->
