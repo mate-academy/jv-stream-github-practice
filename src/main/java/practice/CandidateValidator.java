@@ -21,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private static int calculateYearsInUkraine(String periods) {
         int totalYears = 0;
-        if (periods.contains("-")) {
+        if (periods.contains(SEPARATOR)) {
             String[] parts = periods.split(SEPARATOR);
             if (parts.length == 2) {
                 int startYear = Integer.parseInt(parts[BEGIN_INDEX]);
