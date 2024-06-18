@@ -37,9 +37,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow(() ->
-                        new NoSuchElementException("Unable to calculate average. List of numbers: "
-                                + numbers));
+                .getAsDouble();
     }
 
     /**
@@ -104,7 +102,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
