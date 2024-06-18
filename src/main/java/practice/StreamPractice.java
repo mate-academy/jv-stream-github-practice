@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
-import model.Cat; // Додаємо імпорт для Cat
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -56,7 +56,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -75,7 +75,7 @@ public class StreamPractice {
                 .filter(p -> (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
                         || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
                 .filter(p -> p.getAge() >= fromAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -88,7 +88,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -109,6 +109,6 @@ public class StreamPractice {
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
