@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;  // Додаємо імпорт для Cat
 import model.Person;
 
 public class StreamPractice {
