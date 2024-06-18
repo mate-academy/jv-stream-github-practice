@@ -10,6 +10,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -25,8 +27,7 @@ public class StreamPractice {
                 .filter(number -> number % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: < Here is our input '"
-                        + numbers + "' >"));
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -40,7 +41,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -54,8 +56,9 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .filter(person -> Person.Sex.MAN == person.getSex())
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && Person.Sex.MAN == person.getSex())
                 .collect(Collectors.toList());
     }
 
@@ -73,12 +76,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList
                 .stream()
-                .filter(person -> {
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
-                    }
-                    return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
-                })
+                .filter(person -> new WorkablePeoplePredicate(fromAge, femaleToAge, maleToAge)
+                        .test(person))
                 .collect(Collectors.toList());
     }
 
@@ -111,7 +110,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates
                 .stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(candidateValidator::test)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
