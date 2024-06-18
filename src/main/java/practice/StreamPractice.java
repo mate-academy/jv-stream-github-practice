@@ -6,10 +6,13 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
-import model.Cat; // Додаємо імпорт для Cat
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,13 +22,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+                .flatMap(s -> Arrays.stream(s.split(SEPARATOR)))
                 .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException(EXCEPTION_MESSAGE + numbers));
     }
 
     /**
@@ -38,7 +40,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -51,8 +53,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN)
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
