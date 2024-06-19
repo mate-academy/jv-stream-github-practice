@@ -1,14 +1,14 @@
 package practice;
 
-import model.Candidate;
-import model.Cat;
-import model.Person;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import model.Candidate;
+import model.Cat;
+import model.Person;
 import model.Person.Sex;
 
 public class StreamPractice {
@@ -39,8 +39,8 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
         Predicate<Person> workablePredicate = p ->
-                (p.getSex() == Sex.WOMAN && p.getAge() >= fromAge && p.getAge() <= femaleToAge) ||
-                        (p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge);
+                (p.getSex() == Sex.WOMAN && p.getAge() >= fromAge && p.getAge() <= femaleToAge)
+                        || (p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge);
 
         return peopleList.stream()
                 .filter(workablePredicate)
@@ -63,6 +63,4 @@ public class StreamPractice {
                 .sorted()
                 .collect(Collectors.toList());
     }
-
-
 }
