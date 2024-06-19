@@ -15,12 +15,12 @@ public class StreamPractice {
 
     private static final String COMMA = ",";
 
-    public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream()
+    public int findMinEvenNumber(List<String> numb) {
+        return numb.stream()
                 .flatMapToInt(s -> Arrays.stream(s.split(COMMA)).mapToInt(Integer::parseInt))
                 .filter(num -> num % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numb));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -39,8 +39,9 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
         Predicate<Person> workablePredicate = p ->
-                (p.getSex() == Sex.WOMAN && p.getAge() >= fromAge && p.getAge() <= femaleToAge) ||
-                        (p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge);
+                (p.getSex() == Sex.WOMAN && p.getAge()
+                        >= fromAge && p.getAge() <= femaleToAge)
+                        || (p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge);
 
         return peopleList.stream()
                 .filter(workablePredicate)
