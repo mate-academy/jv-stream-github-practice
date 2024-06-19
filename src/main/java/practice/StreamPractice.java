@@ -42,7 +42,8 @@ public class StreamPractice {
         Predicate<Person> workablePredicate = p ->
                 (p.getSex() == Sex.WOMAN && p.getAge()
                         >= fromAge && p.getAge() <= femaleToAge)
-                        || (p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= maleToAge);
+                        || (p.getSex() == Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= maleToAge);
 
         return peopleList.stream()
                 .filter(workablePredicate)
