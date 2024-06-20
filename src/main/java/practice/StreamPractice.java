@@ -13,7 +13,6 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(str -> Arrays.stream(str.split(",")))
-                .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
@@ -23,11 +22,12 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(num -> num % 2 != 0)
-                .mapToDouble(Integer::doubleValue)
+                .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("The list has no odd numbers"));
+                .orElseThrow(() -> new NoSuchElementException("Can't get average "
+                        + "of all odd numbers from the list: "
+                        + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
@@ -39,12 +39,9 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        PredicateAgePersonImpl predicate = new PredicateAgePersonImpl();
         return peopleList.stream()
-                .filter(person ->
-                        (person.getSex() == Person.Sex.MAN && person.getAge()
-                                >= fromAge && person.getAge() <= maleToAge)
-                                || (person.getSex() == Person.Sex.WOMAN
-                                && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
+                .filter(person -> predicate.test(fromAge, femaleToAge, maleToAge, person))
                 .collect(Collectors.toList());
     }
 
