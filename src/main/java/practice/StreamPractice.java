@@ -15,12 +15,12 @@ public class StreamPractice {
 
     private static final String COMMA = ",";
 
-    public int findMinEvenNumber(List<String> numb) {
-        return numb.stream()
+    public int findMinEvenNumber(List<String> numbers) {
+        return numbers.stream()
                 .flatMapToInt(s -> Arrays.stream(s.split(COMMA)).mapToInt(Integer::parseInt))
                 .filter(num -> num % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numb));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -34,7 +34,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Sex.MAN && p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(
@@ -47,7 +47,7 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(workablePredicate)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -55,15 +55,15 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+               .toList();
     }
 }
