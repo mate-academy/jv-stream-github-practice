@@ -9,6 +9,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String DASH = "-";
     private static final int MIN_AGE = 35;
     private static final int MIN_LIVED_IN_COUNTRY = 10;
+    private static final int START_YEAR_INDEX = 0;
+    private static final int END_YEAR_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -23,8 +25,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         int totalYears = 0;
         for (String period : periods) {
             String[] dates = period.split(DASH);
-            int startYear = Integer.parseInt(dates[0].trim());
-            int endYear = Integer.parseInt(dates[1].trim());
+            int startYear = Integer.parseInt(dates[START_YEAR_INDEX].trim());
+            int endYear = Integer.parseInt(dates[END_YEAR_INDEX].trim());
             totalYears += endYear - startYear;
         }
         return totalYears >= MIN_LIVED_IN_COUNTRY;
