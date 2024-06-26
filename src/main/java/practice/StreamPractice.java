@@ -41,7 +41,8 @@ public class StreamPractice {
             int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
         Predicate<Person> workablePredicate = p -> {
             int maxAge = (p.getSex() == Sex.WOMAN) ? femaleToAge : maleToAge;
-            return p.getAge() >= fromAge && p.getAge() <= maxAge;};
+            return p.getAge() >= fromAge && p.getAge() <= maxAge;
+        };
 
         return peopleList.stream()
                 .filter(workablePredicate)
