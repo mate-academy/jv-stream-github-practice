@@ -17,18 +17,14 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         List<String> numbersNew = List.copyOf(numbers);
-        try {
-            return numbersNew.stream()
-                    .map(n -> n.split(","))
-                    .flatMap(Arrays::stream)
-                    .map(Integer::parseInt)
-                    .filter(n -> n % 2 == 0)
-                    .sorted()
-                    .findFirst()
-                    .get();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+        return numbersNew.stream()
+                .flatMap(p -> Arrays.stream(p.split(",")))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .mapToInt(Integer::valueOf)
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -87,8 +83,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge
                         && p.getCats() != null)
-                .map(p -> p.getCats())
-                .flatMap(List::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
@@ -107,7 +102,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator()::test)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
