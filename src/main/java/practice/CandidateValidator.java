@@ -12,11 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int start = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[START_INDEX]);
-        int end = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[END_INDEX]);
+        String[] periods = candidate.getPeriodsInUkr().split("-");
+        int start = Integer.parseInt(periods[START_INDEX]);
+        int end = Integer.parseInt(periods[END_INDEX]);
         return candidate.getAge() >= AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
-                && end - start >= DURATION;
+                && countDuration(start, end) >= DURATION;
+    }
+
+    private int countDuration(int start, int end) {
+        return end - start;
     }
 }
