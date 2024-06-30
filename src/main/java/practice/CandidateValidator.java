@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int DURATION = 10;
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
+    private static final String NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         int end = Integer.parseInt(periods[END_INDEX]);
         return candidate.getAge() >= AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(NATIONALITY)
                 && countDuration(start, end) >= DURATION;
     }
 
