@@ -1,22 +1,27 @@
 package practice;
 
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int MIN_VOTING_AGE = 35;
-    private static final int MIN_LIVE_YEARS = 10;
-    private static final int LIVES_FROM = 0;
-    private static final int LIVES_TO = 1;
-    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String YEAR_SEPARATOR = "-";
+    private static final int AGE_REQUIREMENT = 35;
+    private static final int LIVE_REQUIREMENT = 10;
+    private static final String NATIONAL_REQUIREMENT = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] years = candidate.getPeriodsInUkr().split("-");
-        int period = Integer.parseInt(years[LIVES_TO]) - Integer.parseInt(years[LIVES_FROM]);
-        return candidate.isAllowedToVote()
-                && candidate.getAge() >= MIN_VOTING_AGE
-                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-                && period >= MIN_LIVE_YEARS;
+        if (!candidate.isAllowedToVote()
+                || candidate.getAge() < AGE_REQUIREMENT
+                || !candidate.getNationality().equals(NATIONAL_REQUIREMENT)) {
+            return false;
+        }
+        String[] years = candidate.getPeriodsInUkr().split(YEAR_SEPARATOR);
+        if (years.length != 2) {
+            throw new NoSuchElementException("Parse error for checking candidates leaving period");
+        }
+        int yearInUkraine = Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
+        return yearInUkraine >= LIVE_REQUIREMENT;
     }
 }
