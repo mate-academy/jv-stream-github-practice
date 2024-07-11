@@ -4,13 +4,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -27,8 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap((Function<String, Stream<String>>)
-                        s -> Arrays.stream(s.split(NUMBERS_SEPARATOR)))
+                .flatMap((input -> Arrays.stream(input.split(NUMBERS_SEPARATOR))))
                 .mapToInt(Integer::parseInt)
                 .boxed()
                 .min(getMinEvenComparator())
@@ -42,17 +37,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .boxed()
-                .collect(Collectors.toMap(
-                        k -> k,
-                        numbers::get
-                ))
-                .entrySet()
-                .stream()
-                .mapToInt(getEntryToIntFunction())
-                .filter(getOdd())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get avg value from list"));
+                .getAsDouble();
     }
 
     /**
@@ -98,9 +86,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN)
                 .filter(person -> person.getAge() >= femaleAge)
-                .flatMap((Function<Person, Stream<String>>)
-                        person -> person.getCats().stream()
-                                .map(Cat::getName))
+                .flatMap(person -> person.getCats().stream()
+                        .map(Cat::getName))
                 .toList();
     }
 
@@ -155,7 +142,7 @@ public class StreamPractice {
                 && person.getAge() <= maleToAge;
     }
 
-    private static boolean isFitWoman(int femaleFromAge,int femaleToAge, Person person) {
+    private static boolean isFitWoman(int femaleFromAge, int femaleToAge, Person person) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleFromAge
                 && person.getAge() <= femaleToAge;
