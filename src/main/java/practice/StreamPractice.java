@@ -11,7 +11,7 @@ import model.Person;
 
 public class StreamPractice {
 
-    private static final String DELIMITER = ",";
+    private static final String COMMA_DELIMITER = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -22,7 +22,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(line -> line.split(DELIMITER))
+                .map(line -> line.split(COMMA_DELIMITER))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
