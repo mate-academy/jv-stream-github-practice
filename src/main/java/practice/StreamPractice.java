@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -52,7 +53,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge)
+                .filter(person -> person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -67,7 +72,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -76,7 +88,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> person.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -92,6 +110,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(Candidate::isAllowedToVote)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
