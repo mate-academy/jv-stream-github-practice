@@ -1,11 +1,11 @@
 package practice;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -13,6 +13,7 @@ import model.Person;
 public class StreamPractice {
 
     private static final String COMMA_DELIMITER = ",";
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -111,7 +112,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(Candidate::isAllowedToVote)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
