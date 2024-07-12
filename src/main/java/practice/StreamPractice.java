@@ -1,11 +1,18 @@
 package practice;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
+
+    private static final String COMMA_DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -15,10 +22,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
+                .map(line -> line.split(COMMA_DELIMITER))
+                .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
-                .max(Integer::compareTo)
-                .orElseThrow(RuntimeException::new);
+                .filter(number -> number % 2 == 0)
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -27,7 +36,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(n -> n % 2 != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -39,7 +52,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge)
+                .filter(person -> person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN)
+                .collect(Collectors.toList());
     }
 
     /**
