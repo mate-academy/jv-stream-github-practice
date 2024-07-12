@@ -18,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getAge() >= ALLOWED_AGE_TO_VOTE_CANDIDATE
                 && candidate.getNationality().equals(ALLOWED_NATIONALITY)
                 && calculatePeriodInUkr(candidate.getPeriodsInUkr())
-                > ALLOWED_PERIOD_YEARS_TO_LIVE_IN_UKRAINE;
+                >= ALLOWED_PERIOD_YEARS_TO_LIVE_IN_UKRAINE;
     }
 
     private int calculatePeriodInUkr(String period) {
