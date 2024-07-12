@@ -3,9 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.function.IntPredicate;
-import java.util.function.ToIntFunction;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -25,8 +22,8 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap((input -> Arrays.stream(input.split(NUMBERS_SEPARATOR))))
                 .mapToInt(Integer::parseInt)
-                .boxed()
-                .min(getMinEvenComparator())
+                .filter(num -> num % 2 == 0)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
@@ -121,19 +118,6 @@ public class StreamPractice {
             }
             return 1;
         };
-    }
-
-    private static ToIntFunction<Map.Entry<Integer, Integer>> getEntryToIntFunction() {
-        return entry -> {
-            if (entry.getKey() % 2 == 1) {
-                return entry.getValue() - 1;
-            }
-            return entry.getValue();
-        };
-    }
-
-    private static IntPredicate getOdd() {
-        return e -> e % 2 == 1;
     }
 
     private static boolean isFitMan(int maleFromAge, int maleToAge, Person person) {
