@@ -10,7 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     private static final String COMMA_DELIMITER = ",";
     private final CandidateValidator candidateValidator = new CandidateValidator();
 
