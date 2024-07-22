@@ -26,12 +26,14 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (periods.length != PERIOD_ARRAY_LENGTH) {
             return false;
         }
+        int startYear;
+        int endYear;
         try {
-            int startYear = Integer.parseInt(periods[START_YEAR_INDEX]);
-            int endYear = Integer.parseInt(periods[END_YEAR_INDEX]);
-            return endYear - startYear >= MIN_PERIOD_IN_UKR;
+            startYear = Integer.parseInt(periods[START_YEAR_INDEX]);
+            endYear = Integer.parseInt(periods[END_YEAR_INDEX]);
         } catch (NumberFormatException e) {
-            return false;
+            throw new NumberFormatException("Invalid number format. " + e.getMessage());
         }
+        return endYear - startYear >= MIN_PERIOD_IN_UKR;
     }
 }
