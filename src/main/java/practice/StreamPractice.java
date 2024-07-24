@@ -1,8 +1,8 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -37,7 +37,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 == 1)
                 .average()
-                .getAsDouble();
+                .orElseThrow(() -> new NoSuchElementException("Can't get average value from list"));
     }
 
     /**
@@ -81,8 +81,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN)
-                .filter(person -> person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream()
                         .map(Cat::getName))
                 .toList();
@@ -108,25 +108,13 @@ public class StreamPractice {
                 .toList();
     }
 
-    private static Comparator<Integer> getMinEvenComparator() {
-        return (o1, o2) -> {
-            if (o1 % 2 == 0 && o2 % 2 == 0) {
-                return o1 - o2;
-            }
-            if (o1 % 2 == 0) {
-                return -1;
-            }
-            return 1;
-        };
-    }
-
-    private static boolean isFitMan(int maleFromAge, int maleToAge, Person person) {
+    private boolean isFitMan(int maleFromAge, int maleToAge, Person person) {
         return person.getSex() == Person.Sex.MAN
                 && person.getAge() >= maleFromAge
                 && person.getAge() <= maleToAge;
     }
 
-    private static boolean isFitWoman(int femaleFromAge, int femaleToAge, Person person) {
+    private boolean isFitWoman(int femaleFromAge, int femaleToAge, Person person) {
         return person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleFromAge
                 && person.getAge() <= femaleToAge;
