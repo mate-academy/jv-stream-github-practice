@@ -1,12 +1,8 @@
 package practice;
 
-import static practice.CandidateValidator.isValidCandidate;
-
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -17,8 +13,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                      .map(n -> n.split(SPLITTER))
-                      .flatMap(Arrays::stream)
+                      .flatMap(n -> Arrays.stream(n.split(SPLITTER)))
                       .mapToInt(Integer::parseInt)
                       .filter(n -> n % 2 == 0)
                       .min()
@@ -38,7 +33,7 @@ public class StreamPractice {
         return peopleList.stream()
                          .filter(p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
                                  && p.getAge() <= toAge)
-                         .collect(Collectors.toList());
+                         .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -48,24 +43,23 @@ public class StreamPractice {
                                  && p.getAge() >= fromAge && p.getAge() <= maleToAge)
                                  || (p.getSex() == Person.Sex.WOMAN
                                  && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
-                         .collect(Collectors.toList());
+                         .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                          .filter(p -> p.getSex() == Person.Sex.WOMAN
                                  && p.getAge() >= femaleAge)
-                         .map(Person::getCats)
-                         .flatMap(Collection::stream)
+                         .flatMap(p -> p.getCats().stream())
                          .map(Cat::getName)
-                         .collect(Collectors.toList());
+                         .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                         .filter(isValidCandidate)
+                         .filter(new CandidateValidator())
                          .map(Candidate::getName)
                          .sorted()
-                         .collect(Collectors.toList());
+                         .toList();
     }
 }
