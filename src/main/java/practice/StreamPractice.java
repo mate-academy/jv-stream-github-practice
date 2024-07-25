@@ -20,10 +20,12 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")).map(Integer::parseInt))
-                .filter(i -> i % 2 == 0)
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -32,11 +34,8 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
-                .collect(Collectors.toList());
-
-        return modifiedNumbers.stream()
                 .filter(i -> i % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
@@ -115,9 +114,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator.getValidator())
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
