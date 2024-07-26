@@ -12,16 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] parts = candidate.getPeriodsInUkr().split("-");
-        int startYear = Integer.parseInt(parts[START_YEAR_POSITION]);
-        int endYear = Integer.parseInt(parts[END_YEAR_POSITION]);
         return candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
-                && checkTimeLivingInCountry(startYear, endYear);
+                && checkTimeLivingInCountry(candidate);
     }
 
-    private boolean checkTimeLivingInCountry(int startYear, int endYear) {
+    private boolean checkTimeLivingInCountry(Candidate candidate) {
+        String[] parts = candidate.getPeriodsInUkr().split("-");
+        int startYear = Integer.parseInt(parts[START_YEAR_POSITION]);
+        int endYear = Integer.parseInt(parts[END_YEAR_POSITION]);
         return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
     }
 }
