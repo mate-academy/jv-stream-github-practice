@@ -18,10 +18,10 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && candidate.isAllowedToVote()
-                && isLiveInUkrForTenYears(startYear, endYear);
+                && checkTimeLivingInCountry(startYear, endYear);
     }
 
-    private boolean isLiveInUkrForTenYears(int startYear, int endYear) {
+    private boolean checkTimeLivingInCountry(int startYear, int endYear) {
         return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
     }
 }
