@@ -1,7 +1,5 @@
 package practice;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -22,9 +20,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Stream.of(s.split(",")))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min(Comparator.naturalOrder())
+                .min()
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
@@ -70,13 +68,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> {
-                    if (p.getSex() == Person.Sex.MAN) {
-                        return p.getAge() >= fromAge && p.getAge() <= maleToAge;
-                    } else {
-                        return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
-                    }
-                })
+                .filter(p -> (p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
+                        || (p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -88,8 +83,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(f -> f.getSex() == Person.Sex.WOMAN && f.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
