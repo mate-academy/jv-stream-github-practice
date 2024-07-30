@@ -26,7 +26,7 @@ public class CandidateValidator implements Predicate<Candidate> {
             String[] years = period.split("-");
             int startYear = Integer.parseInt(years[INDEX_START_YEAR]);
             int endYear = Integer.parseInt(years[INDEX_END_YEAR]);
-            totalYears = endYear - startYear;
+            totalYears += (endYear - startYear);
         }
         return totalYears >= PERIOD;
     }
