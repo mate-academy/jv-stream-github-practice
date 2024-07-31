@@ -38,7 +38,7 @@ public class StreamPractice {
                 .map(n -> n % 2 == 1 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
 
     /**
