@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PERIODS = 10;
     private static final int START_YEAR_INDEX = 0;
     private static final int END_YEAR_INDEX = 1;
+    private static final String DELIMITER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -19,9 +20,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean calculatePeriods(String periods) {
-        String[] year = periods.split("-");
-        int startYear = Integer.parseInt(year[START_YEAR_INDEX]);
-        int endYear = Integer.parseInt(year[END_YEAR_INDEX]);
+        String[] years = periods.split(DELIMITER);
+        int startYear = Integer.parseInt(years[START_YEAR_INDEX]);
+        int endYear = Integer.parseInt(years[END_YEAR_INDEX]);
         return endYear - startYear >= MIN_PERIODS;
     }
 }
