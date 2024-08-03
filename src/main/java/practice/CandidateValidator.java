@@ -4,9 +4,9 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private final static String REQUIRED_NATIONALITY = "Ukrainian";
-    private final static int REQUIRED_AGE = 35;
-    private final static int REQUIRED_PERIOD = 10;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final int REQUIRED_AGE = 35;
+    private static final int REQUIRED_PERIOD = 10;
 
     private int getIntOfPeriod(Candidate candidate) {
         return Integer.valueOf(candidate.getPeriodsInUkr().substring(5))
