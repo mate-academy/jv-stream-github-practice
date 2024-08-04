@@ -8,16 +8,16 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int REQUIRED_AGE = 35;
     private static final int REQUIRED_PERIOD = 10;
 
-    private int getIntOfPeriod(Candidate candidate) {
-        return Integer.valueOf(candidate.getPeriodsInUkr().substring(5))
-                - Integer.valueOf(candidate.getPeriodsInUkr().substring(0, 4));
-    }
-
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= REQUIRED_AGE
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidate.isAllowedToVote()
-                && (getIntOfPeriod(candidate)) >= REQUIRED_PERIOD;
+                && (calculateYearsInUkraine(candidate)) >= REQUIRED_PERIOD;
+    }
+
+    private int calculateYearsInUkraine(Candidate candidate) {
+        return Integer.valueOf(candidate.getPeriodsInUkr().substring(5))
+                - Integer.valueOf(candidate.getPeriodsInUkr().substring(0, 4));
     }
 }
