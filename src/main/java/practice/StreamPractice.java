@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -51,7 +50,7 @@ public class StreamPractice {
                         || (s.getAge() >= fromAge
                         && s.getAge() <= femaleToAge
                         && s.getSex() == Person.Sex.WOMAN))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -59,7 +58,7 @@ public class StreamPractice {
                 .filter(s -> s.getAge() >= femaleAge && s.getSex() == Person.Sex.WOMAN)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
 
     }
 
@@ -69,6 +68,6 @@ public class StreamPractice {
                 .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
