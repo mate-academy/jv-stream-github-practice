@@ -1,7 +1,7 @@
 ## Common mistakes (jv-stream-github-practice)
 
 #### Try to use a minimum amount of stream operations 
- * If you have a long boolean expression you may create your own implementation of Predicate and use it in your filter.
+ * If you have a long boolean expression you may create your own implementation of predicate and use it in your filter.
  * Where possible try to use single map operation instead of sequence of them. 
  * If you need to throw exception when no result found after stream execution sometimes `get()/getAsDouble()` may help, try to google what does it do.
 
@@ -23,9 +23,9 @@ Magic numbers and strings decrease code readability, let's avoid it and use cons
 class CandidateValidator
 
 #### Use validator properly
-If you need to pass your custom `Predicate` implementation into filter there are two optimal solutions  
+If you need to pass your custom `predicate` implementation into filter there are two optimal solutions  
 ``` 
-Predicate<Candidate> customPredicate = new CustomPredicate<>();
+predicate<Candidate> customPredicate = new CustomPredicate<>();
 Collection.stream()
     .filter(predicate)
     ...

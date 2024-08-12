@@ -30,6 +30,6 @@
     The requirements are: person should be at least 35 years old, should be allowed to vote, have nationality - 'Ukrainian'
     and lived in Ukraine for 10 years. For the last requirement use the field periodsInUkr, which has the following view:
     "2002-2015" For now we don't care if that was the last 10 or not. We want to reuse our validation in the future, so
-    let's write our own implementation of Predicate<Candidate> in CandidateValidator.
+    let's write our own implementation of predicate<Candidate> in CandidateValidator.
 
 [Try to avoid these common mistakes while solving task](./checklist.md)
