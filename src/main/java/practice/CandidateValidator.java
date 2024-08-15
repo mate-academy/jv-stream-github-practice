@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINIAN_NATIONALITY = "Ukrainian";
     private static final int INDEX_LEAVE_FROM = 0;
     private static final int INDEX_LEAVE_TO = 1;
+    private static final int MIN_YEARS_COUNT = 2;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,7 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean hasLivedInUkraineForAtLeast10Years(String periodsInUkr) {
         String[] yearsInUkraine = periodsInUkr.split("\\D+");
-        if (yearsInUkraine.length < 2) {
+        if (yearsInUkraine.length < MIN_YEARS_COUNT) {
             return false;
         }
         try {
