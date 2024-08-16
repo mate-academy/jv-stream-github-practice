@@ -24,8 +24,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(m -> m % 2 == 0)
                 .min(Comparator.naturalOrder())
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                        + " < Here is our input 'numbers' >" + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min "
+                       + "value from list:" + numbers));
     }
 
     /**
@@ -35,16 +35,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> {
-                    if (i % 2 == 1) {
-                        return numbers.get(i) - 1;
-                    } else {
-                        return numbers.get(i);
-                    }
-                }).filter(integer -> integer % 2 != 0)
+                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(integer -> integer % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Could not find the average number"));
     }
 
     /**
