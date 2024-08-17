@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -34,10 +33,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(number ->
+                .map(number ->
                         number % 2 == 1 ? numbers.get(number) - 1 : numbers.get(number))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .getAsDouble();
     }
@@ -55,7 +53,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -77,7 +75,7 @@ public class StreamPractice {
                         || person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= femaleToAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -86,15 +84,14 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> womanPredicate = person -> person.getSex() == Person.Sex.WOMAN
-                && person.getCats() != null
-                && !person.getCats().isEmpty()
+        Predicate<Person> womanPredicate = person ->
+                person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge;
 
         return peopleList.stream()
                 .filter(womanPredicate)
                 .flatMap(person -> person.getCats().stream().map(Cat::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -110,10 +107,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        Predicate<Candidate> predicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(predicate)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
