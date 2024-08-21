@@ -5,6 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
+    private static final String YEARS_PARSE_SPLIT = "-";
     private static final int MINIMAL_AGE = 35;
     private static final int YEARS_IN_COUNTRY = 10;
     private static final int YEARS_FROM_INDEX = 0;
@@ -19,7 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean hasLivedForYears(Candidate candidate) {
-        String[] split = candidate.getPeriodsInUkr().split("-");
+        String[] split = candidate.getPeriodsInUkr().split(YEARS_PARSE_SPLIT);
         int from = Integer.parseInt(split[YEARS_FROM_INDEX]);
         int to = Integer.parseInt(split[YEARS_TO_INDEX]);
         return to - from >= YEARS_IN_COUNTRY;
