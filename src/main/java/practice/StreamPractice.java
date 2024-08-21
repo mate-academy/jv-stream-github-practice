@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -21,7 +22,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
-                .filter(i -> (i & 1) == 0)
+                .filter(num -> num % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(exceptionMessage));
     }
@@ -32,11 +33,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        String exceptionMessage = "No elements found in: " + numbers;
         return IntStream.range(0, numbers.size())
-                .map(i -> (i & 1) != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(i -> (i & 1) != 0)
+                .map(num -> num % 2 != 0 ? numbers.get(num) - 1 : numbers.get(num))
+                .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException(exceptionMessage));
     }
 
     /**
@@ -49,9 +51,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> isManBetweenAge =
-                p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge
-                        && p.getAge() <= toAge;
+                person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= toAge;
         return peopleList.stream()
                 .filter(isManBetweenAge)
                 .toList();
@@ -70,8 +72,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> isWorkable =
-                p -> p.getAge() >= fromAge
-                        && p.getAge() <= (p.getSex() == Person.Sex.MAN
+                person -> person.getAge() >= fromAge
+                        && person.getAge() <= (person.getSex() == Person.Sex.MAN
                         ? maleToAge
                         : femaleToAge);
         return peopleList.stream()
@@ -86,8 +88,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> isFemaleFromAge =
-                p -> p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= femaleAge;
+                person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge;
         return peopleList.stream()
                 .filter(isFemaleFromAge)
                 .flatMap(p -> p.getCats().stream())
