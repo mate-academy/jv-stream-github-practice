@@ -8,7 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PERIOD_IN_UKRAINE = 10;
     private static final String ALLOWED_NATIONALITY = "Ukrainian";
 
-    public boolean isValid(Candidate candidate) {
+    public boolean isCandidateEligible(Candidate candidate) {
         return ((candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(ALLOWED_NATIONALITY)
@@ -17,20 +17,39 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int periodFromString(String period) {
+        if (period == null || !period.matches("\\d{4}-\\d{4}")) {
+            throw new IllegalArgumentException("Invalid period format. "
+                    + "Expected format: 'YYYY-YYYY'. Given: " + period);
+        }
+
         String[] years = period.split("-");
-        int startYear = 0;
-        int endYear = 0;
+        int startYear;
+        int endYear;
+
         try {
             startYear = Integer.parseInt(years[0]);
             endYear = Integer.parseInt(years[1]);
+
+            if (startYear > endYear) {
+                throw new IllegalArgumentException(
+                        "Start year cannot be greater than end year. "
+                                + "Given period: " + period);
+            }
+
         } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to parse years from the period: "
+                    + period, e);
         }
+
         return endYear - startYear;
     }
+    /*
+    The method 'periodFromString' assumes the format of the period string is always correct.
+    Consider adding validation for the input string format to avoid unexpected behavior.
+     */
 
     @Override
     public boolean test(Candidate candidate) {
-        return isValid(candidate);
+        return isCandidateEligible(candidate);
     }
 }
