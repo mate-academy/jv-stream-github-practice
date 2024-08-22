@@ -11,6 +11,7 @@ import model.Person;
 
 public class StreamPractice {
     private static final String COMMA = ",";
+    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -19,10 +20,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public int findMinEvenNumber(List<String> numbers) {
-        if (numbers == null || numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
+    public static int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(COMMA)))
                 .mapToInt(Integer::valueOf)
@@ -48,7 +46,8 @@ public class StreamPractice {
                 .filter(x -> x % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average().orElseThrow(()
-                        -> new NoSuchElementException("There are no odd numbers"));
+                        -> new NoSuchElementException("There are no odd numbers in list: "
+                        + numbers));
     }
 
     /**
@@ -116,7 +115,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(CANDIDATE_VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
