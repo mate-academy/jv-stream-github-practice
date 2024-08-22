@@ -16,6 +16,7 @@ public class StreamPractice {
     private static final int UNREACHABLE_AGE = 1000;
     private static final int SUBTRACT_ONE = 1;
     private static final String ERROR_MESSAGE = "Can't get min value from list: ";
+    private static final String NO_SUCH_ELEMENT = "List contains no odd values: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -31,7 +32,7 @@ public class StreamPractice {
                 .flatMap(this::splitToStreamByComa)
                 .filter(n -> n.matches(NUMBERS))
                 .mapToInt(Integer::valueOf)
-                .filter(this::isOddNumber)
+                .filter(this::isEvenNumber)
                 .min()
                 .orElseThrow(() -> new RuntimeException(ERROR_MESSAGE + numbers));
     }
@@ -44,10 +45,10 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(FIRST_POSITION, numbers.size())
-                .mapToDouble(i -> modifyValueForOddIndex(numbers, i))
-                .filter(n -> !(isOddNumber(n)))
+                .mapToDouble(i -> modifyValueForEvenIndex(numbers, i))
+                .filter(n -> !(isEvenNumber(n)))
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(NO_SUCH_ELEMENT + numbers));
     }
 
     /**
@@ -98,8 +99,7 @@ public class StreamPractice {
         return peopleList
                 .stream()
                 .filter(p ->
-                        checkAgeAndGenderWoman(p.getAge(), femaleAge, UNREACHABLE_AGE, p.getSex())
-                                && !(p.getCats().isEmpty()))
+                        checkAgeAndGenderWoman(p.getAge(), femaleAge, UNREACHABLE_AGE, p.getSex()))
                 .flatMap(c -> c.getCats().stream())
                 .map(Cat::getName)
                 .toList();
@@ -119,8 +119,9 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(candidateValidator::test)
                 .map(Candidate::getName).sorted().toList();
     }
 
@@ -131,18 +132,18 @@ public class StreamPractice {
     private boolean checkAgeAndGenderMan(int personAge, int fromAge, int toAge, Person.Sex sex) {
         return personAge >= fromAge
                 && personAge <= toAge
-                && Person.Sex.MAN.equals(sex);
+                && Person.Sex.MAN == sex;
     }
 
     private boolean checkAgeAndGenderWoman(int personAge, int fromAge, int toAge, Person.Sex sex) {
-        return personAge >= fromAge && personAge <= toAge && Person.Sex.WOMAN.equals(sex);
+        return personAge >= fromAge && personAge <= toAge && Person.Sex.WOMAN == sex;
     }
 
-    private boolean isOddNumber(double n) {
+    private boolean isEvenNumber(double n) {
         return n % 2 == 0;
     }
 
-    private Integer modifyValueForOddIndex(List<Integer> numbers, int index) {
-        return isOddNumber(index) ? numbers.get(index) : numbers.get(index) - SUBTRACT_ONE;
+    private Integer modifyValueForEvenIndex(List<Integer> numbers, int index) {
+        return isEvenNumber(index) ? numbers.get(index) : numbers.get(index) - SUBTRACT_ONE;
     }
 }
