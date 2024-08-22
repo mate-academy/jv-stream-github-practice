@@ -11,7 +11,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean isCandidateEligible(Candidate candidate) {
         return ((candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(ALLOWED_NATIONALITY)
+                && ALLOWED_NATIONALITY.equals(candidate.getNationality())
                 && periodFromString(candidate.getPeriodsInUkr())
                 >= MIN_PERIOD_IN_UKRAINE));
     }
@@ -35,12 +35,10 @@ public class CandidateValidator implements Predicate<Candidate> {
                         "Start year cannot be greater than end year. "
                                 + "Given period: " + period);
             }
-
         } catch (NumberFormatException e) {
             throw new RuntimeException("Failed to parse years from the period: "
                     + period, e);
         }
-
         return endYear - startYear;
     }
     /*

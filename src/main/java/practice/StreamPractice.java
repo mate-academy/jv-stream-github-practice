@@ -2,7 +2,6 @@ package practice;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,15 +19,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt result = numbers.stream()
-                .map(n -> n.split(","))
-                .flatMapToInt(l -> Stream.of(l).mapToInt(Integer::parseInt))
-                .filter(e -> e % 2 == 0)
-                .min();
-        return result.orElseThrow(() -> new RuntimeException(
-                "Can't get min value from list: " + numbers.toString()
-        + (result.isPresent() ? "with result: " + result.getAsInt() :
-                        "because no even number was found")));
+        return numbers.stream()
+                .flatMap(s -> Stream.of(s.split(",")))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers.toString()));
     }
 
     /**
@@ -41,7 +38,8 @@ public class StreamPractice {
                 .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Integer::doubleValue)
-                .average().orElseThrow(() -> new NoSuchElementException("Can't find number"));
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't find odd number"));
     }
 
     /**
@@ -105,10 +103,8 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
-
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
