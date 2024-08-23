@@ -9,7 +9,6 @@ import model.Person;
 
 public class StreamPractice {
     private static final String ERROR_MESSAGE = "Can't get min value from list: ";
-    private static final String NO_SUCH_ELEMENT = "List contains no odd values: ";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
