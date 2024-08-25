@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -11,7 +10,6 @@ import model.Person;
 
 public class StreamPractice {
     private static final String COMMA = ",";
-    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -36,18 +34,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(i -> {
-                    int num = numbers.get(i);
-                    if (i % 2 != 0) {
-                        num -= 1;
-                    }
-                    return num;
-                })
-                .filter(x -> x % 2 != 0)
-                .mapToDouble(Double::valueOf)
-                .average().orElseThrow(()
-                        -> new NoSuchElementException("There are no odd numbers in list: "
-                        + numbers));
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 == 1)
+                .average()
+                .getAsDouble();
     }
 
     /**
@@ -62,7 +52,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -83,7 +73,7 @@ public class StreamPractice {
                         && person.getAge() <= femaleToAge)
                         || (person.getSex() == Person.Sex.MAN
                         && person.getAge() <= maleToAge)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -98,7 +88,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(List::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -115,7 +105,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CANDIDATE_VALIDATOR)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
