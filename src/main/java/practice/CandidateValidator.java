@@ -8,18 +8,20 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int INDEX_START = 0;
     private static final int INDEX_END = 1;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int PERIOD_LENGTH = 2;
 
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality() == "Ukrainian"
+                && candidate.getNationality() == NATIONALITY
                 && hasLivedInUkraineFor10Years(candidate.getPeriodsInUkr());
     }
 
     private boolean hasLivedInUkraineFor10Years(String periodsInUkr) {
         String[] periods = periodsInUkr.split("-");
-        if (periods.length != 2) {
+        if (periods.length != PERIOD_LENGTH) {
             return false;
         }
         int startYear = Integer.parseInt(periods[INDEX_START]);
