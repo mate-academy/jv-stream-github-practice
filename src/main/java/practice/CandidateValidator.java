@@ -5,20 +5,21 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     static final int AGE_OF_CANDIDATE = 35;
-    static final boolean ALLOWED_TO_VOTE = true;
     static final String NATIONALITY = "Ukrainian";
     static final int MIN_PERIOD_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= AGE_OF_CANDIDATE
-                && candidate.isAllowedToVote() == ALLOWED_TO_VOTE
+                && candidate.isAllowedToVote() == true
                 && candidate.getNationality().equals(NATIONALITY)
                 && getCandidatesPeriodInUkr(candidate) >= MIN_PERIOD_IN_UKRAINE;
     }
 
     private int getCandidatesPeriodInUkr(Candidate candidate) {
-        return Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
-                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
+        String[] periodsFromTo = candidate.getPeriodsInUkr().split("-");
+        int periodTo = Integer.parseInt(periodsFromTo[1]);
+        int periodFrom = Integer.parseInt(periodsFromTo[0]);
+        return periodTo - periodFrom;
     }
 }
