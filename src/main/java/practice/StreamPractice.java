@@ -6,6 +6,8 @@ import model.Person;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 
 public class StreamPractice {
     /**
@@ -32,7 +34,22 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .mapToObj(index -> {
+                    int number = numbers.get(index);
+                    if (index % 2 != 0) {
+                        return number - 1;
+                    } else {
+                        return number;
+                    }
+                })
+                .mapToInt(number -> number)
+                .filter(number -> number % 2 != 0)
+                .average()
+                .stream()
+                .boxed()
+                .findFirst().orElseThrow(() -> new NoSuchElementException("no even numbers found"));
+
     }
 
     /**
