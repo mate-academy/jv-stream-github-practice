@@ -1,9 +1,11 @@
 package practice;
 
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -100,7 +102,14 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(people -> people.getSex().equals(Person.Sex.WOMAN))
+                .filter(woman -> woman.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .filter(cats -> !cats.isEmpty())
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
