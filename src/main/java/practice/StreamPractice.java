@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class StreamPractice {
@@ -35,7 +36,7 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(index -> {
+                .map(index -> {
                     int number = numbers.get(index);
                     if (index % 2 != 0) {
                         return number - 1;
@@ -43,12 +44,12 @@ public class StreamPractice {
                         return number;
                     }
                 })
-                .mapToInt(number -> number)
                 .filter(number -> number % 2 != 0)
                 .average()
                 .stream()
                 .boxed()
-                .findFirst().orElseThrow(() -> new NoSuchElementException("no even numbers found"));
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("no odd numbers found"));
 
     }
 
@@ -61,7 +62,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex().equals(Person.Sex.MAN))
+                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
