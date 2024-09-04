@@ -6,7 +6,6 @@ import model.Person;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -125,6 +124,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
