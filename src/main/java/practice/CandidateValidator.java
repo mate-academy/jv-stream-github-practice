@@ -1,9 +1,8 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.Arrays;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     public static final String UKRAINIAN_NATIONALITY = "Ukrainian";
@@ -15,7 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         boolean olderThenThirtyFiveYears = candidate.getAge() >= OLDER_THAN_35_TEARS;
         boolean livedInUkraineForTenYears = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .mapToInt(Integer::parseInt)
-                .reduce((FROM_YEAR, TO_YEAR) -> TO_YEAR - FROM_YEAR)
+                .reduce((fromYear, toYear) -> toYear - fromYear)
                 .orElse(0) >= TEN_YEARS;
         boolean allowedToVote = candidate.isAllowedToVote();
         boolean ukrainianNationality = candidate.getNationality().equals(UKRAINIAN_NATIONALITY);

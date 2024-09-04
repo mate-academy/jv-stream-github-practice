@@ -27,7 +27,8 @@ public class StreamPractice {
                 .filter(num -> num % 2 == 0)
                 .mapToInt(num -> num)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
