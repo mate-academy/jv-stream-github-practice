@@ -39,17 +39,10 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(index -> {
                     int number = numbers.get(index);
-                    if (index % 2 != 0) {
-                        return number - 1;
-                    } else {
-                        return number;
-                    }
+                    return index % 2 != 0 ? number - 1 : number;
                 })
                 .filter(number -> number % 2 != 0)
                 .average()
-                .stream()
-                .boxed()
-                .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("no odd numbers found"));
 
     }
@@ -82,16 +75,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(people -> {
-                    if (people.getSex() == Person.Sex.MAN) {
-                        return people.getAge() >= fromAge && people.getAge() <= maleToAge;
-
-                    }
-                    if (people.getSex() == Person.Sex.WOMAN) {
-                        return people.getAge() >= fromAge && people.getAge() <= femaleToAge;
-                    }
-                    return false;
-                })
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge :
+                        person.getAge() >= fromAge && person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +91,6 @@ public class StreamPractice {
                 .filter(people -> people.getSex() == Person.Sex.WOMAN)
                 .filter(woman -> woman.getAge() >= femaleAge)
                 .map(Person::getCats)
-                .filter(cats -> !cats.isEmpty())
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
                 .collect(Collectors.toList());
