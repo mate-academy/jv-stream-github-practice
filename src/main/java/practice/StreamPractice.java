@@ -51,9 +51,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getAge() <= toAge
-                        && p.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -70,10 +70,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
+                .filter(person -> (person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -84,8 +84,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
-                .flatMap(p -> p.getCats().stream())
+                .filter(person -> person.getAge() >= femaleAge
+                        && person.getSex() == Person.Sex.WOMAN)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
@@ -103,9 +104,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator::test)
+                .filter(new CandidateValidator()::test)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
