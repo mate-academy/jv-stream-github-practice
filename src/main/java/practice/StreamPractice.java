@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,6 +9,7 @@ import model.Person;
 
 public class StreamPractice {
     public static final String COMMA = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,12 +20,10 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(COMMA))
-                .flatMap(Arrays::stream)
+                .flatMap(input -> Arrays.stream(input.split(COMMA)))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .mapToInt(num -> num)
-                .min()
+                .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
@@ -37,11 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> {
-                    int number = numbers.get(index);
-                    return index % 2 != 0 ? number - 1 : number;
-                })
-                .filter(number -> number % 2 != 0)
+                .map(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(number -> number % 2 == 1)
                 .average()
                 .getAsDouble();
     }
@@ -89,8 +84,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(people -> people.getSex() == Person.Sex.WOMAN
                         && people.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
