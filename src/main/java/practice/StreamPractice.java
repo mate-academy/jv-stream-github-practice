@@ -9,8 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int SUBTRACTOR = 1;
     private static final int DIVIDER = 2;
+    private static final int SUBTRACTOR = 1;
 
     public int findMinEvenNumber(List<String> numbers) {
         try {
@@ -30,7 +30,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> (index % DIVIDER != 0)
+                .mapToDouble(index ->
+                        (index % DIVIDER != 0)
                                 ? numbers.get(index) - SUBTRACTOR : numbers.get(index))
                 .filter(num -> num % DIVIDER != 0)
                 .average()
@@ -39,8 +40,8 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)
-                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
