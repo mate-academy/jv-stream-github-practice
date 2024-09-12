@@ -9,8 +9,8 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int DIVIDER = 2;
     private static final int SUBTRACTOR = 1;
+    private static final int DIVIDER = 2;
 
     public int findMinEvenNumber(List<String> numbers) {
         try {
