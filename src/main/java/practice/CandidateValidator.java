@@ -11,7 +11,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PERIODS = 10;
     private static final String PERMITTED_NATIONALITY = "Ukrainian";
 
-
     @Override
     public boolean test(Candidate candidate) {
         List<Integer> periods = Arrays.stream(candidate.getPeriodsInUkr()
