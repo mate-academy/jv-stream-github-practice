@@ -1,11 +1,19 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBERS_SPLITTER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -14,7 +22,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(n -> Arrays.stream(n.split(NUMBERS_SPLITTER)))
+                .map(Integer::parseInt)
+                .filter(n -> n % 2 == 0)
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -23,7 +37,14 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        AtomicInteger index = new AtomicInteger();
+        return numbers.stream()
+                .map(n -> n - (index.getAndIncrement() % 2 == 0 ? 0 : 1))
+                .filter(n -> n % 2 != 0)
+                .mapToInt(n -> n)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average value from the list"));
     }
 
     /**
@@ -35,7 +56,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge
+                        && p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +75,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge
+                        && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +88,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +109,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
