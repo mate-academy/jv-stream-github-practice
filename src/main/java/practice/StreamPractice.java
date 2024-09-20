@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -35,14 +34,12 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
 
-        List<Integer> modificateList = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .toList();
-        return modificateList.stream()
                 .filter(n -> n % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
+                .orElseThrow();
     }
 
     /**
@@ -55,8 +52,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN)
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
+                .filter(p -> p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 

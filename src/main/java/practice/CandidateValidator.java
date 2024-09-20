@@ -15,11 +15,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
-                && candidate.getNationality() == NATIONALITY
-                && hasLivedInUkraineFor10Years(candidate.getPeriodsInUkr()) >= MIN_PERIODS;
+                && NATIONALITY.equals(candidate.getNationality())
+                && calculateYearsLivedInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIODS;
     }
 
-    public int hasLivedInUkraineFor10Years(String periodsInUkr) {
+    public int calculateYearsLivedInUkraine(String periodsInUkr) {
         String[] newPeriods = periodsInUkr.split("-");
         int startYear = Integer.parseInt(newPeriods[START_YEAR].trim());
         int endYear = Integer.parseInt(newPeriods[END_YEAR].trim());
