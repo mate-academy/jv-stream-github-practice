@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -36,11 +36,9 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return Stream.iterate(0, n -> n + 1)
-                .limit(numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(n -> (n % 2 != 0) ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "There is no odd number"));
@@ -110,7 +108,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> candidatePredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidatePredicate::test)
+                .filter(candidatePredicate)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
