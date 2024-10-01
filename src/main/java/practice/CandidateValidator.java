@@ -5,7 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator {
     private static final int INCLUDE_START_AND_END_YEAR = 1;
-    public static Predicate<Candidate> isEligibleToVote = candidate ->
+    private static final Predicate<Candidate> isEligibleToVote = candidate ->
             candidate.isAllowedToVote()
                     && candidate.getAge() > 35
                     && candidate.getNationality().equals("Ukrainian")
@@ -22,5 +22,9 @@ public class CandidateValidator {
         int fromYear = Integer.parseInt(periods[0]);
         int toYear = Integer.parseInt(periods[1]);
         return toYear - fromYear + INCLUDE_START_AND_END_YEAR;
+    }
+
+    public static Predicate<Candidate> getEligibilityPredicate() {
+        return isEligibleToVote;
     }
 }

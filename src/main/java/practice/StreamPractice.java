@@ -23,8 +23,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
-                .orElseThrow(() ->
-                        new RuntimeException("No even numbers found in the provided list: " + numbers));
+                .orElseThrow(() -> new RuntimeException(
+                        "No even numbers found in the provided list: " + numbers));
     }
 
     /**
@@ -38,7 +38,8 @@ public class StreamPractice {
                 .mapToDouble(index -> numbers.get(index) - 1)
                 .filter(value -> value % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers found after adjustment"));
+                .orElseThrow(() ->
+                        new NoSuchElementException("No odd numbers found after adjustment"));
     }
 
     /**
@@ -103,7 +104,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CandidateValidator.isEligibleToVote)
+                .filter(CandidateValidator.getEligibilityPredicate())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
