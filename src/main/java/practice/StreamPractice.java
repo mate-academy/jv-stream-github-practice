@@ -10,8 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final CandidateValidator validator = new CandidateValidator();
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -26,7 +24,7 @@ public class StreamPractice {
                 .filter(num -> num % 2 == 0)
                 .min()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " + numbers));
+                        new RuntimeException("No even numbers found in the provided list: " + numbers));
     }
 
     /**
@@ -36,10 +34,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(index -> index % 2 == 1 ? numbers.get(index) - 1 : numbers.get(index))
+                .filter(index -> index % 2 == 1)
+                .mapToDouble(index -> numbers.get(index) - 1)
                 .filter(value -> value % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers"));
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found after adjustment"));
     }
 
     /**
@@ -52,7 +51,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN))
+                .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -104,7 +103,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(validator)
+                .filter(CandidateValidator.isEligibleToVote)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
