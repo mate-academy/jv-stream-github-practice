@@ -1,13 +1,11 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.NoSuchElementException;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -74,9 +72,9 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> {
                     if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() >= fromAge && person.getAge() <= maleToAge; // Умова для чоловіків
+                        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
                     } else if (person.getSex() == Person.Sex.WOMAN) {
-                        return person.getAge() >= fromAge && person.getAge() <= femaleToAge; // Умова для жінок
+                        return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
                     }
                     return false; // Якщо стать не вказана або не чоловік/жінка
                 })
@@ -90,7 +88,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
