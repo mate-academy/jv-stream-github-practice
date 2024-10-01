@@ -9,7 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         return candidate.isAllowedToVote()
-                && candidate.getAge() > 35
+                && candidate.getAge() >= 35
                 && candidate.getNationality().equals("Ukrainian")
                 && calculateYearsOfResidence(candidate.getPeriodsInUkr()) >= 10;
     }
