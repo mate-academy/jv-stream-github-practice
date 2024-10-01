@@ -34,12 +34,13 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .filter(index -> index % 2 == 1)
-                .mapToDouble(index -> numbers.get(index) - 1)
-                .filter(value -> value % 2 == 1)
+                .mapToDouble(index -> index % 2 == 1
+                        ? numbers.get(index) - 1
+                        : numbers.get(index))
+                .filter(num -> num % 2 == 1)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("No odd numbers found after adjustment"));
+                        new NoSuchElementException("No odd numbers found"));
     }
 
     /**
