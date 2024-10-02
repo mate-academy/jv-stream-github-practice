@@ -13,7 +13,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         int startYear = Integer.parseInt(years[0]);
         int endYear = Integer.parseInt(years[1]);
         return candidate.getAge() >= ACCEPTABLE_AGE
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality() == "Ukrainian"
                 && candidate.isAllowedToVote()
                 && endYear - startYear >= YEARS_OF_RESIDENCE;
     }
