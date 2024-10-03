@@ -18,16 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        try {
-            return numbers.stream()
+        return numbers.stream()
                     .flatMap(n -> Arrays.stream(n.split(",")))
                     .mapToInt(n -> Integer.parseInt(n))
                     .filter(n -> n % 2 == 0)
                     .min()
-                    .getAsInt();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Can't get min value from list: " + numbers, e);
-        }
+                    .orElseThrow(()
+                            -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -37,7 +34,13 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .map(i -> {
+                    if (i % 2 != 0) {
+                        return numbers.get(i) - 1;
+                    } else {
+                        return numbers.get(i);
+                    }
+                })
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(()
