@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
     private static final int MIN_PERIODS_IN_UKRAINE = 10;
     private static final String NATIONALITY = "Ukrainian";
+    private static final String DELIMITER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -21,11 +22,11 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
 
         String periodsInUkr = candidate.getPeriodsInUkr();
-        if (periodsInUkr == null || !periodsInUkr.contains("-")) {
+        if (periodsInUkr == null || !periodsInUkr.contains(DELIMITER)) {
             return false;
         }
 
-        String[] time = periodsInUkr.split("-");
+        String[] time = periodsInUkr.split(DELIMITER);
         if (time.length != 2) {
             return false;
         }
