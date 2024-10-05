@@ -16,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (!candidate.isAllowedToVote()) {
             return false;
         }
-        if (!NATIONALITY.equals(candidate.getNationality())) {
+        if (NATIONALITY != candidate.getNationality()) {
             return false;
         }
 
