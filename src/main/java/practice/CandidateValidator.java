@@ -20,9 +20,24 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        String[] time = candidate.getPeriodsInUkr().split("-");
-        int startPeriod = Integer.parseInt(time[0]);
-        int finishPeriod = Integer.parseInt(time[1]);
+        String periodsInUkr = candidate.getPeriodsInUkr();
+        if (periodsInUkr == null || !periodsInUkr.contains("-")) {
+            return false;
+        }
+
+        String[] time = periodsInUkr.split("-");
+        if (time.length != 2) {
+            return false;
+        }
+
+        int startPeriod;
+        int finishPeriod;
+        try {
+            startPeriod = Integer.parseInt(time[0]);
+            finishPeriod = Integer.parseInt(time[1]);
+        } catch (NumberFormatException e) {
+            return false;
+        }
 
         if (finishPeriod - startPeriod < MIN_PERIODS_IN_UKRAINE) {
             return false;
