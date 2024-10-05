@@ -84,7 +84,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return;
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(cat -> cat.getName())
+                .collect(Collectors.toList());
     }
 
     /**
