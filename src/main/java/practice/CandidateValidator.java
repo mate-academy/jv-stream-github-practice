@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
     private static final int MIN_PERIODS_IN_UKRAINE = 10;
     private static final String NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
         if (candidate.getAge() < MIN_AGE_FOR_CANDIDATE) {
