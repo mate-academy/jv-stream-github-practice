@@ -12,8 +12,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         Predicate<Candidate> agePredicate = c -> c.getAge() >= MIN_AGE_FOR_PRESIDENCY;
         Predicate<Candidate> allowedToVotePredicate = Candidate::isAllowedToVote;
-        Predicate<Candidate> nationalityPredicate = c -> REQUIRED_NATIONALITY.equals(c.getNationality());
-        Predicate<Candidate> livedInUkrainePredicate = c -> hasLivedInUkraineForTenYears(c.getPeriodsInUkr());
+        Predicate<Candidate> nationalityPredicate = c -> REQUIRED_NATIONALITY
+                .equals(c.getNationality());
+        Predicate<Candidate> livedInUkrainePredicate = c ->
+                hasLivedInUkraineForTenYears(c.getPeriodsInUkr());
 
         return agePredicate
                 .and(allowedToVotePredicate)
