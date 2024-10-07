@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -23,7 +22,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -42,6 +42,7 @@ public class StreamPractice {
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
+
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -68,10 +69,13 @@ public class StreamPractice {
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
-                                          int maleToAge, List<Person> peopleList) {
+                                          int maleToAge,
+                                          List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge))
+                .filter(person -> (person.getSex() == Person.Sex.MAN
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge))
                 .filter(person -> person.getAge() >= fromAge)
                 .collect(Collectors.toList());
     }
@@ -83,7 +87,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(cat -> cat.getName())
                 .collect(Collectors.toList());
