@@ -9,42 +9,20 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final String DELIMITER = "-";
 
+    public boolean checkTimeLivingInCountry(Candidate candidate) {
+        String[] time = candidate.getPeriodsInUkr().split("-");
+        int startPeriod = Integer.parseInt(time[0]);
+        int finishPeriod = Integer.parseInt(time[1]);
+
+        return (finishPeriod - startPeriod) >= MIN_PERIODS_IN_UKRAINE;
+    }
+
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < MIN_AGE_FOR_CANDIDATE) {
-            return false;
-        }
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        if (NATIONALITY != candidate.getNationality()) {
-            return false;
-        }
-
-        String periodsInUkr = candidate.getPeriodsInUkr();
-        if (periodsInUkr == null || !periodsInUkr.contains(DELIMITER)) {
-            return false;
-        }
-
-        String[] time = periodsInUkr.split(DELIMITER);
-        if (time.length != 2) {
-            return false;
-        }
-
-        int startPeriod;
-        int finishPeriod;
-        try {
-            startPeriod = Integer.parseInt(time[0]);
-            finishPeriod = Integer.parseInt(time[1]);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        if (finishPeriod - startPeriod < MIN_PERIODS_IN_UKRAINE) {
-            return false;
-        }
-
-        return true;
+        return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(NATIONALITY)
+                && checkTimeLivingInCountry(candidate);
     }
 
     @Override
