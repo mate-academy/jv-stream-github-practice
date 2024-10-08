@@ -9,8 +9,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final String DELIMITER = "-";
 
-    public boolean checkTimeLivingInCountry(Candidate candidate) {
-        String[] time = candidate.getPeriodsInUkr().split("-");
+    private boolean checkTimeLivingInCountry(Candidate candidate) {
+        String[] time = candidate.getPeriodsInUkr().split(DELIMITER);
         int startPeriod = Integer.parseInt(time[0]);
         int finishPeriod = Integer.parseInt(time[1]);
 
@@ -23,20 +23,5 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
                 && checkTimeLivingInCountry(candidate);
-    }
-
-    @Override
-    public Predicate<Candidate> and(Predicate<? super Candidate> other) {
-        return Predicate.super.and(other);
-    }
-
-    @Override
-    public Predicate<Candidate> negate() {
-        return Predicate.super.negate();
-    }
-
-    @Override
-    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
-        return Predicate.super.or(other);
     }
 }
