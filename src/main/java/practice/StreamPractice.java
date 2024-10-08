@@ -1,12 +1,12 @@
 package practice;
 
-import model.Candidate;
-import model.Person;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import java.util.Arrays;
+import model.Candidate;
+import model.Person;
+
 
 public class StreamPractice {
 
