@@ -22,11 +22,11 @@ public class StreamPractice {
                 .map(String::trim)
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                .min(Integer::compareTo)
+                .orElseThrow(()
+                        -> new NoSuchElementException("Can't get min value from list: "
                         + numbers));
     }
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
@@ -38,7 +38,8 @@ public class StreamPractice {
                 .filter(num -> num % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(()
+                        -> new NoSuchElementException("No odd numbers found in the list"));
     }
 
     /**
@@ -66,15 +67,20 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
+    private boolean isWorkable(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        if (person.getSex() == Person.Sex.MAN) {
+            return person.getAge() >= fromAge && person.getAge() <= maleToAge;
+        } else {
+            return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+        }
+    }
+
+    public List<Person> getWorkablePeople(int fromAge,
+                                          int femaleToAge,
                                           int maleToAge,
                                           List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> (person.getSex() == Person.Sex.MAN
-                        && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge))
-                .filter(person -> person.getAge() >= fromAge)
+                .filter(person -> isWorkable(person, fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
     }
 
