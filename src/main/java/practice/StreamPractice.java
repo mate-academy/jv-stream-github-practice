@@ -1,11 +1,13 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
+import model.Cat;
 
 public class StreamPractice {
 
@@ -83,6 +85,17 @@ public class StreamPractice {
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+    /**
+     * public List<String> getFemaleCatsNames(List<Person> people, int femaleAge) {
+        return people.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
+    }
+     if I do this StreamPracticeTest break
+     */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
@@ -105,9 +118,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
