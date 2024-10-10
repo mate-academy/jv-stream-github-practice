@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -24,8 +25,7 @@ public class StreamPractice {
         return numbers.stream()
                 .map(string -> string.split(","))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
-                .mapToInt(number -> number)
+                .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
@@ -78,19 +78,21 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return peopleList.stream()
-                .filter(person -> {
-                    int age = person.getAge();
-                    Person.Sex sex = person.getSex();
+        Predicate<Person> personPredicate = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
 
-                    if (sex == Person.Sex.MAN) {
-                        return age >= fromAge && age <= maleToAge;
-                    }
-                    if (sex == Person.Sex.WOMAN) {
-                        return age >= fromAge && age <= femaleToAge;
-                    }
-                    return false;
-                })
+            if (sex == Person.Sex.MAN) {
+                return age >= fromAge && age <= maleToAge;
+            }
+            if (sex == Person.Sex.WOMAN) {
+                return age >= fromAge && age <= femaleToAge;
+            }
+            return false;
+        };
+
+        return peopleList.stream()
+                .filter(person -> personPredicate.test(person))
                 .collect(Collectors.toList());
     }
 
@@ -124,8 +126,9 @@ public class StreamPractice {
      */
 
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> new CandidateValidator().test(candidate))
+                .filter(candidate -> candidateValidator.test(candidate))
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
