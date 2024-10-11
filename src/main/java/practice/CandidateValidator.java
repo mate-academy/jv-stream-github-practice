@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final String SEPARATOR = "-";
+    private static final String LINE_SEPARATOR = "-";
     private static final int ENOUGH_YEARS = 10;
 
     @Override
@@ -29,7 +29,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean isEnoughYearsInUkraine(Candidate candidate) {
         String periodsInUkr = candidate.getPeriodsInUkr();
-        String[] years = periodsInUkr.split(SEPARATOR);
+        String[] years = periodsInUkr.split(LINE_SEPARATOR);
         int startYear = Integer.parseInt(years[0]);
         int endYear = Integer.parseInt(years[1]);
         int yearsInUkraine = endYear - startYear;
