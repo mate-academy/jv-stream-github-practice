@@ -78,18 +78,9 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> isWorkableFilter = person -> {
-            int age = person.getAge();
-            Person.Sex sex = person.getSex();
-
-            if (sex == Person.Sex.MAN) {
-                return age >= fromAge && age <= maleToAge;
-            }
-            if (sex == Person.Sex.WOMAN) {
-                return age >= fromAge && age <= femaleToAge;
-            }
-            return false;
-        };
+        Predicate<Person> isWorkableFilter = person -> isPersonWorkable(
+                person, fromAge, maleToAge, femaleToAge
+        );
 
         return peopleList.stream()
                 .filter(isWorkableFilter)
@@ -130,5 +121,27 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isPersonWorkable(Person person, int fromAge, int maleToAge, int femaleToAge) {
+        int age = person.getAge();
+        Person.Sex sex = person.getSex();
+
+        if (sex == Person.Sex.MAN) {
+            return isMaleHasWorkableAge(age, fromAge, maleToAge);
+        }
+        if (sex == Person.Sex.WOMAN) {
+            return isFemaleHasWorkableAge(age, fromAge, femaleToAge);
+        }
+        return false;
+
+    }
+
+    private boolean isMaleHasWorkableAge(int age, int fromAge, int maleToAge) {
+        return age >= fromAge && age <= maleToAge;
+    }
+
+    private boolean isFemaleHasWorkableAge(int age, int fromAge, int femaleToAge) {
+        return age >= fromAge && age <= femaleToAge;
     }
 }
