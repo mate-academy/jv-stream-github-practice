@@ -26,7 +26,8 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -57,7 +58,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(human -> human.getSex() == Person.Sex.MAN && human.getAge() >= fromAge && human.getAge() <= toAge)
+                .filter(human -> human.getSex() == Person.Sex.MAN && human.getAge() >= fromAge
+                        && human.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -74,7 +76,8 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> ageAndSexFilter = person ->
-                (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge)
                         || (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
                                 && person.getAge() <= femaleToAge);
 
