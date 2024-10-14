@@ -22,8 +22,8 @@ public class StreamPractice {
             .flatMap(s -> Arrays.stream(s.split(",")))
             .mapToInt(Integer::valueOf)
             .filter(i -> i % 2 == 0)
-            .min().orElseThrow(() ->
-                new RuntimeException("Can't get min value from list: " + numbers));
+            .min()
+            .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -96,9 +96,8 @@ public class StreamPractice {
      * Predicate parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-            .filter(validator)
+            .filter(new CandidateValidator())
             .map(Candidate::getName)
             .sorted()
             .toList();
