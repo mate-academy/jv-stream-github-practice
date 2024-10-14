@@ -13,18 +13,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return isAgeValid(candidate)
-                && isNationalityValid(candidate)
+        return candidate.getAge() >= MINIMAL_AGE
+                && candidate.getNationality().equals(CORRECT_NATIONALITY)
                 && candidate.isAllowedToVote()
                 && isEnoughYearsInUkraine(candidate);
-    }
-
-    private boolean isAgeValid(Candidate candidate) {
-        return candidate.getAge() >= MINIMAL_AGE;
-    }
-
-    private boolean isNationalityValid(Candidate candidate) {
-        return candidate.getNationality().equals(CORRECT_NATIONALITY);
     }
 
     private boolean isEnoughYearsInUkraine(Candidate candidate) {
