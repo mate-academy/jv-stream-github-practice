@@ -102,7 +102,7 @@ public class StreamPractice {
                         && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(cat -> cat.getName())
-                .toList();
+                .toList(); //I don't know how to avoid the error with .map(Cat::getName)
     }
 
     /**
