@@ -10,13 +10,14 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Arrays.stream(n.split(",")))
                 .map(String::trim)
                 .mapToInt(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(this::checkForEvenNumber)
                 .min()
                 .orElseThrow(() -> new RuntimeException(("Can't get min value from list: "
                         + numbers)));
@@ -24,8 +25,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(number -> number % 2 != 0 ? numbers.get(number) - 1 : numbers.get(number))
-                .filter(number -> number % 2 != 0)
+                .map(number -> checkForOddNumber(number) ? numbers.get(number) - 1 : numbers.get(number))
+                .filter(this::checkForOddNumber)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -60,11 +61,18 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    private boolean checkForOddNumber(int number) {
+        return number % 2 != 0;
+    }
+
+    private boolean checkForEvenNumber(int number) {
+        return number % 2 == 0;
     }
 }
