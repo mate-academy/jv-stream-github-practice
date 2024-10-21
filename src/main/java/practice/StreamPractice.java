@@ -1,10 +1,13 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -24,9 +27,8 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         OptionalInt min = numbers.stream()
-                .map(s -> Arrays.stream(s.split("[^-0-9]+")).toList())
-                .flatMap(List::stream)
-                .mapToInt(Integer::parseInt)
+                .flatMapToInt(s -> Arrays.stream(s.split("[^-0-9]+"))
+                        .mapToInt(Integer::parseInt))
                 .filter(value -> value % EVEN_CHECK == MODULO_CHECK)
                 .min();
         return min.orElseThrow(()
@@ -40,7 +42,8 @@ public class StreamPractice {
      */
     public double getOddNumsAverage(List<Integer> numbers) {
         OptionalDouble average = IntStream.range(NUMBERS_START_INDEX, numbers.size())
-                .mapToObj(i -> i % EVEN_CHECK == ODD_ADJUSTMENT ? numbers.get(i) - ODD_ADJUSTMENT : numbers.get(i))
+                .mapToObj(i -> i % EVEN_CHECK == ODD_ADJUSTMENT
+                        ? numbers.get(i) - ODD_ADJUSTMENT : numbers.get(i))
                 .filter(n -> n % EVEN_CHECK != MODULO_CHECK)
                 .mapToInt(n -> n)
                 .average();
