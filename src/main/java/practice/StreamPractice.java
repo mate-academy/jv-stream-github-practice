@@ -25,7 +25,8 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(number -> checkForOddNumber(number) ? numbers.get(number) - 1 : numbers.get(number))
+                .map(number -> checkForOddNumber(number)
+                        ? numbers.get(number) - 1 : numbers.get(number))
                 .filter(this::checkForOddNumber)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
