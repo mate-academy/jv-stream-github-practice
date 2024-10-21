@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,9 +22,11 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .map(n -> n % 2 == 1 ? numbers.get(n) - 1 : numbers.get(n))
+        return numbers.stream()
+                .filter(n -> numbers.indexOf(n) % 2 != 0)
+                .map(n -> n - 1)
                 .filter(n -> n % 2 != 0)
+                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
@@ -41,12 +42,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> (person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() >= fromAge
-                        && person.getAge() <= maleToAge
-                        || person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= fromAge
-                        && person.getAge() <= femaleToAge)
+                        && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
