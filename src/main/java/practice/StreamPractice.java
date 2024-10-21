@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,11 +23,9 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return numbers.stream()
-                .filter(n -> numbers.indexOf(n) % 2 != 0)
-                .map(n -> n - 1)
-                .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
+        return IntStream.range(0, numbers.size())
+                .map(number -> number % 2 != 0 ? numbers.get(number) - 1 : numbers.get(number))
+                .filter(number -> number % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
     }
