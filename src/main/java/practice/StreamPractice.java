@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -27,7 +28,7 @@ public class StreamPractice {
                 .mapToInt(n -> n)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                "Can't get min value from list: " + numbers));
+                "Can't get min value from list: " + Arrays.toString(numbers.toArray())));
     }
 
     /**
@@ -43,7 +44,8 @@ public class StreamPractice {
         return Arrays.stream(array)
                 .filter(i -> i % 2 == 1)
                 .average()
-                .getAsDouble();
+                .orElseThrow(() -> new NoSuchElementException(
+                "Can't get average value from list: " + Arrays.toString(numbers.toArray())));
     }
 
     /**
