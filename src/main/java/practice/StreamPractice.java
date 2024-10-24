@@ -20,7 +20,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(num -> num % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
@@ -34,7 +34,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
+                .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException("There are no odd numbers in the list"));
@@ -51,8 +51,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN)
                 .toList();
     }
 
@@ -84,9 +84,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= femaleAge)
-                .filter(p -> p.getSex() == Person.Sex.WOMAN)
-                .flatMap(c -> c.getCats().stream())
+                .filter(person -> person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
@@ -105,7 +105,6 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
-
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
