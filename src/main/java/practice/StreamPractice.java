@@ -3,8 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -26,13 +24,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        OptionalInt min = numbers.stream()
+        return numbers.stream()
                 .flatMapToInt(s -> Arrays.stream(s.split("[^-0-9]+"))
                         .mapToInt(Integer::parseInt))
                 .filter(value -> value % EVEN_CHECK == MODULO_CHECK)
-                .min();
-        return min.orElseThrow(()
-                -> new RuntimeException("Can't get min value from list: " + numbers));
+                .min()
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -41,13 +39,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble average = IntStream.range(NUMBERS_START_INDEX, numbers.size())
-                .mapToObj(i -> i % EVEN_CHECK == ODD_ADJUSTMENT
-                        ? numbers.get(i) - ODD_ADJUSTMENT : numbers.get(i))
-                .filter(n -> n % EVEN_CHECK != MODULO_CHECK)
-                .mapToInt(n -> n)
-                .average();
-        return average.orElseThrow(NoSuchElementException::new);
+        return IntStream.range(NUMBERS_START_INDEX, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(value -> value % 2 != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -59,17 +55,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> menByAgePredicate = new Predicate<Person>() {
-            @Override
-            public boolean test(Person person) {
-                return person.getAge() >= fromAge
-                        && person.getAge() <= toAge
-                        && person.getSex() == Person.Sex.MAN;
-            }
-        };
-
         return peopleList.stream()
-                .filter(menByAgePredicate)
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -110,8 +99,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
