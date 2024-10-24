@@ -21,8 +21,7 @@ public class StreamPractice {
         return numbers.stream()
                 .map(s -> s.replaceAll("\\s+", ""))
                 .map(s -> s.split(","))
-                .map(Arrays::asList)
-                .flatMap(List::stream)
+                .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .mapToInt(n -> n)
@@ -82,7 +81,7 @@ public class StreamPractice {
             }
             return p.getSex().equals(Person.Sex.MAN)
                     && p.getAge() >= fromAge && p.getAge() <= maleToAge;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**
