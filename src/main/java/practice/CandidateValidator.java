@@ -15,7 +15,7 @@ public class CandidateValidator implements Predicate<Candidate> {
             if (period < 10) {
                 return false;
             }
-        }catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new RuntimeException("Can't parseInt not number",e);
         }
 
