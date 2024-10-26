@@ -45,18 +45,6 @@ public class StreamPractice {
                 .average()
                 .orElseThrow(() ->
                         new NoSuchElementException(EXCEPTION_MESSAGE_FOR_FIND_AVERAGE + numbers));
-        /*
-                return IntStream.range(0, numbers.size())
-                .map(n -> n % 2 != 0 ? (numbers.get(n) - 1) : numbers.get(n))
-                .filter(n -> n % 2 != 0)
-                .average()
-                .orElseThrow(NoSuchElementException::new);
-         */
-        /*
-              .mapToDouble(i -> numbers.get(i) - (i % 2 == 1 ? 1 : 0))
-                .filter(n -> n % 2 == 1)
-                .average();
-         */
     }
 
     /**
