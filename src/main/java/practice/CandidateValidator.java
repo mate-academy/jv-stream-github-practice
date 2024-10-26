@@ -15,9 +15,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         try {
             int period = Integer.parseInt(periods[1]) - Integer.parseInt(periods[0]);
 
-            if (period < PERIOD_IN_UKRAINE && candidate.getAge() < CANDIDATE_OLD_TO
-            && !candidate.getNationality().equals(NATIONALITY)
-            && !candidate.isAllowedToVote()) {
+            if (period < PERIOD_IN_UKRAINE || candidate.getAge() < CANDIDATE_OLD_TO
+                    || !candidate.getNationality().equals(NATIONALITY)
+                    || !candidate.isAllowedToVote()) {
                 return false;
             }
         } catch (NumberFormatException e) {
