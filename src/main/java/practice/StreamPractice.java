@@ -10,7 +10,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
+    private static final String EXCEPTION_MESSAGE_FOR_FIND_MIN = "Can't get min value from list: ";
+    private static final String EXCEPTION_MESSAGE_FOR_FIND_AVERAGE
+            = "Can't get average value from list: ";
+    private static final String SPLIT_REGEX = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -22,11 +25,11 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
+                .flatMap(n -> Arrays.stream(n.split(SPLIT_REGEX)))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE + numbers));
+                .orElseThrow(() -> new RuntimeException(EXCEPTION_MESSAGE_FOR_FIND_MIN + numbers));
     }
 
     /**
@@ -40,7 +43,20 @@ public class StreamPractice {
                 .map(n -> n % 2 != 0 ? (numbers.get(n) - 1) : numbers.get(n))
                 .filter(n -> n % 2 != 0)
                 .average()
+                .orElseThrow(() ->
+                        new NoSuchElementException(EXCEPTION_MESSAGE_FOR_FIND_AVERAGE + numbers));
+        /*
+                return IntStream.range(0, numbers.size())
+                .map(n -> n % 2 != 0 ? (numbers.get(n) - 1) : numbers.get(n))
+                .filter(n -> n % 2 != 0)
+                .average()
                 .orElseThrow(NoSuchElementException::new);
+         */
+        /*
+              .mapToDouble(i -> numbers.get(i) - (i % 2 == 1 ? 1 : 0))
+                .filter(n -> n % 2 == 1)
+                .average();
+         */
     }
 
     /**
@@ -109,9 +125,9 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
-                .sorted(String::compareTo)
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
