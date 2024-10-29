@@ -1,13 +1,10 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collector;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Person;
 
@@ -44,14 +41,19 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
+        if (numbers == null || numbers.size() == 0) {
+            throw new NoSuchElementException();
+        }
+        List<Integer> numbersDraft = numbers;
 
-        return (double) (IntStream.range(0, numbers.size() - 1)
-                .filter(i -> i % 2 != 0)
-                .map(i -> numbers.get(i))
-                .map(i -> i - 1)
-                .filter(i -> i == i)
-                .filter(i -> i % 2 == 0)
-                .sum()) / numbers.size();
+        return IntStream.range(0, numbers.size())
+                    .map(i -> i % 2 != 0
+                            ? numbersDraft.get(i) - 1
+                            : numbersDraft.get(i))
+                    .filter(i -> i % 2 != 0)
+                    .average()
+                    .orElseThrow();
+
     }
 
     /**
@@ -64,7 +66,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge && i.getAge() <= toAge)
+                .filter(i -> i.getSex() == Person.Sex.MAN
+                        && i.getAge() >= fromAge && i.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -114,13 +117,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(i -> i.getAge() > 35
-                        && i.isAllowedToVote()
-                        && i.getNationality().equals("Ukrainian")
-                        && (Integer.parseInt(i.getPeriodsInUkr().substring(0, 3))
-                        - Integer.parseInt(i.getPeriodsInUkr().substring(5))) > 10)
+                .filter(i -> candidateValidator.test(i))
                 .map(i -> i.getName())
+                .sorted()
                 .collect(Collectors.toList());
     }
 }
