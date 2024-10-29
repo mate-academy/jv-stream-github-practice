@@ -25,7 +25,7 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                        + " < Here is our input 'numbers' >"));
+                        + numbers));
     }
 
     /**
@@ -69,10 +69,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge,
                                           int femaleToAge, int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(n -> n.getSex() == Person.Sex.MAN
-                        && n.getAge() >= fromAge && n.getAge() <= maleToAge
-                || n.getSex() == Person.Sex.WOMAN
-                        && n.getAge() >= fromAge && n.getAge() <= femaleToAge)
+                .filter(n -> (n.getSex() == Person.Sex.MAN
+                        && n.getAge() >= fromAge && n.getAge() <= maleToAge)
+                || (n.getSex() == Person.Sex.WOMAN
+                        && n.getAge() >= fromAge && n.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 

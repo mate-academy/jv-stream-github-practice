@@ -13,8 +13,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] periodsInUkr = candidate.getPeriodsInUkr().split("-");
-        int actualPeriod = Integer.parseInt(periodsInUkr[INDEX_AGE_TO])
-                - Integer.parseInt(periodsInUkr[INDEX_AGE_FROM]);
+        int actualPeriod = 0;
+        try {
+            actualPeriod = Integer.parseInt(periodsInUkr[INDEX_AGE_TO])
+                    - Integer.parseInt(periodsInUkr[INDEX_AGE_FROM]);
+        } catch (NumberFormatException e) {
+            System.out.println("wrong format periodsInUkr " + candidate.getPeriodsInUkr()
+                    + "format periodsInUkr mus be:2002-2015");
+        }
         return candidate.getAge() >= REQUIRED_AGE
                 && candidate.getNationality().equals(NATIONALITY)
                 && actualPeriod >= YEARS_LIVING_IN_COUNTRY
