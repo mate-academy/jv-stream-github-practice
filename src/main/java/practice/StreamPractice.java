@@ -19,9 +19,15 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(string -> string.split(","))
-                .flatMap(strArray -> Arrays.stream(strArray)
-                        .map(Integer::parseInt))
+                .flatMap(string -> Arrays.stream(string.split(","))
+                        .map(strArray -> {
+                            try {
+                                return Integer.parseInt(strArray.trim());
+                            } catch (NumberFormatException e) {
+                                throw new RuntimeException("Invalid number format in input: "
+                                        + strArray);
+                            }
+                        }))
                 .filter(number -> number % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
