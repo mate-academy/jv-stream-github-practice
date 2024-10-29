@@ -2,12 +2,15 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String NUMBERS_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +21,7 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers
                 .stream()
-                .flatMap(n -> Arrays.stream(n.split(",")))
+                .flatMap(n -> Arrays.stream(n.split(NUMBERS_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -39,7 +42,7 @@ public class StreamPractice {
                 .map(i -> i % 2 == 0 ? numbers.get(i) : numbers.get(i) - 1)
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers in the list"));
     }
 
     /**
@@ -71,12 +74,15 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isWorkablePerson = person -> person.getAge() >= fromAge
+                && (
+                    (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                    || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
+                );
+
         return peopleList
                 .stream()
-                .filter(p -> p.getAge() >= fromAge
-                && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
-                )
+                .filter(isWorkablePerson)
                 .toList();
     }
 
