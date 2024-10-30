@@ -10,7 +10,7 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-public class StreamPractice implements Predicate<Candidate> {
+public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .map(i -> i.split(","))
@@ -58,46 +58,12 @@ public class StreamPractice implements Predicate<Candidate> {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> validator = new StreamPractice(); // No need to cast
+        Predicate<Candidate> validator = new CandidateValidator();
 
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean test(Candidate candidate) {
-        if (candidate == null) {
-            return false;
-        }
-
-        String periods = candidate.getPeriodsInUkr();
-        if (periods == null || periods.isEmpty()) {
-            return false;
-        }
-
-        String[] years = periods.split("-");
-        if (years.length != 2) {
-            return false;
-        }
-
-        int startYear;
-        int endYear;
-
-        try {
-            startYear = Integer.parseInt(years[0]);
-            endYear = Integer.parseInt(years[1]);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        int yearsInUkraine = endYear - startYear;
-
-        return candidate.getAge() > 35
-                && candidate.isAllowedToVote()
-                && "Ukrainian".equals(candidate.getNationality())
-                && yearsInUkraine >= 10;
     }
 }
