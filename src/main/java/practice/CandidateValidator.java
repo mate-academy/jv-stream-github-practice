@@ -21,12 +21,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
         int startYear;
         int endYear;
-        try {
-            startYear = Integer.parseInt(years[0]);
-            endYear = Integer.parseInt(years[1]);
-        } catch (NumberFormatException e) {
-            return false;
-        }
+
+        startYear = Integer.parseInt(years[0]);
+        endYear = Integer.parseInt(years[1]);
 
         int yearsInUkraine = endYear - startYear;
 
