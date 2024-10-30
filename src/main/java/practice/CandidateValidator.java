@@ -27,7 +27,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
         int yearsInUkraine = endYear - startYear;
 
-        return candidate.getAge() > 35
+        return candidate.getAge() >= 35
                 && candidate.isAllowedToVote()
                 && "Ukrainian".equals(candidate.getNationality())
                 && yearsInUkraine >= 10;
