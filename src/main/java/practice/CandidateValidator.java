@@ -26,9 +26,17 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
 
         String[] years = periodsInUkr.split(LINE_SEPARATOR);
-        int startYear = Integer.parseInt(years[START_YEAR_INDEX].trim());
-        int endYear = Integer.parseInt(years[END_YEAR_INDEX].trim());
-        int yearsInUkraine = endYear - startYear;
-        return yearsInUkraine >= ENOUGH_YEARS;
+        if (years.length != 2) {
+            return false;
+        }
+
+        try {
+            int startYear = Integer.parseInt(years[START_YEAR_INDEX].trim());
+            int endYear = Integer.parseInt(years[END_YEAR_INDEX].trim());
+            int yearsInUkraine = endYear - startYear;
+            return yearsInUkraine >= ENOUGH_YEARS;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
