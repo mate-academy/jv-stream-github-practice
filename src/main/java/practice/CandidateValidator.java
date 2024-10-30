@@ -7,26 +7,15 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+        if (candidate.getPeriodsInUkr().length() != 9
+                || candidate.getPeriodsInUkr().indexOf('-') != 4) {
+            throw new NumberFormatException("something wrong with data input");
+        }
         String[] periodInUkrArray = candidate.getPeriodsInUkr().split("-");
         return candidate.getAge() >= 35
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
                 && (Integer.parseInt(periodInUkrArray[1])
                 - Integer.parseInt(periodInUkrArray[0])) >= 10;
-    }
-
-    @Override
-    public Predicate and(Predicate other) {
-        return Predicate.super.and(other);
-    }
-
-    @Override
-    public Predicate negate() {
-        return Predicate.super.negate();
-    }
-
-    @Override
-    public Predicate or(Predicate other) {
-        return Predicate.super.or(other);
     }
 }
