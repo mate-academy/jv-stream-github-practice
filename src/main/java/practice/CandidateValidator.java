@@ -4,7 +4,6 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final Predicate<Candidate> VALIDATE = new CandidateValidator();
     private static final String SEPARATE = "\\p{Punct}";
     private static final int YEARS_TO = 1;
     private static final int YEARS_FROM = 0;

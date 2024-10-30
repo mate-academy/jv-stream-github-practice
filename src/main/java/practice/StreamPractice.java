@@ -53,7 +53,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -70,23 +70,7 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> isWorkable(person, fromAge, femaleToAge, maleToAge))
-                .collect(Collectors.toList());
-    }
-
-    private boolean isWorkable(Person person, int fromAge, int femaleToAge, int maleToAge) {
-        if (person.getSex() == Person.Sex.MAN) {
-            return isWorkableMan(person, fromAge, maleToAge);
-        } else {
-            return isWorkableWoman(person, fromAge, femaleToAge);
-        }
-    }
-
-    private boolean isWorkableMan(Person person, int fromAge, int maleToAge) {
-        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
-    }
-
-    private boolean isWorkableWoman(Person person, int fromAge, int femaleToAge) {
-        return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+                .toList();
     }
 
     /**
@@ -117,9 +101,25 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CandidateValidator.VALIDATE)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    private boolean isWorkable(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        if (person.getSex() == Person.Sex.MAN) {
+            return isWorkableMan(person, fromAge, maleToAge);
+        } else {
+            return isWorkableWoman(person, fromAge, femaleToAge);
+        }
+    }
+
+    private boolean isWorkableMan(Person person, int fromAge, int maleToAge) {
+        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
+    }
+
+    private boolean isWorkableWoman(Person person, int fromAge, int femaleToAge) {
+        return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
     }
 }
