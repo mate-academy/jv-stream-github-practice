@@ -19,17 +19,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(string -> Arrays.stream(string.split(","))
-                        .map(strArray -> {
-                            try {
-                                return Integer.parseInt(strArray.trim());
-                            } catch (NumberFormatException e) {
-                                throw new RuntimeException("Invalid number format in input: "
-                                        + strArray);
-                            }
-                        }))
+                .flatMap(string -> Arrays.stream(string.split(",")))
+                .mapToInt(Integer::parseInt)
                 .filter(number -> number % 2 == 0)
-                .min(Integer::compare)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
@@ -76,10 +69,24 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN
-                        ? person.getAge() >= fromAge && person.getAge() <= maleToAge :
-                        person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                .filter(person -> isWorkable(person, fromAge, femaleToAge, maleToAge))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isWorkable(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        if (person.getSex() == Person.Sex.MAN) {
+            return isWorkableMan(person, fromAge, maleToAge);
+        } else {
+            return isWorkableWoman(person, fromAge, femaleToAge);
+        }
+    }
+
+    private boolean isWorkableMan(Person person, int fromAge, int maleToAge) {
+        return person.getAge() >= fromAge && person.getAge() <= maleToAge;
+    }
+
+    private boolean isWorkableWoman(Person person, int fromAge, int femaleToAge) {
+        return person.getAge() >= fromAge && person.getAge() <= femaleToAge;
     }
 
     /**
@@ -109,9 +116,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        final CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(CandidateValidator.VALIDATE)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());

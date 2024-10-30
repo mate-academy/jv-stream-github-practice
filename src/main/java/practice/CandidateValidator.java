@@ -4,29 +4,23 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int MIN_CANDIDATE_AGE = 35;
-    private static final int MIN_YEARS_IN_UKRAINE = 10;
+    public static final Predicate<Candidate> VALIDATE = new CandidateValidator();
+    private static final String SEPARATE = "\\p{Punct}";
+    private static final int YEARS_TO = 1;
+    private static final int YEARS_FROM = 0;
+    private static final int VALID_AGE = 35;
+    private static final String NATIONALITY = "Ukrainian";
+    private static final int VALID_PERIOD = 10;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= MIN_CANDIDATE_AGE
-                && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && hasRequiredYearsInUkraine(candidate.getPeriodsInUkr());
-    }
+        String[] yearsFromTo = candidate.getPeriodsInUkr().split(SEPARATE);
+        int period = Integer.parseInt(yearsFromTo[YEARS_TO])
+                - Integer.parseInt(yearsFromTo[YEARS_FROM]);
 
-    private boolean hasRequiredYearsInUkraine(String periodsInUkr) {
-        String[] periods = periodsInUkr.split(",");
-        for (String period : periods) {
-            String[] years = period.trim().split("-");
-            if (years.length == 2) {
-                int startYear = Integer.parseInt(years[0].trim());
-                int endYear = Integer.parseInt(years[1].trim());
-                if (endYear - startYear >= MIN_YEARS_IN_UKRAINE) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return candidate.getAge() >= VALID_AGE
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(NATIONALITY)
+                && period >= VALID_PERIOD;
     }
 }
