@@ -18,10 +18,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return numbers.stream().map(n -> n.split(","))
-                .flatMap(Arrays::stream)
-                .mapToInt(Integer::parseInt)
-                .filter((e) -> e % 2 == 0).min().orElseThrow(() ->
+        return numbers.stream()
+                .flatMap(input -> Arrays.stream(input.split(",")))
+                .map(Integer::parseInt)
+                .filter((num) -> num % 2 == 0)
+                .min(Integer::compareTo)
+                .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: " + numbers));
     }
 
@@ -50,7 +52,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -78,11 +80,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return peopleList.stream().filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge && person.getCats() != null)
-                .flatMap(person -> person.getCats()
-                        .stream()
-                        .map(Cat::getName)).collect(Collectors.toList());
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream()
+                        .map(Cat::getName))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -99,8 +102,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter((candidate
-                        -> new CandidateValidator().test(candidate)))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
