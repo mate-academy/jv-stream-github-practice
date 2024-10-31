@@ -12,8 +12,18 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getNationality().equals("Ukrainian")
                 && (candidate.getAge() >= AGE)
                 && candidate.isAllowedToVote()
-                && ((Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
-                - Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]))
-                >= PERIOD_IN_UKRAINE);
+                && (getIntFromString(candidate, 1)
+                - getIntFromString(candidate, 0))
+                >= PERIOD_IN_UKRAINE;
+    }
+
+    private int getIntFromString(Candidate candidate, int i) {
+        int result = 0;
+        try {
+            result = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[i]);
+        } catch (RuntimeException e) {
+            new RuntimeException("This string format not support");
+        }
+        return result;
     }
 }

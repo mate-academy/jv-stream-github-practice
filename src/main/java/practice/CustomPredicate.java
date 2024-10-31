@@ -16,9 +16,9 @@ public class CustomPredicate implements Predicate<Person> {
 
     @Override
     public boolean test(Person person) {
-        return person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
-                && person.getAge() <= maleToAge
-                || person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
-                && person.getAge() <= femaleToAge;
+        return (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
+                && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
+                && person.getAge() <= femaleToAge);
     }
 }

@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -19,7 +20,7 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        if (numbers.size() == 0) {
+        if (numbers.isEmpty()) {
             throw new RuntimeException("Can't get min value from list: " + numbers);
         }
         return numbers.stream()
@@ -28,7 +29,7 @@ public class StreamPractice {
                         .flatMapToInt(stringNum -> IntStream.of(Integer.parseInt(stringNum))))
                 .filter(n -> n % 2 == 0)
                 .min()
-                .getAsInt();
+                .orElseThrow(() -> new RuntimeException("The format of string is not valid"));
     }
 
     /**
@@ -42,9 +43,9 @@ public class StreamPractice {
         }
         return numbers.stream()
                 .filter(integer -> integer % 2 != 0)
-                .mapToDouble(Integer::intValue)
+                .mapToDouble(integer -> integer)
                 .average()
-                .getAsDouble();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -112,8 +113,8 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         Predicate<Candidate> customPredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> customPredicate.test(candidate))
-                .map(candidate -> candidate.getName())
+                .filter(customPredicate)
+                .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
