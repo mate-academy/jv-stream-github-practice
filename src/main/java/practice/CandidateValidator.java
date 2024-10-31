@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import model.Candidate;
@@ -18,7 +19,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .map(arr -> new int[]{
                         Integer.parseInt(arr[FIRST_INDEX]), Integer.parseInt(arr[SECOND_INDEX])
                 }).map(arr -> arr[SECOND_INDEX] - arr[FIRST_INDEX])
-                .mapToInt(Integer::intValue).sum();
+                .mapToInt(Integer::intValue).findAny()
+                .orElseThrow(() -> new NoSuchElementException("invalid data"));
 
         return candidate.isAllowedToVote() && candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATIONALITY)
