@@ -5,14 +5,11 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_PRESIDENT = 35;
+    private static final int FIRST_PART = 0;
+    private static final int SECOND_PART = 1;
     private static final int MIN_AGE_TO_BE_IN_UKRAINE_FOR_PRESIDENT = 10;
     private static final String SEPARATOR = "-";
     private static final String NATIONALITY = "Ukrainian";
-
-    private boolean isCandidateNull(Candidate candidate) {
-        return candidate == null || candidate.getNationality() == null
-                || candidate.getPeriodsInUkr() == null || candidate.getPeriodsInUkr().isEmpty();
-    }
 
     @Override
     public boolean test(Candidate candidate) {
@@ -25,8 +22,8 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        int startYear = Integer.parseInt(years[0]);
-        int endYear = Integer.parseInt(years[1]);
+        int startYear = Integer.parseInt(years[FIRST_PART]);
+        int endYear = Integer.parseInt(years[SECOND_PART]);
 
         int yearsInUkraine = endYear - startYear;
 
@@ -34,5 +31,10 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && NATIONALITY.equals(candidate.getNationality())
                 && yearsInUkraine >= MIN_AGE_TO_BE_IN_UKRAINE_FOR_PRESIDENT;
+    }
+
+    private boolean isCandidateNull(Candidate candidate) {
+        return candidate == null || candidate.getNationality() == null
+                || candidate.getPeriodsInUkr() == null || candidate.getPeriodsInUkr().isEmpty();
     }
 }
