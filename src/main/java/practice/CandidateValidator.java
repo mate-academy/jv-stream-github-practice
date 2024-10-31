@@ -17,7 +17,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                 .map(n -> n.split(DELETE_SYMBOL))
                 .map(arr -> new int[]{
                         Integer.parseInt(arr[FIRST_INDEX]), Integer.parseInt(arr[SECOND_INDEX])
-                }).map(arr -> arr[SECOND_INDEX] % arr[FIRST_INDEX])
+                }).map(arr -> arr[SECOND_INDEX] - arr[FIRST_INDEX])
                 .mapToInt(Integer::intValue).sum();
 
         return candidate.isAllowedToVote() && candidate.getAge() >= MIN_AGE
