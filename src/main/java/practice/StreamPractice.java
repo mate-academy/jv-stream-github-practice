@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,7 +9,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
     public static final String CAN_T_GET_MIN_VALUE_FROM_LIST_ERROR_MSG =
             "Can't get min value from list: ";
     public static final String SEPARATOR = ",";
@@ -39,16 +37,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
-                .boxed()
-                .collect(Collectors.toList());
-
-        return modifiedNumbers.stream()
-                .filter(num -> num % 2 != 0)
-                .mapToInt(Integer::intValue)
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     /**
@@ -63,7 +56,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -101,7 +94,7 @@ public class StreamPractice {
                 )
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -119,9 +112,9 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
