@@ -2,6 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -12,6 +13,10 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String THE_LIST_IS_EMPTY = "Can't get min value from list: ";
+    private static final String EVEN_NUMBERS_IS_ABSENT = "There are no even numbers in the list: ";
+    private final Predicate<Candidate> candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,15 +26,15 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
+            throw new RuntimeException(THE_LIST_IS_EMPTY + numbers);
         }
         return numbers.stream()
                 .map(s -> s.split(","))
-                .flatMapToInt(strings -> Arrays.stream(strings)
-                        .flatMapToInt(stringNum -> IntStream.of(Integer.parseInt(stringNum))))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .min()
-                .orElseThrow(() -> new RuntimeException("The format of string is not valid"));
+                .min(Comparator.naturalOrder())
+                .orElseThrow(() -> new RuntimeException(EVEN_NUMBERS_IS_ABSENT + numbers));
     }
 
     /**
@@ -38,10 +43,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 1; i < numbers.size(); i += 2) {
-            numbers.set(i, numbers.get(i) - 1);
-        }
-        return numbers.stream()
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .toList()
+                .stream()
                 .filter(integer -> integer % 2 != 0)
                 .mapToDouble(integer -> integer)
                 .average()
@@ -61,7 +66,6 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
-
     }
 
     /**
@@ -111,12 +115,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        Predicate<Candidate> customPredicate = new CandidateValidator();
         return candidates.stream()
-                .filter(customPredicate)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
-
 }
