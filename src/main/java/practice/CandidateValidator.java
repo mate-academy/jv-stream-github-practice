@@ -1,6 +1,5 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -9,21 +8,21 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final int YEARS_IN_UKRAINE = 10;
     private static final String YEARS_SEPARATOR = "-";
+    private static final int BEGIN_INDEX = 0;
+    private static final int END_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-                && calculateYearsStayingInUkraine(candidate.getPeriodsInUkr()) >= YEARS_IN_UKRAINE;
+                && calculateYearsStayingInUkraine(candidate);
 
     }
 
-    private int calculateYearsStayingInUkraine(String years) {
-        return Arrays.stream(years.split(YEARS_SEPARATOR))
-                .mapToInt(Integer::parseInt)
-                .reduce((a, b) -> b - a)
-                .orElse(0);
-
+    private boolean calculateYearsStayingInUkraine(Candidate candidate) {
+        String[] dates = candidate.getPeriodsInUkr().split(YEARS_SEPARATOR);
+        return Integer.parseInt(dates[END_INDEX])
+                - Integer.parseInt(dates[BEGIN_INDEX]) >= YEARS_IN_UKRAINE;
     }
 }
