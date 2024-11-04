@@ -19,8 +19,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean livedInUkraineFor10Years(String periodsInUkr) {
         if (periodsInUkr == null || !periodsInUkr.matches("\\d+\\s*-\\s*\\d+")) {
-            System.out.println("Invalid period format!" +
-                    " Please enter correct value with format: 'yyyy-yyyy'");
+            System.out.println("Invalid period format!"
+                    + " Please enter correct value with format: 'yyyy-yyyy'");
         } else {
             String[] years = periodsInUkr.split("-");
             try {
