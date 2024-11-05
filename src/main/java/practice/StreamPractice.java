@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -32,19 +33,16 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        if (!numbers.isEmpty()) {
-            IntStream.range(0, numbers.size())
-                    .filter(i -> i % 2 != 0)
-                    .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-            return numbers.stream()
-                    .filter(i -> i % 2 != 0)
-                    .mapToInt(Integer::intValue)
-                    .average()
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Can't get average value from list: " + numbers)
-                    );
-        }
-        throw new NoSuchElementException("Can't get average value from list: " + numbers);
+        IntStream.range(0, numbers.size())
+                .filter(i -> i % 2 != 0)
+                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
+        return numbers.stream()
+                .filter(i -> i % 2 != 0)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average value from list: " + numbers)
+                );
     }
 
     /**
@@ -75,11 +73,15 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge)
-                .filter(i -> i.getSex() == Person.Sex.MAN
-                        ? i.getAge() <= maleToAge
-                        : i.getAge() <= femaleToAge)
+                .filter(i -> isWorkablePerson(i, fromAge, femaleToAge, maleToAge))
                 .toList();
+    }
+
+    private boolean isWorkablePerson(Person person, int fromAge, int femaleToAge, int maleToAge) {
+        return person.getAge() >= fromAge
+                && (person.getSex() == Person.Sex.MAN
+                ? person.getAge() <= maleToAge
+                : person.getAge() <= femaleToAge);
     }
 
     /**
@@ -89,11 +91,14 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.WOMAN)
-                .filter(i -> i.getAge() >= femaleAge)
+                .filter(i -> isEligibleWoman(i, femaleAge))
                 .flatMap(i -> i.getCats().stream())
-                .map(i -> i.getName())
+                .map(Cat::getName)
                 .toList();
+    }
+
+    private boolean isEligibleWoman(Person person, int femaleAge) {
+        return person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge;
     }
 
     /**
