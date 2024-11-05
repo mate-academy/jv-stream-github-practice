@@ -9,6 +9,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
+    public static final String DELIMITER = ",";
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,7 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(i -> Arrays.stream(i.split(",")))
+                .flatMap(i -> Arrays.stream(i.split(DELIMITER)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -33,16 +36,17 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .forEach(i -> numbers.set(i, numbers.get(i) - 1));
-        return numbers.stream()
-                .filter(i -> i % 2 != 0)
-                .mapToInt(Integer::intValue)
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                    if (i % 2 == 0) {
+                        return numbers.get(i);
+                    } else {
+                        return numbers.get(i) - 1;
+                    }
+                })
+                .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Can't get average value from list: " + numbers)
-                );
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
@@ -55,9 +59,13 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(i -> i.getSex() == Person.Sex.MAN)
-                .filter(i -> i.getAge() >= fromAge && i.getAge() <= toAge)
+                .filter(i -> isManOfCertainAge(i, fromAge, toAge))
                 .toList();
+    }
+
+    private boolean isManOfCertainAge(Person person, int fromAge, int toAge) {
+        return person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= toAge;
     }
 
     /**
@@ -91,14 +99,14 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(i -> isEligibleWoman(i, femaleAge))
+                .filter(i -> isWomanOlderThan(i, femaleAge))
                 .flatMap(i -> i.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
 
-    private boolean isEligibleWoman(Person person, int femaleAge) {
-        return person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge;
+    private boolean isWomanOlderThan(Person person, int age) {
+        return person.getSex() == Person.Sex.WOMAN && person.getAge() >= age;
     }
 
     /**
@@ -114,9 +122,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
