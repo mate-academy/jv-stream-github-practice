@@ -7,6 +7,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINIAN = "Ukrainian";
     private static final int REQUIRED_MINIMUM_AGE = 35;
     private static final int MINIMUM_RESIDENCY_PERIOD = 10;
+    private static final String DELIMITER = "-";
+    private static final int INDEX_OF_YEAR_FROM = 1;
+    private static final int INDEX_OF_YEAR_TO = 0;
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,7 +20,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean isEligibleToVoteBasedOnResidency(Candidate candidate) {
-        String[] arr = candidate.getPeriodsInUkr().split("-");
-        return Integer.parseInt(arr[1]) - Integer.parseInt(arr[0]) >= MINIMUM_RESIDENCY_PERIOD;
+        String[] arr = candidate.getPeriodsInUkr().split(DELIMITER);
+        return Integer.parseInt(
+            arr[INDEX_OF_YEAR_FROM]) - Integer.parseInt(arr[INDEX_OF_YEAR_TO])
+            >= MINIMUM_RESIDENCY_PERIOD;
     }
 }
