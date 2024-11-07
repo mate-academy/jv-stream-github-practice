@@ -9,8 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-
-    public static final String DELIMITER = ",";
+    private static final String DELIMITER = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -37,13 +36,9 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(i -> {
-                    if (i % 2 == 0) {
-                        return numbers.get(i);
-                    } else {
-                        return numbers.get(i) - 1;
-                    }
-                })
+                .map(i -> i % 2 == 0
+                   ? numbers.get(i)
+                   : numbers.get(i) - 1)
                 .filter(i -> i % 2 == 1)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
