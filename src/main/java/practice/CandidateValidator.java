@@ -9,6 +9,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINE_NATIONALITY = "Ukrainian";
     private static final int MIN_PERIOD_LIVE_IN_UKRAINE = 10;
     private static final String PERIOD_YEARS_SPLITTER = "-";
+    private static final int TO_YEAR_PERIOD_INDEX = 1;
+    private static final int FROM_YEAR_PERIOD_INDEX = 0;
 
     //write your code here
     @Override
@@ -21,6 +23,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     
     private int getYearDiff(String period) {
         String[] years = period.split(PERIOD_YEARS_SPLITTER);
-        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
+        return Integer.parseInt(years[TO_YEAR_PERIOD_INDEX])
+                - Integer.parseInt(years[FROM_YEAR_PERIOD_INDEX]);
     }
 }
