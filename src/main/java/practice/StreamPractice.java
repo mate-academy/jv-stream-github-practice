@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -23,8 +22,9 @@ public class StreamPractice {
                 .map(stringNum -> stringNum.split(","))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(num -> num % 2 == 0)  // only even numbers
-                .min(Integer::compare)  // find the minimum number
+                .filter(num -> num % 2 == 0)
+
+                .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
@@ -36,10 +36,11 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
-                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))  // subtract 1 on odd indexes
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .collect(Collectors.toList());
+
         return modifiedNumbers.stream()
-                .filter(i -> i % 2 != 0)  // filter for odd numbers
+                .filter(i -> i % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers after adjustment"));
