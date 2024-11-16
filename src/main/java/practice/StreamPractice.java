@@ -2,8 +2,10 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,9 +23,8 @@ public class StreamPractice {
                 .map(stringNum -> stringNum.split(","))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(num -> num % 2 == 0)
-                .sorted()
-                .findFirst()
+                .filter(num -> num % 2 == 0)  // only even numbers
+                .min(Integer::compare)  // find the minimum number
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
@@ -34,13 +35,14 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .filter(i -> i % 2 != 0)
-                .peek(i -> numbers.set(i, numbers.get(i) - 1))
-                .map(numbers::get)
-                .filter(i -> i % 2 == 0)
+        List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))  // subtract 1 on odd indexes
+                .collect(Collectors.toList());
+        return modifiedNumbers.stream()
+                .filter(i -> i % 2 != 0)  // filter for odd numbers
+                .mapToInt(Integer::intValue)
                 .average()
-                .orElse(0.0);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers after adjustment"));
     }
 
     /**
@@ -74,9 +76,9 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
                 .filter(person -> (person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= maleToAge)
+                        && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= femaleToAge))
+                        && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
