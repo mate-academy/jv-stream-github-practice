@@ -7,12 +7,19 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
-        return Stream.of(
+        System.out.println("Testing candidate: " + candidate.getName());
+        boolean isEligible = Stream.of(
                 candidate.getAge() > 35,
                 candidate.isAllowedToVote(),
                 "Ukrainian".equals(candidate.getNationality()),
                 validatePeriodsInUkraine(candidate.getPeriodsInUkr())
         ).allMatch(Boolean::booleanValue);
+
+        System.out.println("Candidate "
+                + candidate.getName()
+                + " is eligible: "
+                + isEligible);
+        return isEligible;
     }
 
     private boolean validatePeriodsInUkraine(String periodsInUkr) {
