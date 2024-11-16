@@ -1,9 +1,8 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
