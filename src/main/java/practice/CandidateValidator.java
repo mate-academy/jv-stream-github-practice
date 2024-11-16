@@ -12,14 +12,19 @@ public class CandidateValidator implements Predicate<Candidate> {
                 candidate.isAllowedToVote(),
                 "Ukrainian".equals(candidate.getNationality()),
                 validatePeriodsInUkraine(candidate.getPeriodsInUkr())
-        ).allMatch(condition -> condition);
+        ).allMatch(Boolean::booleanValue);
     }
 
     private boolean validatePeriodsInUkraine(String periodsInUkr) {
+        if (periodsInUkr == null || periodsInUkr.isEmpty()) {
+            return false;
+        }
+
         String[] periods = periodsInUkr.split("-");
         if (periods.length != 2) {
             return false;
         }
+
         try {
             int startYear = Integer.parseInt(periods[0]);
             int endYear = Integer.parseInt(periods[1]);
