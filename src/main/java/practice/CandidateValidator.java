@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -15,12 +14,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return Stream.of(
-                candidate.getAge() >= MIN_CANDIDATE_AGE,
-                candidate.isAllowedToVote(),
-                CANDIDATE_NATIONALITY.equals(candidate.getNationality()),
-                validatePeriodsInUkraine(candidate.getPeriodsInUkr())
-        ).allMatch(Boolean::booleanValue);
+        return candidate.getAge() >= MIN_CANDIDATE_AGE
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(CANDIDATE_NATIONALITY)
+                && validatePeriodsInUkraine(candidate.getPeriodsInUkr());
     }
 
     private boolean validatePeriodsInUkraine(String periodsInUkr) {

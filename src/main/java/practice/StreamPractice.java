@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -19,8 +18,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(stringNum -> stringNum.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(input -> Arrays.stream(input.split(",")))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
 
@@ -56,7 +54,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -77,7 +75,7 @@ public class StreamPractice {
                         && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() <= femaleToAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -92,7 +90,7 @@ public class StreamPractice {
                         && !person.getCats().isEmpty())
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -112,6 +110,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
