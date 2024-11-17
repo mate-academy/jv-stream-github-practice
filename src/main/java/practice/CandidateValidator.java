@@ -5,13 +5,20 @@ import java.util.stream.Stream;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private final static int MIN_CANDIDATE_AGE = 35;
+    private final static int EXPECTED_ARRAY_LENGTH = 2;
+    private final static int INDEX_OF_FIRST_ARRAY_ELEMENT = 0;
+    private final static int INDEX_OF_SECOND_ARRAY_ELEMENT = 1;
+    private final static int EXPECTED_NUMBER_OF_YEARS = 10;
+    private final static String CANDIDATE_NATIONALITY = "Ukrainian";
+    private final static String SPLIT_SYMBOL = "-";
+
     @Override
     public boolean test(Candidate candidate) {
-        System.out.println("Testing candidate: " + candidate.getName());
         return Stream.of(
-                candidate.getAge() >= 35,
+                candidate.getAge() >= MIN_CANDIDATE_AGE,
                 candidate.isAllowedToVote(),
-                "Ukrainian".equals(candidate.getNationality()),
+                CANDIDATE_NATIONALITY.equals(candidate.getNationality()),
                 validatePeriodsInUkraine(candidate.getPeriodsInUkr())
         ).allMatch(Boolean::booleanValue);
     }
@@ -21,15 +28,15 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        String[] periods = periodsInUkr.split("-");
-        if (periods.length != 2) {
+        String[] periods = periodsInUkr.split(SPLIT_SYMBOL);
+        if (periods.length != EXPECTED_ARRAY_LENGTH) {
             return false;
         }
 
         try {
-            int startYear = Integer.parseInt(periods[0]);
-            int endYear = Integer.parseInt(periods[1]);
-            return endYear - startYear >= 10;
+            int startYear = Integer.parseInt(periods[INDEX_OF_FIRST_ARRAY_ELEMENT]);
+            int endYear = Integer.parseInt(periods[INDEX_OF_SECOND_ARRAY_ELEMENT]);
+            return endYear - startYear >= EXPECTED_NUMBER_OF_YEARS;
         } catch (NumberFormatException e) {
             return false;
         }
