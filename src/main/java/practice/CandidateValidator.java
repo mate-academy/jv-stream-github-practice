@@ -3,7 +3,7 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator implements Predicate {
+public class CandidateValidator implements Predicate<Candidate> {
     public static Predicate<Candidate> isEligibleForPresident() {
         return candidate -> {
             boolean isOldEnough = candidate.getAge() >= 35;
@@ -38,22 +38,22 @@ public class CandidateValidator implements Predicate {
     }
 
     @Override
-    public boolean test(Object o) {
-        return false;
+    public boolean test(Candidate candidate) {
+        return isEligibleForPresident().test(candidate);
     }
 
     @Override
-    public Predicate and(Predicate other) {
+    public Predicate<Candidate> and(Predicate<? super Candidate> other) {
         return Predicate.super.and(other);
     }
 
     @Override
-    public Predicate negate() {
+    public Predicate<Candidate> negate() {
         return Predicate.super.negate();
     }
 
     @Override
-    public Predicate or(Predicate other) {
+    public Predicate<Candidate> or(Predicate<? super Candidate> other) {
         return Predicate.super.or(other);
     }
 }
