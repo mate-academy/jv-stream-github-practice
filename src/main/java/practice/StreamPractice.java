@@ -1,11 +1,9 @@
 package practice;
 
 import java.util.List;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
-
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import java.util.stream.Collectors;
@@ -13,7 +11,8 @@ import java.util.stream.Collectors;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> List.of(s.split(",")).stream()) // Розбиваємо кожен рядок на числа
+                .flatMap(s -> List.of(s.split(","))
+                        .stream()) // Розбиваємо кожен рядок на числа
                 .map(Integer::parseInt) // Перетворюємо рядки на цілі числа
                 .filter(num -> num % 2 == 0) // Фільтруємо тільки парні числа
                 .min(Integer::compare) // Знаходимо мінімальне значення
