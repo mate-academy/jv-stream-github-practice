@@ -30,11 +30,17 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private static int calculateYearsInUkraine(String periodsInUkr) {
-        String[] periods = periodsInUkr.split("-");
-        int startYear = Integer.parseInt(periods[0]);
-        int endYear = Integer.parseInt(periods[1]);
+        String[] periods = periodsInUkr.split(",");
+        int totalYears = 0;
 
-        return endYear - startYear + 1;
+        for (String period : periods) {
+            String[] years = period.split("-");
+            int startYear = Integer.parseInt(years[0]);
+            int endYear = Integer.parseInt(years[1]);
+            totalYears += (endYear - startYear + 1);
+        }
+
+        return totalYears;
     }
 
     @Override
