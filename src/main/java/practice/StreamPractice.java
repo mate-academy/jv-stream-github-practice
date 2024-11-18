@@ -11,11 +11,10 @@ import java.util.stream.Collectors;
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> List.of(s.split(","))
-                        .stream()) // Розбиваємо кожен рядок на числа
-                .map(Integer::parseInt) // Перетворюємо рядки на цілі числа
-                .filter(num -> num % 2 == 0) // Фільтруємо тільки парні числа
-                .min(Integer::compare) // Знаходимо мінімальне значення
+                .flatMap(s -> List.of(s.split(",")).stream())
+                .map(Integer::parseInt)
+                .filter(num -> num % 2 == 0)
+                .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers));
     }
@@ -23,7 +22,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         List<Integer> modifiedNumbers = IntStream.range(0, numbers.size())
                 .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .toList();  // Модифікація елементів на непарних позиціях
+                .toList();
 
         return modifiedNumbers.stream()
                 .filter(num -> num % 2 != 0)
@@ -35,10 +34,10 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)  // Фільтруємо лише чоловіків
+                .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge
-                        && person.getAge() <= toAge)  // Фільтруємо за віком у вказаному діапазоні
-                .collect(Collectors.toList());  // Збираємо результати в список
+                        && person.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -60,10 +59,10 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() >= femaleAge) // Фільтруємо власників котів-жінок відповідного віку
-                .flatMap(person -> person.getCats().stream()) // Витягуємо їхніх котів
-                .map(Cat::getName) // Отримуємо імена котів
-                .collect(Collectors.toList()); // Збираємо в список
+                        && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {

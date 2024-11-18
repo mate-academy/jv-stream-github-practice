@@ -12,12 +12,12 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && "Ukrainian".equals(candidate.getNationality())
                 && Arrays.stream(candidate.getPeriodsInUkr()
-                        .split(",")) // Розділяємо періоди
+                        .split(","))
                 .anyMatch(period -> {
                     String[] years = period.split("-");
                     int startYear = Integer.parseInt(years[0]);
                     int endYear = Integer.parseInt(years[1]);
-                    return endYear - startYear >= 10; // Перевіряємо різницю між роками
+                    return endYear - startYear >= 10;
                 });
     }
 }
