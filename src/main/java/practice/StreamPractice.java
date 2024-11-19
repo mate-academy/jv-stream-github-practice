@@ -1,17 +1,18 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
-import java.util.stream.Collectors;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> List.of(s.split(",")).stream())
+                .flatMap(s -> Arrays.stream(s.split(","))) // Use Arrays.stream directly
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
@@ -40,19 +41,14 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
-                                          int maleToAge, List<Person> peopleList) {
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> {
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() >= fromAge
-                                && person.getAge() <= maleToAge;
-                    } else if (person.getSex() == Person.Sex.WOMAN) {
-                        return person.getAge() >= fromAge
-                                && person.getAge() <= femaleToAge;
-                    }
-                    return false;
-                })
+                .filter(person -> (person.getSex() == Person.Sex.MAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge)
+                        || (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
 
@@ -66,10 +62,8 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
-
         return candidates.stream()
-                .filter(validator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
