@@ -27,7 +27,8 @@ public class StreamPractice {
                 .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Unable to get average odd number from: " + numbers));
+                .orElseThrow(() -> new NoSuchElementException("Unable "
+                        + "to get average odd number from: " + numbers));
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
