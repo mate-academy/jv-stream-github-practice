@@ -1,12 +1,12 @@
 package practice;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import java.util.NoSuchElementException;
-import java.util.stream.IntStream;
-import java.util.stream.Collectors;
 
 public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
