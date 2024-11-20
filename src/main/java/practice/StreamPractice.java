@@ -1,9 +1,9 @@
 package practice;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -35,7 +35,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -45,7 +45,7 @@ public class StreamPractice {
                         && p.getAge() <= (p.getSex() == Person.Sex.MAN
                         ? maleToAge
                         : femaleToAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -53,7 +53,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
@@ -63,6 +63,6 @@ public class StreamPractice {
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
