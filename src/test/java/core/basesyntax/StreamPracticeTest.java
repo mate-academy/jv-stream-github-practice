@@ -1,5 +1,11 @@
 package core.basesyntax;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -11,21 +17,14 @@ import org.junit.rules.ExpectedException;
 import practice.CandidateValidator;
 import practice.StreamPractice;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.Predicate;
-
 public class StreamPracticeTest {
+    @Rule
+    public ExpectedException expectedEx = ExpectedException.none();
     private static StreamPractice solution;
     private static List<Person> peopleListWithoutCat;
     private static List<Candidate> candidates;
     private static List<Candidate> invalidCandidates;
     private static List<Person> peopleList;
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
 
     @BeforeClass
     public static void setUp() {
@@ -57,42 +56,6 @@ public class StreamPracticeTest {
         peopleListWithoutCat.add(new Person("Victor", 23, Person.Sex.MAN));
         candidates = initCandidateList();
         invalidCandidates = initInvalidCandidateList();
-    }
-
-    private static List<Candidate> initInvalidCandidateList() {
-        Candidate john = new Candidate(30, "Ukrainian", false, "1985-2020");
-        john.setName("John");
-        Candidate fred = new Candidate(39, "German", true, "2000-2019");
-        fred.setName("Fred");
-        Candidate casey = new Candidate(61, "Ukrainian", true, "2011-2016");
-        casey.setName("Casey");
-        Candidate rick = new Candidate(44, "Ukrainian", false, "1990-2007");
-        rick.setName("Rick");
-        Candidate morty = new Candidate(35, "Frenchman", true, "2009-2020");
-        morty.setName("Morty");
-        Candidate ron = new Candidate(70, "Ukrainian", true, "2015-2020");
-        ron.setName("Ron");
-        Candidate phil = new Candidate(52, "Ukrainian", false, "1980-2013");
-        phil.setName("Philip");
-        return List.of(john, fred, rick, morty, casey, ron, phil);
-    }
-
-    private static List<Candidate> initCandidateList() {
-        Candidate john = new Candidate(30, "Ukrainian", false, "1985-2020");
-        john.setName("John");
-        Candidate fred = new Candidate(39, "German", true, "2000-2019");
-        fred.setName("Fred");
-        Candidate casey = new Candidate(61, "Ukrainian", true, "1988-2000");
-        casey.setName("Casey");
-        Candidate rick = new Candidate(44, "Ukrainian", false, "1990-2007");
-        rick.setName("Rick");
-        Candidate morty = new Candidate(35, "Ukrainian", true, "2009-2020");
-        morty.setName("Morty");
-        Candidate ron = new Candidate(70, "Ukrainian", true, "2015-2020");
-        ron.setName("Ron");
-        Candidate phil = new Candidate(52, "Ukrainian", true, "1980-2013");
-        phil.setName("Philip");
-        return List.of(john, fred, rick, morty, casey, ron, phil);
     }
 
     @Test
@@ -257,5 +220,41 @@ public class StreamPracticeTest {
         List<String> expected = Collections.EMPTY_LIST;
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
                 emptyList), expected, solution.validateCandidates(emptyList));
+    }
+
+    private static List<Candidate> initInvalidCandidateList() {
+        Candidate john = new Candidate(30, "Ukrainian", false, "1985-2020");
+        john.setName("John");
+        Candidate fred = new Candidate(39, "German", true, "2000-2019");
+        fred.setName("Fred");
+        Candidate casey = new Candidate(61, "Ukrainian", true, "2011-2016");
+        casey.setName("Casey");
+        Candidate rick = new Candidate(44, "Ukrainian", false, "1990-2007");
+        rick.setName("Rick");
+        Candidate morty = new Candidate(35, "Frenchman", true, "2009-2020");
+        morty.setName("Morty");
+        Candidate ron = new Candidate(70, "Ukrainian", true, "2015-2020");
+        ron.setName("Ron");
+        Candidate phil = new Candidate(52, "Ukrainian", false, "1980-2013");
+        phil.setName("Philip");
+        return List.of(john, fred, rick, morty, casey, ron, phil);
+    }
+
+    private static List<Candidate> initCandidateList() {
+        Candidate john = new Candidate(30, "Ukrainian", false, "1985-2020");
+        john.setName("John");
+        Candidate fred = new Candidate(39, "German", true, "2000-2019");
+        fred.setName("Fred");
+        Candidate casey = new Candidate(61, "Ukrainian", true, "1988-2000");
+        casey.setName("Casey");
+        Candidate rick = new Candidate(44, "Ukrainian", false, "1990-2007");
+        rick.setName("Rick");
+        Candidate morty = new Candidate(35, "Ukrainian", true, "2009-2020");
+        morty.setName("Morty");
+        Candidate ron = new Candidate(70, "Ukrainian", true, "2015-2020");
+        ron.setName("Ron");
+        Candidate phil = new Candidate(52, "Ukrainian", true, "1980-2013");
+        phil.setName("Philip");
+        return List.of(john, fred, rick, morty, casey, ron, phil);
     }
 }
