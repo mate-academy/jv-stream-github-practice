@@ -16,8 +16,7 @@ public class StreamPractice {
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .sorted()
-                .findFirst()
+                .min(Comparator.comparingInt(n -> n))
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
