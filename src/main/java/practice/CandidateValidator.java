@@ -11,7 +11,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int TO_YEAR_INDEX = 1;
     private static final String LINE_SEPARATOR = "-";
 
-    public boolean test (Candidate candidate) {
+    public boolean test(Candidate candidate) {
         String[] period = candidate.getPeriodsInUkr().split(LINE_SEPARATOR);
         int yearsInUkraine = Integer.parseInt(period[TO_YEAR_INDEX])
                 - Integer.parseInt(period[FROM_YEAR_INDEX]);

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,6 +18,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(str -> Arrays.stream(str.split(",")))
@@ -26,20 +26,22 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .mapToInt(n -> n)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can`t get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can`t get min value from list: "
+                        + numbers));
     }
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
+
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                         .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                         .filter(num -> num % 2 != 0)
                         .average()
-                        .orElseThrow(() -> new NoSuchElementException("Can`t get average value from list : "
-                                + numbers));
+                        .orElseThrow(() -> new NoSuchElementException("Can`t get average "
+                                + "value from list : " + numbers));
     }
 
     /**
@@ -51,8 +53,9 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        Predicate<Person> manFromAgeToAge = p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
-                                                                                     && p.getAge() <= toAge;
+        Predicate<Person> manFromAgeToAge = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge
+                && p.getAge() <= toAge;
         return peopleList.stream()
                          .filter(manFromAgeToAge)
                          .toList();
@@ -70,8 +73,9 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workablePerson = p -> p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
-                && p.getAge() <= maleToAge || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= fromAge
+        Predicate<Person> workablePerson = p -> p.getSex() == Person.Sex.MAN
+                && p.getAge() >= fromAge && p.getAge() <= maleToAge
+                || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= fromAge
                 && p.getAge() <= femaleToAge);
         return peopleList.stream()
                          .filter(workablePerson)
