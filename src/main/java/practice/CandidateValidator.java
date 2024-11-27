@@ -10,9 +10,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int formYearInUkraine = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
+        int fromYearInUkraine = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[0]);
         int toYearInUkraine = Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1]);
-        int amountOfYearInUkraine = toYearInUkraine - formYearInUkraine;
+        int amountOfYearInUkraine = toYearInUkraine - fromYearInUkraine;
 
         return candidate.getAge() >= VALID_AGE
                 && candidate.isAllowedToVote()
