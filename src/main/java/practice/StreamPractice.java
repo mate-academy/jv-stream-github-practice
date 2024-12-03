@@ -3,7 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -35,15 +35,12 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .mapToObj(idx -> {
                     int num = numbers.get(idx);
-                    if (idx % 2 == 1) {
-                        num -= 1;
-                    }
-                    return num;
+                    return (idx % 2 == 1) ? num - 1 : num;
                 })
                 .filter(n -> n % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers available"));
     }
 
     /**
@@ -59,7 +56,7 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
                         && p.getSex() == Person.Sex.MAN)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -74,12 +71,15 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> workableAgeMax = p -> (
+                p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
+        );
+        Predicate<Person> workableAgeMin = p -> p.getAge() >= fromAge;
         return peopleList.stream()
-                .filter(p -> (
-                        p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
-                .filter(p -> p.getAge() >= fromAge)
-                .collect(Collectors.toList());
+                .filter(workableAgeMax)
+                .filter(workableAgeMin)
+                .toList();
     }
 
     /**
@@ -92,7 +92,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -112,6 +112,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
