@@ -1,9 +1,10 @@
 package practice;
 
-import java.util.*;
-import java.util.function.Predicate;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -17,11 +18,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
+        dataValidatorForFindMinEvenNumber(numbers);
         return numbers.stream().map(s -> s.split(","))
                 .flatMap(Arrays::stream)
                 .mapToInt(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
-                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .min().orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -47,7 +50,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(i -> i.getAge() >= fromAge && i.getAge() <= toAge && i.getSex().equals(Person.Sex.MAN))
+                .filter(i -> i.getAge() >= fromAge
+                        && i.getAge() <= toAge
+                        && i.getSex().equals(Person.Sex.MAN))
                 .toList();
     }
 
@@ -77,7 +82,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(i -> i.getAge() > femaleAge && i.getSex().equals(Person.Sex.WOMAN))
+                .filter(i -> i.getAge() >= femaleAge && i.getSex().equals(Person.Sex.WOMAN))
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
@@ -103,5 +108,16 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private void dataValidatorForFindMinEvenNumber(List<String> data) {
+        for (String datas : data) {
+            for (int i = 0; i < datas.length(); i++) {
+                if (Character.isLetter(datas.charAt(i))) {
+                    throw new RuntimeException("Data contains letters");
+
+                }
+            }
+        }
     }
 }
