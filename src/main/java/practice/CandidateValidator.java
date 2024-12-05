@@ -1,6 +1,10 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -15,10 +19,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private void periodsInUkrValidator(Candidate candidate) {
-        for (int i = 0; i < candidate.getPeriodsInUkr().length(); i++) {
-            if (Character.isLetter(candidate.getPeriodsInUkr().charAt(i))) {
-                throw new RuntimeException("Data contains letters");
-            }
+
+        if (Stream.of(candidate.getPeriodsInUkr())
+                .map(String::chars)
+                .flatMap(IntStream::boxed)
+                .mapToInt(i -> i)
+                .mapToObj(i -> (char) i)
+                .anyMatch(Character::isLetter)) {
+            throw new RuntimeException("Wrong Data format");
         }
     }
     //write your code here

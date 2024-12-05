@@ -111,13 +111,14 @@ public class StreamPractice {
     }
 
     private void dataValidatorForFindMinEvenNumber(List<String> data) {
-        for (String datas : data) {
-            for (int i = 0; i < datas.length(); i++) {
-                if (Character.isLetter(datas.charAt(i))) {
-                    throw new RuntimeException("Data contains letters");
 
-                }
-            }
+        if (data.stream()
+                .map(String::chars)
+                .flatMap(IntStream::boxed)
+                .mapToInt(i -> i)
+                .mapToObj(i -> (char) i)
+                .anyMatch(Character::isLetter)) {
+            throw new RuntimeException("Wrong Data format");
         }
     }
 }
