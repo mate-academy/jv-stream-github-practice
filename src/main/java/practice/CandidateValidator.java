@@ -1,10 +1,8 @@
 package practice;
 
-import java.util.Arrays;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -19,7 +17,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private void periodsInUkrValidator(Candidate candidate) {
-
         if (Stream.of(candidate.getPeriodsInUkr())
                 .map(String::chars)
                 .flatMap(IntStream::boxed)
