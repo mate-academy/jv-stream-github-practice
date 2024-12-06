@@ -22,7 +22,8 @@ public class StreamPractice {
                 .flatMap(input -> Arrays.stream(input.split(",")))
                 .map(Integer::parseInt).filter(num -> num % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
