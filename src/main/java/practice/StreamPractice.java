@@ -19,11 +19,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(str -> str.split(","))
-                .flatMap(Arrays::stream)
+                .flatMap(input -> Arrays.stream(input.split(",")))
                 .map(Integer::parseInt).filter(num -> num % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("No even numbers found in the list"));
     }
 
     /**
@@ -33,12 +32,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToObj(idx -> {
-                    int num = numbers.get(idx);
-                    return (idx % 2 == 1) ? num - 1 : num;
-                })
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers available"));
     }
@@ -53,9 +48,9 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && p.getAge() <= toAge
-                        && p.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex() == Person.Sex.MAN)
                 .toList();
     }
 
@@ -71,11 +66,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        Predicate<Person> workableAgeMax = p -> (
-                p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
-                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge
+        Predicate<Person> workableAgeMax = person -> (
+                person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
+                || (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge
         );
-        Predicate<Person> workableAgeMin = p -> p.getAge() >= fromAge;
+        Predicate<Person> workableAgeMin = person -> person.getAge() >= fromAge;
         return peopleList.stream()
                 .filter(workableAgeMax)
                 .filter(workableAgeMin)
@@ -89,8 +84,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .flatMap(p -> p.getCats().stream())
+                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
     }
