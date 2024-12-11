@@ -3,13 +3,15 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -38,7 +40,7 @@ public class StreamPractice {
                 .map(x -> (x % 2 != 0) ? numbers.get(x) - 1 : numbers.get(x))
                 .filter(x -> x % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("There are no odd numbers"));
     }
 
     /**
@@ -53,7 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(x -> x.getSex() == Person.Sex.MAN
                         && (x.getAge() >= fromAge && x.getAge() <= toAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -68,16 +70,18 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> malePredicate = male -> fromAge <= male.getAge()
+                && male.getAge() <= maleToAge;
+        Predicate<Person> femalePredicate = female -> fromAge <= female.getAge()
+                && female.getAge() <= femaleToAge;
         return peopleList.stream()
-                .filter(x -> {
-                    if (x.getSex() == Person.Sex.MAN) {
-                        return fromAge <= x.getAge() && x.getAge() <= maleToAge;
-                    } else if (x.getSex() == Person.Sex.WOMAN) {
-                        return fromAge <= x.getAge() && x.getAge() <= femaleToAge;
+                .filter(person -> {
+                    if (person.getSex() == Person.Sex.MAN) {
+                        return malePredicate.test(person);
                     }
-                    return false;
+                    return femalePredicate.test(person);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -92,7 +96,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(List::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -109,9 +113,9 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> new CandidateValidator().test(c))
+                .filter(CANDIDATE_VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
