@@ -5,36 +5,35 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
-    private static final int YEARS_IN_UKRAINE = 10;
+    private static final int MINIMAL_PERIOD = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String SPLITERATOR = ",";
+    private static final int YEAR_FROM = 0;
+    private static final int YEAR_TO = 1;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= MIN_AGE
-                && candidate.isAllowedToVote()
-                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-                && checkTimeLivingInCountry(candidate);
-    }
+        String periodsInUkr = candidate.getPeriodsInUkr();
 
-    private boolean checkTimeLivingInCountry(Candidate candidate) {
-        String[] periods = candidate.getPeriodsInUkr().split(",");
-        int totalYears = 0;
-
-        for (String period : periods) {
-            String[] years = period.split("-");
-            if (years.length == 2) {
-                try {
-                    int startYear = Integer.parseInt(years[0].trim());
-                    int endYear = Integer.parseInt(years[1].trim());
-                    totalYears += (endYear - startYear);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Invalid period format: " + period);
-                }
-            } else {
-                throw new IllegalArgumentException("Invalid period format: " + period);
-            }
+        String[] years = periodsInUkr.split("-");
+        if (years.length != 2) {
+            return false;
         }
 
-        return totalYears >= YEARS_IN_UKRAINE;
+        try {
+            int yearFrom = Integer.parseInt(years[0]);
+            int yearTo = Integer.parseInt(years[1]);
+
+            if (yearTo - yearFrom < MINIMAL_PERIOD) {
+                return false;
+            }
+
+            return candidate.getAge() >= MIN_AGE
+                    && candidate.isAllowedToVote()
+                    && REQUIRED_NATIONALITY.equals(candidate.getNationality());
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
+
 }
