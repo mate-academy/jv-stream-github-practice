@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -25,18 +26,19 @@ public class StreamPractice {
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list " + numbers));
     }
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
+
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(i -> i % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() ->
+                        new NoSuchElementException("The list doesn't have need element"));
     }
 
     /**
@@ -66,11 +68,16 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isManInRange = person ->
+                person.getSex().equals(Person.Sex.MAN)
+                        && person.getAge() >= fromAge && person.getAge() <= maleToAge;
+
+        Predicate<Person> isWomanInRange = person ->
+                person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
+
         return peopleList.stream()
-                .filter(person -> (person.getSex().equals(Person.Sex.MAN)
-                        && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                || person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() >= fromAge && person.getAge() <= femaleToAge)
+                .filter(isManInRange.or(isWomanInRange))
                 .toList();
     }
 
