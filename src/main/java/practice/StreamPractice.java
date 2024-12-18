@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,14 +21,14 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
 
-        Optional<Integer> min = numbers.stream()
+        return numbers.stream()
                 .map(n -> n.split(","))
                 .flatMap(Arrays::stream)
                 .map(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
-                .min(Integer::compareTo);
-        return min.orElseThrow(() ->
-                new RuntimeException("Can't get min value from list: " + numbers));
+                .min(Integer::compareTo)
+                .orElseThrow(()
+                        -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -38,14 +37,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> newNumbers = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .mapToObj(i -> {
                     Integer n = numbers.get(i);
                     return i % 2 != 0 ? n - 1 : n;
                 })
                 .filter(n -> n % 2 != 0)
-                .toList();
-        return newNumbers.stream()
                 .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
@@ -86,7 +83,7 @@ public class StreamPractice {
                 || p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge);
         return peopleList.stream()
                 .filter(suitableForWork)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -118,9 +115,8 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidateValidator)
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
