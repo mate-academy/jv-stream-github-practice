@@ -24,8 +24,8 @@ public class StreamPractice {
                 .filter(s -> s % 2 == 0)
                 .min((s,b) -> s - b)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list: " +
-                                "< Here is our input 'numbers' >"));
+                        new RuntimeException("Can't get min value from list: "
+                                + "< Here is our input 'numbers' >"));
     }
 
     /**
@@ -83,7 +83,7 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-         return peopleList.stream()
+        return peopleList.stream()
                 .filter(s -> s.getAge() >= femaleAge && !s.getCats().isEmpty()
                         && s.getSex() == Person.Sex.WOMAN)
                 .map(s -> s.getCats())
@@ -105,7 +105,7 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-         return candidates.stream()
+        return candidates.stream()
                 .filter(new CandidateValidator())
                  .map(s -> s.getName())
                  .sorted()
