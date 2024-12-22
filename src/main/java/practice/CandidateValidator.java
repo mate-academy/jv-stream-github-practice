@@ -12,8 +12,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getClass().equals(Candidate.class)
-                && candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
+        return candidate.getAge() >= MIN_AGE_FOR_CANDIDATE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY_FOR_CANDIDATE)
                 && getLivePeriodInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKRAINE;
@@ -21,7 +20,13 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     public static int getLivePeriodInUkraine(String periodsInUkr) {
         String[] split = periodsInUkr.split("-");
-        return Integer.parseInt(split[LAST_INDEX_END])
-                - Integer.parseInt(split[FIRST_INDEX_START]);
+        int period = 0;
+        try {
+            period = Integer.parseInt(split[LAST_INDEX_END])
+                    - Integer.parseInt(split[FIRST_INDEX_START]);
+        } catch (NumberFormatException e) {
+            System.out.println("String does not contain a parsable integer");
+        }
+        return period;
     }
 }
