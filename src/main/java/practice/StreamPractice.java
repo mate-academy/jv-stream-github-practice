@@ -51,8 +51,8 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(s -> s.getAge() >= fromAge && s.getAge() <= toAge
-                        && s.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge
+                        && person.getSex() == Person.Sex.MAN)
                 .toList();
     }
 
@@ -69,10 +69,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(s -> (s.getSex() == Person.Sex.WOMAN && s.getAge() >= fromAge
-                        && s.getAge() <= femaleToAge)
-                        || (s.getSex() == Person.Sex.MAN && s.getAge() >= fromAge
-                        && s.getAge() <= maleToAge))
+                .filter(person -> (person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge))
                 .toList();
     }
 
@@ -83,9 +83,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(s -> s.getAge() >= femaleAge && !s.getCats().isEmpty()
-                        && s.getSex() == Person.Sex.WOMAN)
-                .map(s -> s.getCats())
+                .filter(person -> person.getAge() >= femaleAge && !person.getCats().isEmpty()
+                        && person.getSex() == Person.Sex.WOMAN)
+                .map(cat -> cat.getCats())
                 .flatMap(s -> s.stream())
                  .map(s -> s.getName())
                 .toList();
