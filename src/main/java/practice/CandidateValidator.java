@@ -9,10 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int PART_TWO = 1;
     private static final int TO_AGE = 35;
     private static final int DURATION_IN_UKRAINE = 10;
+    private static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] splitted = candidate.getPeriodsInUkr().split("-");
+        String[] splitted = candidate.getPeriodsInUkr().split(SEPARATOR);
         int duration = Integer.parseInt(splitted[PART_TWO]) - Integer.parseInt(splitted[PART_ONE]);
         if (candidate.isAllowedToVote() && candidate.getAge() >= TO_AGE
                 && candidate.getNationality().equals(NATIONALITY)
