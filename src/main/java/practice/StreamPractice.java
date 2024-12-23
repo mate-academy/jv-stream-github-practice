@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -17,11 +18,10 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(s -> s.split(","))
-                .flatMap(strings -> Arrays.stream(strings))
-                .map(s -> Integer.parseInt(s))
+                .flatMap(input -> Arrays.stream(input.split(",")))
+                .map(Integer::parseInt)
                 .filter(s -> s % 2 == 0)
-                .min((s,b) -> s - b)
+                .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can't get min value from list: "
                                 + "< Here is our input 'numbers' >"));
@@ -85,9 +85,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= femaleAge && !person.getCats().isEmpty()
                         && person.getSex() == Person.Sex.WOMAN)
-                .map(cat -> cat.getCats())
-                .flatMap(s -> s.stream())
-                 .map(s -> s.getName())
+                 .flatMap(person -> person.getCats().stream())
+                 .map(Cat::getName)
                 .toList();
     }
 
@@ -106,7 +105,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
-                 .map(s -> s.getName())
+                 .map(Candidate::getName)
                  .sorted()
                 .toList();
     }
