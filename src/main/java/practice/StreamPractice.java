@@ -1,10 +1,11 @@
 package practice;
 
+import java.beans.PersistenceDelegate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -40,7 +41,8 @@ public class StreamPractice {
                 .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException(
+                        "List of Integer numbers doesn't contains an odd numbers"));
     }
 
     /**
@@ -55,7 +57,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -71,13 +73,13 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> ((person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> ((person.getSex() == Person.Sex.MAN
                         && person.getAge() > fromAge
                         && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() >= fromAge
                         && person.getAge() <= femaleToAge)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -92,7 +94,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -102,7 +104,7 @@ public class StreamPractice {
      * names sorted alphabetically.
      * The requirements are: person should be older than 35 years, should be allowed to vote,
      * have nationality - 'Ukrainian'
-     * and live in Ukraine for 10 years. For the last requirement use field Ukrainian',
+     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
      * which has following view: "2002-2015"
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
@@ -113,5 +115,17 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    Predicate<Person> personPredicate = new Predicate<Person>() {
+        @Override
+        public boolean test(Person person) {
+            return ((person.getSex() == Person.Sex.MAN
+                    && person.getAge() > fromAge
+                    && person.getAge() <= maleToAge)
+                    || (person.getSex().equals(Person.Sex.WOMAN)
+                    && person.getAge() >= fromAge
+                    && person.getAge() <= femaleToAge));
+        }
     }
 }

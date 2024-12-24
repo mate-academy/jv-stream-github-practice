@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE_FOR_CANDIDATE = 35;
     private static final int MIN_PERIOD_IN_UKRAINE = 10;
     private static final String NATIONALITY_FOR_CANDIDATE = "Ukrainian";
+    private static final String SPLIT_REGEX = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,14 +19,14 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && getLivePeriodInUkraine(candidate.getPeriodsInUkr()) >= MIN_PERIOD_IN_UKRAINE;
     }
 
-    public static int getLivePeriodInUkraine(String periodsInUkr) {
-        String[] split = periodsInUkr.split("-");
+    private int getLivePeriodInUkraine(String periodsInUkr) {
+        String[] split = periodsInUkr.split(SPLIT_REGEX);
         int period = 0;
         try {
             period = Integer.parseInt(split[LAST_INDEX_END])
                     - Integer.parseInt(split[FIRST_INDEX_START]);
         } catch (NumberFormatException e) {
-            System.out.println("String does not contain a parsable integer");
+            throw new RuntimeException(periodsInUkr + " does not contain a parsable integer");
         }
         return period;
     }
