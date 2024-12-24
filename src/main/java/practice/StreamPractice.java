@@ -1,11 +1,9 @@
 package practice;
 
-import java.beans.PersistenceDelegate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -115,17 +113,5 @@ public class StreamPractice {
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
-    }
-
-    Predicate<Person> personPredicate = new Predicate<Person>() {
-        @Override
-        public boolean test(Person person) {
-            return ((person.getSex() == Person.Sex.MAN
-                    && person.getAge() > fromAge
-                    && person.getAge() <= maleToAge)
-                    || (person.getSex().equals(Person.Sex.WOMAN)
-                    && person.getAge() >= fromAge
-                    && person.getAge() <= femaleToAge));
-        }
     }
 }
