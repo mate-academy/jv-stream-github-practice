@@ -17,12 +17,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         List<Integer> years = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
-        if (candidate.getAge() >= MINIMAL_AGE
+        return candidate.getAge() >= MINIMAL_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
-                && (years.get(1) - years.get(0)) >= MINIMAL_YEARS_IN_UA) {
-            return true;
-        }
-        return false;
+                && (years.get(1) - years.get(0)) >= MINIMAL_YEARS_IN_UA;
     }
 }
