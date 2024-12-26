@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -14,7 +15,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(s -> List.of(s.split(",")).stream())
+                .flatMap(s -> Stream.of(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min()
@@ -46,10 +47,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> {
-                    return person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
-                            : person.getAge() <= femaleToAge;
-                })
+                .filter(person -> person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
+                        : person.getAge() <= femaleToAge)
                 .toList();
     }
 
