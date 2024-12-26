@@ -3,7 +3,6 @@ package practice;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -40,7 +39,7 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
                         && p.getSex().equals(Person.Sex.MAN))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -48,13 +47,10 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
                 .filter(person -> {
-                    if (person.getSex() == Person.Sex.MAN) {
-                        return person.getAge() <= maleToAge;
-                    } else {
-                        return person.getAge() <= femaleToAge;
-                    }
+                    return person.getSex() == Person.Sex.MAN ? person.getAge() <= maleToAge
+                            : person.getAge() <= femaleToAge;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -63,7 +59,7 @@ public class StreamPractice {
                         && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
@@ -71,6 +67,6 @@ public class StreamPractice {
                 .filter(VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
