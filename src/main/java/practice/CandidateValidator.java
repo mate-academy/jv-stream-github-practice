@@ -16,23 +16,20 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final String NATIONALITY = "Ukrainian";
     private static final int PERIOD_IN_UKRAINE = 10;
+    private static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate c) {
-        if (c.getAge() < MIN_AGE) {
+        if (c.getAge() < MIN_AGE
+                || !c.isAllowedToVote()
+                || !NATIONALITY.equals(c.getNationality())) {
             return false;
         }
-        if (!c.isAllowedToVote()) {
-            return false;
-        }
-        if (!NATIONALITY.equals(c.getNationality())) {
-            return false;
-        }
-        String[] splitedPeriod = c.getPeriodsInUkr().split("-");
+        String[] splitedPeriod = c.getPeriodsInUkr().split(SEPARATOR);
         int startYear = Integer.parseInt(splitedPeriod[0]);
         int endYear = Integer.parseInt(splitedPeriod[1]);
-
         return (endYear - startYear) >= PERIOD_IN_UKRAINE;
     }
 }
+
 
