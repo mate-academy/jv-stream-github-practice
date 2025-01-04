@@ -10,8 +10,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int MinAge = 35;
-
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -27,7 +25,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(() ->
-                        new RuntimeException("Can't get min value from list:" + numbers));
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
@@ -44,7 +42,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(()
-                        -> new NoSuchElementException("Can't get min value from list: " + numbers));
+                        -> new NoSuchElementException("Can't get average value from list: "
+                        + numbers));
     }
 
     /**
@@ -95,7 +94,7 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(pw -> pw.getSex()
-                        .equals(Person.Sex.WOMAN) && pw.getAge() > femaleAge)
+                        .equals(Person.Sex.WOMAN) && pw.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
