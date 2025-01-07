@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
-
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -16,10 +15,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= AGE_FACTOR &&
-                candidate.isAllowedToVote() &&
-                candidate.getNationality().equals(UKRAINE_NATIONALITY_FACTOR) &&
-                Arrays.stream(candidate.getPeriodsInUkr().split(COMMA))
+        return candidate.getAge() >= AGE_FACTOR
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(UKRAINE_NATIONALITY_FACTOR)
+                && Arrays.stream(candidate.getPeriodsInUkr().split(COMMA))
                         .mapToInt(period -> {
                             String[] periods = period.split(PERIOD_DELIMITER);
                             int startYear = Integer.parseInt(periods[START_YEAR]);
