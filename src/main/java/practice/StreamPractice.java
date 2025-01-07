@@ -62,12 +62,10 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        List<Person> selectMen = peopleList.stream()
+        return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
                 .toList();
-
-        return selectMen;
     }
 
     /**
@@ -82,14 +80,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        List<Person> selectWorkablePeople = peopleList.stream()
+        return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
                 .filter(person ->
                         (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
                                 || (person.getSex() == Person.Sex.WOMAN
                                 && person.getAge() <= femaleToAge))
                 .toList();
-        return selectWorkablePeople;
     }
 
     /**
@@ -98,13 +95,12 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        List<String> selectCatsNames = peopleList.stream()
+        return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN)
                 .filter(person -> person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .toList();
-        return selectCatsNames;
     }
 
     /**
