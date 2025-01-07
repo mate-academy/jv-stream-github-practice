@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.OptionalDouble;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -66,7 +65,7 @@ public class StreamPractice {
         List<Person> selectMen = peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
 
         return selectMen;
     }
@@ -89,7 +88,7 @@ public class StreamPractice {
                         (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
                                 || (person.getSex() == Person.Sex.WOMAN
                                 && person.getAge() <= femaleToAge))
-                .collect(Collectors.toList());
+                .toList();
         return selectWorkablePeople;
     }
 
@@ -104,7 +103,7 @@ public class StreamPractice {
                 .filter(person -> person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
         return selectCatsNames;
     }
 
@@ -127,6 +126,6 @@ public class StreamPractice {
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
