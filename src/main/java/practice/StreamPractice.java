@@ -29,7 +29,7 @@ public class StreamPractice {
                 .filter(number -> number % PARITY_CHECK_DIVISOR == EVEN_NUMBER_FACTOR)
                 .min(Integer::compareTo);
 
-        return minEven.orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+        return minEven.orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     /**
