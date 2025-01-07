@@ -17,10 +17,15 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        int yearsInUkr = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                .mapToInt(Integer::parseInt)
-                .reduce((start, end) -> end - start)
-                .orElse(0);
+        String[] candidateList = candidate.getPeriodsInUkr().split(",");
+        int yearsInUkr = Arrays.stream(candidateList)
+                .mapToInt(period -> {
+                    String[] periods = period.split("-");
+                    int startYear = Integer.parseInt(periods[0]);
+                    int endYear = Integer.parseInt(periods[1]);
+                    return endYear - startYear;
+                })
+                .sum();
         return yearsInUkr >= 10;
     }
 }

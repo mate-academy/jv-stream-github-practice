@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -31,7 +30,8 @@ public class StreamPractice {
                 .filter(number -> number % PARITY_CHECK_DIVISOR == EVEN_NUMBER_FACTOR)
                 .min(Integer::compareTo);
 
-        return minEven.orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
+        return minEven.orElseThrow(() -> new RuntimeException("Can't get min value from list"
+                + numbers));
     }
 
     /**
