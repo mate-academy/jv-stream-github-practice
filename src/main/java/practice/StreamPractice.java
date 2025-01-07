@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -38,12 +40,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        OptionalDouble avgOdd = numbers.stream()
+        List<Integer> sortedNumbers = IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR
+                        ? numbers.get(i) - 1
+                        : numbers.get(i))
+                .toList();
+
+        OptionalDouble avgOdd = sortedNumbers.stream()
                 .filter(number -> number % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR)
                 .mapToInt(Integer::intValue)
                 .average();
