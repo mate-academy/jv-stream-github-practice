@@ -24,13 +24,12 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> minEven = numbers.stream()
+        return numbers.stream()
                 .flatMap(number -> Arrays.stream(number.split(COMMA)))
                 .map(Integer::parseInt)
                 .filter(number -> number % PARITY_CHECK_DIVISOR == EVEN_NUMBER_FACTOR)
-                .min(Integer::compareTo);
-
-        return minEven.orElseThrow(() -> new RuntimeException("Can't get min value from list"
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"
                 + numbers));
     }
 
@@ -46,7 +45,7 @@ public class StreamPractice {
                         : numbers.get(i))
                 .filter(number -> number % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
+                .getAsDouble();
     }
 
     /**
