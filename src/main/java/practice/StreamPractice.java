@@ -14,6 +14,7 @@ public class StreamPractice {
     private static final int PARITY_CHECK_DIVISOR = 2;
     private static final int EVEN_NUMBER_FACTOR = 0;
     private static final int ODD_NUMBER_FACTOR = 1;
+    private static final String COMMA = ",";
 
     /**
      * Given list of strings where each element contains 1+ numbers:
@@ -24,7 +25,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         Optional<Integer> minEven = numbers.stream()
-                .flatMap(number -> Arrays.stream(number.split(",")))
+                .flatMap(number -> Arrays.stream(number.split(COMMA)))
                 .map(Integer::parseInt)
                 .filter(number -> number % PARITY_CHECK_DIVISOR == EVEN_NUMBER_FACTOR)
                 .min(Integer::compareTo);

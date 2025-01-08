@@ -26,6 +26,5 @@ public class CandidateValidator implements Predicate<Candidate> {
                             return endYear - startYear;
                         })
                         .sum() >= YEARS_IN_UKRAINE_FACTOR;
-
     }
 }
