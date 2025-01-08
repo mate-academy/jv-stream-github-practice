@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -36,7 +35,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         List<Integer> modifiedNumbers = IntStream.range(0,numbers.size())
                 .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
-                .collect(Collectors.toList());
+                .toList();
         return modifiedNumbers.stream()
                 .filter(num -> num % 2 != 0)
                 .mapToInt(Integer::intValue)
@@ -56,7 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -77,7 +76,7 @@ public class StreamPractice {
                         && person.getAge() >= fromAge && person.getAge() <= maleToAge)
         || (person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -92,7 +91,7 @@ public class StreamPractice {
                         && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -113,6 +112,6 @@ public class StreamPractice {
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
