@@ -12,9 +12,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private static final int PARITY_CHECK_DIVISOR = 2;
-    private static final int EVEN_NUMBER_FACTOR = 0;
-    private static final int ODD_NUMBER_FACTOR = 1;
     private static final String COMMA = ",";
 
     /**
@@ -28,7 +25,7 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(number -> Arrays.stream(number.split(COMMA)))
                 .map(Integer::parseInt)
-                .filter(number -> number % PARITY_CHECK_DIVISOR == EVEN_NUMBER_FACTOR)
+                .filter(number -> number % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"
                         + numbers));
@@ -41,10 +38,10 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(i -> i % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR
+                .mapToDouble(i -> i % 2 == 1
                         ? numbers.get(i) - 1
                         : numbers.get(i))
-                .filter(number -> number % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR)
+                .filter(number -> number % 2 == 1)
                 .average()
                 .getAsDouble();
     }
