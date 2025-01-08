@@ -40,14 +40,13 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        OptionalDouble avgOdd = IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                     .mapToDouble(i -> i % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR
                         ? numbers.get(i) - 1
                         : numbers.get(i))
                 .filter(number -> number % PARITY_CHECK_DIVISOR == ODD_NUMBER_FACTOR)
-                .average();
-
-        return avgOdd.orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
 
     /**
