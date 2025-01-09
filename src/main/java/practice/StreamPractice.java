@@ -19,10 +19,10 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        final String errorMessage = "Can't get min value from list " + numbers;
+        final String errorMessage = "Can't get min value from list: " + numbers;
 
         if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list " + numbers);
+            throw new RuntimeException(errorMessage);
         }
 
         return Arrays.stream(numbers.stream()
@@ -47,7 +47,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .average()
                 .orElseThrow(() ->
-                        new NoSuchElementException("No even number found in list"));
+                        new NoSuchElementException("No odd number found in list"));
     }
 
     /**
