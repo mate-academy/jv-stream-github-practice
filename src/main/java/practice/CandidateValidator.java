@@ -4,12 +4,12 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    //write your code here
     private static final int PERIOD = 10;
     private static final int MIN_AGE = 35;
     private static final String SYMBOL = "-";
     private static final int FROM = 0;
     private static final int TO = 1;
-
     private static final String NATION = "Ukrainian";
 
     @Override
@@ -23,6 +23,5 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
         return false;
     }
-    //write your code here
 
 }
