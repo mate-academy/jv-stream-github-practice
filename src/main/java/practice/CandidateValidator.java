@@ -14,7 +14,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         String[] split1 = candidate.getPeriodsInUkr().split("-");
         int period = Math.abs(Integer.parseInt(split1[0]) - Integer.parseInt(split1[1]));
-        if (candidate.isAllowedToVote() && candidate.getAge() > MIN_AGE
+        if (candidate.isAllowedToVote() && candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(NATION)
                 && period > PERIOD) {
             return true;
