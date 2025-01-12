@@ -10,7 +10,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROM = 0;
     private static final int TO = 1;
 
-    private final static String NATION = "Ukrainian";
+    private static final String NATION = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
