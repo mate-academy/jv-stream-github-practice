@@ -24,7 +24,6 @@ public class StreamPractice {
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
@@ -50,7 +49,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -82,8 +81,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
                 && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(c -> c.stream())
+                .flatMap(person -> person.getCats().stream())
                 .map(cat -> cat.getName())
                 .collect(Collectors.toList());
     }
