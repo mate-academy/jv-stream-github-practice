@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int MIN_LIVE_AGE = 10;
     private static final String COUNTRY = "Ukrainian";
+    private static final String DASH = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -19,21 +20,18 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private boolean checkYear(Candidate candidate) {
         String yearStr = candidate.getPeriodsInUkr();
-        try {
-            int indexOfDash = yearStr.indexOf("-");
-            if (indexOfDash == -1) {
-                throw new IllegalArgumentException("Invalid input format. The input string "
-                        + "must contain a '-' character.");
-            }
+        int indexOfDash = yearStr.indexOf(DASH);
 
-            String year1 = yearStr.substring(0, indexOfDash);
-            String year2 = yearStr.substring(indexOfDash + 1);
-
-            int liveAge = Integer.parseInt(year2) - Integer.parseInt(year1);
-            return liveAge >= MIN_LIVE_AGE;
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("One of the years is not a valid integer."
-                    + "Input string: " + yearStr);
+        if (indexOfDash == -1) {
+            throw new IllegalArgumentException("Invalid input format. The input string "
+                    + "must contain a '-' character.");
         }
+
+        String year1 = yearStr.substring(0, indexOfDash);
+        String year2 = yearStr.substring(indexOfDash + 1);
+
+        int liveAge = Integer.parseInt(year2) - Integer.parseInt(year1);
+
+        return liveAge >= MIN_LIVE_AGE;
     }
 }
