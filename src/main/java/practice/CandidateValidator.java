@@ -1,17 +1,16 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         System.out.println("Validating candidate: " + candidate.getName());
-        boolean valid = candidate.getAge() > 35 &&
-                candidate.isAllowedToVote() &&
-                "Ukrainian".equals(candidate.getNationality()) &&
-                isEligibleResidency(candidate.getPeriodsInUkr());
+        boolean valid = candidate.getAge() > 35
+                && candidate.isAllowedToVote()
+                && "Ukrainian".equals(candidate.getNationality())
+                && isEligibleResidency(candidate.getPeriodsInUkr());
         if (valid) {
             System.out.println("Candidate passed: " + candidate.getName());
         } else {
@@ -19,7 +18,9 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
         return valid;
     }
+
     private static boolean isEligibleResidency(String periodInUkr) {
+
         if (!periodInUkr.matches("\\d{4}-\\d{4}")) {
             return false;
         }
