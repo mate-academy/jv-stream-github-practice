@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_YEARS_IN_UKRAINE = 10;
     private static final int INDEX_OF_START_PERIOD = 0;
     private static final int INDEX_OF_END_PERIOD = 1;
+    private static final String DASH_SIGN = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -20,9 +21,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int getResidencyYearsInUkraine(Candidate candidate) {
         int startPeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[INDEX_OF_START_PERIOD]);
+                .split(DASH_SIGN)[INDEX_OF_START_PERIOD]);
         int endPeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[INDEX_OF_END_PERIOD]);
+                .split(DASH_SIGN)[INDEX_OF_END_PERIOD]);
         return endPeriod - startPeriod;
     }
 
