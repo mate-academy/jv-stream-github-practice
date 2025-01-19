@@ -6,18 +6,15 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    // National for being candidate
-    private static final String neededNational = "Ukrainian";
-    // Minimum required age for being candidate
-    private static final int neededAge = 35;
-    // Minimum required years for being candidate
-    private static final int neededPeriod = 10;
+    private static final String requirementNationality = "Ukrainian";
+    private static final int requirementAge = 35;
+    private static final int requirementPeriodInUkr = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         if (candidate == null
-                || !candidate.getNationality().equals(neededNational)
-                || candidate.getAge() < neededAge
+                || !candidate.getNationality().equals(requirementNationality)
+                || candidate.getAge() < requirementAge
                 || !candidate.isAllowedToVote()) {
             return false;
         }
@@ -27,7 +24,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                     .map(Integer::valueOf)
                     .toList();
             if (periodInUkraine.size() != 2
-                    || periodInUkraine.get(1) - periodInUkraine.get(0) < neededPeriod) {
+                    || periodInUkraine.get(1) - periodInUkraine.get(0) < requirementPeriodInUkr) {
                 return false;
             }
         } catch (NumberFormatException | IndexOutOfBoundsException e) {

@@ -73,10 +73,11 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
 
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge)
-                .filter((p -> (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)
-                    || (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)))
-                .collect(Collectors.toList());
+                .filter(person -> person.getAge() >= fromAge)
+                .filter(person -> (person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() <= femaleToAge
+                    || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge))
+                .toList();
     }
 
     /**
@@ -87,14 +88,14 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
 
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN)
-                .filter(p -> p.getAge() >= femaleAge)
-                .flatMap(c -> c.getCats().stream())
+                .filter(person -> person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> person.getAge() >= femaleAge)
+                .flatMap(cat -> cat.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    /**               V - wtf MA, wrong article
+    /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
      * Check which candidates are eligible to apply for president position and return their
@@ -112,6 +113,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
