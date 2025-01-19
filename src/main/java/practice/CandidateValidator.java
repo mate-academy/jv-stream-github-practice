@@ -7,7 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         System.out.println("Validating candidate: " + candidate.getName());
-        boolean valid = candidate.getAge() > 35
+        boolean valid = candidate.getAge() >= 35
                 && candidate.isAllowedToVote()
                 && "Ukrainian".equals(candidate.getNationality())
                 && isEligibleResidency(candidate.getPeriodsInUkr());
@@ -21,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private static boolean isEligibleResidency(String periodInUkr) {
 
-        if (!periodInUkr.matches("\\d{4}-\\d{4}")) {
+        if (periodInUkr == null || !periodInUkr.matches("\\d{4}-\\d{4}")) {
             return false;
         }
         String[] years = periodInUkr.split("-");
