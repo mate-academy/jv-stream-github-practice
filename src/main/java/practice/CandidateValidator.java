@@ -24,7 +24,8 @@ public class CandidateValidator implements Predicate<Candidate> {
                     .map(Integer::valueOf)
                     .toList();
             if (periodInUkraine.size() != 2
-                    || periodInUkraine.get(1) - periodInUkraine.get(0) < REQUIREMENT_PERIOD_IN_UKR) {
+                    || periodInUkraine.get(1)
+                        - periodInUkraine.get(0) < REQUIREMENT_PERIOD_IN_UKR) {
                 return false;
             }
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
