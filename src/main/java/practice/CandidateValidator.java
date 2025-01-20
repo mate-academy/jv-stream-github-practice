@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIREMENT_NATIONALITY = "Ukrainian";
     private static final int REQUIREMENT_AGE = 35;
     private static final int REQUIREMENT_PERIOD_IN_UKR = 10;
+    private static final String PERIOD_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -18,9 +19,10 @@ public class CandidateValidator implements Predicate<Candidate> {
                 || !candidate.isAllowedToVote()) {
             return false;
         }
+
         try {
-            List<Integer> periodInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
-                    .map(String::trim)
+            List<Integer> periodInUkraine = Arrays
+                    .stream(candidate.getPeriodsInUkr().split(PERIOD_SEPARATOR))
                     .map(Integer::valueOf)
                     .toList();
             if (periodInUkraine.size() != 2
@@ -28,10 +30,11 @@ public class CandidateValidator implements Predicate<Candidate> {
                         - periodInUkraine.get(0) < REQUIREMENT_PERIOD_IN_UKR) {
                 return false;
             }
-        } catch (NumberFormatException | IndexOutOfBoundsException e) {
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
     }
+
 }
 

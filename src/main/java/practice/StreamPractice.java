@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
@@ -10,6 +11,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
+    public static final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,7 +27,7 @@ public class StreamPractice {
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(Integer::valueOf)
                 .filter(i -> i % 2 == 0)
-                .min(Integer::compareTo)
+                .min(Integer::compareTo) // .min() -> I got error of compilation :(
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers
                 ));
@@ -54,8 +58,8 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
 
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person -> person.getSex() == Person.Sex.MAN)
                 .collect(Collectors.toList());
     }
 
@@ -72,11 +76,13 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
 
+        Predicate<Person> ageAndSexFilter = person ->
+                (person.getSex() == Person.Sex.WOMAN && person.getAge() <= femaleToAge)
+                        || (person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge);
+
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> (person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() <= femaleToAge
-                    || person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge))
+                .filter(ageAndSexFilter)
                 .toList();
     }
 
@@ -110,7 +116,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
 
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
