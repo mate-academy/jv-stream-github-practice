@@ -1,11 +1,8 @@
 package practice;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.OptionalDouble;
-import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,39 +16,28 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
                 .map(String::trim)
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
-                .collect(Collectors.toList());
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return evenNumbers.stream().min(Integer::compareTo).get();
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list "
+                        + numbers));
     }
-
     /**
      * Given a List of Integer numbers,
      * return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
-    public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> modifiedNumbers = new ArrayList<>();
-        for (int i = 0; i < numbers.size(); i++) {
-            int num = numbers.get(i);
-            if (i % 2 != 0) {
-                num -= 1;
-            }
-            modifiedNumbers.add(num);
-        }
-        OptionalDouble average = modifiedNumbers.stream()
-                .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
-                .average();
-        return average.orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
-    }
 
+    public Double getOddNumsAverage(List<Integer> numbers) {
+        return numbers.stream()
+                .map(n -> n % 2 == 0 ? n - 1 : n)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
+    }
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -60,13 +46,13 @@ public class StreamPractice {
      * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
+
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter((person -> person.getAge() >= fromAge && person.getAge() <= toAge))
-                .collect(Collectors.toList());
+                .toList();
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -77,6 +63,7 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
+
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
@@ -88,23 +75,22 @@ public class StreamPractice {
                         return person.getAge() <= maleToAge;
                     }
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
+
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.WOMAN)
                 .filter(person -> person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
-
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -117,12 +103,13 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
