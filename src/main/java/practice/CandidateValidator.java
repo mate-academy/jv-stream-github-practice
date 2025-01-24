@@ -5,17 +5,20 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final String VALID_NATIONALITY_VALUE = "Ukrainian";
+    private static final String PERIOD_SPLIT_POINT = "-";
+    private static final int MIN_AGE_VALUE = 35;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= 35
-                && Objects.equals(candidate.getNationality(), "Ukrainian")
+        return candidate.getAge() >= MIN_AGE_VALUE
+                && Objects.equals(candidate.getNationality(), VALID_NATIONALITY_VALUE)
                 && candidate.isAllowedToVote()
                 && hasLivedInUkraineForTenYears(candidate.getPeriodsInUkr());
     }
 
     private boolean hasLivedInUkraineForTenYears(String periodInUkraine) {
-        String[] periods = periodInUkraine.split("-");
+        String[] periods = periodInUkraine.split(PERIOD_SPLIT_POINT);
         if (periods.length != 2) {
             return false;
         }
