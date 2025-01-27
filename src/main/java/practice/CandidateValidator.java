@@ -7,7 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int AGE_EDGE = 35;
     public static final int YEARS_IN_UKR = 10;
     public static final String UKR_NATIONALITY = "Ukrainian";
-    public static final String SPLIT_SYMBOL ="-";
+    public static final String SPLIT_SYMBOL = "-";
 
     @Override
     public boolean test(Candidate candidate) {

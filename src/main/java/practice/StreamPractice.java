@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -69,7 +68,7 @@ public class StreamPractice {
                 .filter(person -> (person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() <= femaleToAge) )
+                        && person.getAge() <= femaleToAge))
                 .filter(person -> person.getAge() >= fromAge)
                 .toList();
     }
