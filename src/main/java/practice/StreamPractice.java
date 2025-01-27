@@ -26,7 +26,7 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: < " + numbers + " >"));
+                        "Can't get minimum even value from the list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
