@@ -85,18 +85,20 @@ public class StreamPracticeTest {
     }
 
     @Test
-    public void getOddNumsAverage_basicData() {
+    public void getOddNumbersAverage_basicData() {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
-        Double result = solution.getOddNumsAverage(digits);
+        // 6 1 3 6 2 4
+        // 1 3
+        Double result = solution.getOddNumbersAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void getOddNumsAverage_twoEven() {
+    public void getOddNumbersAverage_twoEven() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);
-        Double result = solution.getOddNumsAverage(digits);
+        Double result = solution.getOddNumbersAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
@@ -104,23 +106,23 @@ public class StreamPracticeTest {
     public void getOddNumsAverage_twoOdd() {
         Double expected = 3.0;
         List<Integer> digits = Arrays.asList(6, 4, 8, 7, 2, 5);
-        Double result = solution.getOddNumsAverage(digits);
+        Double result = solution.getOddNumbersAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void getOddNumsAverage_empty() {
+    public void getOddNumbersAverage_empty() {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 1, 2, 7, 2, 5);
-        Double result = solution.getOddNumsAverage(digits);
+        Double result = solution.getOddNumbersAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void getOddNumsAverage_repeatedNumbers() {
+    public void getOddNumbersAverage_repeatedNumbers() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(6, 5, 7, 7, 1, 9, 10, 11);
-        Double result = solution.getOddNumsAverage(digits);
+        Double result = solution.getOddNumbersAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
