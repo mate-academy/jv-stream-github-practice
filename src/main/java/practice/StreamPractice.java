@@ -21,12 +21,11 @@ public class StreamPractice {
 
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(String::trim)
                 .mapToInt(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get minimum even value from the list: " + numbers));
+                        "Can't get min value from list:  Here is our input " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -48,10 +47,10 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getAge() <= toAge)
-                .filter(person -> person.getSex().equals(Person.Sex.MAN))
-                .collect(Collectors.toList());
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge && person.getSex().equals(Person.Sex.MAN))
+                .toList();
+
     }
 
     /**
@@ -70,9 +69,9 @@ public class StreamPractice {
                 .filter(person -> (person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() <= maleToAge)
                         || (person.getSex().equals(Person.Sex.WOMAN)
-                        && person.getAge() <= femaleToAge))
+                        && person.getAge() <= femaleToAge) )
                 .filter(person -> person.getAge() >= fromAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -87,7 +86,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex().equals(Person.Sex.WOMAN))
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
