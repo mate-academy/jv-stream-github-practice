@@ -85,7 +85,7 @@ public class StreamPracticeTest {
     }
 
     @Test
-    public void getOddNumbersAverage_basicData() {
+    public void getOddNumsAverage_basicData() {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
         // 6 1 3 6 2 4

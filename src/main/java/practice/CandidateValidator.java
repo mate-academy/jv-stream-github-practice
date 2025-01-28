@@ -8,17 +8,14 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int MIN_AGE = 35;
     public static final int MINIMUM_YEARS_IN_UKR = 10;
+    public static final int YEAR_START_POSITION = 0;
+    public static final int YEAR_END_POSITION = 1;
+    public static final String YEAR_SEPARATOR = "-";
     public static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
-
-        if (candidate.getPeriodsInUkr().matches("d{4}-d{4}$")) {
-            throw new NumberFormatException(
-                    "Format of date in 'periodInUkraine' has wrong format."
-            );
-        }
-        List<Integer> yearsIssuing = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        List<Integer> yearsIssuing = Arrays.stream(candidate.getPeriodsInUkr().split(YEAR_SEPARATOR))
                     .map(Integer::parseInt)
                     .toList();
         if (yearsIssuing.size() < 2) {
@@ -26,6 +23,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-               && yearsIssuing.get(1) - yearsIssuing.get(0) >= MINIMUM_YEARS_IN_UKR;
+               && yearsIssuing.get(YEAR_END_POSITION) - yearsIssuing.get(YEAR_START_POSITION) >= MINIMUM_YEARS_IN_UKR;
     }
 }
