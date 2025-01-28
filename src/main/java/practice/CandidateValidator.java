@@ -20,7 +20,7 @@ public class CandidateValidator implements Predicate<Candidate> {
                     .map(Integer::parseInt)
                     .toList();
         if(yearsIssuing.size() < 2) {
-            throw new IndexOutOfBoundsException("The start or final year of issuing missing.")
+            throw new IndexOutOfBoundsException("The start or final year of issuing missing.");
         }
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
