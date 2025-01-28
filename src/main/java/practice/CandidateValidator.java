@@ -15,7 +15,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        List<Integer> yearsIssuing = Arrays.stream(candidate.getPeriodsInUkr().split(YEAR_SEPARATOR))
+        List<Integer> yearsIssuing = Arrays.stream(candidate.getPeriodsInUkr()
+                        .split(YEAR_SEPARATOR))
                     .map(Integer::parseInt)
                     .toList();
         if (yearsIssuing.size() < 2) {
@@ -23,6 +24,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
-               && yearsIssuing.get(YEAR_END_POSITION) - yearsIssuing.get(YEAR_START_POSITION) >= MINIMUM_YEARS_IN_UKR;
+               && yearsIssuing.get(YEAR_END_POSITION) - yearsIssuing.get(YEAR_START_POSITION)
+                >= MINIMUM_YEARS_IN_UKR;
     }
 }
