@@ -12,9 +12,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+
+        if(candidate.getPeriodsInUkr().matches("d{4}-d{4}$")){
+            throw new NumberFormatException("Format of date in 'periodInUkraine' has wrong format.");
+        }
         List<Integer> yearsIssuing = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
                     .map(Integer::parseInt)
                     .toList();
+        if(yearsIssuing.size() < 2) {
+            throw new IndexOutOfBoundsException("The start or final year of issuing missing.")
+        }
         return candidate.getAge() >= MIN_AGE && candidate.isAllowedToVote()
                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                && yearsIssuing.get(1) - yearsIssuing.get(0) >= MINIMUM_YEARS_IN_UKR;
