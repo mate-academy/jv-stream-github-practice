@@ -88,15 +88,15 @@ public class StreamPracticeTest {
     public void getOddNumsAverage_basicData() {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 2, 3, 7, 2, 5);
-        Double result = solution.getOddNumbersAverage(digits);
+        Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void getOddNumbersAverage_twoEven() {
+    public void getOddNumsAverage_twoEven() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(7, 2, 3, 4, 5, 6);
-        Double result = solution.getOddNumbersAverage(digits);
+        Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
@@ -104,23 +104,23 @@ public class StreamPracticeTest {
     public void getOddNumsAverage_twoOdd() {
         Double expected = 3.0;
         List<Integer> digits = Arrays.asList(6, 4, 8, 7, 2, 5);
-        Double result = solution.getOddNumbersAverage(digits);
+        Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void getOddNumbersAverage_empty() {
+    public void getOddNumsAverage_empty() {
         Double expected = 2.0;
         List<Integer> digits = Arrays.asList(6, 1, 2, 7, 2, 5);
-        Double result = solution.getOddNumbersAverage(digits);
+        Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
     @Test
-    public void getOddNumbersAverage_repeatedNumbers() {
+    public void getOddNumbersAverage_repeatedNums() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(6, 5, 7, 7, 1, 9, 10, 11);
-        Double result = solution.getOddNumbersAverage(digits);
+        Double result = solution.getOddNumsAverage(digits);
         Assert.assertEquals(expected, result);
     }
 
