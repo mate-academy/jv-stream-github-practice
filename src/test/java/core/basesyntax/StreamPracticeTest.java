@@ -117,7 +117,7 @@ public class StreamPracticeTest {
     }
 
     @Test
-    public void getOddNumbersAverage_repeatedNums() {
+    public void getOddNumsAverage_repeatedNumbers() {
         Double expected = 4.0;
         List<Integer> digits = Arrays.asList(6, 5, 7, 7, 1, 9, 10, 11);
         Double result = solution.getOddNumsAverage(digits);
