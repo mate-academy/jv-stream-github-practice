@@ -10,8 +10,8 @@ import model.Person;
 
 public class StreamPractice {
     private final CandidateValidator validator = new CandidateValidator();
-    private final int DECREASE_AMOUNT = 1;
-    private final String NUMBER_SEPARATOR = ",";
+    private final int decreaseAmount = 1;
+    private final String numberSeparator = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,7 +21,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(stringOfNumbers -> Arrays.stream(stringOfNumbers.split(NUMBER_SEPARATOR)))
+                .flatMap(stringOfNumbers -> Arrays.stream(stringOfNumbers.split(numberSeparator)))
                 .mapToInt(Integer::parseInt)
                 .filter(this::isEven)
                 .min()
@@ -38,7 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> isOdd(index) ? numbers.get(index) - DECREASE_AMOUNT : numbers.get(index))
+                .map(index -> isOdd(index)
+                        ? numbers.get(index) - decreaseAmount : numbers.get(index))
                 .filter(this::isOdd)
                 .mapToDouble(item -> item)
                 .average()
