@@ -9,6 +9,9 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator validator = new CandidateValidator();
+    private final int DECREASE_AMOUNT = 1;
+    private final String NUMBER_SEPARATOR = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -18,9 +21,9 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(stringOfNumbers -> Arrays.stream(stringOfNumbers.split(",")))
+                .flatMap(stringOfNumbers -> Arrays.stream(stringOfNumbers.split(NUMBER_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
-                .filter(number -> number % 2 == 0)
+                .filter(this::isEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
                         "Can't get min value from list: " + numbers
@@ -35,8 +38,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .map(index -> index % 2 != 0 ? numbers.get(index) - 1 : numbers.get(index))
-                .filter(number -> number % 2 > 0)
+                .map(index -> isOdd(index) ? numbers.get(index) - DECREASE_AMOUNT : numbers.get(index))
+                .filter(this::isOdd)
                 .mapToDouble(item -> item)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -106,11 +109,18 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    private boolean isOdd(int number) {
+        return number % 2 > 0;
+    }
+
+    private boolean isEven(int number) {
+        return number % 2 == 0;
     }
 }
