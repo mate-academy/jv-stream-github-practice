@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
-
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROMAGE = 35;
     private static final int YEARSINUKRAINE = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         if (candidate.getAge() >= FROMAGE && candidate.isAllowedToVote()
