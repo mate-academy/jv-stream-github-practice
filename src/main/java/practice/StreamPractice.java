@@ -10,6 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String COMMA = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -17,9 +18,10 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .map(n -> n.split(","))
+                .map(n -> n.split(COMMA))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
@@ -36,11 +38,9 @@ public class StreamPractice {
         return IntStream.range(0, numbers.size())
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(n -> n)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't return the average"));
     }
-
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
@@ -49,6 +49,7 @@ public class StreamPractice {
      * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
+
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN
@@ -76,7 +77,7 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
     /**
-     * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields
+     * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
@@ -88,7 +89,6 @@ public class StreamPractice {
                 .map(Cat::getName)
                 .collect(Collectors.toList());
     }
-
     /**
      * Your help with a election is needed. Given list of candidates, where each element
      * has Candidate.class type.
@@ -101,6 +101,7 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(new CandidateValidator())
