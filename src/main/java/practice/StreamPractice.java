@@ -24,7 +24,7 @@ public class StreamPractice extends CandidateValidator {
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + "< Here is our input 'numbers' >" + numbers));
+                        + " Here is our input numbers, " + numbers));
     }
     /**
      * Given a List of Integer numbers,
@@ -40,7 +40,7 @@ public class StreamPractice extends CandidateValidator {
                 .filter(value -> value % 2 != 0)
                 .mapToDouble(Double::valueOf)
                       .average()
-                .orElseThrow(() -> new NoSuchElementException("there is no elements"));
+                .orElseThrow(() -> new NoSuchElementException("Can't get any value from list!"));
 
     }
 
