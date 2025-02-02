@@ -6,6 +6,7 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int FROM_AGE = 35;
     private static final int PERIOD_IN_UKRAINE = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         String[] split = candidate.getPeriodsInUkr().split("-");
