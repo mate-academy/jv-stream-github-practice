@@ -11,6 +11,9 @@ import model.Person;
 
 public class StreamPractice {
     private static final String COMMA = ",";
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -24,7 +27,7 @@ public class StreamPractice {
                 .map(n -> n.split(COMMA))
                 .flatMap(Arrays::stream)
                 .map(Integer::parseInt)
-                .filter(n -> n % 2 == 0)
+                .filter(n -> n % TWO == ZERO)
                 .min(Integer::compareTo)
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
@@ -35,9 +38,9 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(n -> n % 2 != 0)
+        return IntStream.range(ZERO, numbers.size())
+                .map(i -> i % TWO != ZERO ? numbers.get(i) - ONE : numbers.get(i))
+                .filter(n -> n % TWO != ZERO)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't return the average"));
     }
