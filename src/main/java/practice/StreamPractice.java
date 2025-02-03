@@ -9,7 +9,8 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-public class StreamPractice extends CandidateValidator {
+public class StreamPractice {
+    public static final String COMA = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -19,12 +20,11 @@ public class StreamPractice extends CandidateValidator {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Stream.of(n.split(",")))
+                .flatMap(n -> Stream.of(n.split(COMA)))
                 .map(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
-                        + " Here is our input numbers, " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
     /**
      * Given a List of Integer numbers,
@@ -33,13 +33,11 @@ public class StreamPractice extends CandidateValidator {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        List<Integer> number = IntStream.range(0, numbers.size())
-                .mapToObj(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
-                .collect(Collectors.toList());
-        return number.stream()
+          return IntStream.range(0, numbers.size())
+                .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(value -> value % 2 != 0)
                 .mapToDouble(Double::valueOf)
-                      .average()
+                .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get any value from list!"));
 
     }
