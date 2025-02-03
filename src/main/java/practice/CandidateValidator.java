@@ -9,6 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int ZERO_FOR_YEAR = 0;
     private static final int ONE_FOR_YEAR = 1;
     private static final String DASH = "-";
+    private static final String UKR_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,7 +18,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         int endYear = Integer.parseInt(split[ONE_FOR_YEAR]);
         int result = endYear - startYear;
         return candidate.getAge() >= FROM_AGE && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
+                && candidate.getNationality().equals(UKR_NATIONALITY)
                 && result >= PERIOD_IN_UKRAINE;
     }
 }

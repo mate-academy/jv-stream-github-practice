@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -14,6 +13,7 @@ public class StreamPractice {
     private static final int ZERO = 0;
     private static final int ONE = 1;
     private static final int TWO = 2;
+    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -29,7 +29,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(n -> n % TWO == ZERO)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list "
+                        + numbers));
     }
     /**
      * Given a List of Integer numbers,
@@ -57,7 +58,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN
                         && p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -77,7 +78,7 @@ public class StreamPractice {
                         && p.getAge() <= maleToAge
                         || p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
                         && p.getAge() <= femaleToAge)
-                .collect(Collectors.toList());
+                .toList();
     }
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
@@ -90,7 +91,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
     /**
      * Your help with a election is needed. Given list of candidates, where each element
@@ -107,9 +108,9 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(CANDIDATE_VALIDATOR)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
