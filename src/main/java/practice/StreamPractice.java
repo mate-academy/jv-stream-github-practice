@@ -13,7 +13,7 @@ public class StreamPractice {
     private static final int ZERO = 0;
     private static final int ONE = 1;
     private static final int TWO = 2;
-    private static final CandidateValidator CANDIDATE_VALIDATOR = new CandidateValidator();
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -26,9 +26,9 @@ public class StreamPractice {
         return numbers.stream()
                 .map(n -> n.split(COMMA))
                 .flatMap(Arrays::stream)
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(n -> n % TWO == ZERO)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list "
                         + numbers));
     }
@@ -108,7 +108,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CANDIDATE_VALIDATOR)
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
