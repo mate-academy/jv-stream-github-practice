@@ -18,13 +18,15 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(n -> Stream.of(n.split(COMA)))
                 .map(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
     /**
      * Given a List of Integer numbers,
@@ -33,7 +35,7 @@ public class StreamPractice {
      */
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-          return IntStream.range(0, numbers.size())
+        return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
                 .filter(value -> value % 2 != 0)
                 .mapToDouble(Double::valueOf)
