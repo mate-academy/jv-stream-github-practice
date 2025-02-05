@@ -5,9 +5,9 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
-    private static int MIN_AGE = 35;
-    private static int MIN_AGES_IN_UKRAINE = 10;
-    private static String NATIONALITY = "Ukrainian";
+    private static final int MIN_AGE = 35;
+    private static final int MIN_AGES_IN_UKRAINE = 10;
+    private static final String NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
