@@ -9,7 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String COMMA = ",";
+    private static final String COMMA = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
