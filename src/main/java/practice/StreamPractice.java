@@ -26,7 +26,7 @@ public class StreamPractice {
                 .min(Comparator.comparingInt(i -> i));
 
         if (min.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: method_input_list");
+            throw new RuntimeException("Can't get min value from list: " + numbers);
         }
         return min.get();
     }
