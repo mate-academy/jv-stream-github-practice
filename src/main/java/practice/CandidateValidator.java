@@ -19,6 +19,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         int sum = secondYear - firstYear;
         return !(candidate.getAge() < MIN_AGE || !candidate.isAllowedToVote()
                 || !candidate.getNationality().equals(True_National) || sum < MIN_PER);
-        }
     }
+}
     //write your code here
