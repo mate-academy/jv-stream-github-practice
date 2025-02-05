@@ -10,11 +10,12 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY = "Ukrainian";
     private static final int FROM_YEAR_INDEX = 0;
     private static final int SINCE_YEAR_INDEX = 1;
+    private static final String HYPEN_DEVIDER = "-";
 
     @Override
     public boolean test(Candidate candidate) {
         String[] ages = candidate.getPeriodsInUkr()
-                .split("-");
+                .split(HYPEN_DEVIDER);
         int agesInUkr = Integer.parseInt(ages[SINCE_YEAR_INDEX])
                 - Integer.parseInt(ages[FROM_YEAR_INDEX]);
         return candidate.isAllowedToVote()
