@@ -10,7 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    public static final String COMA = ",";
+    public static final String COMMA = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -21,7 +21,7 @@ public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(n -> Stream.of(n.split(COMA)))
+                .flatMap(n -> Stream.of(n.split(COMMA)))
                 .map(Integer::valueOf)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
@@ -37,7 +37,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
                 .map(n -> n % 2 != 0 ? numbers.get(n) - 1 : numbers.get(n))
-                .filter(value -> value % 2 != 0)
+                .filter(n -> n % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException("Can't get any value from list!"));
@@ -56,7 +56,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge && p.getSex()
                         == Person.Sex.MAN)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -76,7 +76,7 @@ public class StreamPractice {
                         == Person.Sex.MAN
                         || m.getAge() >= fromAge && m.getAge() <= femaleToAge && m.getSex()
                         == Person.Sex.WOMAN)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -89,7 +89,7 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= femaleAge && p.getSex() == Person.Sex.WOMAN)
                  .flatMap(p -> p.getCats().stream())
                  .map(Cat::getName)
-                 .collect(Collectors.toList());
+                 .toList();
     }
 
     /**
@@ -109,6 +109,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
