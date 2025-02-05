@@ -1,7 +1,12 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
 import model.Candidate;
 import model.Person;
 
@@ -14,16 +19,37 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        Optional<Integer> min = numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .map(Integer::valueOf)
+                .filter(i -> i % 2 == 0)
+                .min(Comparator.comparingInt(i -> i));
+
+        if (min.isEmpty()) {
+            throw new RuntimeException("Can't get min value from list: method_input_list");
+        }
+        return min.get();
     }
 
     /**
      * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
+     *return the average of all odd numbers from the list or throw NoSuchElementException.
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        for (int i = 0; i < numbers.size(); i++) {
+            if (i % 2 != 0) {
+                numbers.set(i, numbers.get(i) - 1);
+            }
+        }
+        OptionalDouble average = numbers.stream()
+                .mapToInt(Integer::intValue)
+                .filter(i -> i % 2 != 0)
+                .average();
+        if (average.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return average.getAsDouble();
     }
 
     /**
@@ -35,7 +61,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(p -> p.getAge() >= fromAge)
+                .filter(p -> p.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +80,17 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getAge() >= fromAge)
+                .filter(p -> {
+                    if (p.getSex() == Person.Sex.WOMAN) {
+                        return p.getAge() <= femaleToAge;
+                    } else {
+                        return p.getAge() <= maleToAge;
+                    }
+
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +99,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex() == Person.Sex.WOMAN)
+                .filter(p -> p.getAge() >= femaleAge)
+                .map(p -> p.getCats())
+                .flatMap(List::stream)
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +121,12 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(c -> candidateValidator.test(c))
+                .map(c -> c.getName())
+                .sorted()
+                .collect(Collectors.toList());
+
     }
 }
