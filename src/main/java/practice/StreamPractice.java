@@ -24,7 +24,7 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: )"
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + numbers));
     }
 
@@ -71,10 +71,10 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getAge() <= maleToAge
-                        && person.getSex().equals(Person.Sex.MAN)
-                        || person.getAge() <= femaleToAge
-                        && person.getSex().equals(Person.Sex.WOMAN))
+                .filter(person -> (person.getAge() <= maleToAge
+                        && person.getSex().equals(Person.Sex.MAN))
+                        || (person.getAge() <= femaleToAge
+                        && person.getSex().equals(Person.Sex.WOMAN)))
                 .collect(Collectors.toList());
 
     }
