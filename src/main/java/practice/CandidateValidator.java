@@ -1,8 +1,7 @@
 package practice;
 
-import model.Candidate;
-
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
@@ -14,7 +13,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         }
         String[] split = candidate.getPeriodsInUkr().split("-");
         if (split.length != 2) {
-            throw new IllegalArgumentException("Invalid period format: " + candidate.getPeriodsInUkr());
+            throw new IllegalArgumentException("Invalid period format: "
+                    + candidate.getPeriodsInUkr());
         }
 
         int startYear = Integer.parseInt(split[0]);
