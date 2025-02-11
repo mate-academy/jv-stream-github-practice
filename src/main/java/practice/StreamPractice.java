@@ -2,12 +2,12 @@ package practice;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.OptionalDouble;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -21,16 +21,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        Optional<Integer> min = numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(Integer::valueOf)
+                .map(String::trim)
+                .map(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
-                .min(Comparator.comparingInt(i -> i));
-
-        if (min.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-        return min.get();
+                .min(Integer::compareTo)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
+                        + numbers));
     }
 
     /**
@@ -39,19 +37,16 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                numbers.set(i, numbers.get(i) - 1);
-            }
-        }
-        OptionalDouble average = numbers.stream()
-                .mapToInt(Integer::intValue)
-                .filter(i -> i % 2 != 0)
+        OptionalDouble average = IntStream.range(0, numbers.size())
+                .mapToDouble(i -> {
+                    int modifiedValue = (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i);
+                    return (modifiedValue % 2 != 0) ? modifiedValue : 0;
+                })
+                .filter(i -> i != 0)
                 .average();
-        if (average.isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return average.getAsDouble();
+
+        return average.orElseThrow(() -> new NoSuchElementException("No "
+                + "odd numbers found in the list."));
     }
 
     /**
@@ -82,16 +77,13 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> agePredicate = p -> p.getSex() == Person.Sex.WOMAN
+                       ? p.getAge() <= femaleToAge
+                       : p.getAge() <= maleToAge;
+
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
-                .filter(p -> {
-                    if (p.getSex() == Person.Sex.WOMAN) {
-                        return p.getAge() <= femaleToAge;
-                    } else {
-                        return p.getAge() <= maleToAge;
-                    }
-
-                })
+                .filter(agePredicate)
                 .toList();
     }
 
