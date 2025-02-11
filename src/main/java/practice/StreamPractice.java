@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
@@ -55,7 +54,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge
                         && person.getAge() <= toAge
-                        && person.getSex().equals(Person.Sex.MAN))
+                        && person.getSex() == Person.Sex.MAN)
                 .toList();
     }
 
@@ -91,11 +90,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
                         && person.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(Collection::stream)
-                .map(Cat::getName)
+                .flatMap(person -> person.getCats().stream().map(Cat::getName))
                 .toList();
     }
 
