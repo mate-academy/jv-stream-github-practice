@@ -8,7 +8,8 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String[] strArr = candidate.getPeriodsInUkr().split("-");
+        final String delimitedSymbol = "-";
+        String[] strArr = candidate.getPeriodsInUkr().split(delimitedSymbol);
         int firstDate = Integer.parseInt(strArr[0]);
         int secondDate = Integer.parseInt(strArr[1]);
         return candidate.getAge() >= 35
