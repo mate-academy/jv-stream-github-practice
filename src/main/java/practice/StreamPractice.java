@@ -99,7 +99,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -117,7 +117,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(c -> candidateValidator.test(c))
+                .filter(candidateValidator)
                 .map(c -> c.getName())
                 .sorted()
                 .toList();
