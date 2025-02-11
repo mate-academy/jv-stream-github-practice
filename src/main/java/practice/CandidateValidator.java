@@ -4,13 +4,17 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_REQUIRED_AGE = 35;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
         if (!candidate.isAllowedToVote()
-                || !candidate.getNationality().equals("Ukrainian")
-                || candidate.getAge() < 35) {
+                || !candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                || candidate.getAge() < MIN_REQUIRED_AGE) {
             return false;
         }
+
         String[] split = candidate.getPeriodsInUkr().split("-");
         if (split.length != 2) {
             throw new IllegalArgumentException("Invalid period format: "

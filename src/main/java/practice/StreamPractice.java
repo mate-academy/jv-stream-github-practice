@@ -4,13 +4,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -38,7 +40,7 @@ public class StreamPractice {
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 == 1)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("Can't find odd numbers in list"));
     }
 
     /**
@@ -54,7 +56,7 @@ public class StreamPractice {
                 .filter(person -> person.getAge() >= fromAge
                         && person.getAge() <= toAge
                         && person.getSex().equals(Person.Sex.MAN))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -69,14 +71,17 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isMaleYoungEnough =
+                person -> person.getAge() >= fromAge
+                        && person.getAge() <= maleToAge
+                        && person.getSex() == Person.Sex.MAN;
+        Predicate<Person> isFemaleYoungEnough =
+                person -> person.getAge() >= fromAge
+                        && person.getAge() <= femaleToAge
+                        && person.getSex() == Person.Sex.WOMAN;
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> (person.getAge() <= maleToAge
-                        && person.getSex().equals(Person.Sex.MAN))
-                        || (person.getAge() <= femaleToAge
-                        && person.getSex().equals(Person.Sex.WOMAN)))
-                .collect(Collectors.toList());
-
+                .filter(isMaleYoungEnough.or(isFemaleYoungEnough))
+                .toList();
     }
 
     /**
@@ -91,7 +96,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -107,11 +112,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> candidateValidator.test(candidate))
+                .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
