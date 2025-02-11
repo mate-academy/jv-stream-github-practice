@@ -117,9 +117,8 @@ public class StreamPractice {
         CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .toList();
-
     }
 }
