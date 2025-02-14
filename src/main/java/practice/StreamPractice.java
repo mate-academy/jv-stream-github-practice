@@ -20,7 +20,7 @@ public class StreamPractice {
     private static final String SPLIT_SEPARATOR = ",";
 
     public int findMinEvenNumber(List<String> numbers) {
-       return numbers.stream()
+        return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(SPLIT_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
