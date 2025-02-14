@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static final int NEED_AGE = 27;
+    private static final int NEED_AGE = 35;
     private static final int NEED_PERIOD = 10;
 
     @Override
