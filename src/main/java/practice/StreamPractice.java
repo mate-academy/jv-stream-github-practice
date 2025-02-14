@@ -2,7 +2,7 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -20,8 +20,8 @@ public class StreamPractice {
         if (numbers.isEmpty()) {
             throw new RuntimeException("Can't get min value from list: <" + numbers + ">");
         }
-        return Arrays
-                .stream(String.join(",", numbers).split(","))
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -34,15 +34,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        long count = IntStream.range(0, numbers.size())
-                .filter(index -> index % 2 != 0)
-                .map(index -> numbers.set(index, numbers.get(index) - 1))
-                .count();
-        return numbers.stream()
-                .mapToInt(Integer::intValue)
-                .filter(number -> number % 2 != 0)
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 != 0)
+                .mapToDouble(n -> n)
                 .average()
-                .orElseThrow();
+                .orElseThrow(() -> new NoSuchElementException("Can't find any odd numbers"));
     }
 
     /**
@@ -57,7 +54,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -110,9 +107,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(person -> person.getAge() >= 35
-                        && person.isAllowedToVote() && person.getNationality().equals("Ukrainian"))
-                .filter(person -> new CandidateValidator().test(person))
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
