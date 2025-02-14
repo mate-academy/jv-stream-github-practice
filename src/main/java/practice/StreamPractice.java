@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -16,12 +17,11 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+    private static final String SPLIT_SEPARATOR = ",";
+
     public int findMinEvenNumber(List<String> numbers) {
-        /*if (numbers.isEmpty()) {
-            throw new RuntimeException();
-        }*/
-        return numbers.stream()
-                .flatMap(s -> Arrays.stream(s.split(",")))
+       return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(SPLIT_SEPARATOR)))
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -70,12 +70,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> acceptableMan = person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= maleToAge;
+        Predicate<Person> acceptableWoman = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= fromAge
+                && person.getAge() <= femaleToAge;
         return peopleList.stream()
-                .filter(person ->
-                        (person.getSex() == Person.Sex.MAN
-                                && person.getAge() >= fromAge && person.getAge() <= maleToAge)
-                                || (person.getSex() == Person.Sex.WOMAN
-                                && person.getAge() >= fromAge && person.getAge() <= femaleToAge))
+                .filter(acceptableMan.or(acceptableWoman))
                 .toList();
     }
 

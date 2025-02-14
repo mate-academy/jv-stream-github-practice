@@ -4,8 +4,9 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    //write your code here
     private static final int MIN_AGE = 35;
+    private static final int START_YEAR_INDEX = 0;
+    private static final int END_YEAR_INDEX = 1;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
     private static final int RESIDENCE_DURATION = 10;
     private static final String PERIOD_DELIMITATION = "-";
@@ -16,8 +17,8 @@ public class CandidateValidator implements Predicate<Candidate> {
         int startYear;
         int endYear;
         try {
-            startYear = Integer.parseInt(periodYears[0]);
-            endYear = Integer.parseInt(periodYears[1]);
+            startYear = Integer.parseInt(periodYears[START_YEAR_INDEX]);
+            endYear = Integer.parseInt(periodYears[END_YEAR_INDEX]);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
@@ -29,13 +30,6 @@ public class CandidateValidator implements Predicate<Candidate> {
             throw new RuntimeException("The date data is invalid: first field has to be the"
                     + "start of residence and the second one of finishing it.");
         }
-        /*I`m not sure that understood admonition about this method well.
-        * I've transferred period conditions out of try block and
-        * left only parseInt() methods there. Check if i did wright.
-        * But what did ou mean about using Predicate for complicated conditions
-        * in return statement? This method is overriden Predicate's test method
-        * as the class implements it. So I have included complicated checkup here...
-        * Other way i will use Predicate for Predicate.*/
         return candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals(REQUIRED_NATIONALITY)
                 && candidate.isAllowedToVote()
