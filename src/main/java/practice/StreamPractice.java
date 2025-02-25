@@ -1,29 +1,24 @@
 package practice;
 
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import model.Cat;
-import model.Person;
 import model.Candidate;
+import model.Person;
 
 public class StreamPractice {
 
     public int findMinEvenNumber(List<String> numbers) {
-        List<Integer> evenNumbers = numbers.stream()
+        return numbers.stream()
                 .flatMap(str -> Arrays.stream(str.split(",")))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
-                .collect(Collectors.toList());
-
-        if (evenNumbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: " + numbers);
-        }
-
-        return evenNumbers.stream().min(Integer::compare).orElseThrow();
+                .min(Integer::compare)
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -69,8 +64,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex()
-                        == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
