@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.function.Predicate;
 
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import practice.CandidateValidator;
 
 public class StreamPractice {
 
@@ -78,7 +78,7 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
+        Predicate<Candidate> validator = new CandidateValidator();
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
