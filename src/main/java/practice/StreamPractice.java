@@ -1,14 +1,15 @@
 package practice;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import model.Cat;
 import model.Candidate;
+import model.Cat;
 import model.Person;
+import practice.CandidateValidator;
 
 public class StreamPractice {
 
@@ -18,7 +19,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list: " + numbers));
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
@@ -39,10 +41,12 @@ public class StreamPractice {
             throw new NoSuchElementException();
         }
 
-        return oddNumbers.stream().mapToInt(Integer::intValue).average().orElseThrow();
+        return oddNumbers.stream().mapToInt(Integer::intValue).average()
+                .orElseThrow();
     }
 
-    public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
+    public List<Person> selectMenByAge(List<Person> peopleList,
+                                       int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
@@ -64,7 +68,8 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge)
+                .filter(person -> person.getSex()
+                        == Person.Sex.WOMAN && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
