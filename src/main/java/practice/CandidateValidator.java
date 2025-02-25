@@ -8,10 +8,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= 35 &&
-                candidate.isAllowedToVote() &&
-                "Ukrainian".equals(candidate.getNationality()) &&
-                hasLivedInUkraineForAtLeast10Years(candidate.getPeriodsInUkr());
+        return candidate.getAge() >= 35
+                    && candidate.isAllowedToVote()
+                    && "Ukrainian".equals(candidate.getNationality())
+                    && hasLivedInUkraineForAtLeast10Years(candidate.getPeriodsInUkr());
     }
 
     private boolean hasLivedInUkraineForAtLeast10Years(String periodsInUkr) {
