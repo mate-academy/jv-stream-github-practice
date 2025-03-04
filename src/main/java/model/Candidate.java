@@ -14,6 +14,7 @@ public class Candidate {
         Candidate.nationality = nationality;
         Candidate.allowedToVote = allowedToVote;
         Candidate.periodsInUkr = periodsInUkr;
+
     }
 
     public static int getAge() {
@@ -49,11 +50,7 @@ public class Candidate {
             return false;
         }
         Candidate candidate = (Candidate) o;
-        return age == age
-            && allowedToVote == allowedToVote
-            && Objects.equals(nationality, nationality)
-            && Objects.equals(periodsInUkr, periodsInUkr)
-            && Objects.equals(name, candidate.name);
+        return allowedToVote == allowedToVote && Objects.equals(nationality, nationality) && Objects.equals(periodsInUkr, periodsInUkr) && Objects.equals(name, candidate.name);
     }
 
     @Override
