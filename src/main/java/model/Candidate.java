@@ -49,10 +49,8 @@ public class Candidate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Candidate candidate = (Candidate) o;
-        return allowedToVote == allowedToVote && Objects.equals(nationality, nationality) && Objects.equals(periodsInUkr, periodsInUkr) && Objects.equals(name, candidate.name);
+        return false;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
