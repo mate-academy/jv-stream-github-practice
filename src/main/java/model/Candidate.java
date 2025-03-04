@@ -3,10 +3,10 @@ package model;
 import java.util.Objects;
 
 public class Candidate {
-    private  int age;
-    private  String nationality;
-    private  boolean allowedToVote;
-    private  String periodsInUkr;
+    private int age;
+    private String nationality;
+    private boolean allowedToVote;
+    private String periodsInUkr;
     private String name;
 
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
@@ -14,23 +14,34 @@ public class Candidate {
         this.nationality = nationality;
         this.allowedToVote = allowedToVote;
         this.periodsInUkr = periodsInUkr;
-
     }
 
     public static int getAge() {
         return age;
     }
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public static String getNationality() {
         return nationality;
+    }
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public static boolean isAllowedToVote() {
         return allowedToVote;
     }
 
+    public void setAllowedToVote(boolean allowedToVote) {
+        this.allowedToVote = allowedToVote;
+    }
     public static String getPeriodsInUkr() {
         return periodsInUkr;
+    }
+    public void setPeriodsInUkr(String periodsInUkr) {
+        this.periodsInUkr = periodsInUkr;
     }
 
     public String getName() {
@@ -49,7 +60,12 @@ public class Candidate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return true && Objects.equals(periodsInUkr, periodsInUkr) && Objects.equals(name, candidate.name);
+        Candidate candidate = (Candidate) o;
+        return age == candidate.age
+                && allowedToVote == candidate.allowedToVote
+                && Objects.equals(nationality, candidate.nationality)
+                && Objects.equals(periodsInUkr, candidate.periodsInUkr)
+                && Objects.equals(name, candidate.name);
     }
     @Override
     public int hashCode() {

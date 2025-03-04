@@ -19,10 +19,10 @@ public class StreamPractice {
         return numbers.stream()
                 .flatMap(splits -> Arrays.stream(splits.split(",")))
                 .map(Integer::parseInt)
-                .filter(bibka -> bibka % 2 == 0)
+                .filter(filt -> filt % 2 == 0)
                 .sorted()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Невозможно получить минимальное значение из списка: method_input_list"));
+                .orElseThrow(() -> new RuntimeException("Cannot get minimum value from list: method_input_list"));
     }
 
     /**
@@ -36,7 +36,7 @@ public class StreamPractice {
                 .filter(numb -> numb % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(NoSuchElementException::new)
     }
 
 
