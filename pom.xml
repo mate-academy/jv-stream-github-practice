@@ -17,6 +17,7 @@
         </maven.checkstyle.plugin.configLocation>
     </properties>
 
+
     <dependencies><![CDATA[
         ]]><dependency>
             <groupId>junit</groupId>

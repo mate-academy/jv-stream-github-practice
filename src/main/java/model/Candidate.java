@@ -50,6 +50,7 @@ public class Candidate {
             return false;
         }
         return false;
+
     }
     @Override
     public int hashCode() {

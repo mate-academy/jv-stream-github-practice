@@ -39,6 +39,7 @@ public class StreamPractice {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
      * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),

@@ -24,6 +24,7 @@ public class Person {
         this.cats = cats;
     }
 
+
     public int getAge() {
         return age;
     }
