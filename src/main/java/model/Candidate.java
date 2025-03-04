@@ -3,17 +3,17 @@ package model;
 import java.util.Objects;
 
 public class Candidate {
-    private static int age;
-    private static String nationality;
-    private static boolean allowedToVote;
-    private static String periodsInUkr;
+    private  int age;
+    private  String nationality;
+    private  boolean allowedToVote;
+    private  String periodsInUkr;
     private String name;
 
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
-        Candidate.age = age;
-        Candidate.nationality = nationality;
-        Candidate.allowedToVote = allowedToVote;
-        Candidate.periodsInUkr = periodsInUkr;
+        this.age = age;
+        this.nationality = nationality;
+        this.allowedToVote = allowedToVote;
+        this.periodsInUkr = periodsInUkr;
 
     }
 
@@ -49,8 +49,7 @@ public class Candidate {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return false;
-
+        return true && Objects.equals(periodsInUkr, periodsInUkr) && Objects.equals(name, candidate.name);
     }
     @Override
     public int hashCode() {
