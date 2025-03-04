@@ -3,8 +3,8 @@ package model;
 import java.util.Objects;
 
 public class Cat {
-    private String name;
-    private int age;
+    private final String name;
+    private final int age;
 
     public Cat(String name, int age) {
         this.name = name;
@@ -14,6 +14,7 @@ public class Cat {
     public String getName() {
         return name;
     }
+
 
     @Override
     public boolean equals(Object o) {
