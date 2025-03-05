@@ -76,7 +76,6 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
      * and each `Cat` having a `name` and `age`),
