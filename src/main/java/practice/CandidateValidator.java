@@ -4,28 +4,28 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final int ages = 35;
-    public static final String Ukr = "Ukraininan";
-    public static final String tire = "-";
-    public static final int num = 0;
-    public static final int numb = 1;
-    public static final int startYears = 10;
+    public static final int AGE_LIMIT = 35;
+    public static final String UKRAINIAN = "Ukrainian";
+    public static final String DASH = "-";
+    public static final int START_YEAR_INDEX = 0;
+    public static final int END_YEAR_INDEX = 1;
+    public static final int MIN_YEARS_IN_UKRAINE = 10;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() > ages
+        return candidate.getAge() > AGE_LIMIT
                 && candidate.isAllowedToVote()
-                && Ukr.equals(candidate.getNationality())
-                && getPeriodsInUkr(candidate.getPeriodsInUkr());
+                && UKRAINIAN.equals(candidate.getNationality())
+                && isEligibleForPresidency(candidate.getPeriodsInUkr());
     }
 
-    private boolean getPeriodsInUkr(String periods) {
-        String[] years = periods.split(tire);
+    private boolean isEligibleForPresidency(String periodsInUkr) {
+        String[] years = periodsInUkr.split(DASH);
         if (years.length == 2) {
             try {
-                int startYear = Integer.parseInt(years[num]);
-                int endYear = Integer.parseInt(years[numb]);
-                return (endYear - startYear) >= startYears;
+                int startYear = Integer.parseInt(years[START_YEAR_INDEX]);
+                int endYear = Integer.parseInt(years[END_YEAR_INDEX]);
+                return (endYear - startYear) >= MIN_YEARS_IN_UKRAINE;
             } catch (NumberFormatException e) {
                 return false;
             }
@@ -33,3 +33,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         return false;
     }
 }
+
