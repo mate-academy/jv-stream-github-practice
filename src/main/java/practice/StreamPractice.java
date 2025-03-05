@@ -27,7 +27,7 @@ public class StreamPractice {
                 .mapToInt(Integer::intValue)
                 .min()
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list: method_input_list"));
+                        "Can't get min value from list: numbers.toString()"));
     }
 
     /**
@@ -48,7 +48,7 @@ public class StreamPractice {
                 })
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't found any elements"));
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found in the list"));
     }
 
     /**
