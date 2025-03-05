@@ -20,6 +20,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean isEligibleForPresidency(String periodsInUkr) {
+        if (periodsInUkr == null || periodsInUkr.isEmpty()) {
+            return false;
+        }
         String[] years = periodsInUkr.split(DASH);
         if (years.length == 2) {
             try {
