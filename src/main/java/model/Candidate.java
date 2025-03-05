@@ -3,10 +3,10 @@ package model;
 import java.util.Objects;
 
 public class Candidate {
-    private final int age;
-    private final String nationality;
-    private final boolean allowedToVote;
-    private final String periodsInUkr;
+    private int age;
+    private String nationality;
+    private boolean allowedToVote;
+    private String periodsInUkr;
     private String name;
 
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
@@ -20,16 +20,32 @@ public class Candidate {
         return age;
     }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getNationality() {
         return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public boolean isAllowedToVote() {
         return allowedToVote;
     }
 
+    public void setAllowedToVote(boolean allowedToVote) {
+        this.allowedToVote = allowedToVote;
+    }
+
     public String getPeriodsInUkr() {
         return periodsInUkr;
+    }
+
+    public void setPeriodsInUkr(String periodsInUkr) {
+        this.periodsInUkr = periodsInUkr;
     }
 
     public String getName() {
@@ -59,7 +75,6 @@ public class Candidate {
     @Override
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
-                isAllowedToVote(), getPeriodsInUkr(), getName());
+            isAllowedToVote(), getPeriodsInUkr(), getName());
     }
 }
-

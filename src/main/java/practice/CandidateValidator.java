@@ -4,26 +4,28 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final int MIN_AGE = 35;
-    public static final String UKRAINIAN_NATIONALITY = "Ukraininan";
-    public static final String DELIMITER = "-";
-    public static final int REQUIRED_YEARS_IN_UKRAINE = 10;
+    public static final int ages = 35;
+    public static final String Ukr = "Ukraininan";
+    public static final String tire = "-";
+    public static final int num = 0;
+    public static final int numb = 1;
+    public static final int startYears = 10;
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() > MIN_AGE
+        return candidate.getAge() > ages
                 && candidate.isAllowedToVote()
-                && UKRAINIAN_NATIONALITY.equals(candidate.getNationality())
+                && Ukr.equals(candidate.getNationality())
                 && getPeriodsInUkr(candidate.getPeriodsInUkr());
     }
 
     private boolean getPeriodsInUkr(String periods) {
-        String[] years = periods.split(DELIMITER);
+        String[] years = periods.split(tire);
         if (years.length == 2) {
             try {
-                int startYear = Integer.parseInt(years[0]);
-                int endYear = Integer.parseInt(years[1]);
-                return (endYear - startYear) >= REQUIRED_YEARS_IN_UKRAINE;
+                int startYear = Integer.parseInt(years[num]);
+                int endYear = Integer.parseInt(years[numb]);
+                return (endYear - startYear) >= startYears;
             } catch (NumberFormatException e) {
                 return false;
             }
