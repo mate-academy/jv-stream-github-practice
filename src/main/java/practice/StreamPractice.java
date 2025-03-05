@@ -1,8 +1,9 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,7 +23,7 @@ public class StreamPractice {
                 .filter(filt -> filt % 2 == 0)
                 .sorted()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Cannot get minimum value from list: method_input_list"));
+                .orElseThrow(() -> new RuntimeException("Cannot get minimum value from list"));
     }
 
     /**
@@ -36,9 +37,8 @@ public class StreamPractice {
                 .filter(numb -> numb % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found."));
     }
-
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
@@ -69,8 +69,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getAge() > fromAge && p.getAge() <= maleToAge && p.getSex() == Person.Sex.MAN ||
-                         p.getAge() > fromAge && p.getAge() <= femaleToAge && p.getSex() == Person.Sex.WOMAN))
+                .filter(p -> (p.getAge() > fromAge
+                        && p.getAge() <= maleToAge
+                        && p.getSex() == Person.Sex.MAN
+                        || p.getAge() > fromAge
+                                 && p.getAge() <= femaleToAge
+                                 && p.getSex() == Person.Sex.WOMAN))
                 .collect(Collectors.toList());
     }
 

@@ -8,6 +8,7 @@ public class Candidate {
     private boolean allowedToVote;
     private String periodsInUkr;
     private String name;
+
     public Candidate(int age, String nationality, boolean allowedToVote, String periodsInUkr) {
         this.age = age;
         this.nationality = nationality;
@@ -23,7 +24,7 @@ public class Candidate {
         this.age = age;
     }
 
-    public  String getNationality() {
+    public String getNationality() {
         return nationality;
     }
 
@@ -31,7 +32,7 @@ public class Candidate {
         this.nationality = nationality;
     }
 
-    public  boolean isAllowedToVote() {
+    public boolean isAllowedToVote() {
         return allowedToVote;
     }
 
@@ -39,7 +40,7 @@ public class Candidate {
         this.allowedToVote = allowedToVote;
     }
 
-    public  String getPeriodsInUkr() {
+    public String getPeriodsInUkr() {
         return periodsInUkr;
     }
 
@@ -70,6 +71,7 @@ public class Candidate {
                 && Objects.equals(periodsInUkr, candidate.periodsInUkr)
                 && Objects.equals(name, candidate.name);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
