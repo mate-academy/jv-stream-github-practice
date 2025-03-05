@@ -1,9 +1,6 @@
 package practice;
-
 import model.Candidate;
-
 import java.util.function.Predicate;
-
 
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int ages = 35;
@@ -12,7 +9,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int num = 0;
     public static final int numb = 1;
     public static final int startYears = 10;
-
     @Override
     public boolean test(Candidate candidate) {
         return Candidate.getAge() > ages &&

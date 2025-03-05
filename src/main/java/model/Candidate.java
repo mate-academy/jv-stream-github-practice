@@ -16,28 +16,28 @@ public class Candidate {
         this.periodsInUkr = periodsInUkr;
     }
 
-    public static int getAge() {
+    public int getAge() {
         return age;
     }
     public void setAge(int age) {
         this.age = age;
     }
 
-    public static String getNationality() {
+    public  String getNationality() {
         return nationality;
     }
     public void setNationality(String nationality) {
         this.nationality = nationality;
     }
 
-    public static boolean isAllowedToVote() {
+    public  boolean isAllowedToVote() {
         return allowedToVote;
     }
 
     public void setAllowedToVote(boolean allowedToVote) {
         this.allowedToVote = allowedToVote;
     }
-    public static String getPeriodsInUkr() {
+    public  String getPeriodsInUkr() {
         return periodsInUkr;
     }
     public void setPeriodsInUkr(String periodsInUkr) {
