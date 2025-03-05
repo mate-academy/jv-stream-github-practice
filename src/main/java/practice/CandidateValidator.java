@@ -1,6 +1,8 @@
 package practice;
+
 import model.Candidate;
 import java.util.function.Predicate;
+
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int ages = 35;
     public static final String Ukr = "Ukraininan";
@@ -10,10 +12,10 @@ public class CandidateValidator implements Predicate<Candidate> {
     public static final int startYears = 10;
     @Override
     public boolean test(Candidate candidate) {
-        return Candidate.getAge() > ages &&
-                Candidate.isAllowedToVote() &&
-                Ukr.equals(Candidate.getNationality()) &&
-                getPeriodsInUkr(Candidate.getPeriodsInUkr());
+        return candidate.getAge() > ages &&
+                candidate.isAllowedToVote() &&
+                Ukr.equals(candidate.getNationality()) &&
+                getPeriodsInUkr(candidate.getPeriodsInUkr());
     }
     private boolean getPeriodsInUkr(String periods) {
         String[] years = periods.split(tire);

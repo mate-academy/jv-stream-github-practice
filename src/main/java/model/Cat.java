@@ -1,5 +1,7 @@
 package model;
+
 import java.util.Objects;
+
 public class Cat {
     private String name;
     private int age;
@@ -7,6 +9,7 @@ public class Cat {
         this.name = name;
         this.age = age;
     }
+
     public String getName() {
         return name;
     }
