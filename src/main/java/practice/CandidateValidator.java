@@ -13,9 +13,9 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        System.out.println(candidate.getName() + ": " + candidate.getAge() + ", " +
-                candidate.getNationality() + ", " + candidate.isAllowedToVote() + ", " +
-                candidate.getPeriodsInUkr());
+        System.out.println(candidate.getName() + ": " + candidate.getAge()
+                + ", " + candidate.getNationality() + ", " + candidate.isAllowedToVote()
+                + ", " + candidate.getPeriodsInUkr());
         return candidate.getAge() > AGE_LIMIT
                 && candidate.isAllowedToVote()
                 && UKRAINIAN.equals(candidate.getNationality())
