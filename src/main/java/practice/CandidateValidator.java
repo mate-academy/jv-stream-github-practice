@@ -1,7 +1,6 @@
 package practice;
 import model.Candidate;
 import java.util.function.Predicate;
-
 public class CandidateValidator implements Predicate<Candidate> {
     public static final int ages = 35;
     public static final String Ukr = "Ukraininan";
