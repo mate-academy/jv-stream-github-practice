@@ -36,7 +36,7 @@ public class StreamPractice {
                 .filter(numb -> numb % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(NoSuchElementException::new)
+                .orElseThrow(NoSuchElementException::new);
     }
 
 
