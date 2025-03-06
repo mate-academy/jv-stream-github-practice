@@ -4,7 +4,7 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    public static final int AGE_LIMIT = 35;
+    public static final int AGE_MIN = 35;
     public static final String UKRAINIAN = "Ukrainian";
     public static final String DASH = "-";
     public static final int START_YEAR_INDEX = 0;
@@ -16,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         System.out.println(candidate.getName() + ": " + candidate.getAge()
                 + ", " + candidate.getNationality() + ", " + candidate.isAllowedToVote()
                 + ", " + candidate.getPeriodsInUkr());
-        return candidate.getAge() > AGE_LIMIT
+        return candidate.getAge() >= AGE_MIN
                 && candidate.isAllowedToVote()
                 && UKRAINIAN.equals(candidate.getNationality())
                 && isEligibleForPresidency(candidate.getPeriodsInUkr());
