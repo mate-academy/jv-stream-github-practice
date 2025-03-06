@@ -9,10 +9,16 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int startOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(0,candidate.getPeriodsInUkr().indexOf("-")));
-        int endOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                .substring(candidate.getPeriodsInUkr().indexOf("-") + 1));
+        int startOfThePeriod = 0;
+        int endOfThePeriod = 0;
+        try {
+            startOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
+                    .substring(0, candidate.getPeriodsInUkr().indexOf("-")));
+            endOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
+                    .substring(candidate.getPeriodsInUkr().indexOf("-") + 1));
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Incorrect period of time format");
+        }
         return candidate.getAge() >= MINIMUM_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
                 && (endOfThePeriod
