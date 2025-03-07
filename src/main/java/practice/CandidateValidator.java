@@ -16,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         String[] periodsInUkr = candidate.getPeriodsInUkr().split(REGEX_FOR_SPLIT);
         boolean periodInUkrBetweenFromAndTo = (Integer.parseInt(periodsInUkr[DATA_TO])
-                - Integer.parseInt(periodsInUkr[DATA_FROM])) > YEARS_THRESHOLD;;
+                - Integer.parseInt(periodsInUkr[DATA_FROM])) > YEARS_THRESHOLD;
 
         return candidate.getAge() >= REQUIRED_AGE_TO_VOTE
                 && candidate.isAllowedToVote()
