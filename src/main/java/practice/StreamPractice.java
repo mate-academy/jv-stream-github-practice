@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
@@ -117,17 +116,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator validator = new CandidateValidator();
 
         return candidates.stream()
-                .filter(candidate -> {
-                    String[] years = candidate.getPeriodsInUkr().split("-");
-                    int startYear = Integer.parseInt(years[0]);
-                    int endYear = Integer.parseInt(years[1]);
-                    return candidate.getAge() >= 35
-                            && candidate.isAllowedToVote()
-                            && Objects.equals(candidate.getNationality(), "Ukrainian")
-                            && (endYear - startYear >= 10);
-                })
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
