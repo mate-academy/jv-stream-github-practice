@@ -5,23 +5,26 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MINIMUM_AGE = 35;
+    private static final String NATIONALITY = "Ukrainian";
     private static final int MINIMUM_PERIOD_IN_UKRAINE = 10;
+    private static final String DASH = "-";
+    private static final int BEGINNING = 0;
+    private static final int END = 1;
 
     @Override
     public boolean test(Candidate candidate) {
-        int startOfThePeriod = 0;
-        int endOfThePeriod = 0;
-        try {
-            startOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                    .substring(0, candidate.getPeriodsInUkr().indexOf("-")));
-            endOfThePeriod = Integer.parseInt(candidate.getPeriodsInUkr()
-                    .substring(candidate.getPeriodsInUkr().indexOf("-") + 1));
-        } catch (NumberFormatException e) {
-            throw new NumberFormatException("Incorrect period of time format");
-        }
         return candidate.getAge() >= MINIMUM_AGE && candidate.isAllowedToVote()
-                && candidate.getNationality().equals("Ukrainian")
-                && (endOfThePeriod
-                - startOfThePeriod >= MINIMUM_PERIOD_IN_UKRAINE);
+                && candidate.getNationality().equals(NATIONALITY)
+                && (checkYear(candidate));
+    }
+
+    private boolean checkYear(Candidate candidate) {
+        String[] livingInUkraine = candidate.getPeriodsInUkr().split(DASH);
+        try {
+            return Integer.parseInt(livingInUkraine[END])
+                    - Integer.parseInt(livingInUkraine[BEGINNING]) >= MINIMUM_PERIOD_IN_UKRAINE;
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("The number format is incorrect");
+        }
     }
 }
