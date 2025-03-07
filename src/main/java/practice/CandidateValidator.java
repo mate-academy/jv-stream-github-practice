@@ -1,17 +1,19 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         System.out.println("Checking candidate: " + candidate.getName());
-        System.out.println("Age: " + candidate.getAge() + ", Allowed to Vote: " + candidate.isAllowedToVote() +
-                ", Nationality: " + candidate.getNationality() + ", Periods in Ukraine: " + candidate.getPeriodsInUkr());
+        System.out.println("Age: " + candidate.getAge()
+                + ", Allowed to Vote: " + candidate.isAllowedToVote()
+                + ", Nationality: " + candidate.getNationality()
+                + ", Periods in Ukraine: " + candidate.getPeriodsInUkr());
 
-        if (candidate.getAge() < 35 || !candidate.isAllowedToVote() ||
-                !"Ukrainian".equals(candidate.getNationality())) {
+        if (candidate.getAge() < 35 || !candidate.isAllowedToVote()
+                || !"Ukrainian".equals(candidate.getNationality())) {
             return false;
         }
 
