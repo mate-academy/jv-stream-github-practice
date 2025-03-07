@@ -85,7 +85,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -110,8 +110,8 @@ public class StreamPractice {
 
     private Predicate<Person> isMaleAndFemaleInAgeRange(int fromAge, int femaleToAge,
                                                         int maleToAge) {
-        return p -> (p.getSex().equals(Person.Sex.MAN)
-                ? fromAge <= p.getAge() && p.getAge() <= maleToAge
-                : fromAge <= p.getAge() && p.getAge() <= femaleToAge);
+        return person -> (person.getSex().equals(Person.Sex.MAN)
+                ? fromAge <= person.getAge() && person.getAge() <= maleToAge
+                : fromAge <= person.getAge() && person.getAge() <= femaleToAge);
     }
 }
