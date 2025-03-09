@@ -21,7 +21,6 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(e -> Arrays.stream(e.split(",")))
-                .map(String::strip)
                 .map(Integer::parseInt)
                 .filter(n -> (n % 2 == 0))
                 .min(Integer::compareTo)
