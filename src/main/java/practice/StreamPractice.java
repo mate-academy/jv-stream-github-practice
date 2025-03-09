@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -54,14 +53,11 @@ public class StreamPractice {
      * <p>
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
-    private Predicate<Person> isPersonInAgeRange(Sex sex, int fromAge, int toAge) {
-        return p -> p.getSex() == sex && p.getAge() >= fromAge && p.getAge() <= toAge;
-    }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(isPersonInAgeRange(Sex.MAN, fromAge, toAge))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -79,7 +75,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> isPersonInAgeRange(Sex.MAN, fromAge, maleToAge).test(p)
                         || isPersonInAgeRange(Sex.WOMAN, fromAge, femaleToAge).test(p))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -88,12 +84,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
+        int maxPossiblePersonAge = 200;
         return peopleList.stream()
-                .filter(isPersonInAgeRange(Sex.WOMAN, femaleAge, 200))
+                .filter(isPersonInAgeRange(Sex.WOMAN, femaleAge, maxPossiblePersonAge))
                 .flatMap(person -> person.getCats()
                         .stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -113,6 +110,10 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    private Predicate<Person> isPersonInAgeRange(Sex sex, int fromAge, int toAge) {
+        return p -> p.getSex() == sex && p.getAge() >= fromAge && p.getAge() <= toAge;
     }
 }
