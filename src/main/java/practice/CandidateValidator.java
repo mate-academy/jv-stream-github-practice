@@ -9,6 +9,11 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
+        String periods = candidate.getPeriodsInUkr();
+        if (periods == null || !periods.matches("\\d{4}-\\d{4}")) {
+            throw new IllegalArgumentException(
+                    "Invalid period format, expected 'startYear-endYear'");
+        }
         String[] period = candidate.getPeriodsInUkr().split("-");
         int startYear = Integer.parseInt(period[0]);
         int endYear = Integer.parseInt(period[1]);
