@@ -38,8 +38,8 @@ public class StreamPractice {
                         ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
-
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Can't get average value from list: " + numbers));
     }
 
     /**
