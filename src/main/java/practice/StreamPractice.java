@@ -9,6 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator validator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -16,8 +17,8 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public int findMinEvenNumber(List<String> numbers) {
 
+    public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(str -> Arrays.stream(str.split(",")))
                 .mapToInt(Integer::parseInt)
@@ -34,9 +35,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0,numbers.size())
-                .mapToDouble(i -> i % 2 == 1
-                        ? numbers.get(i) - 1 : numbers.get(i))
-                .filter(num -> num % 2 != 0)
+                .mapToDouble(i -> oddCheck(numbers.get(i),i))
+                .filter(num -> num % 2 == 1)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
                         "Can't get average value from list: " + numbers));
@@ -108,12 +108,16 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator validator = new CandidateValidator();
 
         return candidates.stream()
                 .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
+    }
+
+    public double oddCheck(int number, int index) {
+        return index % 2 == 1 ? number - 1 : number;
+
     }
 }
