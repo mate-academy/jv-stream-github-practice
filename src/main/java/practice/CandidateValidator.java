@@ -4,16 +4,14 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_AGE = 35;
+    private static final int MIN_YEARS_IN_UKRAINE = 10;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
-        System.out.println("Checking candidate: " + candidate.getName());
-        System.out.println("Age: " + candidate.getAge()
-                + ", Allowed to Vote: " + candidate.isAllowedToVote()
-                + ", Nationality: " + candidate.getNationality()
-                + ", Periods in Ukraine: " + candidate.getPeriodsInUkr());
-
-        if (candidate.getAge() < 35 || !candidate.isAllowedToVote()
-                || !"Ukrainian".equals(candidate.getNationality())) {
+        if (candidate.getAge() < MIN_AGE || !candidate.isAllowedToVote()
+                || !REQUIRED_NATIONALITY.equals(candidate.getNationality())) {
             return false;
         }
 
@@ -26,11 +24,8 @@ public class CandidateValidator implements Predicate<Candidate> {
             int startYear = Integer.parseInt(years[0]);
             int endYear = Integer.parseInt(years[1]);
 
-            System.out.println("Start Year: " + startYear + ", End Year: " + endYear);
-
-            return endYear - startYear >= 10;
+            return endYear - startYear >= MIN_YEARS_IN_UKRAINE;
         } catch (NumberFormatException e) {
-            System.out.println("Invalid period format for candidate " + candidate.getName());
             return false;
         }
     }
