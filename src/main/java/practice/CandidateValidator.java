@@ -5,18 +5,19 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     //write your code here
-    public static final String properNationality = "UKRAINIAN";
-    public static final int properAge = 35;
-    public static final int properPeriodsInUkr = 10;
+    private static final String PROPER_NATIONALITY = "Ukrainian";
+    private static final String SEPARATOR_FIELD = "-";
+    private static final int PROPER_AGE = 35;
+    private static final int PROPER_PERIODS_IN_UKR = 10;
 
     @Override
     public boolean test(Candidate candidate) {
         if (candidate.isAllowedToVote()
-                && candidate.getNationality().equalsIgnoreCase(properNationality)
-                && candidate.getAge() >= properAge
-                && (Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
+                && candidate.getNationality().equals(PROPER_NATIONALITY)
+                && candidate.getAge() >= PROPER_AGE
+                && (Integer.parseInt(candidate.getPeriodsInUkr().split(SEPARATOR_FIELD)[1])
                 - Integer.parseInt(candidate.getPeriodsInUkr()
-                .split("-")[0])) >= properPeriodsInUkr) {
+                .split(SEPARATOR_FIELD)[0])) >= PROPER_PERIODS_IN_UKR) {
             return true;
         }
         return false;
