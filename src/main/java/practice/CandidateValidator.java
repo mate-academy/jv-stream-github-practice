@@ -23,4 +23,4 @@ public class CandidateValidator implements Predicate<Candidate> {
         return str.length == 2 && Integer.parseInt(str[1])
                 - Integer.parseInt(str[0]) >= LIVE_IN_UKRAINE;
     }
-}
+
