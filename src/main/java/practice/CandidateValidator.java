@@ -11,9 +11,9 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
         String[] period = candidate.getPeriodsInUkr().split("-");
-        //        if (period.length != 2) {
-        //            return false;
-        //        }
+        if (period.length != 2) {
+            return false;
+        }
         int start = Integer.parseInt(period[0]);
         int end = Integer.parseInt(period[1]);
         if ((end - start) < 10) {

@@ -81,7 +81,11 @@ public class Candidate {
     @Override
     public String toString() {
         return "Candidate{"
-                + "name='" + name + '\''
+                + "age=" + age
+                + ", nationality='" + nationality + '\''
+                + ", allowedToVote=" + allowedToVote
+                + ", periodsInUkr='" + periodsInUkr + '\''
+                + ", name='" + name + '\''
                 + '}';
     }
 }

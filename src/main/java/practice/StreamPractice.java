@@ -23,7 +23,8 @@ public class StreamPractice {
                 .map(string -> Integer.parseInt(string))
                 .filter(e -> e % 2 == 0)
                 .min((a, b) -> a.compareTo(b))
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException(String
+                        .format("Can't get min value from list" + numbers)));
         return result;
     }
 
@@ -106,7 +107,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-
         List<String> collect = candidates.stream()
                 .filter(new CandidateValidator())
                 .map(candidate -> candidate.getName())
