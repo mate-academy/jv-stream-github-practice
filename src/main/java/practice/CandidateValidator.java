@@ -4,9 +4,11 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_AGE = 35;
+
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < 35 || !candidate.isAllowedToVote()
+        if (candidate.getAge() < MIN_AGE || !candidate.isAllowedToVote()
                 || !candidate.getNationality().equals("Ukrainian")) {
             return false;
         }
