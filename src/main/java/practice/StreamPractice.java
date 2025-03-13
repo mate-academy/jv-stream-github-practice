@@ -19,9 +19,9 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(e -> Arrays.stream(e.split(",")))
-                .map(Integer::parseInt)
+                .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
-                .min(Integer::compareTo)
+                .min()
                 .orElseThrow(() -> new RuntimeException(String
                         .format("Can't get min value from list" + numbers)));
     }
@@ -36,7 +36,8 @@ public class StreamPractice {
                 .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException(""));
+                .orElseThrow(() -> new NoSuchElementException("Can not be calculated "
+                        + "average of all odd. No such elements!!!"));
     }
 
     /**
@@ -67,10 +68,10 @@ public class StreamPractice {
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        WorkablePredicate workableValidator =
+                new WorkablePredicate(fromAge, maleToAge, femaleToAge);
         return peopleList.stream()
-                .filter(p -> (p.getSex().equals(Person.Sex.MAN) && p.getAge() >= fromAge
-                        && p.getAge() <= maleToAge) || (p.getSex().equals(Person.Sex.WOMAN)
-                        && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
+                .filter(person -> (workableValidator.test(person)))
                 .toList();
     }
 
@@ -81,7 +82,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> (person.getSex() == Person.Sex.WOMAN)
                         && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
@@ -100,9 +101,11 @@ public class StreamPractice {
      * We want to reuse our validation in future, so let's write our own impl of Predicate
      * parametrized with Candidate in CandidateValidator.
      */
+
     public List<String> validateCandidates(List<Candidate> candidates) {
+        CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(new CandidateValidator())
+                .filter(validator)
                 .map(Candidate::getName)
                 .sorted()
                 .toList();
