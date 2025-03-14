@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.function.Predicate;
-
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -12,14 +11,17 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() > MIN_AGE && candidate.isAllowedToVote() == ALLOWED_TO_VOTE && candidate.getNationality().equals(NATIONALITY) && hasLivedUkraineForRequiredYears(candidate.getPeriodsInUkr());
+        return candidate.getAge() > MIN_AGE && candidate.isAllowedToVote()
+                == ALLOWED_TO_VOTE && candidate.getNationality().equals(NATIONALITY)
+                && hasLivedUkraineForRequiredYears(candidate.getPeriodsInUkr());
     }
 
     private boolean hasLivedUkraineForRequiredYears(String period) {
         String[] str = period.split(",");
 
         try {
-            return str.length == 2 && Integer.parseInt(str[1]) - Integer.parseInt(str[0]) >= LIVE_IN_UKRAINE;
+            return str.length == 2 && Integer.parseInt(str[1])
+                    - Integer.parseInt(str[0]) >= LIVE_IN_UKRAINE;
         } catch (NumberFormatException e) {
             return false;
         }
