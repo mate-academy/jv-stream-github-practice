@@ -3,6 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -36,7 +37,8 @@ public class StreamPractice {
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found."));
+
     }
 
     /**
@@ -66,11 +68,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isWorkable = p ->
+                (p.getSex() == Person.Sex.MAN
+                        && p.getAge() >= fromAge && p.getAge() <= maleToAge) ||
+                        (p.getSex() == Person.Sex.WOMAN
+                                && p.getAge() >= fromAge && p.getAge() <= femaleToAge);
+
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN
-                        && p.getAge() >= fromAge && p.getAge() <= maleToAge
-                        || p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
-                        && p.getAge() <= femaleToAge)
+                .filter(isWorkable)
                 .toList();
     }
 

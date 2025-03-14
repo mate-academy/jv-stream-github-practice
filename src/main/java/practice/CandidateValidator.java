@@ -7,6 +7,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int MIN_YEARS_IN_UKRAINE = 10;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String PERIOD_SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -15,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        String[] years = candidate.getPeriodsInUkr().trim().split("-");
+        String[] years = candidate.getPeriodsInUkr().trim().split(PERIOD_SEPARATOR);
         if (years.length != 2) {
             return false;
         }
