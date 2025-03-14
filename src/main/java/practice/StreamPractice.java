@@ -24,7 +24,8 @@ public class StreamPractice {
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException(
+                        "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -33,7 +34,6 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        int index = 0;
         return IntStream.range(0, numbers.size())
                 .map(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
