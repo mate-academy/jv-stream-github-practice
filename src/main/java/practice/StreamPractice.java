@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
