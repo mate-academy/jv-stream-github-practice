@@ -1,11 +1,11 @@
 package practice;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
-
-import static java.util.stream.Collectors.toList;
 
 import model.Candidate;
 import model.Cat;
