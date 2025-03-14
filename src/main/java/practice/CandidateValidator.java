@@ -1,7 +1,8 @@
 package practice;
 
-import model.Candidate;
 import java.util.function.Predicate;
+
+import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
@@ -18,8 +19,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] str = period.split(",");
 
         try {
-            return str.length == 2 && Integer.parseInt(str[1]) -
-                    Integer.parseInt(str[0]) >= LIVE_IN_UKRAINE;
+            return str.length == 2 && Integer.parseInt(str[1]) - Integer.parseInt(str[0]) >= LIVE_IN_UKRAINE;
         } catch (NumberFormatException e) {
             return false;
         }
