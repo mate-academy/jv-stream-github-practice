@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.function.Predicate;
-
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -16,12 +15,12 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.getNationality().equals(NATIONALITY)
                 && hasLivedUkraineForRequiredYears(candidate.getPeriodsInUkr());
 
-        System.out.println("Candidate: " + candidate.getName() +
-                " | Age: " + candidate.getAge() +
-                " | Allowed to vote: " + candidate.isAllowedToVote() +
-                " | Nationality: " + candidate.getNationality() +
-                " | Lived in Ukraine: " + candidate.getPeriodsInUkr() +
-                " | isValid: " + isValid);
+        System.out.println("Candidate: " + candidate.getName()
+                + " | Age: " + candidate.getAge()
+                + " | Allowed to vote: " + candidate.isAllowedToVote()
+                + " | Nationality: " + candidate.getNationality()
+                + " | Lived in Ukraine: " + candidate.getPeriodsInUkr()
+                + " | isValid: " + isValid);
 
         return isValid;
     }
