@@ -1,7 +1,6 @@
 package practice;
 
 import java.util.function.Predicate;
-
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -13,12 +12,10 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        boolean isValid = candidate.getAge() >= MIN_AGE
+         return candidate.getAge() >= MIN_AGE
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(NATIONALITY)
                 && hasLivedUkraineForRequiredYears(candidate.getPeriodsInUkr());
-
-        return isValid;
     }
 
     private boolean hasLivedUkraineForRequiredYears(String period) {
