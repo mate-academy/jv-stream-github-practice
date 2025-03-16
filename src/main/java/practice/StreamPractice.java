@@ -1,7 +1,5 @@
 package practice;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
