@@ -39,8 +39,8 @@ public class StreamPractice {
                 .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No correct result " +
-                        "for average odd numbers!" + numbers));
+                .orElseThrow(() -> new NoSuchElementException("No correct result "
+                        + "for average odd numbers!" + numbers));
     }
 
     /**
