@@ -1,11 +1,9 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -19,12 +17,14 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-       return numbers.stream()
+        return numbers.stream()
                 .flatMap(x -> Arrays.stream(x.split(",")))
                .map(Integer::parseInt)
                .filter(x -> x % 2 == 0)
                 .min(Integer::compareTo)
-               .orElseThrow(() -> new  RuntimeException("Can't get min value from list: < Here is our input" + numbers + ">"));
+               .orElseThrow(() -> new RuntimeException(
+                       "Can't get min value from list: < Here is our input"
+                       + numbers + ">"));
 
     }
 
@@ -72,10 +72,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge &&
-                        (
-                                (person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge) ||
-                                (person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge)
+                .filter(person -> person.getAge() >= fromAge
+                        && ((person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge)
+                        ||
+                        (person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge)
                         ))
                 .collect(Collectors.toList());
     }

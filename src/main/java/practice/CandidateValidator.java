@@ -1,13 +1,12 @@
 package practice;
 
+import java.util.function.Predicate;
 import model.Candidate;
 
-import java.util.function.Predicate;
-
 public class CandidateValidator implements Predicate<Candidate> {
-    private final static int REQUIRED_AGE = 35;
-    private final static int PERIODS_IN_UKR = 10;
-    private final static String NATIONALITY_UKRAINIAN = "Ukrainian";
+    private static final int REQUIRED_AGE = 35;
+    private static final int PERIODS_IN_UKR = 10;
+    private static final String NATIONALITY_UKRAINIAN = "Ukrainian";
 
     @Override
     public boolean test(Candidate candidate) {
@@ -17,5 +16,6 @@ public class CandidateValidator implements Predicate<Candidate> {
         return candidate.getAge() >= REQUIRED_AGE
                 && candidate.getNationality().equals(NATIONALITY_UKRAINIAN)
                 && candidate.isAllowedToVote()
-                && (endYear - startYear) >= PERIODS_IN_UKR; }
+                && (endYear - startYear) >= PERIODS_IN_UKR;
+    }
 }
