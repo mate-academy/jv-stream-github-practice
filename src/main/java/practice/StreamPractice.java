@@ -3,12 +3,15 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private CandidateValidator candidateValidator = new CandidateValidator();
+    private WorkablePeople workablePeople;
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -16,6 +19,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(x -> Arrays.stream(x.split(",")))
@@ -23,9 +27,7 @@ public class StreamPractice {
                .filter(x -> x % 2 == 0)
                 .min(Integer::compareTo)
                .orElseThrow(() -> new RuntimeException(
-                       "Can't get min value from list: < Here is our input"
-                       + numbers + ">"));
-
+                       "Can't get min value from list: " + numbers));
     }
 
     /**
@@ -53,7 +55,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.MAN)
+                .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
@@ -71,13 +73,10 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        workablePeople = new WorkablePeople(fromAge, maleToAge, femaleToAge);
         return peopleList.stream()
-                .filter(person -> person.getAge() >= fromAge
-                        && ((person.getSex().equals(Person.Sex.MAN) && person.getAge() <= maleToAge)
-                        ||
-                        (person.getSex().equals(Person.Sex.WOMAN) && person.getAge() <= femaleToAge)
-                        ))
-                .collect(Collectors.toList());
+                .filter(workablePeople)
+                .toList();
     }
 
     /**
@@ -87,10 +86,10 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
                 && person.getAge() >= femaleAge)
                 .flatMap(x -> x.getCats().stream().map(Cat::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -106,11 +105,31 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public static class WorkablePeople implements Predicate<Person> {
+        private static int FROM_AGE;
+        private static int MALE_TO_AGE;
+        private static int FEMALE_TO_AGE;
+
+        public WorkablePeople(int fromAge, int maleAge, int femaleAge) {
+            FROM_AGE = fromAge;
+            MALE_TO_AGE = maleAge;
+            FEMALE_TO_AGE = femaleAge;
+        }
+
+        @Override
+        public boolean test(Person person) {
+            return person.getAge() >= FROM_AGE
+                    && ((person.getSex() == Person.Sex.MAN && person.getAge() <= MALE_TO_AGE)
+                    ||
+                        (person.getSex() == Person.Sex.WOMAN && person.getAge() <= FEMALE_TO_AGE)
+                );
+        }
     }
 }
