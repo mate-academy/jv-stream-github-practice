@@ -3,7 +3,6 @@ package practice;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -31,27 +30,28 @@ public class StreamPractice {
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-            .filter(n -> n.getSex().equals(Sex.MAN) && n.getAge() >= fromAge && n.getAge() <= toAge)
-            .collect(Collectors.toList());
+            .filter(n -> n.getSex() == Sex.MAN
+                && n.getAge() >= fromAge && n.getAge() <= toAge)
+            .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-            .filter(n -> (n.getSex().equals(Sex.WOMAN)
+            .filter(n -> (n.getSex() == Sex.WOMAN
                 && n.getAge() >= fromAge && n.getAge() <= femaleToAge)
-                || (n.getSex().equals(Sex.MAN)
+                || (n.getSex() == Sex.MAN
                 && n.getAge() >= fromAge && n.getAge() <= maleToAge))
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-            .filter(n -> n.getSex().equals(Sex.WOMAN)
+            .filter(n -> n.getSex() == Sex.WOMAN
                 && n.getAge() >= femaleAge && !n.getCats().isEmpty())
             .flatMap(person -> person.getCats().stream())
             .map(Cat::getName)
-            .collect(Collectors.toList());
+            .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
@@ -60,7 +60,6 @@ public class StreamPractice {
             .filter(validator)
             .map(Candidate::getName)
             .sorted()
-            .collect(Collectors.toList());
-
+            .toList();
     }
 }
