@@ -2,16 +2,14 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private CandidateValidator candidateValidator = new CandidateValidator();
-    private WorkablePeople workablePeople;
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -23,10 +21,10 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(x -> Arrays.stream(x.split(",")))
-               .map(Integer::parseInt)
-               .filter(x -> x % 2 == 0)
+                .map(Integer::parseInt)
+                .filter(x -> x % 2 == 0)
                 .min(Integer::compareTo)
-               .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new RuntimeException(
                        "Can't get min value from list: " + numbers));
     }
 
@@ -36,11 +34,10 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        AtomicInteger index = new AtomicInteger(0);
-        return numbers.stream()
-                .map(number -> index.getAndIncrement() % 2 != 0 ? number - 1 : number)
+        return IntStream
+                .range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow();
     }
@@ -58,7 +55,7 @@ public class StreamPractice {
                 .filter(person -> person.getSex() == Person.Sex.MAN
                         && person.getAge() >= fromAge
                         && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -71,11 +68,15 @@ public class StreamPractice {
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
+
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        workablePeople = new WorkablePeople(fromAge, maleToAge, femaleToAge);
+        Predicate<Person> malePredicate = person -> person.getSex() == Person.Sex.MAN
+                && person.getAge() >= fromAge && person.getAge() <= maleToAge;
+        Predicate<Person> femalePredicate = person -> person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= fromAge && person.getAge() <= femaleToAge;
         return peopleList.stream()
-                .filter(workablePeople)
+                .filter(femalePredicate.or(malePredicate))
                 .toList();
     }
 
@@ -112,24 +113,4 @@ public class StreamPractice {
                 .toList();
     }
 
-    public static class WorkablePeople implements Predicate<Person> {
-        private static int FROM_AGE;
-        private static int MALE_TO_AGE;
-        private static int FEMALE_TO_AGE;
-
-        public WorkablePeople(int fromAge, int maleAge, int femaleAge) {
-            FROM_AGE = fromAge;
-            MALE_TO_AGE = maleAge;
-            FEMALE_TO_AGE = femaleAge;
-        }
-
-        @Override
-        public boolean test(Person person) {
-            return person.getAge() >= FROM_AGE
-                    && ((person.getSex() == Person.Sex.MAN && person.getAge() <= MALE_TO_AGE)
-                    ||
-                        (person.getSex() == Person.Sex.WOMAN && person.getAge() <= FEMALE_TO_AGE)
-                );
-        }
-    }
 }

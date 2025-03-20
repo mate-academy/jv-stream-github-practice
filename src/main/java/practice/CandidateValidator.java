@@ -4,10 +4,10 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
-    private static int REQUIRED_AGE = 35;
-    private static int PERIODS_IN_UKR = 10;
-    private static String NATIONALITY_UKRAINIAN = "Ukrainian";
-    private static String SEPARATOR = "-";
+    private static final int REQUIRED_AGE = 35;
+    private static final int PERIODS_IN_UKR = 10;
+    private static final String NATIONALITY_UKRAINIAN = "Ukrainian";
+    private static final String SEPARATOR = "-";
 
     @Override
     public boolean test(Candidate candidate) {
