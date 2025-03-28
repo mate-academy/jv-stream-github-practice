@@ -42,7 +42,8 @@ public class StreamPractice {
                 .collect(Collectors.toList());
     }
 
-    public List<Person> getWorkablePeople(int fromAge, int femaleToAge, int maleToAge, List<Person> peopleList) {
+    public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
+                                          int maleToAge, List<Person> peopleList) {
         WorkableValidator validator = new WorkableValidator(fromAge, femaleToAge, maleToAge);
 
         return peopleList.stream()
