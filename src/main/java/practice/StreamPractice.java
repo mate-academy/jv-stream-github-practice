@@ -2,6 +2,11 @@ package practice;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
@@ -29,7 +34,14 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
+                .mapToInt(Integer::intValue)
+                .filter(i -> i % 2 == 1)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
+
     }
 
     /**
