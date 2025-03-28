@@ -7,9 +7,12 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= 35
+        int minAge = 35;
+        String nationality = "Ukrainian";
+
+        return candidate.getAge() >= minAge
                 && candidate.isAllowedToVote()
-                && "Ukrainian".equals(candidate.getNationality())
+                && nationality.equals(candidate.getNationality())
                 && hasLivedInUkraineFor10Years(candidate.getPeriodsInUkr());
     }
 
@@ -18,7 +21,9 @@ public class CandidateValidator implements Predicate<Candidate> {
             String[] years = periodsInUkr.split("-");
             int startYear = Integer.parseInt(years[0]);
             int endYear = Integer.parseInt(years[1]);
-            return (endYear - startYear) >= 10;
+            int minimumYearsInCountry = 10;
+
+            return (endYear - startYear) >= minimumYearsInCountry;
         } catch (Exception e) {
             return false;
         }
