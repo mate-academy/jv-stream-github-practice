@@ -3,6 +3,8 @@ package practice;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -17,7 +19,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         if (numbers.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list");
+            throw new RuntimeException("Can't get min value from list: " + numbers);
         }
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
@@ -34,17 +36,12 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (!(i % 2 == 0)) {
-                numbers.set(i,numbers.get(i) - 1);
-            }
-        }
-        return numbers.stream()
-                .filter(n -> !(n % 2 == 0))
+        return IntStream.range(0, numbers.size())
+                .mapToObj(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 != 0)
                 .mapToDouble(i -> i)
                 .average()
-                .getAsDouble();
-
+                .orElseThrow(() -> new NoSuchElementException("No odd numbers found"));
     }
 
     /**
