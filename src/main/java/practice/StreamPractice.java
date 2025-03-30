@@ -18,12 +18,12 @@ public class StreamPractice {
                 .sorted()
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list:"
-                        + "< Here is our input 'numbers' >"));
+                        + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 == 1) ? numbers.get(i) - 1 : numbers.get(i))
+        return numbers.stream()
+                .map(i -> (numbers.indexOf(i) % 2 == 1) ? i - 1 : i)
                 .filter(n -> n % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
