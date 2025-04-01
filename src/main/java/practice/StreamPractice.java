@@ -1,13 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -39,7 +36,7 @@ public class StreamPractice {
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream
                 .range(0, numbers.size())
-                .map(i -> i % 2 == 1 ? numbers.get(i) - 1: numbers.get(i))
+                .map(i -> i % 2 == 1 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(num -> num % 2 != 0)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
@@ -56,7 +53,10 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList
                 .stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN && person.getAge() >= fromAge && person.getAge() <= toAge)
+                .filter(person ->
+                        person.getSex() == Person.Sex.MAN
+                                && person.getAge() >= fromAge
+                                && person.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +79,6 @@ public class StreamPractice {
                         && p.getAge() <= femaleToAge)) && p.getAge() >= fromAge)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
