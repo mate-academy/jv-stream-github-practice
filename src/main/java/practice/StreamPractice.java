@@ -3,7 +3,7 @@ package practice;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import model.Candidate;
@@ -11,7 +11,6 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private int count = 0;
 
     public int findMinEvenNumber(List<String> numbers) {
 
@@ -22,12 +21,16 @@ public class StreamPractice {
                 .mapToInt(Integer::intValue)
                 .filter(n -> n % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
+        AtomicInteger index = new AtomicInteger();
         return numbers.stream()
-                .map(integerFunction)
+                .map(n -> {
+                    int i = index.getAndIncrement();
+                    return i % 2 != 0 ? n - 1 : n;
+                })
                 .filter(n -> n % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
@@ -83,12 +86,4 @@ public class StreamPractice {
                 .sorted()
                 .collect(Collectors.toList());
     }
-
-    private final Function<Integer, Integer> integerFunction = integer -> {
-        if (count % 2 != 0) {
-            integer--;
-        }
-        count++;
-        return integer;
-    };
 }

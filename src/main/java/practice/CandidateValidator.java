@@ -21,6 +21,18 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     private int livingInUkr(Candidate candidate) {
         String[] periodInUkraine = candidate.getPeriodsInUkr().split("-");
-        return Integer.parseInt(periodInUkraine[1]) - Integer.parseInt(periodInUkraine[0]);
+        if (periodInUkraine.length != 2) {
+            throw new IllegalArgumentException("Invalid period format: "
+                    + candidate.getPeriodsInUkr());
+        }
+
+        try {
+            int start = Integer.parseInt(periodInUkraine[0]);
+            int end = Integer.parseInt(periodInUkraine[1]);
+            return end - start;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid number in period: "
+                    + candidate.getPeriodsInUkr(), e);
+        }
     }
 }
