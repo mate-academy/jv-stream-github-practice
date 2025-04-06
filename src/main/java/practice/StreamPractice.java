@@ -2,7 +2,6 @@ package practice;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -18,20 +17,15 @@ public class StreamPractice {
                 .filter(i -> i % 2 == 0)
                 .min(Integer::compare)
                 .orElseThrow(() -> new RuntimeException(
-                        "Can't get min value from list:" + numbers));
+                        "Can't get min value from list: " + numbers));
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-        for (int i = 0; i < numbers.size(); i++) {
-            if (i % 2 != 0) {
-                numbers.set(i, numbers.get(i) - NUMBER_SUBTRACTED);
-            }
-        }
-        return numbers.stream()
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - NUMBER_SUBTRACTED : numbers.get(i))
                 .filter(n -> n % 2 != 0)
-                .mapToDouble(Double::valueOf)
                 .average()
-                .orElseThrow(NoSuchElementException::new);
+                .getAsDouble();
     }
 
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
