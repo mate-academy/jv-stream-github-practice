@@ -5,6 +5,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String UKRAINIAN_NATIONALITY = "Ukrainian";
+    private static final String SEPARATOR = "-";
     private static final int AGE_FOR_VOTING = 35;
     private static final int LIVE_IN_UKR = 10;
 
@@ -20,7 +21,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int livingInUkr(Candidate candidate) {
-        String[] periodInUkraine = candidate.getPeriodsInUkr().split("-");
+        String[] periodInUkraine = candidate.getPeriodsInUkr().split(SEPARATOR);
         if (periodInUkraine.length != 2) {
             throw new IllegalArgumentException("Invalid period format: "
                     + candidate.getPeriodsInUkr());

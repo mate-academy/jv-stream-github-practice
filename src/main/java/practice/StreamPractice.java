@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -26,12 +27,10 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         AtomicInteger index = new AtomicInteger();
-        return numbers.stream()
-                .map(n -> {
-                    int i = index.getAndIncrement();
-                    return i % 2 != 0 ? n - 1 : n;
-                })
-                .filter(n -> n % 2 != 0)
+        return IntStream
+                .range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(num -> num % 2 != 0)
                 .mapToDouble(Double::valueOf)
                 .average()
                 .getAsDouble();
@@ -42,19 +41,16 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= fromAge
                         && p.getAge() <= toAge
                         && p.getSex() == Person.Sex.MAN)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> personPredicate = person -> {
-            if (person.getAge() >= fromAge
+            return person.getAge() >= fromAge
                     && ((person.getSex() == Person.Sex.MAN && person.getAge() <= maleToAge)
-                            || (person.getSex() == Person.Sex.WOMAN
-                            && person.getAge() <= femaleToAge))) {
-                return true;
-            }
-            return false;
+                    || (person.getSex() == Person.Sex.WOMAN
+                    && person.getAge() <= femaleToAge));
         };
 
         return peopleList.stream()
@@ -63,12 +59,9 @@ public class StreamPractice {
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        Predicate<Person> womenOwnersCatsFromFemaleAge = person -> {
-            if (person.getSex() == Person.Sex.WOMAN && person.getAge() >= femaleAge) {
-                return true;
-            }
-            return false;
-        };
+        Predicate<Person> womenOwnersCatsFromFemaleAge = person ->
+                person.getSex() == Person.Sex.WOMAN
+                && person.getAge() >= femaleAge;
 
         return peopleList.stream()
                 .filter(womenOwnersCatsFromFemaleAge)
