@@ -12,7 +12,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    CandidateValidator candidateValidator = new CandidateValidator();
+    private final CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
 
