@@ -12,6 +12,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    CandidateValidator candidateValidator = new CandidateValidator();
 
     public int findMinEvenNumber(List<String> numbers) {
 
@@ -72,11 +73,10 @@ public class StreamPractice {
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
