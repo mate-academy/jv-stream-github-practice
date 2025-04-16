@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
@@ -52,7 +51,8 @@ public class StreamPractice {
 
         return peopleList.stream()
                 .filter(personPredicate)
-                .collect(Collectors.toList());
+                .toList();
+
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
@@ -65,7 +65,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
