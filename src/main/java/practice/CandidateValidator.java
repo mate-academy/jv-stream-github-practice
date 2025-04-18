@@ -16,7 +16,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (periods == null || periods.isEmpty()) {
             return false;
         }
-        String[] years = periods.split("-");
+        String[] years = periods.split("//-");
         if (years.length != 2) {
             return false;
         }
