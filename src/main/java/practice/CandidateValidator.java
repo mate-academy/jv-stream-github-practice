@@ -8,7 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         boolean moreThanTenYears = false;
-        int[] yearsArray = Arrays.stream(candidate.getPeriodsInUkr().split("-"))
+        int[] yearsArray = Arrays.stream(candidate.getPeriodsInUkr().split("\\-"))
                 .map(Integer::parseInt)
                 .mapToInt(Integer::intValue)
                 .toArray();
