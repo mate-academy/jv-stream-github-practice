@@ -7,15 +7,18 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
+        final int minPersonAge = 35;
+        final int minPeriodInUa = 10;
         boolean moreThanTenYears = false;
+
         int[] yearsArray = Arrays.stream(candidate.getPeriodsInUkr().split("\\-"))
                 .map(Integer::parseInt)
                 .mapToInt(Integer::intValue)
                 .toArray();
-        if (yearsArray[1] - yearsArray[0] >= 10) {
+        if (yearsArray[1] - yearsArray[0] >= minPeriodInUa) {
             moreThanTenYears = true;
         }
-        if (candidate.getAge() >= 35 && candidate.isAllowedToVote()
+        if (candidate.getAge() >= minPersonAge && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian") && moreThanTenYears) {
             return true;
         }
