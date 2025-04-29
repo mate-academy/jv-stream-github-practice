@@ -7,6 +7,7 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_PERSON_AGE = 35;
     private static final int MIN_PERIOD_IN_UA = 10;
+
     @Override
     public boolean test(Candidate candidate) {
         boolean moreThanTenYears = false;
