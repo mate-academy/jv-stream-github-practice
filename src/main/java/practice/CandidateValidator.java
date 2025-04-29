@@ -5,20 +5,20 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_PERSON_AGE = 35;
+    private static final int MIN_PERIOD_IN_UA = 10;
     @Override
     public boolean test(Candidate candidate) {
-        final int minPersonAge = 35;
-        final int minPeriodInUa = 10;
         boolean moreThanTenYears = false;
 
         int[] yearsArray = Arrays.stream(candidate.getPeriodsInUkr().split("\\-"))
                 .map(Integer::parseInt)
                 .mapToInt(Integer::intValue)
                 .toArray();
-        if (yearsArray[1] - yearsArray[0] >= minPeriodInUa) {
+        if (yearsArray[1] - yearsArray[0] >= MIN_PERIOD_IN_UA) {
             moreThanTenYears = true;
         }
-        if (candidate.getAge() >= minPersonAge && candidate.isAllowedToVote()
+        if (candidate.getAge() >= MIN_PERSON_AGE && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian") && moreThanTenYears) {
             return true;
         }
