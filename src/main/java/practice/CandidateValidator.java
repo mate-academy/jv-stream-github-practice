@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -15,20 +16,20 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private boolean hasLivedInUkraineForTenYears(String periodsInUkr) {
-        if (periodsInUkr == null) {
+        if (periodsInUkr == null || periodsInUkr.isEmpty()) {
             return false;
         }
 
-        int allYearsInUkr = 0;
-        String [] allPeriods = periodsInUkr.split(",");
-        for (String period : allPeriods) {
-            String[] years = period.split("-");
-            int from = Integer.parseInt(years[0]);
-            int to = Integer.parseInt(years[1]);
-            allYearsInUkr += to - from;
-        }
-
-        return allYearsInUkr >= 10;
+        return Arrays.stream(periodsInUkr.split(","))
+                .map(String::trim)
+                .filter(s -> s.matches("\\d{4}-\\d{4}"))
+                .mapToInt(period -> {
+                    String[] years = period.split("-");
+                    int start = Integer.parseInt(years[0]);
+                    int end = Integer.parseInt(years[1]);
+                    return end - start;
+                })
+                .sum() >= 10;
     }
 
 }
