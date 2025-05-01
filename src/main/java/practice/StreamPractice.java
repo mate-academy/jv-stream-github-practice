@@ -8,7 +8,6 @@ import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-
 import static java.util.stream.Collectors.toList;
 
 public class StreamPractice {
