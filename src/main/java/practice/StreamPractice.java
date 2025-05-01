@@ -9,7 +9,6 @@ import model.Candidate;
 import model.Cat;
 import model.Person;
 
-
 public class StreamPractice {
 
     private final Predicate<Candidate> candidateValidator = new CandidateValidator();
