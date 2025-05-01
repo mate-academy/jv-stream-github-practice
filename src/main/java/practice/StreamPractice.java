@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
-import static java.util.stream.Collectors.toList;
+
 
 public class StreamPractice {
 
@@ -55,7 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(s -> s.getSex() == Person.Sex.MAN)
                 .filter(a -> a.getAge() <= toAge && a.getAge() >= fromAge)
-                .collect(toList());
+                .toList();
     }
 
     /**
@@ -117,6 +117,6 @@ public class StreamPractice {
                 .filter(candidateValidator)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(toList());
+                .toList();
     }
 }
