@@ -8,6 +8,7 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final String NATIONALITY_REQUIRED = "Ukrainian";
     private static final String PERIOD_SEPARATOR = "-";
     private static final int REQUIRED_PERIOD_YEARS = 10;
+
     @Override
     public boolean test(Candidate c) {
         return c.getAge() >= MIN_AGE

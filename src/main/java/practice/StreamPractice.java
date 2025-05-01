@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -73,12 +72,14 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> isEligibleMan = p ->
-                p.getSex().equals(Person.Sex.MAN) &&
-                        p.getAge() >= fromAge && p.getAge() <= maleToAge;
+                p.getSex().equals(Person.Sex.MAN)
+                        && p.getAge() >= fromAge
+                        && p.getAge() <= maleToAge;
 
         Predicate<Person> isEligibleWoman = p ->
-                p.getSex().equals(Person.Sex.WOMAN) &&
-                        p.getAge() >= fromAge && p.getAge() <= femaleToAge;
+                p.getSex().equals(Person.Sex.WOMAN)
+                        && p.getAge() >= fromAge
+                        && p.getAge() <= femaleToAge;
 
         return peopleList.stream()
                 .filter(isEligibleMan.or(isEligibleWoman))
