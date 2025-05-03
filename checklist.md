@@ -3,7 +3,7 @@
 #### Try to use a minimum amount of stream operations 
  * If you have a long boolean expression you may create your own implementation of Predicate and use it in your filter.
  * Where possible try to use single map operation instead of sequence of them. 
- * If you need to throw exception when no result found after stream execution sometimes `get()/getAsDouble()` may help, try to google what does it do.
+ * If you need to throw exception when no result fo**und after stream execution sometimes `get()/getAsDouble()` may help, try to google what does it do.**
 
 #### Use Stream API to solve all tasks. Don't use loops.
 #### Remember about the difference between bitwise and boolean operators.
