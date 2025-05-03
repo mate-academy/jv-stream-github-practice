@@ -16,6 +16,15 @@ public class Candidate {
         this.periodsInUkr = periodsInUkr;
     }
 
+    public Candidate(String name, int age, String nationality,
+                     boolean allowedToVote, String periodsInUkr) {
+        this.age = age;
+        this.nationality = nationality;
+        this.allowedToVote = allowedToVote;
+        this.periodsInUkr = periodsInUkr;
+        this.name = name;
+    }
+
     public int getAge() {
         return age;
     }
