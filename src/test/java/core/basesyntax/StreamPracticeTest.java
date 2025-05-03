@@ -6,16 +6,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
-import model.Candidate;
-import model.Cat;
-import model.Person;
+import core.basesyntax.model.Candidate;
+import core.basesyntax.model.Cat;
+import core.basesyntax.model.Person;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import practice.CandidateValidator;
-import practice.StreamPractice;
+import core.basesyntax.model.practice.CandidateValidator;
+import core.basesyntax.model.practice.StreamPractice;
 
 public class StreamPracticeTest {
     @Rule
