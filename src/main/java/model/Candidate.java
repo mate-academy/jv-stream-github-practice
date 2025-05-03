@@ -20,32 +20,16 @@ public class Candidate {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public String getNationality() {
         return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
     }
 
     public boolean isAllowedToVote() {
         return allowedToVote;
     }
 
-    public void setAllowedToVote(boolean allowedToVote) {
-        this.allowedToVote = allowedToVote;
-    }
-
     public String getPeriodsInUkr() {
         return periodsInUkr;
-    }
-
-    public void setPeriodsInUkr(String periodsInUkr) {
-        this.periodsInUkr = periodsInUkr;
     }
 
     public String getName() {
