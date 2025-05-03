@@ -1,7 +1,11 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -14,7 +18,11 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        if (getStreamEvenNumber(numbers).count() == 0) {
+            throw new NoSuchElementException("Can't get min value from list: "
+                    + numbers.toString());
+        }
+        return getStreamEvenNumber(numbers).min().getAsInt();
     }
 
     /**
@@ -23,7 +31,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        if (getStreamOddNums(numbers).count() == 0) {
+            throw new NoSuchElementException("Can't get min value from list: "
+                    + numbers.toString());
+        }
+        return getStreamOddNums(numbers).average().getAsDouble();
     }
 
     /**
@@ -35,7 +47,12 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> isManAndAgeBetweenArg = p -> p.getSex()
+                == Person.Sex.MAN && p.getAge() >= fromAge
+                && p.getAge() <= toAge;
+        return peopleList.stream()
+                .filter(isManAndAgeBetweenArg)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +67,14 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> isWorkablePerson = p
+                -> (p.getSex() == Person.Sex.MAN && p.getAge() >= fromAge
+                && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
+                && p.getAge() <= femaleToAge);
+        return peopleList.stream()
+                .filter(isWorkablePerson)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +83,14 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        Predicate<Person> isWomanOlderArg = p -> p.getSex()
+                == Person.Sex.WOMAN && p.getAge() >= femaleAge;
+        return peopleList.stream()
+                .filter(isWomanOlderArg)
+                .flatMap(p -> p.getCats().stream())
+                .distinct()
+                .map(c -> c.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +106,23 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private IntStream getStreamEvenNumber(List<String> numbers) {
+        return numbers.stream()
+                .flatMap(s -> Arrays.stream(s.split(",")))
+                .mapToInt(n -> Integer.valueOf(n))
+                .filter(n -> n % 2 == 0);
+    }
+
+    private IntStream getStreamOddNums(List<Integer> numbers) {
+        return IntStream.range(0, numbers.size())
+                .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
+                .filter(n -> n % 2 != 0);
     }
 }
