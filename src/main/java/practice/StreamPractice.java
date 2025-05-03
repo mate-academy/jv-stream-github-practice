@@ -1,7 +1,10 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import model.Candidate;
 import model.Person;
 
@@ -14,7 +17,13 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(z -> z.split(","))
+                .flatMap((Arrays::stream))
+                .mapToInt(Integer::parseInt)
+                .filter(z -> z % 2 == 0)
+                .min()
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
     }
 
     /**
@@ -23,7 +32,11 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(z -> z % 2 != 0 ? numbers.get(z) - 1 : numbers.get(z))
+                .filter(z -> z % 2 != 0)
+                .average()
+                .orElseThrow(() -> new NoSuchElementException("Can't find odd numbers"));
     }
 
     /**
@@ -35,7 +48,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(z -> z.getSex().equals(Person.Sex.MAN)
+                        && z.getAge() > fromAge
+                        && z.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +67,11 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(z -> z.getAge() >= fromAge
+                        && (z.getSex().equals(Person.Sex.MAN) && z.getAge() <= maleToAge
+                        || z.getSex().equals(Person.Sex.WOMAN) && z.getAge() <= femaleToAge))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +80,11 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
+                .map(p -> p.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +100,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(z -> z.getName())
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
