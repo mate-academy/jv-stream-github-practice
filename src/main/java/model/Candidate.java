@@ -49,7 +49,7 @@ public class Candidate {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -77,4 +77,5 @@ public class Candidate {
         return Objects.hash(getAge(), getNationality(),
             isAllowedToVote(), getPeriodsInUkr(), getName());
     }
+
 }
