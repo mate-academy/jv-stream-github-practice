@@ -1,3 +1,4 @@
+
 # Stream practice
 
 1.  Given the list of strings where each element contains 1+ numbers:
