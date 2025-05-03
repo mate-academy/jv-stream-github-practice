@@ -24,8 +24,7 @@ public class Cat {
             return false;
         }
         Cat cat = (Cat) o;
-        return age == cat.age
-            && Objects.equals(name, cat.name);
+        return age == cat.age && Objects.equals(name, cat.name);
     }
 
     @Override
@@ -35,9 +34,6 @@ public class Cat {
 
     @Override
     public String toString() {
-        return "Cat{"
-            + "name='" + name + '\''
-            + ", age=" + age
-            + '}';
+        return "Cat{" + "name='" + name + '\'' + ", age=" + age + '}';
     }
 }
