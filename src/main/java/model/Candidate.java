@@ -66,15 +66,26 @@ public class Candidate {
         }
         Candidate candidate = (Candidate) o;
         return age == candidate.age
-            && allowedToVote == candidate.allowedToVote
-            && Objects.equals(nationality, candidate.nationality)
-            && Objects.equals(periodsInUkr, candidate.periodsInUkr)
-            && Objects.equals(name, candidate.name);
+                && allowedToVote == candidate.allowedToVote
+                && Objects.equals(nationality, candidate.nationality)
+                && Objects.equals(periodsInUkr, candidate.periodsInUkr)
+                && Objects.equals(name, candidate.name);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getAge(), getNationality(),
-            isAllowedToVote(), getPeriodsInUkr(), getName());
+                isAllowedToVote(), getPeriodsInUkr(), getName());
+    }
+
+    @Override
+    public String toString() {
+        return "Candidate{" + "age="
+                + age + ", nationality='"
+                + nationality + '\''
+                + ", allowedToVote="
+                + allowedToVote + ", periodsInUkr='"
+                + periodsInUkr + '\'' + ", name='"
+                + name + '\'' + '}';
     }
 }
