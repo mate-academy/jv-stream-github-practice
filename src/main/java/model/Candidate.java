@@ -66,10 +66,10 @@ public class Candidate {
         }
         Candidate candidate = (Candidate) o;
         return age == candidate.age
-            && allowedToVote == candidate.allowedToVote
-            && Objects.equals(nationality, candidate.nationality)
-            && Objects.equals(periodsInUkr, candidate.periodsInUkr)
-            && Objects.equals(name, candidate.name);
+                && allowedToVote == candidate.allowedToVote
+                && Objects.equals(nationality, candidate.nationality)
+                && Objects.equals(periodsInUkr, candidate.periodsInUkr)
+                && Objects.equals(name, candidate.name);
     }
 
     @Override
