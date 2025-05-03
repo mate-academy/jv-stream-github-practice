@@ -1,80 +1,89 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    /**
-     * Given list of strings where each element contains 1+ numbers:
-     * input = {"5,30,100", "0,22,7", ...}
-     * return min integer value. One more thing - we're interested in even numbers.
-     * If there is no needed data throw RuntimeException with message
-     * "Can't get min value from list: < Here is our input 'numbers' >"
-     */
+    private static final String COMMA = ",";
+    private static final String EXCEPTION_MESSAGE = "Can't get min value from list: ";
+    private static final int ZERO = 0;
+    private static final int ONE = 1;
+    private static final int TWO = 2;
+
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(string -> string.split(COMMA))
+                .flatMap(Arrays::stream)
+                .mapToInt(Integer::parseInt)
+                .filter(number -> !checkIfOdd(number))
+                .min()
+                .orElseThrow(() ->
+                        new RuntimeException(EXCEPTION_MESSAGE + numbers));
     }
 
-    /**
-     * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
-     */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(ZERO, numbers.size())
+                .map(index -> checkIfOdd(index) ? numbers.get(index) - ONE : numbers.get(index))
+                .filter(this::checkIfOdd)
+                .average()
+                .getAsDouble();
     }
 
-    /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
-     * <p>
-     * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
-     */
+    private boolean checkIfOdd(int number) {
+
+        return number % TWO != ZERO;
+    }
+
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        Predicate<Person> filterManByAge = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
+            return Person.Sex.MAN == sex
+                    && age >= fromAge
+                    && age <= toAge;
+        };
+
+        return peopleList.stream()
+                .filter(filterManByAge)
+                .toList();
     }
 
-    /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
-     * or to `femaleToAge` (for women) inclusively.
-     * <p>
-     * Example: select people of working age
-     * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
-     */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        Predicate<Person> filterPersonBySexAndAge = person -> {
+            int age = person.getAge();
+            Person.Sex sex = person.getSex();
+            return age >= fromAge
+                    && (Person.Sex.WOMAN == sex && age <= femaleToAge
+                    || Person.Sex.MAN == sex && age <= maleToAge);
+        };
+        return peopleList.stream()
+                .filter(filterPersonBySexAndAge)
+                .toList();
     }
 
-    /**
-     * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
-     * and each `Cat` having a `name` and `age`),
-     * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
-     */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex() == Person.Sex.WOMAN
+                        && person.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(Collection::stream)
+                .map(Cat::getName)
+                .toList();
     }
 
-    /**
-     * Your help with a election is needed. Given list of candidates, where each element
-     * has Candidate.class type.
-     * Check which candidates are eligible to apply for president position and return their
-     * names sorted alphabetically.
-     * The requirements are: person should be older than 35 years, should be allowed to vote,
-     * have nationality - 'Ukrainian'
-     * and live in Ukraine for 10 years. For the last requirement use field periodsInUkr,
-     * which has following view: "2002-2015"
-     * We want to reuse our validation in future, so let's write our own impl of Predicate
-     * parametrized with Candidate in CandidateValidator.
-     */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator candidateValidator = new CandidateValidator();
+        return candidates.stream()
+                .filter(candidateValidator)
+                .map(Candidate::getName)
+                .sorted()
+                .toList();
     }
 }
