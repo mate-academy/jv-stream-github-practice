@@ -10,12 +10,22 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        String period = candidate.getPeriodsInUkr();
-        String[] dates = period.split("-");
-        int periodInt = Integer.parseInt(dates[1]) - Integer.parseInt(dates[0]);
         return candidate.isAllowedToVote()
                 && (candidate.getAge() >= age)
                 && (candidate.getNationality().equals(nationality))
-                && (periodInt >= periodsInUkr);
+                && getPeriodInUkr(candidate.getPeriodsInUkr());
+    }
+
+    private boolean getPeriodInUkr(String period) {
+        String[] dates = period.split("-");
+        int fromYear = 0;
+        int toYear = 0;
+        try {
+            fromYear = Integer.parseInt(dates[0]);
+            toYear = Integer.parseInt(dates[1]);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return (toYear - fromYear + 1) >= periodsInUkr;
     }
 }
