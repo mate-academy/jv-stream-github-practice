@@ -14,7 +14,6 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] periods = candidate.getPeriodsInUkr().split(PERIOD_SEPARATOR);
-
         try {
             int period = Integer.parseInt(periods[END_PERIOD_INDEX])
                     - Integer.parseInt(periods[START_PERIOD_INDEX]);
