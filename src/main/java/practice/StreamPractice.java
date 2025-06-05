@@ -4,13 +4,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private static final String SEPARATOR = ",";
+    private final CandidateValidator isValid = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -20,7 +23,7 @@ public class StreamPractice {
      */
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
-                .flatMap(str -> Arrays.stream(str.split(",")))
+                .flatMap(str -> Arrays.stream(str.split(SEPARATOR)))
                 .map(Integer::parseInt)
                 .filter(n -> n % 2 == 0)
                 .mapToInt(n -> n)
@@ -54,7 +57,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(n -> n.getSex() == Person.Sex.MAN
                         && n.getAge() >= fromAge && n.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -69,11 +72,12 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
+        Predicate<Person> isWorkable = p -> p.getAge() >= fromAge
+                && (p.getSex() == Person.Sex.MAN
+                ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge);
         return peopleList.stream()
-                .filter(p -> p.getAge() >= fromAge
-                        && (p.getSex() == Person.Sex.MAN
-                        ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge))
-                .collect(Collectors.toList());
+                .filter(isWorkable)
+                .toList();
     }
 
     /**
@@ -87,7 +91,7 @@ public class StreamPractice {
                 .map(Person::getCats)
                 .flatMap(Collection::stream)
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -103,11 +107,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator isValid = new CandidateValidator();
         return candidates.stream()
                 .filter(isValid)
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
