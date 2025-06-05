@@ -23,14 +23,8 @@ public class StreamPractice {
     }
 
     public Double getOddNumsAverage(List<Integer> numbers) {
-
-        if (numbers == null || numbers.isEmpty()) {
-            throw new NoSuchElementException("Cannot compute average from an empty or null list.");
-        }
-
         return IntStream.range(0, numbers.size())
-                .map(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
-                .mapToDouble(i -> i)
+                .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(d -> d % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(

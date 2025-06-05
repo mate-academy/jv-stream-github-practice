@@ -21,6 +21,6 @@ public class CandidateValidator implements Predicate<Candidate> {
 
         String[] parts = period.split("-");
 
-        return Integer.parseInt(parts[1]) - Integer.parseInt(parts[0]);
+        return Integer.parseInt(parts[1]) - Integer.parseInt(parts[0]) + 1;
     }
 }
