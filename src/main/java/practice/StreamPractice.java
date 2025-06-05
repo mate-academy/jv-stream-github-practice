@@ -24,7 +24,14 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
+                .mapToDouble(i -> {
+                    int value = numbers.get(i);
+                    if (i % 2 != 0) {
+                        return value - 1;
+                    } else {
+                        return value;
+                    }
+                })
                 .filter(d -> d % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
