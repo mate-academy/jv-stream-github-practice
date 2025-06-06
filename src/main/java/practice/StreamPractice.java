@@ -14,7 +14,6 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -24,14 +23,7 @@ public class StreamPractice {
 
     public Double getOddNumsAverage(List<Integer> numbers) {
         return IntStream.range(0, numbers.size())
-                .mapToDouble(i -> {
-                    int value = numbers.get(i);
-                    if (i % 2 != 0) {
-                        return value - 1;
-                    } else {
-                        return value;
-                    }
-                })
+                .mapToDouble(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(d -> d % 2 != 0)
                 .average()
                 .orElseThrow(() -> new NoSuchElementException(
@@ -44,7 +36,7 @@ public class StreamPractice {
                         && p.getAge() >= fromAge
                         && p.getAge() <= toAge
                 )
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
@@ -53,17 +45,16 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= fromAge
                         && ((p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
                         || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
-                .map(Person::getCats)
-                .flatMap(List::stream)
+                .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .distinct()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public List<String> validateCandidates(List<Candidate> candidates) {
