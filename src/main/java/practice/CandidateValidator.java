@@ -1,7 +1,8 @@
 package practice;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
@@ -10,9 +11,17 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        int liveInUkraine = Stream.of(candidate.getPeriodsInUkr().split("-"))
+        List<String> periods = Arrays.stream(candidate.getPeriodsInUkr().split(","))
+                .toList();
+
+        int liveInUkraine = Arrays.stream(candidate.getPeriodsInUkr().split(",")).toList()
+                .stream()
+                .map(s -> s.split("-"))
+                .flatMap(Arrays::stream)
                 .mapToInt(Integer::parseInt)
-                .reduce((i, j) -> j - i).orElse(0);
+                .reduce((i, j) -> j - i)
+                .stream().boxed().max(Integer::compareTo).orElse(0);
+
         return candidate.isAllowedToVote()
                 && candidate.getAge() >= MIN_AGE
                 && candidate.getNationality().equals("Ukrainian")
