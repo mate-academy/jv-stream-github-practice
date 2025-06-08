@@ -22,7 +22,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (period != null && !period.isEmpty()) {
             String[] years = period.split("-");
             return years.length > 1
-                    ? Integer.parseInt(years[1]) - Integer.parseInt(years[0])
+                    ? Integer.parseInt(years[1]) - Integer.parseInt(years[0]) + 1
                     : Integer.parseInt(years[0]);
         }
         return 0;
