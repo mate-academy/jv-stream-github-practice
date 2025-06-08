@@ -1,9 +1,12 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -22,9 +25,10 @@ public class StreamPractice {
                     .map(l -> Arrays.asList(l.split(",")))
                     .flatMap(List::stream)
                     .mapToInt(Integer::parseInt)
-                    .filter(i -> i % 2 ==0)
+                    .filter(i -> i % 2 == 0)
                     .min();
-            return min.orElseThrow(() -> new RuntimeException("Can't get min value from list: method_input_list"));
+            return min.orElseThrow(()
+                    -> new RuntimeException("Can't get min value from list: method_input_list"));
         }
         throw new RuntimeException("Can't get min value from list: method_input_list");
     }
@@ -97,7 +101,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         if (peopleList != null && !peopleList.isEmpty()) {
-           return peopleList.stream()
+            return peopleList.stream()
                     .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                     .map(Person::getCats)
                     .flatMap(List::stream)
@@ -122,12 +126,12 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         if (candidates != null && !candidates.isEmpty()) {
-        CandidateValidator candidateValidator = new CandidateValidator();
-           return candidates.stream()
-                   .filter(candidateValidator::test)
-                   .map(Candidate::getName)
-                   .sorted()
-                   .collect(Collectors.toList());
+            CandidateValidator candidateValidator = new CandidateValidator();
+            return candidates.stream()
+                    .filter(candidateValidator::test)
+                    .map(Candidate::getName)
+                    .sorted()
+                    .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
