@@ -12,6 +12,9 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int START_YEAR_INDEX = 0;
     private static final int END_YEAR_INDEX = 1;
 
+    private static final String PERIOD_SEPARATOR = ",";
+    private static final String YEAR_RANGE_SEPARATOR = "-";
+
     @Override
     public boolean test(Candidate candidate) {
         return candidate.getAge() >= MIN_AGE
@@ -25,13 +28,12 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
-        int totalYearsInUkraine = Arrays.stream(periodsInUkr.split(","))
+        inint totalYearsInUkraine = Arrays.stream(periodsInUkr.split(PERIOD_SEPARATOR))
                 .map(String::trim)
-                .map(period -> period.split("-"))
+                .map(period -> period.split(YEAR_RANGE_SEPARATOR))
                 .filter(years -> years.length == VALID_PERIOD_LENGTH)
                 .mapToInt(years -> Integer.parseInt(years[END_YEAR_INDEX].trim())
                         - Integer.parseInt(years[START_YEAR_INDEX].trim()) + 1)
                 .sum();
-        return totalYearsInUkraine >= MIN_YEARS_IN_UKR;
     }
 }
