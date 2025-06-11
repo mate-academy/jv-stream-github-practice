@@ -28,12 +28,21 @@ public class CandidateValidator implements Predicate<Candidate> {
             return false;
         }
 
+<<<<<<< HEAD
         inint totalYearsInUkraine = Arrays.stream(periodsInUkr.split(PERIOD_SEPARATOR))
+=======
+        int totalYearsInUkraine = Arrays.stream(periodsInUkr.split(PERIOD_SEPARATOR))
+>>>>>>> ae0099a (Refactored CandidateValidator: moved separators to constants)
                 .map(String::trim)
                 .map(period -> period.split(YEAR_RANGE_SEPARATOR))
                 .filter(years -> years.length == VALID_PERIOD_LENGTH)
                 .mapToInt(years -> Integer.parseInt(years[END_YEAR_INDEX].trim())
                         - Integer.parseInt(years[START_YEAR_INDEX].trim()) + 1)
                 .sum();
+<<<<<<< HEAD
+=======
+
+        return totalYearsInUkraine >= MIN_YEARS_IN_UKR;
+>>>>>>> ae0099a (Refactored CandidateValidator: moved separators to constants)
     }
 }

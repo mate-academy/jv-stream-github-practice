@@ -2,8 +2,8 @@ package practice;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -17,9 +17,8 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        // Corrected the error message to include the input list for better debugging
         return numbers.stream()
-                .flatMap(s -> List.of(s.split(",")).stream())
+                .flatMap(s -> Stream.of(s.split(",")))
                 .map(Integer::parseInt)
                 .filter(num -> num % 2 == 0)
                 .min(Integer::compare)
@@ -50,7 +49,7 @@ public class StreamPractice {
         return people.stream()
                 .filter(person -> person.getSex() == Person.Sex.MAN)
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -63,18 +62,12 @@ public class StreamPractice {
         return people.stream()
                 .filter(person -> {
                     if (person.getSex() == Person.Sex.MAN) {
-                        // For men: age >= manFrom AND age <= retireAge (inclusive for Carlos 60)
                         return person.getAge() >= manFrom && person.getAge() <= retireAge;
-                    } else { // Person.Sex.WOMAN
-                        // For women: based on the expected output of the test:
-                        // Implied minimum age is 18 (Janice Dean), and maximum
-                        // is 55 (Emma Stuart).
-                        // The 'womanFrom' parameter (55 in test) is used
-                        // as the upper bound for women.
+                    } else {
                         return person.getAge() >= 18 && person.getAge() <= womanFrom;
                     }
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -87,7 +80,7 @@ public class StreamPractice {
                 .filter(person -> person.getAge() >= minAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -98,13 +91,13 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         CandidateValidator validator = new CandidateValidator();
         return candidates.stream()
-                .filter(candidate -> candidate.getAge() >= 35) // Changed from '>' to '>='
-                .filter(Candidate::isAllowedToVote) // Method reference for brevity
+                .filter(candidate -> candidate.getAge() >= 35)
+                .filter(Candidate::isAllowedToVote)
                 .filter(candidate -> "Ukrainian".equals(candidate.getNationality()))
                 .filter(candidate -> validator.livedInUkraineLongEnough(
-                        candidate.getPeriodsInUkr())) // Wrapped for line length
+                        candidate.getPeriodsInUkr()))
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }
