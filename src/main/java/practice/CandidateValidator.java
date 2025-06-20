@@ -9,7 +9,7 @@ public class CandidateValidator implements Predicate<Candidate> {
         String[] dates = candidate.getPeriodsInUkr().split("-");
         dates[0] = dates[0].trim();
         dates[1] = dates[1].trim();
-        int inUkr = Integer.parseInt(dates[1]) - Integer.parseInt(dates[0]);
+        int inUkr = Integer.parseInt(dates[1]) - Integer.parseInt(dates[0]) + 1;
         return (candidate.getAge() >= 35
                 && candidate.getNationality().equals("Ukrainian")
                 && inUkr >= 10
