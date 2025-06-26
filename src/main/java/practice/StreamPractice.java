@@ -9,7 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
-    private final String FORSPLIT = ",";
+    private static final String FORSPLIT = ",";
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
