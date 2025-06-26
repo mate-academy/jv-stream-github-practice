@@ -9,6 +9,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+    private final CandidateValidator candidateValidator = new CandidateValidator();
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -16,6 +17,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
+
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(i -> Arrays.stream(i.split(",")))
@@ -72,7 +74,7 @@ public class StreamPractice {
                 .filter(p -> (p.getAge() >= fromAge
                         && p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() <= maleToAge) || (p.getAge() >= fromAge
-                && p.getSex().equals(Person.Sex.WOMAN)
+                && p.getSex() == Person.Sex.WOMAN
                 && p.getAge() <= femaleToAge))
                 .toList();
     }
@@ -84,7 +86,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
                 .flatMap(i -> i.getCats().stream())
                 .map(Cat::getName)
@@ -104,7 +106,6 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        CandidateValidator candidateValidator = new CandidateValidator();
         return candidates.stream()
                 .filter(candidateValidator)
                 .map(Candidate::getName)
