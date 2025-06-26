@@ -1,13 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -40,9 +37,8 @@ public class StreamPractice {
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
         List<Integer> modi = IntStream.range(0, numbers.size())
-                .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1:numbers.get(i))
+                .mapToObj(i -> (i % 2 != 0) ? numbers.get(i) - 1 : numbers.get(i))
                 .toList();
-
         return modi.stream()
                 .filter(i -> i % 2 != 0)
                 .mapToInt(Integer::intValue)
@@ -82,7 +78,8 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getAge() >= fromAge)
                 .filter(p ->
-                        p.getSex() == Person.Sex.MAN ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)
+                        p.getSex() == Person.Sex.MAN
+                                ? p.getAge() <= maleToAge : p.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
