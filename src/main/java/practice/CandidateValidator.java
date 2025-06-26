@@ -1,5 +1,6 @@
 package practice;
 
+import java.time.Year;
 import java.util.function.Predicate;
 import model.Candidate;
 
@@ -11,8 +12,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     public boolean test(Candidate candidate) {
         String[] period = candidate.getPeriodsInUkr().split("-");
         int from = Integer.parseInt(period[0].trim());
-        int to = Integer.parseInt(period[1].trim());
-        boolean validPeriod = to - from >= minYearIn;
+        int currentYear = Year.now().getValue();
+        boolean validPeriod = currentYear - from >= minYearIn;
 
         return candidate.getAge() >= minYearOld
                 && validPeriod
