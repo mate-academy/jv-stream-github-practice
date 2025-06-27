@@ -12,8 +12,8 @@ public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
         String[] period = candidate.getPeriodsInUkr().split(SPLITPER);
-        int from = Integer.parseInt(period[0].trim());
-        int currentYear = Integer.parseInt(period[1].trim());
+        int from = Integer.parseInt(period[0]);
+        int currentYear = Integer.parseInt(period[1]);
         boolean validPeriod = currentYear - from >= MIN_YEARS;
 
         return candidate.getAge() >= YEATS_OLD
