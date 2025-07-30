@@ -25,6 +25,7 @@ public class StreamPractice {
                 .filter(m -> m.length > minCapacity)
                 .flatMap(Stream::of)
                 .mapToInt(Integer::parseInt)
+                .filter(this::isNumberEven)
                 .min()
                 .orElseThrow(() -> new RuntimeException("Can't get min value from list: "
                         + "< Here is our input 'numbers' >" + numbers));
@@ -57,7 +58,7 @@ public class StreamPractice {
         Predicate<Person> selectMenByAgePredicate = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
-                return person.getAge() > fromAge && person.getAge() <= toAge
+                return person.getAge() >= fromAge && person.getAge() <= toAge
                         && person.getSex().equals(Person.Sex.MAN);
 
             }
@@ -83,12 +84,12 @@ public class StreamPractice {
         Predicate<Person> getWorkablePeoplePredicate = new Predicate<Person>() {
             @Override
             public boolean test(Person person) {
-                return person.getAge() >= fromAge && person.getAge()
+                return (person.getAge() >= fromAge && person.getAge()
                         <= maleToAge
-                                && person.getSex().equals(Person.Sex.MAN)
-                        || person.getAge() >= fromAge
+                                && person.getSex().equals(Person.Sex.MAN))
+                        || (person.getAge() >= fromAge
                                 && person.getAge() <= femaleToAge
-                        && person.getSex().equals(Person.Sex.WOMAN);
+                        && person.getSex().equals(Person.Sex.WOMAN));
             }
         };
 

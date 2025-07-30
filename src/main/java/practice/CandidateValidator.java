@@ -11,12 +11,11 @@ public class CandidateValidator implements Predicate<Candidate> {
         int minAgeRequired = 35;
         int minPeriodInUkraine = 10;
         return candidate.isAllowedToVote()
-                && candidate.getAge() > minAgeRequired
+                && candidate.getAge() >= minAgeRequired
                 && candidate.getNationality().equals(requiredNationality)
-                && periodInUkraine(candidate.getPeriodsInUkr()) > minPeriodInUkraine;
+                && periodInUkraine(candidate.getPeriodsInUkr()) >= minPeriodInUkraine;
     }
 
-    ;
     private Integer periodInUkraine(String period) {
         int indexOfLifeSince = 0;
         int indexOfLifeTo = 1;
