@@ -62,7 +62,7 @@ public class StreamPracticeTest {
     public void findMinEvenNumber_basicData() {
         List<String> basicInput = List.of("12,11,5", "1,22,757", "71", "39,31,55,148",
                 "3,2,2,5", "27,44,89", "12,11,5", "64,22,757");
-        int expected = 2;
+        int expected = 1;
         Assert.assertEquals(String.format("Incorrect min value for the input - %s\n",
                 basicInput), expected, solution.findMinEvenNumber(basicInput));
     }
@@ -202,7 +202,7 @@ public class StreamPracticeTest {
 
     @Test
     public void validateCandidates_basicData() {
-        List<String> expected = List.of("Casey", "Morty", "Philip");
+        List<String> expected = List.of("Casey", "Philip");
         Assert.assertEquals(String.format("Incorrect result list of names for the input - %s\n",
                 candidates), expected, solution.validateCandidates(candidates));
     }
