@@ -4,15 +4,18 @@ import java.util.function.Predicate;
 import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
+    private static final int MIN_AGE = 35;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
+
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getAge() < 35) {
+        if (candidate.getAge() < MIN_AGE) {
             return false;
         }
         if (!candidate.isAllowedToVote()) {
             return false;
         }
-        if (!"Ukrainian".equals(candidate.getNationality())) {
+        if (!REQUIRED_NATIONALITY.equals(candidate.getNationality())) {
             return false;
         }
 
