@@ -56,20 +56,7 @@ public class StreamPractice {
 
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(c -> c != null)
-                .filter(c -> c.getAge() >= 35)
-                .filter(c -> "Ukrainian".equals(c.getNationality()))
-                .filter(Candidate::isAllowedToVote)
-                .filter(c -> {
-                    try {
-                        String[] years = c.getPeriodsInUkr().split("-");
-                        int start = Integer.parseInt(years[0].trim());
-                        int end = Integer.parseInt(years[1].trim());
-                        return (end - start) >= 10;
-                    } catch (Exception e) {
-                        return false;
-                    }
-                })
+                .filter(new CandidateValidator()) // ✅ используем валидатор
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
