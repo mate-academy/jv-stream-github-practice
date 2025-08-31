@@ -14,7 +14,7 @@ public class Person {
         this.name = name;
         this.age = age;
         this.sex = sex;
-        cats = new ArrayList<>();
+        this.cats = new ArrayList<>();
     }
 
     public Person(String name, int age, Sex sex, List<Cat> cats) {
@@ -50,9 +50,9 @@ public class Person {
         }
         Person person = (Person) o;
         return age == person.age
-            && Objects.equals(name, person.name)
-            && sex == person.sex
-            && Objects.equals(cats, person.cats);
+                && Objects.equals(name, person.name)
+                && sex == person.sex
+                && Objects.equals(cats, person.cats);
     }
 
     @Override
@@ -63,14 +63,15 @@ public class Person {
     @Override
     public String toString() {
         return "Person{"
-            + "name='" + name + '\''
-            + ", age=" + age
-            + ", sex=" + sex
-            + ", catList=" + cats
-            + '}';
+                + "name='" + name + '\''
+                + ", age=" + age
+                + ", sex=" + sex
+                + ", catList=" + cats
+                + '}';
     }
 
     public enum Sex {
         MAN, WOMAN
     }
 }
+
