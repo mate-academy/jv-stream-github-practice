@@ -17,7 +17,7 @@ public class StreamPractice {
      * If there is no needed data throw RuntimeException with message
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
-    public int findMinEvenNumber(List<String> numbers) {
+    public int findMinEvenNumber(List<String> numbers) { // minor comment
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split("\\s*,\\s*")))
                 .mapToInt(Integer::parseInt)
