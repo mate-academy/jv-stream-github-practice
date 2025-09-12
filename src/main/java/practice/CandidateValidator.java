@@ -3,39 +3,26 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator implements Predicate<Candidate> { // minor comment
+public class CandidateValidator implements Predicate<Candidate> {
 
-    private static final int MIN_ELIGIBLE_AGE = 35;
+    private static final int MIN_AGE = 35;
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
-    private static final int MIN_YEARS_IN_UKRAINE = 10;
+    private static final int PERIOD_IN_UKR = 10;
+    private static final String SEPARATOR = "\\s*-\\s*";
+    private static final int BEGIN_INDEX = 0;
+    private static final int END_INDEX = 1;
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate == null) {
-            return false;
-        }
+        return candidate.getAge() >= MIN_AGE
+                && candidate.isAllowedToVote()
+                && candidate.getNationality().equals(REQUIRED_NATIONALITY)
+                && checkTimeLivingInCountry(candidate);
+    }
 
-        boolean ageValid = candidate.getAge() >= MIN_ELIGIBLE_AGE;
-        boolean allowed = candidate.isAllowedToVote();
-        boolean ukrainian = REQUIRED_NATIONALITY.equalsIgnoreCase(candidate.getNationality());
-
-        String periods = candidate.getPeriodsInUkr();
-        if (periods == null || periods.isBlank()) {
-            return false;
-        }
-
-        String[] years = periods.split("\\s*-\\s*"); // split with optional spaces
-        if (years.length != 2) {
-            return false;
-        }
-
-        try {
-            int from = Integer.parseInt(years[0]);
-            int to = Integer.parseInt(years[1]);
-            boolean lived10Years = (to - from) >= MIN_YEARS_IN_UKRAINE;
-            return ageValid && allowed && ukrainian && lived10Years;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    private boolean checkTimeLivingInCountry(Candidate candidate) {
+        String[] dates = candidate.getPeriodsInUkr().split(SEPARATOR);
+        return Integer.parseInt(dates[END_INDEX])
+                - Integer.parseInt(dates[BEGIN_INDEX]) >= PERIOD_IN_UKR;
     }
 }
