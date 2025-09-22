@@ -25,7 +25,7 @@ public class StreamPractice {
                 .mapToInt(Integer::parseInt)
                 .filter(e -> e % 2 == 0)
                 .min()
-                .orElseThrow(() -> new RuntimeException("Can't get min value from list"));
+                .orElseThrow(() -> new RuntimeException("Can't get min value from list" + numbers));
     }
 
     /**
@@ -40,7 +40,7 @@ public class StreamPractice {
                         : numbers.get(i))
                 .filter(n -> n % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list"));
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list: " + numbers));
     }
 
     /**
