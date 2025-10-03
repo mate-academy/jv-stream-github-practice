@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Objects;
-
 public class Candidate {
     private int age;
     private String nationality;
@@ -56,25 +54,4 @@ public class Candidate {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Candidate candidate = (Candidate) o;
-        return age == candidate.age
-            && allowedToVote == candidate.allowedToVote
-            && Objects.equals(nationality, candidate.nationality)
-            && Objects.equals(periodsInUkr, candidate.periodsInUkr)
-            && Objects.equals(name, candidate.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getAge(), getNationality(),
-            isAllowedToVote(), getPeriodsInUkr(), getName());
-    }
 }
