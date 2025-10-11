@@ -1,9 +1,10 @@
 package practice;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -18,6 +19,7 @@ public class StreamPractice {
     private static final String MIN_VALUE_ERROR_MESSAGE = "Can't get min value from list: ";
     private static final String AVG_VALUE_ERROR_MESSAGE = "Can't get average value from list: ";
     private final CandidateValidator candidateValidator = new CandidateValidator();
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
