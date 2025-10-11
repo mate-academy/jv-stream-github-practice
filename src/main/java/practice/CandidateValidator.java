@@ -17,9 +17,9 @@ public class CandidateValidator implements Predicate<Candidate> {
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals(UKRAINIAN)
                 && Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(PERIOD_SEPARATOR)[END_PERIOD_INDEX])
+                .split(PERIOD_SEPARATOR)[END_PERIOD_INDEX].trim())
                 - Integer.parseInt(candidate.getPeriodsInUkr()
-                .split(PERIOD_SEPARATOR)[START_PERIOD_INDEX])
+                .split(PERIOD_SEPARATOR)[START_PERIOD_INDEX].trim())
                 >= MINIMUM_PERIOD_IN_UKRAINE;
     }
 }
