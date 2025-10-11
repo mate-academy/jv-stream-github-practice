@@ -31,6 +31,7 @@ public class StreamPractice {
         return numbers.stream()
                 .map(string -> string.split(NUMBERS_SEPARATOR))
                 .flatMap(Arrays::stream)
+                .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(this::isEven)
                 .min()
