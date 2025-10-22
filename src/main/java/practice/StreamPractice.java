@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -70,12 +69,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(a -> a.getSex() == Person.Sex.MAN &&
-                    a.getAge() >= fromAge &&
-                    a.getAge() <= maleToAge ||
-                    a.getSex() == Person.Sex.WOMAN &&
-                    a.getAge() >= fromAge &&
-                    a.getAge() <= femaleToAge)
+                .filter(a -> a.getSex() == Person.Sex.MAN
+                        && a.getAge() >= fromAge
+                        && a.getAge() <= maleToAge
+                        || a.getSex() == Person.Sex.WOMAN
+                        && a.getAge() >= fromAge
+                        && a.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
     }
 
@@ -86,7 +85,9 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge && !p.getCats().isEmpty())
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                        && p.getAge() >= femaleAge
+                        && !p.getCats().isEmpty())
                 .map(Person::getCats)
                 .flatMap(List::stream)
                 .map(Cat::getName)
