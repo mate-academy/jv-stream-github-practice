@@ -143,7 +143,7 @@ public class StreamPracticeTest {
     }
 
     @Test
-    public void getWorkablePeople_basicData() {
+    public void selectPeople_ByAge_basicData() {
         List<Person> expected = new ArrayList<>();
         expected.add(new Person("Peter", 23, Person.Sex.MAN));
         expected.add(new Person("Helen", 42, Person.Sex.WOMAN, new ArrayList<>()));
@@ -164,7 +164,7 @@ public class StreamPracticeTest {
     }
 
     @Test
-    public void getWorkablePeople_absent() {
+    public void selectPeople_ByAge_absent() {
         List<Person> expected = new ArrayList<>();
         List<Person> result = solution.getWorkablePeople(12, 14, 15, peopleList);
         Assert.assertEquals(expected, result);
