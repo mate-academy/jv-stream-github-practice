@@ -3,6 +3,7 @@ package model;
 import java.util.Objects;
 
 public class Cat {
+
     private String name;
     private int age;
 
