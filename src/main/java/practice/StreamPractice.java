@@ -20,7 +20,6 @@ public class StreamPractice {
     public int findMinEvenNumber(List<String> numbers) {
         return numbers.stream()
                 .flatMap(s -> Arrays.stream(s.split(",")))
-                .map(String::trim)
                 .mapToInt(Integer::parseInt)
                 .filter(i -> i % 2 == 0)
                 .min()
@@ -38,9 +37,7 @@ public class StreamPractice {
                 .map(i -> (i % 2 == 1)
                         ? numbers.get(i) - 1
                         : numbers.get(i))
-                .boxed()
                 .filter(n -> n % 2 != 0)
-                .mapToInt(Integer::intValue)
                 .average()
                 .orElseThrow(NoSuchElementException::new);
 
@@ -58,7 +55,7 @@ public class StreamPractice {
         return peopleList.stream()
                 .filter(p -> p.getSex() == Person.Sex.MAN)
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -82,7 +79,7 @@ public class StreamPractice {
                     }
                     return false;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
     }
 
@@ -96,7 +93,7 @@ public class StreamPractice {
                 .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -116,6 +113,6 @@ public class StreamPractice {
                 .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }

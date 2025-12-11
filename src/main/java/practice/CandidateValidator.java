@@ -8,14 +8,14 @@ public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_YEARS_IN_UA = 10;
     private static final String REQUIRED_NAT = "Ukrainian";
 
-    public boolean test(Candidate c) {
-        if (c == null) {
+    public boolean test(Candidate candidate) {
+        if (candidate == null) {
             return false;
         }
-        return c.getAge() >= MIN_AGE
-                && c.isAllowedToVote()
-                && isUkrainian(c.getNationality())
-                && yearsInUkraine(c.getPeriodsInUkr()) >= MIN_YEARS_IN_UA;
+        return candidate.getAge() >= MIN_AGE
+                && candidate.isAllowedToVote()
+                && isUkrainian(candidate.getNationality())
+                && yearsInUkraine(candidate.getPeriodsInUkr()) >= MIN_YEARS_IN_UA;
     }
 
     private boolean isUkrainian(String nat) {
