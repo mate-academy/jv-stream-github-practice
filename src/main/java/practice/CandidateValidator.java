@@ -11,13 +11,13 @@ public class CandidateValidator implements Predicate<Candidate> {
 
     @Override
     public boolean test(Candidate candidate) {
-        if (candidate.getPeriodsInUkr() == null) {
+        if (candidate == null || candidate.getPeriodsInUkr() == null) {
             return false;
         }
 
         String[] period = candidate.getPeriodsInUkr().trim().split(PERIODS_DELIMITER);
 
-        if (period.length < 2) {
+        if (period.length != 2) {
             return false;
         }
 
