@@ -12,7 +12,8 @@ import model.Candidate;
  * - nationality equals REQUIRED_NATIONALITY
  * - total years lived in Ukraine (sum of periods) >= REQUIRED_YEARS_IN_UKR
  *
- * Periods string format example: "2002-2015" or multiple periods separated by comma: "1990-1994,1996-2010"
+ * Periods string format example: "2002-2015" or multiple periods separated by comma:
+ * "1990-1994,1996-2010"
  */
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
