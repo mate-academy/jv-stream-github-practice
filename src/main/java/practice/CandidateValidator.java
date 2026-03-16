@@ -1,5 +1,6 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 import model.Candidate;
@@ -11,8 +12,7 @@ import model.Candidate;
  * - nationality equals REQUIRED_NATIONALITY
  * - total years lived in Ukraine (sum of periods) >= REQUIRED_YEARS_IN_UKR
  *
- * Periods string format example: "2002-2015" or multiple periods separated by comma:
- * "1990-1994,1996-2010"
+ * Periods string format example: "2002-2015" or multiple periods separated by comma: "1990-1994,1996-2010"
  */
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
@@ -48,18 +48,17 @@ public class CandidateValidator implements Predicate<Candidate> {
     }
 
     private int parseTotalYears(String periods) {
-        String[] parts = periods.split("\\s*,\\s*");
-        int sum = 0;
-        for (String part : parts) {
-            String[] bounds = part.split("\\s*-\\s*");
-            if (bounds.length != 2) {
-                throw new IllegalArgumentException("Invalid period format: " + part);
-            }
-            int start = Integer.parseInt(bounds[0]);
-            int end = Integer.parseInt(bounds[1]);
-            // assume end >= start; count years as (end - start)
-            sum += Math.max(0, end - start);
-        }
-        return sum;
+        return Arrays.stream(periods.split("\\s*,\\s*"))
+                .mapToInt(part -> {
+                    String[] bounds = part.split("\\s*-\\s*");
+                    if (bounds.length != 2) {
+                        throw new IllegalArgumentException("Invalid period format: " + part);
+                    }
+                    int start = Integer.parseInt(bounds[0]);
+                    int end = Integer.parseInt(bounds[1]);
+                    // assume end >= start; count years as (end - start)
+                    return Math.max(0, end - start);
+                })
+                .sum();
     }
 }
