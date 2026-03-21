@@ -22,8 +22,8 @@ public class StreamPractice {
                 .map(Integer::valueOf)
                 .filter(number -> number % 2 == 0)
                 .min(Integer::compareTo)
-                .orElseThrow(() -> new RuntimeException
-                        ("Can't get min value from list: " + numbers));
+                .orElseThrow(() ->
+                        new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
