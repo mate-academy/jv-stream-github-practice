@@ -6,6 +6,7 @@ import model.Candidate;
 
 public class CandidateValidator implements Predicate<Candidate> {
     private static final String REQUIRED_NATIONALITY = "Ukrainian";
+    private static final String HYPHEN = "-";
     private static final int MIN_CANDIDATE_AGE = 35;
     private static final int MIN_YEARS_IN_UKRAINE = 10;
     
@@ -15,21 +16,15 @@ public class CandidateValidator implements Predicate<Candidate> {
         if (candidate == null) {
             return false;
         }
-        if (candidate.getAge() < MIN_CANDIDATE_AGE) {
-            return false;
-        }
-        if (!candidate.isAllowedToVote()) {
-            return false;
-        }
-        if (!REQUIRED_NATIONALITY.equals(candidate.getNationality())) {
-            return false;
-        }
 
         int yearsInUkraine = Stream.of(candidate.getPeriodsInUkr())
-                .map(period -> period.split("-"))
+                .map(period -> period.split(HYPHEN))
                 .mapToInt(arr -> Integer.parseInt(arr[1]) - Integer.parseInt(arr[0]))
                 .sum();
         
-        return yearsInUkraine >= MIN_YEARS_IN_UKRAINE;
+        return candidate.getAge() >= MIN_CANDIDATE_AGE
+                && candidate.isAllowedToVote()
+                && REQUIRED_NATIONALITY.equals(candidate.getNationality())
+                && yearsInUkraine >= MIN_YEARS_IN_UKRAINE;
     }
 }
