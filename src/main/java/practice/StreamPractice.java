@@ -77,7 +77,6 @@ public class StreamPractice {
                 .filter(p -> p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
-                .distinct()
                 .collect(Collectors.toList());
     }
 
