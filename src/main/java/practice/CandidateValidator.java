@@ -7,16 +7,17 @@ import java.util.function.Predicate;
 public class CandidateValidator implements Predicate<Candidate> {
     private static final int MIN_AGE = 35;
     private static final int REQUIRED_YEARS_IN_UKRAINE = 10;
+    private static final String REQUIRED_NATIONALITY = "Ukrainian";
 
     @Override
     public boolean test(Candidate c) {
-        if (c.getAge() <= MIN_AGE) {
+        if (c.getAge() < MIN_AGE) {
             return false;
         }
         if (!c.isAllowedToVote()) {
             return false;
         }
-        if (!"Ukrainian".equals(c.getNationality())) {
+        if (!REQUIRED_NATIONALITY.equals(c.getNationality())) {
             return false;
         }
 
