@@ -1,65 +1,107 @@
 package practice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import model.Candidate;
 import model.Person;
 
 public class StreamPractice {
     /**
-     * Given list of strings where each element contains 1+ numbers:
+     * Дано список рядків, де кожен елемент містить одне або більше чисел:
      * input = {"5,30,100", "0,22,7", ...}
-     * return min integer value. One more thing - we're interested in even numbers.
-     * If there is no needed data throw RuntimeException with message
-     * "Can't get min value from list: < Here is our input 'numbers' >"
+     * Повернути мінімальне ціле число. Ще одна умова — нас цікавлять тільки парні числа.
+     * Якщо потрібних даних немає, викинути RuntimeException з повідомленням:
+     * "Can't get min value from list: < Тут наш вхідний список 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .flatMap(el -> Arrays.stream(el.split(",")))
+                .mapToInt(el -> Integer.parseInt(el))
+                .filter(num -> num % 2 == 0)
+                .min()
+                .orElseThrow(() ->
+                new RuntimeException("Can't get min value from list: " + numbers));
     }
 
     /**
-     * Given a List of Integer numbers,
-     * return the average of all odd numbers from the list or throw NoSuchElementException.
-     * But before that subtract 1 from each element on an odd position (having the odd index).
+     * Дано список цілих чисел (List<Integer>).
+     * Повернути середнє значення всіх непарних чисел зі списку
+     * або викинути NoSuchElementException.
+     * Але перед цим потрібно відняти 1 від кожного елемента,
+     * який знаходиться на непарній позиції (має непарний індекс).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        return IntStream.range(0, numbers.size())
+                .map(i -> {
+                    if (i % 2 != 0) {
+                        return numbers.get(i) - 1;
+                    } else {
+                        return numbers.get(i);
+                    }
+                })
+                .filter(num -> num % 2 != 0)
+                .average()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
-     * <p>
-     * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
+     * Дано список об'єктів `Person` (мають поля `name`, `age` і `sex`),
+     * наприклад: `Arrays.asList(new Person("Victor", 16, Sex.MAN),
+     * new Person("Helen", 42, Sex.WOMAN))`,
+     * вибрати зі списку тільки чоловіків, вік яких знаходиться у діапазоні
+     * від `fromAge` до `toAge` включно.
+     *
+     * Приклад: вибрати чоловіків, яких можна призвати до армії
+     * (від 18 до 27 років включно).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(el -> el.getSex().equals(Person.Sex.MAN)
+                        && el.getAge() >= fromAge
+                        && el.getAge() <= toAge)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
-     * select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
-     * or to `femaleToAge` (for women) inclusively.
-     * <p>
-     * Example: select people of working age
-     * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
+     * Дано список об'єктів `Person` (мають поля `name`, `age` і `sex`),
+     * наприклад: `Arrays.asList(new Person("Victor", 16, Sex.MAN),
+     * new Person("Helen", 42, Sex.WOMAN))`,
+     * вибрати зі списку тільки людей, вік яких знаходиться у діапазоні
+     * від `fromAge` до `maleToAge` (для чоловіків)
+     * або до `femaleToAge` (для жінок) включно.
+     *
+     * Приклад: вибрати людей працездатного віку
+     * (від 18 років і до 60 років для чоловіків та до 55 років для жінок включно).
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+       return  peopleList.stream()
+                .filter(el -> el.getSex().equals(Person.Sex.MAN)
+                        && el.getAge() >= fromAge
+                        && el.getAge() <= maleToAge
+                        || el.getSex().equals(Person.Sex.WOMAN)
+                        && el.getAge() >= fromAge
+                        && el.getAge() <= femaleToAge)
+                .collect(Collectors.toList());
     }
 
     /**
-     * Given a List of `Person` instances (having `name`, `age`, `sex` and `cats` fields,
-     * and each `Cat` having a `name` and `age`),
-     * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
+     * Дано список об'єктів `Person` (мають поля `name`, `age`, `sex` і `cats`,
+     * а кожен `Cat` має `name` і `age`),
+     * повернути імена всіх котів, власниками яких є жінки віком від `femaleAge`
+     * років включно.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= femaleAge)
+                .flatMap(p -> p.getCats().stream())
+                .map(cat -> cat.getName())
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +117,10 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        return candidates.stream()
+                .filter(new CandidateValidator())
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
