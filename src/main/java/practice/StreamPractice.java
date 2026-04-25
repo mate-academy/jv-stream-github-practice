@@ -76,12 +76,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
             int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(a -> (Sex.MAN.equals(a.getSex()) 
-                && (a.getAge() >= fromAge 
-                && a.getAge() <= maleToAge))
-                        || (Sex.WOMAN.equals(a.getSex()) 
-                        && (a.getAge() >= fromAge 
-                        && a.getAge() <= femaleToAge)))
+                .filter(a -> (Sex.MAN.equals(a.getSex())
+                        && (a.getAge() >= fromAge
+                                && a.getAge() <= maleToAge))
+                        || (Sex.WOMAN.equals(a.getSex())
+                                && (a.getAge() >= fromAge
+                                        && a.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
@@ -122,7 +122,7 @@ public class StreamPractice {
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
-                .filter(CandidateValidator.isEligible())
+                .filter(new CandidateValidator())
                 .map(Candidate::getName)
                 .sorted()
                 .collect(Collectors.toList());
