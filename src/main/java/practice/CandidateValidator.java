@@ -3,19 +3,22 @@ package practice;
 import java.util.function.Predicate;
 import model.Candidate;
 
-public class CandidateValidator {
+public class CandidateValidator implements Predicate<Candidate> {
 
-    public static Predicate<Candidate> isEligible() {
-        return c -> c.getAge() > 35
+    private static final int MIN_AGE = 35;
+    private static final int REQUIRED_YEARS = 10;
+    private static final String NATIONALITY = "Ukrainian";
+
+    @Override
+    public boolean test(Candidate c) {
+        return c.getAge() >= MIN_AGE
                 && c.isAllowedToVote()
-                && "Ukrainian".equals(c.getNationality())
-                && yearsInUkraine(c.getPeriodsInUkr()) >= 10;
+                && NATIONALITY.equals(c.getNationality())
+                && yearsInUkraine(c.getPeriodsInUkr()) >= REQUIRED_YEARS;
     }
 
-    private static int yearsInUkraine(String periods) {
+    private int yearsInUkraine(String periods) {
         String[] years = periods.split("-");
-        int start = Integer.parseInt(years[0]);
-        int end = Integer.parseInt(years[1]);
-        return end - start;
+        return Integer.parseInt(years[1]) - Integer.parseInt(years[0]);
     }
 }
