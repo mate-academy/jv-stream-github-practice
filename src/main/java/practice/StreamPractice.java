@@ -1,12 +1,10 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -78,8 +76,12 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
             int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(a -> (a.getSex() == Sex.MAN && (a.getAge() >= fromAge && a.getAge() <= maleToAge))
-                        || (a.getSex() == Sex.WOMAN && (a.getAge() >= fromAge && a.getAge() <= femaleToAge)))
+                .filter(a -> (a.getSex() == Sex.MAN 
+                && (a.getAge() >= fromAge 
+                && a.getAge() <= maleToAge))
+                        || (a.getSex() == Sex.WOMAN 
+                        && (a.getAge() >= fromAge 
+                        && a.getAge() <= femaleToAge)))
                 .collect(Collectors.toList());
     }
 
