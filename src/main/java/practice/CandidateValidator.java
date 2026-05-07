@@ -6,7 +6,7 @@ import model.Candidate;
 public class CandidateValidator implements Predicate<Candidate> {
     @Override
     public boolean test(Candidate candidate) {
-        return candidate.getAge() >= 3
+        return candidate.getAge() >= 35
                 && candidate.isAllowedToVote()
                 && candidate.getNationality().equals("Ukrainian")
                 && (Integer.parseInt(candidate.getPeriodsInUkr().split("-")[1])
