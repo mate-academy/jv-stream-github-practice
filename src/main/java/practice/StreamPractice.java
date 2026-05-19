@@ -1,8 +1,11 @@
 package practice;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -14,7 +17,15 @@ public class StreamPractice {
      * "Can't get min value from list: < Here is our input 'numbers' >"
      */
     public int findMinEvenNumber(List<String> numbers) {
-        return 0;
+        return numbers.stream()
+                .map(number -> number.split(","))
+                .flatMap(Arrays::stream)
+                .map(Integer::parseInt)
+                .filter(number -> number % 2 == 0)
+                .reduce(Integer::min)
+                .orElseThrow(() -> new RuntimeException(
+                        String.format("Can't get min value from list: %s", numbers)
+                ));
     }
 
     /**
@@ -23,7 +34,19 @@ public class StreamPractice {
      * But before that subtract 1 from each element on an odd position (having the odd index).
      */
     public Double getOddNumsAverage(List<Integer> numbers) {
-        return 0D;
+        AtomicInteger index = new AtomicInteger(0);
+        return numbers.stream()
+                .map(numb -> {
+                    int ind = index.getAndIncrement();
+                    if (ind % 2 == 1) {
+                        return numb - 1;
+                    }
+                    return numb;
+                })
+                .filter(num -> num % 2 == 1)
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElseThrow();
     }
 
     /**
@@ -35,7 +58,11 @@ public class StreamPractice {
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge
+                        && person.getAge() <= toAge
+                        && person.getSex().equals(Person.Sex.MAN))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -50,7 +77,17 @@ public class StreamPractice {
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getAge() >= fromAge)
+                .filter(person -> {
+                    if (person.getSex().equals(Person.Sex.WOMAN)) {
+                        return person.getAge() <= femaleToAge;
+                    }
+                    if (person.getSex().equals(Person.Sex.MAN)) {
+                        return person.getAge() <= maleToAge;
+                    }
+                    return false;
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +96,13 @@ public class StreamPractice {
      * return the names of all cats whose owners are women from `femaleAge` years old inclusively.
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
-        return Collections.emptyList();
+        return peopleList.stream()
+                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= femaleAge)
+                .map(Person::getCats)
+                .flatMap(List::stream)
+                .map(Cat::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -75,6 +118,11 @@ public class StreamPractice {
      * parametrized with Candidate in CandidateValidator.
      */
     public List<String> validateCandidates(List<Candidate> candidates) {
-        return Collections.emptyList();
+        CandidateValidator validator = new CandidateValidator();
+        return candidates.stream()
+                .filter(validator)
+                .map(Candidate::getName)
+                .sorted()
+                .collect(Collectors.toList());
     }
 }
