@@ -17,7 +17,7 @@ public class CandidateValidator implements Predicate<Candidate> {
 
         int startYear = Integer.parseInt(years[START_YEAR_INDEX]);
         int endYear = Integer.parseInt(years[END_YEAR_INDEX]);
-        int yearsInUkraine = endYear - startYear;
+        int yearsInUkraine = endYear - startYear + 1;
 
         return candidate.getAge() >= MIN_AGE
                     && candidate.isAllowedToVote()
