@@ -1,11 +1,9 @@
 package practice;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.lang.Math;
 import model.Candidate;
 import model.Cat;
 import model.Person;
@@ -70,8 +68,8 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
             .filter(p -> p.getAge() >= fromAge)
-            .filter(p -> (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge) ||
-                         (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
+            .filter(p -> (p.getSex() == Person.Sex.MAN && p.getAge() <= maleToAge)
+                || (p.getSex() == Person.Sex.WOMAN && p.getAge() <= femaleToAge))
             .collect(Collectors.toList());
     }
 

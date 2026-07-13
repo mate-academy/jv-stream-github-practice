@@ -1,4 +1,5 @@
 package practice;
+
 import java.util.function.Predicate;
 import model.Candidate;
 
