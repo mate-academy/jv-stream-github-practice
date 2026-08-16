@@ -39,7 +39,8 @@ public class StreamPractice {
                 .filter(n -> n % 2 != 0)
                 .mapToInt(Integer::intValue)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException());
+                .orElseThrow(() -> new NoSuchElementException("Can't get min value from list:"
+                        + " + numbers "));
         return oddAverege;
     }
 
@@ -54,7 +55,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge && person.getAge() <= toAge)
-                .filter(person -> person.getSex() == Person.Sex.MAN)
+                .filter(person -> person.getSex().equals(Person.Sex.MAN))
                 .collect(Collectors.toList());
     }
 
@@ -72,9 +73,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> (person.getSex() == Person.Sex.MAN
+                .filter(person -> (person.getSex().equals(Person.Sex.MAN)
                         && person.getAge() <= maleToAge)
-                        || (person.getSex() == Person.Sex.WOMAN
+                        || (person.getSex().equals(Person.Sex.WOMAN)
                         && person.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
     }
@@ -86,8 +87,8 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN
-                        && person.getAge() > femaleAge)
+                .filter(person -> person.getSex().equals(Person.Sex.WOMAN)
+                        && person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .distinct()
