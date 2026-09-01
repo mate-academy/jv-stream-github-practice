@@ -56,7 +56,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         List<Person> filteredMen = peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
+                .filter(p -> (p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge && p.getAge() <= toAge))
                 .collect(Collectors.toList());
         return filteredMen;
@@ -75,9 +75,9 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         List<Person> workingPerson = peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
+                .filter(p -> (p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN && p.getAge() >= fromAge
+                        || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() >= fromAge
                         && p.getAge() <= femaleToAge))
                 .collect(Collectors.toList());
         return workingPerson;
@@ -90,7 +90,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         List<String> catNames = peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN
+                .filter(p -> p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
