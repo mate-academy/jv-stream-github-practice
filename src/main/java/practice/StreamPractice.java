@@ -42,7 +42,8 @@ public class StreamPractice {
                 .map(i -> i % 2 != 0 ? numbers.get(i) - 1 : numbers.get(i))
                 .filter(number -> number % 2 != 0)
                 .average()
-                .orElseThrow(() -> new NoSuchElementException("No odd numbers found to calculate average"));
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No odd numbers found to calculate average"));
     }
 
     /**
@@ -89,7 +90,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         List<String> catNames = peopleList.stream()
-                .filter(p -> p.getSex().equals("female")
+                .filter(p -> p.getSex() == Person.Sex.WOMAN
                         && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
