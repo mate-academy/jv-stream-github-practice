@@ -77,8 +77,10 @@ public class StreamPractice {
         Predicate<Person> personPredicate = p ->
                 p.getAge() >= fromAge
                         && (
-                        (p.getSex().equals(Person.Sex.MAN) && p.getAge() <= maleToAge)
-                                || (p.getSex().equals(Person.Sex.WOMAN) && p.getAge() <= femaleToAge)
+                        (p.getSex().equals(Person.Sex.MAN)
+                                && p.getAge() <= maleToAge)
+                                || (p.getSex().equals(Person.Sex.WOMAN)
+                                && p.getAge() <= femaleToAge)
                 );
 
         return peopleList
