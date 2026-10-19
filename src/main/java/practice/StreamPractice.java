@@ -7,6 +7,7 @@ import java.util.OptionalInt;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -27,7 +28,7 @@ public class StreamPractice {
                 .min();
 
         if (result.isEmpty()) {
-            throw new RuntimeException("Can't get min value from list: numbers");
+            throw new RuntimeException("Can't get min value from list: " + numbers);
         }
 
         return result.getAsInt();
@@ -45,8 +46,6 @@ public class StreamPractice {
                 .filter(n -> n % 2 == 1)
                 .average();
 
-        System.out.println(result.getAsDouble());
-
         return result.getAsDouble();
     }
 
@@ -60,7 +59,7 @@ public class StreamPractice {
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         Predicate<Person> predicate = (person) -> {
-            return person.getSex() == Person.Sex.MAN
+            return Person.Sex.MAN.equals(person.getSex())
                     && person.getAge() >= fromAge && person.getAge() <= toAge;
         };
         return peopleList.stream()
@@ -81,10 +80,10 @@ public class StreamPractice {
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         Predicate<Person> predicate = (person) -> {
-            return person.getSex() == Person.Sex.MAN
-                    && person.getAge() >= fromAge && person.getAge() <= maleToAge
-                    || person.getSex() == Person.Sex.WOMAN && person.getAge() >= fromAge
-                    && person.getAge() <= femaleToAge;
+            return (Person.Sex.MAN.equals(person.getSex())
+                    && person.getAge() >= fromAge && person.getAge() <= maleToAge)
+                    || (Person.Sex.WOMAN.equals(person.getSex()) && person.getAge() >= fromAge
+                    && person.getAge() <= femaleToAge);
         };
         return peopleList.stream()
                 .filter(predicate)
@@ -98,13 +97,13 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         Predicate<Person> predicate = (person) -> {
-            return person.getSex() == Person.Sex.WOMAN
+            return Person.Sex.WOMAN.equals(person.getSex())
                     && person.getAge() >= femaleAge;
         };
         return peopleList.stream()
                 .filter(predicate)
                 .flatMap(p -> p.getCats().stream())
-                .map(c -> c.getName())
+                .map(Cat::getName)
                 .toList();
     }
 
@@ -123,7 +122,7 @@ public class StreamPractice {
     public List<String> validateCandidates(List<Candidate> candidates) {
         return candidates.stream()
                 .filter(candidateValidator)
-                .map(c -> c.getName())
+                .map(Candidate::getName)
                 .sorted()
                 .toList();
     }
