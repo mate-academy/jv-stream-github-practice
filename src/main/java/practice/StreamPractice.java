@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import model.Candidate;
+import model.Cat;
 import model.Person;
 
 public class StreamPractice {
@@ -32,7 +33,7 @@ public class StreamPractice {
     public List<Person> selectMenByAge(List<Person> peopleList,
                                        int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.MAN)
+                .filter(person -> Person.Sex.MAN.equals(person.getSex()))
                 .filter(person -> person.getAge() >= fromAge
                         && person.getAge() <= toAge)
                 .collect(Collectors.toList());
@@ -43,7 +44,7 @@ public class StreamPractice {
                                           List<Person> peopleList) {
         return peopleList.stream()
                 .filter(person -> person.getAge() >= fromAge)
-                .filter(person -> person.getSex() == Person.Sex.MAN
+                .filter(person -> Person.Sex.MAN.equals(person.getSex())
                         ? person.getAge() <= maleToAge
                         : person.getAge() <= femaleToAge)
                 .collect(Collectors.toList());
@@ -52,10 +53,10 @@ public class StreamPractice {
     public List<String> getCatsNames(List<Person> peopleList,
                                      int femaleAge) {
         return peopleList.stream()
-                .filter(person -> person.getSex() == Person.Sex.WOMAN)
+                .filter(person -> Person.Sex.WOMAN.equals(person.getSex()))
                 .filter(person -> person.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
-                .map(cat -> cat.getName())
+                .map(Cat::getName)
                 .collect(Collectors.toList());
     }
 
