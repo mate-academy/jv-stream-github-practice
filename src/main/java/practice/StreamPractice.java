@@ -40,7 +40,7 @@ public class StreamPractice {
             throw new NoSuchElementException("List is empty");
         }
         return peopleList.stream()
-                .filter(p -> "MAN".equals(String.valueOf(p.getSex()))
+                .filter(p -> p.getSex().equals(Person.Sex.MAN)
                         && p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
@@ -49,9 +49,9 @@ public class StreamPractice {
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
                 .filter(p -> {
-                    if ("MAN".equals(String.valueOf(p.getSex()))) {
+                    if (p.getSex().equals(Person.Sex.MAN)) {
                         return p.getAge() >= fromAge && p.getAge() <= maleToAge;
-                    } else if ("WOMAN".equals(String.valueOf(p.getSex()))) {
+                    } else if (p.getSex().equals(Person.Sex.WOMAN)) {
                         return p.getAge() >= fromAge && p.getAge() <= femaleToAge;
                     }
                     return false;
@@ -61,7 +61,7 @@ public class StreamPractice {
 
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> !p.getCats().isEmpty() && "WOMAN".equals(String.valueOf(p.getSex()))
+                .filter(p -> !p.getCats().isEmpty() && p.getSex().equals(Person.Sex.WOMAN)
                         && p.getAge() >= femaleAge)
                 .flatMap(p -> p.getCats().stream())
                 .map(Cat::getName)
