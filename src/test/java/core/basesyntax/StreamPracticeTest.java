@@ -51,6 +51,7 @@ public class StreamPracticeTest {
         peopleList.add(new Person("Kate", 10, Person.Sex.WOMAN));
         peopleListWithoutCat = new ArrayList<>();
         peopleListWithoutCat.add(new Person("Helen", 16, Person.Sex.WOMAN));
+        peopleListWithoutCat.add(new Person("Helen", 16, Person.Sex.WOMAN));
         peopleListWithoutCat.add(new Person("Mary", 25, Person.Sex.WOMAN));
         peopleListWithoutCat.add(new Person("Emma Stuart", 20, Person.Sex.WOMAN));
         peopleListWithoutCat.add(new Person("Victor", 23, Person.Sex.MAN));
